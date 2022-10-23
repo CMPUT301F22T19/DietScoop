@@ -1,12 +1,7 @@
 package com.example.dietscoop;
 
 
-enum Location {
-    pantry,
-    freezer,
-    fridge
-}
-//TODO: add category attribute
+
 
 public class Ingredient extends FoodItem{
 
