@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "931811884868",
+    "project_id": "dietscoop",
+    "storage_bucket": "dietscoop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931811884868:android:bd9c1353ca14aab823a111",
+        "android_client_info": {
+          "package_name": "com.example.dietscoop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931811884868-vjq34j0ba5vlpg62l75h5qnqtlj5ubrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpncrrbbaoAivV2_tdmoC4MPasJOeTNwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931811884868-vjq34j0ba5vlpg62l75h5qnqtlj5ubrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
