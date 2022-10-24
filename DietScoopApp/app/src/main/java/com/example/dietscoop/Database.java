@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
 public class Database {
     private static final String TAG = "testing";
     FirebaseFirestore db;
@@ -40,11 +39,13 @@ public class Database {
         int year = expiry.get(Calendar.YEAR);
         int month = expiry.get(Calendar.MONTH);
         int day = expiry.get(Calendar.DATE);
-        data1.put("amount", Integer.valueOf(ingredient.getAmount());
+        data1.put("amount", Integer.valueOf(ingredient.getAmount()));
         data1.put("unit", ingredient.getMeasurementUnit());
         data1.put("year", Integer.valueOf(year));
         data1.put("month", Integer.valueOf(month));
         data1.put("day", Integer.valueOf(day));
+        //TODO: how to add location and category to db
+        data1.put("location", ToFirestore(ingredient.getLocation()));
 
 
         ingredientStorage.document(ingredient.getDescription()).set(data1);
@@ -60,7 +61,8 @@ public class Database {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Log.d(TAG, doc.getId() + " => " + doc.getData());
                                 ingredientList.add(new IngredientInStorage(doc.getId(), doc.getData()
-                                        .get("unit"), doc.getData().get("amount")));
+                                        .get("unit"), doc.getData().get("amount"), doc.getData().get("year"),
+                                        doc.getData().get("month"), doc.getData().get("day")));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
