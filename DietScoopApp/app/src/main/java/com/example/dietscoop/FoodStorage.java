@@ -8,7 +8,7 @@ public class FoodStorage {
 
     public FoodStorage() {
         db = new Database();
-        storage = db.getIngredientList();
+        storage = db.getIngredientStorage();
     }
 
     public void addIngredientToStorage(IngredientInStorage ingredientInStorage) {

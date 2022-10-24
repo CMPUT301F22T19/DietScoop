@@ -4,12 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FoodStorage foodstore = new FoodStorage();
+        foodstore.addIngredientToStorage(new IngredientInStorage("carrot", "kg",
+                5,2023, 12, 3, Location.fridge, Category.vegetable));
+
 
     }
 }

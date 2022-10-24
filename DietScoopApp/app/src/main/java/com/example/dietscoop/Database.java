@@ -44,7 +44,7 @@ public class Database {
         data1.put("year", Integer.valueOf(year));
         data1.put("month", Integer.valueOf(month));
         data1.put("day", Integer.valueOf(day));
-        //TODO: how to add location and category to db
+
         data1.put("location", ingredient.getLocation().toString());
         data1.put("category", ingredient.getCategory().toString());
 
@@ -52,24 +52,29 @@ public class Database {
         ingredientStorage.document(ingredient.getDescription()).set(data1);
     }
     public ArrayList<IngredientInStorage> getIngredientStorage() {
+        ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
         ingredientStorage
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
+
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Log.d(TAG, doc.getId() + " => " + doc.getData());
-                                ingredientList.add(new IngredientInStorage(doc.getId(), doc.getData()
-                                        .get("unit"), doc.getData().get("amount"), doc.getData().get("year"),
-                                        doc.getData().get("month"), doc.getData().get("day")));
+                                ingredientList.add(new IngredientInStorage(doc.getId(), (String)doc.getData()
+                                        .get("unit"), ((Long)doc.getData().get("amount")).intValue(),
+                                        ((Long)doc.getData().get("year")).intValue(),
+                                        ((Long)doc.getData().get("month")).intValue(), ((Long)doc.getData().get("day")).intValue(),
+                                        Location.stringToLocation(doc.getData().get("location").toString()),
+                                        Category.stringToCategory(doc.getData().get("category").toString())));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+        return ingredientList;
 
     }
 }
