@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 //TODO: What are locations and categories?
 enum Location {
@@ -16,6 +17,22 @@ enum Category {
     vegetable,
     meat,
     fruit
+
+    public Category stringToCategory(String name) {
+        name = name.toUpperCase(Locale.ROOT);
+
+        if (name == "VEGETABLE") {
+            return vegetable;
+        } else if (name == "MEAT") {
+            return meat;
+        } else if (name == "FRUIT") {
+            return fruit;
+        } else {
+            // TODO: MAKE THIS THROW ERROR
+            return null;
+        }
+
+    }
 }
 
 public class IngredientInStorage extends Ingredient{
