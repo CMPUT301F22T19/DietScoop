@@ -12,12 +12,12 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class IngredientInStorageAdapter extends ArrayAdapter<IngredientInStorage> {
+public class IngredientStorageAdapter extends ArrayAdapter<IngredientInStorage> {
 
     private Context context;
     private ArrayList<IngredientInStorage> dataList;
 
-    public IngredientInStorageAdapter(Context context, ArrayList<IngredientInStorage> dataList) {
+    public IngredientStorageAdapter(Context context, ArrayList<IngredientInStorage> dataList) {
         super(context,0,dataList);
         this.context = context;
         this.dataList = dataList;

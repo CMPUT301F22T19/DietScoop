@@ -3,7 +3,7 @@ package com.example.dietscoop;
 import java.util.ArrayList;
 
 public class FoodStorage {
-    ArrayList<IngredientInStorage> storage;
+    private ArrayList<IngredientInStorage> storage;
     Database db;
 
     public FoodStorage() {
@@ -13,5 +13,9 @@ public class FoodStorage {
 
     public void addIngredientToStorage(IngredientInStorage ingredientInStorage) {
         db.addIngredientToStorage(ingredientInStorage);
+    }
+
+    public ArrayList<IngredientInStorage> getIngredientStorage() {
+        return storage;
     }
 }
