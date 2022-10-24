@@ -16,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,24 +34,33 @@ public class Database {
 
     }
 
-    public void addIngredientToStorage(Ingredient ingredient) {
+    public void addIngredientToStorage(IngredientInStorage ingredient) {
         Map<String, Object> data1 = new HashMap<>();
-
+        Calendar expiry = ingredient.getBestBeforeDate();
+        int year = expiry.get(Calendar.YEAR);
+        int month = expiry.get(Calendar.MONTH);
+        int day = expiry.get(Calendar.DATE);
         data1.put("amount", Integer.valueOf(ingredient.getAmount());
         data1.put("unit", ingredient.getMeasurementUnit());
+        data1.put("year", Integer.valueOf(year));
+        data1.put("month", Integer.valueOf(month));
+        data1.put("day", Integer.valueOf(day));
 
 
         ingredientStorage.document(ingredient.getDescription()).set(data1);
     }
-    public void getIngredientList() {
+    public ArrayList<IngredientInStorage> getIngredientStorage() {
         ingredientStorage
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                Log.d(TAG, doc.getId() + " => " + doc.getData());
+                                ingredientList.add(new IngredientInStorage(doc.getId(), doc.getData()
+                                        .get("unit"), doc.getData().get("amount")));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
