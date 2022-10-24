@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Calendar;
 
+//TODO: What are locations and categories?
 enum Location {
     pantry,
     freezer,
