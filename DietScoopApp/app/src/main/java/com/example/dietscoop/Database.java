@@ -45,7 +45,8 @@ public class Database {
         data1.put("month", Integer.valueOf(month));
         data1.put("day", Integer.valueOf(day));
         //TODO: how to add location and category to db
-        data1.put("location", ToFirestore(ingredient.getLocation()));
+        data1.put("location", ingredient.getLocation().toString());
+        data1.put("category", ingredient.getCategory().toString());
 
 
         ingredientStorage.document(ingredient.getDescription()).set(data1);
