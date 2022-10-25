@@ -8,14 +8,22 @@ public class FoodStorage {
 
     public FoodStorage() {
         db = new Database();
-        storage = db.getIngredientStorage();
+        storage = new ArrayList<IngredientInStorage>();
     }
 
     public void addIngredientToStorage(IngredientInStorage ingredientInStorage) {
         db.addIngredientToStorage(ingredientInStorage);
     }
 
+    public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
+        db.removeIngredientFromStorage(ingredientInStorage);
+    }
+
     public ArrayList<IngredientInStorage> getIngredientStorage() {
         return storage;
+    }
+
+    public void getIngredientStorageFromDatabase(IngredientStorageAdapter adapter) {
+        storage = db.getIngredientStorage(adapter);
     }
 }

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class IngredientListActivity extends AppCompatActivity {
 
     FoodStorage foodStorage;
@@ -17,9 +19,12 @@ public class IngredientListActivity extends AppCompatActivity {
         ingredientListView = findViewById(R.id.ingredient_list);
 
         foodStorage = new FoodStorage();
-
         ingredientStorageAdapter = new IngredientStorageAdapter(this, foodStorage.getIngredientStorage());
         ingredientListView.setAdapter(ingredientStorageAdapter);
+        foodStorage.getIngredientStorageFromDatabase(ingredientStorageAdapter);
+
+        ingredientStorageAdapter.notifyDataSetChanged();
+
 
 
     }

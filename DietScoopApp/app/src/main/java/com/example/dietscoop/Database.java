@@ -3,6 +3,7 @@ package com.example.dietscoop;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 public class Database {
     private static final String TAG = "testing";
@@ -30,6 +32,7 @@ public class Database {
     public Database() {
         db = FirebaseFirestore.getInstance();
         ingredientStorage = db.collection("IngredientStorage");
+        recipes = db.collection("Recipes");
 
     }
 
@@ -51,16 +54,21 @@ public class Database {
 
         ingredientStorage.document(ingredient.getDescription()).set(data1);
     }
-    public ArrayList<IngredientInStorage> getIngredientStorage() {
+    public ArrayList<IngredientInStorage> getIngredientStorage(IngredientStorageAdapter adapter) {
         ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
+        ingredientStorage.whereEqualTo("amount",3);
         ingredientStorage
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
 
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.getId() != null) {
                                 Log.d(TAG, doc.getId() + " => " + doc.getData());
                                 ingredientList.add(new IngredientInStorage(doc.getId(), (String)doc.getData()
                                         .get("unit"), ((Long)doc.getData().get("amount")).intValue(),
@@ -69,12 +77,24 @@ public class Database {
                                         Location.stringToLocation(doc.getData().get("location").toString()),
                                         Category.stringToCategory(doc.getData().get("category").toString())));
                             }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
+                        adapter.notifyDataSetChanged();
+
                     }
                 });
+        //TODO: always returns list of size 0; never enters onComplete method
         return ingredientList;
 
+    }
+
+    public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
+        Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
+        ingredientStorage.document(ingredientInStorage.getDescription()).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "Data has been deleted successfully!");
+                    }
+                });
     }
 }
