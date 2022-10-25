@@ -36,7 +36,7 @@ public class FoodStorage {
         db.getIngredientStorage();
     }
 
-    public void addIngredientSnapshotListener(IngredientStorageAdapter adapter) {
+    public void setupIngredientSnapshotListener(IngredientStorageAdapter adapter) {
 
         db.getIngredientStorageRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -60,7 +60,6 @@ public class FoodStorage {
                             }
                         }
                         adapter.notifyDataSetChanged();
-
                     }
                 });
     }

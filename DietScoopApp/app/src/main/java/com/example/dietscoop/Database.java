@@ -2,29 +2,16 @@ package com.example.dietscoop;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import com.google.firebase.firestore.CollectionReference;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
-//import com.google.api.core.ApiFuture;
-//import com.google.api.core.ApiFutureCallback;
-//import com.google.api.core.ApiFutures;
 
 public class Database {
     private static final String TAG = "testing";
@@ -59,7 +46,6 @@ public class Database {
         ingredientStorage.document(ingredient.getDescription()).set(data1);
     }
     public void getIngredientStorage() {
-        //ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
 
         //was trying to get this to work
         //https://cloud.google.com/firestore/docs/samples/firestore-data-get-all-documents
@@ -71,9 +57,8 @@ public class Database {
 //            System.out.println(document.getId() + " => " + document.toObject(City.class));
 //        }
 
-
+        // hacky way of getting all ingredients as query (none of them should have amount 0)
         ingredientStorage.whereNotEqualTo("amount",0);
-
     }
 
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
