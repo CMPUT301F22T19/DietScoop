@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi;
 import java.util.Calendar;
 import java.util.Locale;
 
-//TODO: What are locations and categories?
+//TODO: What are locations and categories? Ask Jakaria
 enum Location {
     pantry,
     freezer,
@@ -29,12 +29,12 @@ enum Location {
 
     }
 }
-enum Category {
+enum IngredientCategory {
     vegetable,
     meat,
     fruit;
 
-    public static Category stringToCategory(String name) {
+    public static IngredientCategory stringToCategory(String name) {
         name = name.toUpperCase(Locale.ROOT);
 
         if (name == "VEGETABLE") {
@@ -55,11 +55,11 @@ public class IngredientInStorage extends Ingredient{
 
     Calendar bestBeforeDate;
     Location location;
-    Category category;
+    IngredientCategory category;
     //TODO: change year,month,day to Calendar pls pls
     @RequiresApi(api = Build.VERSION_CODES.O)
     public IngredientInStorage(String description, String measurementUnit, int amount,
-                               int year, int month, int day, Location location, Category category){
+                               int year, int month, int day, Location location, IngredientCategory category){
         super(description,measurementUnit,amount);
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
         this.location = location;
@@ -83,11 +83,11 @@ public class IngredientInStorage extends Ingredient{
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
     }
 
-    public Category getCategory() {
+    public IngredientCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(IngredientCategory ingredientCategory) {
+        this.category = ingredientCategory;
     }
 }

@@ -1,15 +1,19 @@
 package com.example.dietscoop;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
 import android.widget.ListView;
+
 
 public class IngredientListActivity extends AppCompatActivity {
 
     FoodStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
     ListView ingredientListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,10 +21,10 @@ public class IngredientListActivity extends AppCompatActivity {
         ingredientListView = findViewById(R.id.ingredient_list);
 
         foodStorage = new FoodStorage();
-
         ingredientStorageAdapter = new IngredientStorageAdapter(this, foodStorage.getIngredientStorage());
         ingredientListView.setAdapter(ingredientStorageAdapter);
-
+        foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
+        foodStorage.getIngredientStorageFromDatabase();
 
     }
 }
