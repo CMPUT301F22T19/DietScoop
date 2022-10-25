@@ -47,7 +47,7 @@ public class FoodStorage {
                             Log.w(TAG, "Listen failed.", e);
                             return;
                         }
-
+                        storage.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.getId() != null) {
                                 Log.d(TAG, doc.getId() + " => " + doc.getData());
@@ -56,7 +56,7 @@ public class FoodStorage {
                                         ((Long)doc.getData().get("year")).intValue(),
                                         ((Long)doc.getData().get("month")).intValue(), ((Long)doc.getData().get("day")).intValue(),
                                         Location.stringToLocation(doc.getData().get("location").toString()),
-                                        Category.stringToCategory(doc.getData().get("category").toString())));
+                                        IngredientCategory.stringToCategory(doc.getData().get("category").toString())));
                             }
                         }
                         adapter.notifyDataSetChanged();
