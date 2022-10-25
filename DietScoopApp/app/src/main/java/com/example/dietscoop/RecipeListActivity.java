@@ -17,7 +17,7 @@ public class RecipeListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_list);
         recipeListView = findViewById(R.id.recipe_list);
 
-
+        recipes = new ArrayList<Recipe>();
         recipeListAdapter = new RecipeListAdapter(this, recipes);
         recipeListView.setAdapter(recipeListAdapter);
 
