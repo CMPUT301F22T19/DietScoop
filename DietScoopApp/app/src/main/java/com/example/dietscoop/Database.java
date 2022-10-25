@@ -22,12 +22,16 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//import com.google.api.core.ApiFuture;
+//import com.google.api.core.ApiFutureCallback;
+//import com.google.api.core.ApiFutures;
+
 public class Database {
     private static final String TAG = "testing";
-    FirebaseFirestore db;
-    CollectionReference ingredientStorage;
-    CollectionReference recipes;
-    CollectionReference ingredientsInRecipe;
+    private FirebaseFirestore db;
+    private CollectionReference ingredientStorage;
+    private CollectionReference recipes;
+    private CollectionReference ingredientsInRecipe;
 
     public Database() {
         db = FirebaseFirestore.getInstance();
@@ -54,36 +58,21 @@ public class Database {
 
         ingredientStorage.document(ingredient.getDescription()).set(data1);
     }
-    public ArrayList<IngredientInStorage> getIngredientStorage(IngredientStorageAdapter adapter) {
-        ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
-        ingredientStorage.whereEqualTo("amount",3);
-        ingredientStorage
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+    public void getIngredientStorage() {
+        //ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
 
-                        for (QueryDocumentSnapshot doc : value) {
-                            if (doc.getId() != null) {
-                                Log.d(TAG, doc.getId() + " => " + doc.getData());
-                                ingredientList.add(new IngredientInStorage(doc.getId(), (String)doc.getData()
-                                        .get("unit"), ((Long)doc.getData().get("amount")).intValue(),
-                                        ((Long)doc.getData().get("year")).intValue(),
-                                        ((Long)doc.getData().get("month")).intValue(), ((Long)doc.getData().get("day")).intValue(),
-                                        Location.stringToLocation(doc.getData().get("location").toString()),
-                                        Category.stringToCategory(doc.getData().get("category").toString())));
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
+        //was trying to get this to work
+        //https://cloud.google.com/firestore/docs/samples/firestore-data-get-all-documents
+//        // asynchronously retrieve all documents
+//        ApiFuture<QuerySnapshot> future = db.collection("cities").get();
+//        // future.get() blocks on response
+//        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//        for (QueryDocumentSnapshot document : documents) {
+//            System.out.println(document.getId() + " => " + document.toObject(City.class));
+//        }
 
-                    }
-                });
-        //TODO: always returns list of size 0; never enters onComplete method
-        return ingredientList;
+
+        ingredientStorage.whereNotEqualTo("amount",0);
 
     }
 
@@ -96,5 +85,9 @@ public class Database {
                         Log.d(TAG, "Data has been deleted successfully!");
                     }
                 });
+    }
+
+    public CollectionReference getIngredientStorageRef() {
+        return ingredientStorage;
     }
 }
