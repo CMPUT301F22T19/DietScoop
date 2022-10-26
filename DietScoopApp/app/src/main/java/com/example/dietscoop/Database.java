@@ -2,34 +2,28 @@ package com.example.dietscoop;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import com.google.firebase.firestore.CollectionReference;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Calendar;
 import java.util.HashMap;
+
 import java.util.Map;
+
 public class Database {
     private static final String TAG = "testing";
-    FirebaseFirestore db;
-    CollectionReference ingredientStorage;
-    CollectionReference recipes;
-    CollectionReference ingredientsInRecipe;
+    private FirebaseFirestore db;
+    private CollectionReference ingredientStorage;
+    private CollectionReference recipes;
+    private CollectionReference ingredientsInRecipe;
 
     public Database() {
         db = FirebaseFirestore.getInstance();
         ingredientStorage = db.collection("IngredientStorage");
+        recipes = db.collection("Recipes");
 
     }
 
@@ -51,30 +45,34 @@ public class Database {
 
         ingredientStorage.document(ingredient.getDescription()).set(data1);
     }
-    public ArrayList<IngredientInStorage> getIngredientStorage() {
-        ArrayList<IngredientInStorage> ingredientList = new ArrayList<IngredientInStorage>();
-        ingredientStorage
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+    public void getIngredientStorage() {
 
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                Log.d(TAG, doc.getId() + " => " + doc.getData());
-                                ingredientList.add(new IngredientInStorage(doc.getId(), (String)doc.getData()
-                                        .get("unit"), ((Long)doc.getData().get("amount")).intValue(),
-                                        ((Long)doc.getData().get("year")).intValue(),
-                                        ((Long)doc.getData().get("month")).intValue(), ((Long)doc.getData().get("day")).intValue(),
-                                        Location.stringToLocation(doc.getData().get("location").toString()),
-                                        Category.stringToCategory(doc.getData().get("category").toString())));
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
+        //was trying to get this to work
+        //https://cloud.google.com/firestore/docs/samples/firestore-data-get-all-documents
+//        // asynchronously retrieve all documents
+//        ApiFuture<QuerySnapshot> future = db.collection("cities").get();
+//        // future.get() blocks on response
+//        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//        for (QueryDocumentSnapshot document : documents) {
+//            System.out.println(document.getId() + " => " + document.toObject(City.class));
+//        }
+
+        // hacky way of getting all ingredients as query (none of them should have amount 0)
+        ingredientStorage.whereNotEqualTo("amount",0);
+    }
+
+    public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
+        Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
+        ingredientStorage.document(ingredientInStorage.getDescription()).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "Data has been deleted successfully!");
                     }
                 });
-        return ingredientList;
+    }
 
+    public CollectionReference getIngredientStorageRef() {
+        return ingredientStorage;
     }
 }
