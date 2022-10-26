@@ -29,27 +29,6 @@ enum Location {
 
     }
 }
-enum Category {
-    vegetable,
-    meat,
-    fruit;
-
-    public static Category stringToCategory(String name) {
-        name = name.toUpperCase(Locale.ROOT);
-
-        if (name == "VEGETABLE") {
-            return vegetable;
-        } else if (name == "MEAT") {
-            return meat;
-        } else if (name == "FRUIT") {
-            return fruit;
-        } else {
-            // TODO: MAKE THIS THROW ERROR
-            return null;
-        }
-
-    }
-}
 
 public class IngredientInStorage extends Ingredient{
 
@@ -60,7 +39,7 @@ public class IngredientInStorage extends Ingredient{
     @RequiresApi(api = Build.VERSION_CODES.O)
     public IngredientInStorage(String description, String measurementUnit, int amount,
                                int year, int month, int day, Location location, Category category){
-        super(description,measurementUnit,amount);
+        super(description,measurementUnit,amount, category);
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
         this.location = location;
         this.category = category;
@@ -81,10 +60,6 @@ public class IngredientInStorage extends Ingredient{
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setBestBeforeDate(int year, int month, int day) {
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
-    }
-
-    public Category getCategory() {
-        return category;
     }
 
     public void setCategory(Category category) {
