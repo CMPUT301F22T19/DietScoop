@@ -24,16 +24,18 @@ enum RecipeCategory {
 
     }
 }
+//TODO: Need to change the Ingredient to ingredientInRecipe?
 public class Recipe extends FoodItem{
     private ArrayList<Ingredient> ingredients;
     private int numOfServings;
     private int prepTime; // in minutes??
     private String comments;
     private RecipeCategory category;
-    //TODO: how to store picture??
+    //TODO: how to store picture -> Can potentially stash a path to an image in project directory.
 
     public Recipe(int numOfServings, int prepTime, String comments, RecipeCategory recipeCategory,
-                  ArrayList<Ingredient> ingredients) {
+                  ArrayList<Ingredient> ingredients, String recipeName) {
+        this.description = recipeName;
         this.ingredients = ingredients;
         this.prepTime = prepTime;
         this.comments = comments;
@@ -45,7 +47,49 @@ public class Recipe extends FoodItem{
         ingredients.add(ingredient);
     }
 
+    /**
+     * getDescription() handles the retrieval of the recipe name.
+     * TODO: Rename this function for better syntax.
+     * @return String
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    public String getComments() {
+        return this.comments;
+    }
+
+    public int getNumberOfIngredients() {
+        return this.ingredients.size();
+    }
+
+
+    public int getPrepTime() {
+        return this.prepTime;
+    }
+
+    public RecipeCategory getCategory() {
+        return this.category;
+    }
+
+    public int getNumOfServings() {
+        return this.numOfServings;
+    }
+
+    /**
+     * getIngredients() returns the ingredients used in the recipe.
+     * @return
+     */
+    public ArrayList<Ingredient> getIngredients() {
+        return this.ingredients;
+    }
+
     public void removeIngredient(Ingredient ingredient) {
         ingredients.remove(ingredient);
+    }
+
+    public boolean containsIngredient(Ingredient ingredient) {
+        return this.ingredients.contains(ingredient);
     }
 }
