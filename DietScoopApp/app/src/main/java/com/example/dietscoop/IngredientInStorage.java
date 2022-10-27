@@ -7,6 +7,10 @@ import androidx.annotation.RequiresApi;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * TODO: Need to add a custom equals() method for this wrapper class.
+ */
+
 //TODO: What are locations and categories? Ask Jakaria
 enum Location {
     pantry,

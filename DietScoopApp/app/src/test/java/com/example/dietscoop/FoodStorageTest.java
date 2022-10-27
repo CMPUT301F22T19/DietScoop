@@ -18,8 +18,28 @@ public class FoodStorageTest {
         return new FoodStorage();
     }
 
-    /**
-     * TODO: Add the implementation for the Database.
-     */
+    public void idle() {
+        return;
+    }
+
+    @Test
+    public void testAddIngredientToStorage() {
+
+    }
+
+    @Test
+    public void testremoveIngredientFromStorage() {
+
+    }
+
+    @Test
+    public void testGetIngredientStorage() {
+
+    }
+
+    @Test
+    public void testGetIngredientStorageFromDatabase() {
+
+    }
 
 }
