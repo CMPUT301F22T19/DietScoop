@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class IngredientListActivity extends AppCompatActivity {
 
@@ -26,5 +28,10 @@ public class IngredientListActivity extends AppCompatActivity {
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
         foodStorage.getIngredientStorageFromDatabase();
 
+        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
+
+        addIngredientButton.setOnClickListener((e) -> {
+
+        });
     }
 }
