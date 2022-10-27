@@ -64,7 +64,6 @@ public class Recipe extends FoodItem{
         return this.ingredients.size();
     }
 
-
     public int getPrepTime() {
         return this.prepTime;
     }

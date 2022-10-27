@@ -2,11 +2,11 @@ package com.example.dietscoop;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Note, these function mainly servers to work as a staging for
+ * what kind of methods our program needs. It does not need a body.
+ */
 public class DatabaseManager {
-    /**
-     * Note, this function mainly servers to work as a staging for
-     * what kind of methods our program needs. It does not need a body.
-     */
     @Test
     public void testSetupIngredientSnapshotListener() {
         /**
@@ -27,19 +27,37 @@ public class DatabaseManager {
          * Function will act as a hub to join the user information
          * and save it locally for recipe, storage, and meal-planning.
          *
-         * Function calls RetrieveUserFoodStorage()
+         * Function calls RetrieveUserFoodStorage() -> stores this information in the FoodStorage Class.
          *
-         * Function calls RetrieveUserRecipeList()
+         * Function calls RetrieveUserRecipeList() -> Stores this information in the RecipeList of the user.
+         *
+         */
+    }
+
+    /**
+     * This Function cascades:
+     * ****************************************************************************************+
+     */
+    @Test
+    public void testRetrieveUserFoodStorage() {
+        /**
+         * Method will explicitly return the ingredient list pulled from DataBase.
+         *
+         * This method will also call the parseIngredientInStorage().
          *
          */
     }
 
     @Test
-    public void testRetrieveUserFoodStorage() {
+    public void testParseIngredientInStorage() {
         /**
-         * Method will explicitly return the ingredient list pulled from DataBase.
+         * This function will parse the retrieved food information from the database and
+         * return the IngredientInStore instance in return.
          */
     }
+    /**
+     * ****************************************************************************************+
+     */
 
     /**
      * This Function cascades:

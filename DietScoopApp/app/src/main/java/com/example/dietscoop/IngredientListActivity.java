@@ -20,6 +20,7 @@ public class IngredientListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ingredient_list);
         ingredientListView = findViewById(R.id.ingredient_list);
 
+        //Main container declarations:
         foodStorage = new FoodStorage();
         ingredientStorageAdapter = new IngredientStorageAdapter(this, foodStorage.getIngredientStorage());
         ingredientListView.setAdapter(ingredientStorageAdapter);
