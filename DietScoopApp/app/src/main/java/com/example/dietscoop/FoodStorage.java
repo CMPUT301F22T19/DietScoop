@@ -11,6 +11,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class encapsulates the Database interface class.
+ *
+ * This class also acts as a container for the Storing of Ingredients in Storage.
+ */
 public class FoodStorage {
     private ArrayList<IngredientInStorage> storage;
     Database db;
