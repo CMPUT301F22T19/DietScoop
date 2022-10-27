@@ -45,19 +45,54 @@ public class RecipeTest {
     }
 
     @Test
-    public void testSetters() {
-        //Testing Setters:
-        sampleIngredient = sampleIngredient();
-        try {
-            sampleIngredient.setAmount(3);
-            sampleIngredient.setMeasurementUnit("mg");
-            sampleIngredient.setDescription("potato");
-            assertEquals(sampleIngredient.measurementUnit, "mg");
-            assertEquals(sampleIngredient.description, "potato");
-            assertEquals(sampleIngredient.amount, 3);
-        } catch (Exception e) {
-            System.err.println("Error setting ingredient properties");
-        }
+    public void testGetComments() {
+        Recipe sampleRecipe = getSampleRecipe();
+        assertEquals(sampleRecipe.getComments(), "Tasty breakfast");
     }
 
+    @Test
+    public void testGetNumberOfIngredients() {
+        Recipe sampleRecipe = getSampleRecipe();
+        assertEquals(sampleRecipe.getNumberOfIngredients(), 3);
+    }
+
+    @Test
+    public void testGetIngredients() {
+        Recipe sampleRecipe = getSampleRecipe();
+        assertEquals(sampleRecipe.getIngredients().size(), 3);
+    }
+
+    @Test
+    public void testGetPrepTime() {
+        Recipe sampleRecipe = getSampleRecipe();
+        assertEquals(sampleRecipe.getPrepTime(), 5);
+    }
+
+    @Test
+    public void testGetCategory() {
+        Recipe sampleRecipe = getSampleRecipe();
+        assertEquals(sampleRecipe.getCategory(), RecipeCategory.breakfast);
+    }
+
+    @Test
+    public void testGetNumOfServings() {
+        Recipe sampleRecipe = getSampleRecipe();
+        assertEquals(sampleRecipe.getNumOfServings(), 12);
+    }
+
+    @Test
+    public void testRemoveIngredient() {
+        Recipe sampleRecipe = getSampleRecipe();
+
+        Ingredient sampleIngredient = new Ingredient("eggs", "kg", 4);
+
+        sampleRecipe.addIngredient(sampleIngredient);
+
+        assertEquals(sampleRecipe.getNumberOfIngredients(), 4);
+
+        sampleRecipe.removeIngredient(sampleIngredient);
+
+        assertEquals(sampleRecipe.getNumberOfIngredients(), 3);
+
+    }
 }
