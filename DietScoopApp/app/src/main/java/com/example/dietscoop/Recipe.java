@@ -69,4 +69,57 @@ public class Recipe {
         this.category = category;
         this.ingredientsList = ingredientsList;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPrepTime() {
+        return Integer.toString(prepTime) + " " + prepUnitTime.name();
+
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public String getCategory() {
+        return category.name();
+    }
+
+    public ArrayList<Ingredient> getIngredientsList() {
+        return ingredientsList;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrepTime(int prepTime) {
+        this.prepTime = prepTime;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    public void setPrepUnitTime(timeUnit prepUnitTime) {
+        this.prepUnitTime = prepUnitTime;
+    }
+
+    public void setCategory(recipeCategory category) {
+        this.category = category;
+    }
+
+    public void setIngredientsList(ArrayList<Ingredient> ingredientsList) {
+        this.ingredientsList = ingredientsList;
+    }
+
+    public void addIngredient(Ingredient ingredient){
+        this.ingredientsList.add(ingredient);
+    }
+
+    public void removeIngredient(Ingredient ingredient){
+        this.ingredientsList.remove(ingredient);
+    }
 }
