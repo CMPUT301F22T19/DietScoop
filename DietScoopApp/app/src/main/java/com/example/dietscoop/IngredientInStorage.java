@@ -7,7 +7,11 @@ import androidx.annotation.RequiresApi;
 import java.util.Calendar;
 import java.util.Locale;
 
-//TODO: What are locations and categories?
+/**
+ * TODO: Need to add a custom equals() method for this wrapper class.
+ */
+
+//TODO: What are locations and categories? Ask Jakaria
 enum Location {
     pantry,
     freezer,
@@ -30,11 +34,33 @@ enum Location {
     }
 }
 
+enum IngredientCategory {
+    vegetable,
+    meat,
+    fruit;
+
+    public static IngredientCategory stringToCategory(String name) {
+        name = name.toUpperCase(Locale.ROOT);
+
+        if (name == "VEGETABLE") {
+            return vegetable;
+        } else if (name == "MEAT") {
+            return meat;
+        } else if (name == "FRUIT") {
+            return fruit;
+        } else {
+            // TODO: MAKE THIS THROW ERROR
+            return null;
+        }
+
+    }
+}
+
 public class IngredientInStorage extends Ingredient{
 
     Calendar bestBeforeDate;
     Location location;
-    Category category;
+    IngredientCategory category;
     //TODO: change year,month,day to Calendar pls pls
     @RequiresApi(api = Build.VERSION_CODES.O)
     public IngredientInStorage(String description, String measurementUnit, int amount,
