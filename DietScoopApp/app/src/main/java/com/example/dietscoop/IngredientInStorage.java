@@ -33,6 +33,7 @@ enum Location {
 
     }
 }
+
 enum IngredientCategory {
     vegetable,
     meat,
@@ -63,8 +64,8 @@ public class IngredientInStorage extends Ingredient{
     //TODO: change year,month,day to Calendar pls pls
     @RequiresApi(api = Build.VERSION_CODES.O)
     public IngredientInStorage(String description, String measurementUnit, int amount,
-                               int year, int month, int day, Location location, IngredientCategory category){
-        super(description,measurementUnit,amount);
+                               int year, int month, int day, Location location, Category category){
+        super(description,measurementUnit,amount, category);
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
         this.location = location;
         this.category = category;
@@ -87,11 +88,7 @@ public class IngredientInStorage extends Ingredient{
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
     }
 
-    public IngredientCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(IngredientCategory ingredientCategory) {
-        this.category = ingredientCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
