@@ -24,6 +24,9 @@ public class Database {
         db = FirebaseFirestore.getInstance();
         ingredientStorage = db.collection("IngredientStorage");
         recipes = db.collection("Recipes");
+    }
+
+    public Recipe getRecipeFromStorage(String name) {
 
     }
 
