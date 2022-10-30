@@ -26,10 +26,6 @@ public class Database {
         recipes = db.collection("Recipes");
     }
 
-    public Recipe getRecipeFromStorage(String name) {
-
-    }
-
     public void addIngredientToStorage(IngredientInStorage ingredient) {
         Map<String, Object> data1 = new HashMap<>();
         Calendar expiry = ingredient.getBestBeforeDate();
