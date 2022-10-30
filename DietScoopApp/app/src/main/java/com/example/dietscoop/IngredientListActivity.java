@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-public class IngredientListActivity extends AppCompatActivity {
+public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener {
 
     FoodStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -33,5 +33,10 @@ public class IngredientListActivity extends AppCompatActivity {
         addIngredientButton.setOnClickListener((e) -> {
             new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
         });
+    }
+
+    @Override
+    public void onOkPressed(IngredientInStorage newIngredientInStorage) {
+        ingredientStorageAdapter.addIngredientStorage(newIngredientInStorage);
     }
 }

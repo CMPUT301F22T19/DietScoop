@@ -61,4 +61,8 @@ public class IngredientStorageAdapter extends ArrayAdapter<IngredientInStorage> 
 //                + month + "-" + day);
         return view;
     }
+
+    public void addIngredientStorage(IngredientInStorage ingredient) {
+        dataList.add(ingredient);
+    }
 }
