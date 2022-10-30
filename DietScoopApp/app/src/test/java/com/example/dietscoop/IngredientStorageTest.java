@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
  *
  *TODO: Add potential interactivity with Database Object.
  */
-public class FoodStorageTest {
+public class IngredientStorageTest {
 
-    private FoodStorage sampleFoodStorage;
+    private IngredientStorage sampleFoodStorage;
 
-    public FoodStorage sampleFoodStorage() {
-        return new FoodStorage();
+    public IngredientStorage sampleFoodStorage() {
+        return new IngredientStorage();
     }
 
     public void idle() {

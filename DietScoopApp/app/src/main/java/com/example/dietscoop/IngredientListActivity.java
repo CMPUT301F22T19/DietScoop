@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 public class IngredientListActivity extends AppCompatActivity {
 
-    FoodStorage foodStorage;
+    IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
     ListView ingredientListView;
 
@@ -21,7 +21,7 @@ public class IngredientListActivity extends AppCompatActivity {
         ingredientListView = findViewById(R.id.ingredient_list);
 
         //Main container declarations:
-        foodStorage = new FoodStorage();
+        foodStorage = new IngredientStorage();
         ingredientStorageAdapter = new IngredientStorageAdapter(this, foodStorage.getIngredientStorage());
         ingredientListView.setAdapter(ingredientStorageAdapter);
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
