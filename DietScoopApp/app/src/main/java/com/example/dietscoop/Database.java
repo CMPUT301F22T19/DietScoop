@@ -58,7 +58,8 @@ public class Database {
 //        }
 
         // hacky way of getting all ingredients as query (none of them should have amount 0)
-        ingredientStorage.whereNotEqualTo("amount",0);
+        //ingredientStorage.whereNotEqualTo("amount",0);
+        ingredientStorage.get();
     }
 
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
