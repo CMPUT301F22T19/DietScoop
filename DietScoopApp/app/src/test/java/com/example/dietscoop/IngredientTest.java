@@ -12,7 +12,7 @@ public class IngredientTest {
     Ingredient sampleIngredient;
 
     public Ingredient sampleIngredient() {
-        sampleIngredient = new Ingredient("Chicken", "kg", 5);
+        sampleIngredient = new Ingredient("Chicken", "kg", 5, Category.meat);
         return sampleIngredient;
     }
 

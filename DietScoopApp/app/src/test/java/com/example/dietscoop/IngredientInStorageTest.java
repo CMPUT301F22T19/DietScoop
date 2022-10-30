@@ -12,7 +12,7 @@ public class IngredientInStorageTest {
 
     public IngredientInStorage startSampleIngredientSTR() {
         return new IngredientInStorage("Chicken", "kg",
-                5, 2022, 4, 24, Location.freezer, IngredientCategory.meat);
+                5, 2022, 4, 24, Location.freezer, Category.meat);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class IngredientInStorageTest {
         sampleIngredientSTR = startSampleIngredientSTR();
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.category, IngredientCategory.meat);
+        assertEquals(sampleIngredientSTR.category, Category.meat);
     }
 
     @Test
@@ -59,10 +59,10 @@ public class IngredientInStorageTest {
         //Initializing object:
         sampleIngredientSTR = startSampleIngredientSTR();
 
-        sampleIngredientSTR.setCategory(IngredientCategory.fruit);
+        sampleIngredientSTR.setCategory(Category.fruit);
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.fruit);
+        assertEquals(sampleIngredientSTR.getCategory(), Category.fruit);
     }
 
     @Test
