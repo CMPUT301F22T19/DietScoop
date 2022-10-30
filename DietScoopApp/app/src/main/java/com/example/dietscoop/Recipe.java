@@ -59,10 +59,10 @@ public class Recipe extends FoodItem{
     private int servings;
     private timeUnit prepUnitTime;
     private recipeCategory category;
-    ArrayList<Ingredient> ingredientsList;
+    ArrayList<IngredientInRecipe> ingredientsList;
     private String instructions;
 
-    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<Ingredient> ingredientsList,
+    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList,
                   String description) {
         this.description = description;
         this.name = name;
@@ -77,18 +77,12 @@ public class Recipe extends FoodItem{
         return name;
     }
 
-    public String getPrepTime() {
-        return Integer.toString(prepTime) + " " + prepUnitTime.name();
+    public int getPrepTime() {
+        return prepTime;
 
     }
 
-    public int getServings() {
-        return servings;
-    }
 
-    public ArrayList<Ingredient> getIngredientsList() {
-        return ingredientsList;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -110,7 +104,7 @@ public class Recipe extends FoodItem{
         this.category = category;
     }
 
-    public void setIngredientsList(ArrayList<Ingredient> ingredientsList) {
+    public void setIngredientsList(ArrayList<IngredientInRecipe> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 
@@ -126,7 +120,7 @@ public class Recipe extends FoodItem{
         return this.instructions;
     }
 
-    public ArrayList<Ingredient> getIngredients() {
+    public ArrayList<IngredientInRecipe> getIngredients() {
         return this.ingredientsList;
     }
 
@@ -138,11 +132,11 @@ public class Recipe extends FoodItem{
         return this.servings;
     }
 
-    public void addIngredient(Ingredient ingredient){
+    public void addIngredient(IngredientInRecipe ingredient){
         this.ingredientsList.add(ingredient);
     }
 
-    public void removeIngredient(Ingredient ingredient){
+    public void removeIngredient(IngredientInRecipe ingredient){
         this.ingredientsList.remove(ingredient);
     }
 }
