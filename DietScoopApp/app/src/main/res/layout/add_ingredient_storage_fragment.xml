@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="500dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edit_description_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:height="10dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Description" />
+
+    <EditText
+        android:id="@+id/edit_amount_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Amount" />
+
+    <EditText
+        android:id="@+id/edit_category_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Category" />
+
+    <EditText
+        android:id="@+id/edit_location_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Location" />
+
+    <EditText
+        android:id="@+id/edit_unit_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Unit" />
+
+
+    <EditText
+        android:id="@+id/edit_day_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Day" />
+
+    <EditText
+        android:id="@+id/edit_month_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Month" />
+
+    <EditText
+        android:id="@+id/edit_year_ingredient_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Year" />
+
+</LinearLayout>

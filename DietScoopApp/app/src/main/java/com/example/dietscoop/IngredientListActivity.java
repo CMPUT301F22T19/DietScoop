@@ -31,7 +31,7 @@ public class IngredientListActivity extends AppCompatActivity {
         final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
 
         addIngredientButton.setOnClickListener((e) -> {
-
+            new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
         });
     }
 }

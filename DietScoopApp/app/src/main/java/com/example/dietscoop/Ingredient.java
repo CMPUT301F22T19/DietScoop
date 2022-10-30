@@ -3,7 +3,7 @@ package com.example.dietscoop;
 
 
 
-public class Ingredient extends FoodItem{
+public class Ingredient extends FoodItem {
 
     int amount;
     String measurementUnit;
