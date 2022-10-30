@@ -29,5 +29,14 @@
         android:text="Unit"
         android:textSize="10sp"/>
 
+    <TextView
+        android:id="@+id/Best_Before_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="7dp"
+        android:text="Best Before"
+        android:textSize="10sp" />
+
 
 </LinearLayout>

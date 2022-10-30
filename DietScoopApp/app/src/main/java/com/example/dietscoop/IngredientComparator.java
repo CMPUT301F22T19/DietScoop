@@ -4,18 +4,35 @@ import java.util.Comparator;
 
 public class IngredientComparator {
 
-    public class byName implements Comparator<Ingredient> {
+    public class byName implements Comparator<IngredientInStorage> {
+        
         @Override
-        public int compare(Ingredient t1, Ingredient t2) {
+        public int compare(IngredientInStorage t1, IngredientInStorage t2) {
             return t1.getDescription().compareTo(t2.getDescription());
         }
     }
 
-    public class byPrepTime implements  Comparator<Ingredient> {
+    public class byLocation implements  Comparator<IngredientInStorage> {
 
         @Override
-        public int compare(Ingredient t1, Ingredient t2) {
-            return 0;
+        public int compare(IngredientInStorage t1, IngredientInStorage t2) {
+            return t1.getLocationName().compareTo(t2.getLocationName());
+        }
+    }
+
+    public class byCategory implements Comparator<IngredientInStorage> {
+
+        @Override
+        public int compare(IngredientInStorage t1, IngredientInStorage t2) {
+            return t1.getCategoryName().compareTo(t2.getCategoryName());
+        }
+    }
+
+    public class byBestBefore implements Comparator<IngredientInStorage> {
+
+        @Override
+        public int compare(IngredientInStorage t1, IngredientInStorage t2) {
+            return t1.getBestBeforeDate().compareTo(t2.getBestBeforeDate());
         }
     }
 }

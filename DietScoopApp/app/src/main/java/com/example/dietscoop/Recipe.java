@@ -83,9 +83,9 @@ public class Recipe {
         return servings;
     }
 
-    public String getCategory() {
+    public String getCategoryName() {
         return category.name();
-    }
+    } // RENAMED
 
     public ArrayList<Ingredient> getIngredientsList() {
         return ingredientsList;

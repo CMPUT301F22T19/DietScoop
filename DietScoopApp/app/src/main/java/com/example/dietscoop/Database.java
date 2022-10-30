@@ -8,6 +8,7 @@ import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -28,10 +29,10 @@ public class Database {
 
     public void addIngredientToStorage(IngredientInStorage ingredient) {
         Map<String, Object> data1 = new HashMap<>();
-        Calendar expiry = ingredient.getBestBeforeDate();
-        int year = expiry.get(Calendar.YEAR);
-        int month = expiry.get(Calendar.MONTH);
-        int day = expiry.get(Calendar.DATE);
+        LocalDate expiry = ingredient.getBestBeforeDate();
+        int year = expiry.getYear();
+        int month = expiry.getMonthValue();
+        int day = expiry.getDayOfMonth();
         data1.put("amount", Integer.valueOf(ingredient.getAmount()));
         data1.put("unit", ingredient.getMeasurementUnit());
         data1.put("year", Integer.valueOf(year));

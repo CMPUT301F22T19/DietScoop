@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -58,7 +60,7 @@ enum Location {
 
 public class IngredientInStorage extends Ingredient{
 
-    Calendar bestBeforeDate;
+    LocalDate bestBeforeDate;
     Location location;
     Category category;
     //TODO: change year,month,day to Calendar pls pls
@@ -66,7 +68,7 @@ public class IngredientInStorage extends Ingredient{
     public IngredientInStorage(String description, String measurementUnit, int amount,
                                int year, int month, int day, Location location, Category category){
         super(description,measurementUnit,amount, category);
-        bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
+        bestBeforeDate = LocalDate.of(year, month, day);
         this.location = location;
         this.category = category;
     }
@@ -75,17 +77,23 @@ public class IngredientInStorage extends Ingredient{
         return location;
     }
 
+    public String getLocationName() {return location.name(); } // ADDED
+
     public void setLocation(Location location) {
         this.location = location;
     }
 
-    public Calendar getBestBeforeDate() {
+    public LocalDate getBestBeforeDate() {
         return bestBeforeDate;
+    }
+
+    public String getFormattedBestBefore() {
+        return bestBeforeDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setBestBeforeDate(int year, int month, int day) {
-        bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
+        bestBeforeDate = LocalDate.of(year, month, day);
     }
 
     public void setCategory(Category category) {
