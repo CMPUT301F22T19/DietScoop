@@ -61,7 +61,7 @@ public class FoodStorage {
                                         ((Long)doc.getData().get("year")).intValue(),
                                         ((Long)doc.getData().get("month")).intValue(), ((Long)doc.getData().get("day")).intValue(),
                                         Location.stringToLocation(doc.getData().get("location").toString()),
-                                        IngredientCategory.stringToCategory(doc.getData().get("category").toString())));
+                                        Category.stringToCategory(doc.getData().get("category").toString())));
                             }
                         }
                         adapter.notifyDataSetChanged();
