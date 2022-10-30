@@ -7,6 +7,10 @@ import androidx.annotation.RequiresApi;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * TODO: Need to add a custom equals() method for this wrapper class.
+ */
+
 //TODO: What are locations and categories? Ask Jakaria
 enum Location {
     pantry,
@@ -29,38 +33,39 @@ enum Location {
 
     }
 }
-enum IngredientCategory {
-    vegetable,
-    meat,
-    fruit;
 
-    public static IngredientCategory stringToCategory(String name) {
-        name = name.toUpperCase(Locale.ROOT);
-
-        if (name == "VEGETABLE") {
-            return vegetable;
-        } else if (name == "MEAT") {
-            return meat;
-        } else if (name == "FRUIT") {
-            return fruit;
-        } else {
-            // TODO: MAKE THIS THROW ERROR
-            return null;
-        }
-
-    }
-}
+//enum IngredientCategory {
+//    vegetable,
+//    meat,
+//    fruit;
+//
+//    public static IngredientCategory stringToCategory(String name) {
+//        name = name.toUpperCase(Locale.ROOT);
+//
+//        if (name == "VEGETABLE") {
+//            return vegetable;
+//        } else if (name == "MEAT") {
+//            return meat;
+//        } else if (name == "FRUIT") {
+//            return fruit;
+//        } else {
+//            // TODO: MAKE THIS THROW ERROR
+//            return null;
+//        }
+//
+//    }
+//}
 
 public class IngredientInStorage extends Ingredient{
 
     Calendar bestBeforeDate;
     Location location;
-    IngredientCategory category;
+    Category category;
     //TODO: change year,month,day to Calendar pls pls
     @RequiresApi(api = Build.VERSION_CODES.O)
     public IngredientInStorage(String description, String measurementUnit, int amount,
-                               int year, int month, int day, Location location, IngredientCategory category){
-        super(description,measurementUnit,amount);
+                               int year, int month, int day, Location location, Category category){
+        super(description,measurementUnit,amount, category);
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
         this.location = location;
         this.category = category;
@@ -83,11 +88,7 @@ public class IngredientInStorage extends Ingredient{
         bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
     }
 
-    public IngredientCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(IngredientCategory ingredientCategory) {
-        this.category = ingredientCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

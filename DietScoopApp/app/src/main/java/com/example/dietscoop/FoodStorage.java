@@ -11,6 +11,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class encapsulates the Database interface class.
+ *
+ * This class also acts as a container for the Storing of Ingredients in Storage.
+ */
 public class FoodStorage {
     private ArrayList<IngredientInStorage> storage;
     Database db;
@@ -56,7 +61,7 @@ public class FoodStorage {
                                         ((Long)doc.getData().get("year")).intValue(),
                                         ((Long)doc.getData().get("month")).intValue(), ((Long)doc.getData().get("day")).intValue(),
                                         Location.stringToLocation(doc.getData().get("location").toString()),
-                                        IngredientCategory.stringToCategory(doc.getData().get("category").toString())));
+                                        Category.stringToCategory(doc.getData().get("category").toString())));
                             }
                         }
                         adapter.notifyDataSetChanged();
