@@ -16,11 +16,11 @@ import java.util.ArrayList;
  *
  * This class also acts as a container for the Storing of Ingredients in Storage.
  */
-public class FoodStorage {
+public class IngredientStorage {
     private ArrayList<IngredientInStorage> storage;
     Database db;
 
-    public FoodStorage() {
+    public IngredientStorage() {
         db = new Database();
         storage = new ArrayList<IngredientInStorage>();
     }
