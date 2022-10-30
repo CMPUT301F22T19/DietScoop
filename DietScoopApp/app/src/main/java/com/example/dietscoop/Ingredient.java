@@ -24,7 +24,7 @@ enum Category {
     }
 }
 
-public class Ingredient extends FoodItem{
+public abstract class Ingredient extends FoodItem{
 
     int amount;
     String measurementUnit;
