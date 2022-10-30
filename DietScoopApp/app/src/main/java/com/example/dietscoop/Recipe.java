@@ -53,15 +53,18 @@ enum recipeCategory {
     }
 }
 
-public class Recipe {
+public class Recipe extends FoodItem{
     private String name;
     private int prepTime;
     private int servings;
     private timeUnit prepUnitTime;
     private recipeCategory category;
     ArrayList<Ingredient> ingredientsList;
+    private String instructions;
 
-    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<Ingredient> ingredientsList) {
+    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<Ingredient> ingredientsList,
+                  String description) {
+        this.description = description;
         this.name = name;
         this.prepTime = prepTime;
         this.servings = servings;
@@ -81,10 +84,6 @@ public class Recipe {
 
     public int getServings() {
         return servings;
-    }
-
-    public String getCategory() {
-        return category.name();
     }
 
     public ArrayList<Ingredient> getIngredientsList() {
@@ -113,6 +112,30 @@ public class Recipe {
 
     public void setIngredientsList(ArrayList<Ingredient> ingredientsList) {
         this.ingredientsList = ingredientsList;
+    }
+
+    public void setInstructions(String description) {
+        this.description = description;
+    }
+
+    public int getNumberOfIngredients() {
+        return ingredientsList.size();
+    }
+
+    public String getInstructions() {
+        return this.instructions;
+    }
+
+    public ArrayList<Ingredient> getIngredients() {
+        return this.ingredientsList;
+    }
+
+    public recipeCategory getCategory() {
+        return this.category;
+    }
+
+    public int getNumOfServings() {
+        return this.servings;
     }
 
     public void addIngredient(Ingredient ingredient){
