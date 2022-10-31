@@ -243,7 +243,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:text="@string/comment_label"
+                android:text="@string/instructions_label"
                 android:textColor="#000000"
                 android:textSize="26sp"
                 android:textStyle="bold" />
