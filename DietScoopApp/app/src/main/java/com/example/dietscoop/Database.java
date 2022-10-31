@@ -102,6 +102,10 @@ public class Database {
 
     }
 
+    public void getRecipeStorage() {
+        recipeStorage.get();
+    }
+
 }
 
 

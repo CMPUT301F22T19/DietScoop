@@ -15,4 +15,8 @@ public class RecipeStorage {
     public ArrayList<Recipe> getRecipeStorage() {
         return recipes;
     }
+
+    public void getRecipeStorageFromDatabase() {
+        db.getRecipeStorage();
+    }
 }
