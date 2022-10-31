@@ -3,25 +3,6 @@ package com.example.dietscoop;
 import java.util.ArrayList;
 import java.util.Locale;
 
-enum timeUnit {
-    hour,
-    minute;
-
-    public static timeUnit stringToCategory(String unit) {
-        unit = unit.toUpperCase(Locale.ROOT);
-
-        if (unit == "HOUR") {
-            return hour;
-        } else if (unit == "MINUTE") {
-            return minute;
-        } else {
-            // TODO: MAKE THIS THROW ERROR
-            return null;
-        }
-
-    }
-}
-
 enum recipeCategory {
     breakfast,
     lunch,
@@ -57,18 +38,23 @@ public class Recipe extends FoodItem{
     private String name;
     private int prepTime;
     private int servings;
-    private timeUnit prepUnitTime;
     private recipeCategory category;
     ArrayList<Ingredient> ingredientsList;
     private String instructions;
 
-    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<Ingredient> ingredientsList,
-                  String description) {
-        this.description = description;
+    public Recipe(String name, int prepTime, int servings, recipeCategory category, ArrayList<Ingredient> ingredientsList, String instructions) {
         this.name = name;
         this.prepTime = prepTime;
         this.servings = servings;
-        this.prepUnitTime = prepUnitTime;
+        this.category = category;
+        this.ingredientsList = ingredientsList;
+        this.instructions = instructions;
+    }
+
+    public Recipe(String name, int prepTime, int servings, recipeCategory category, ArrayList<Ingredient> ingredientsList) {
+        this.name = name;
+        this.prepTime = prepTime;
+        this.servings = servings;
         this.category = category;
         this.ingredientsList = ingredientsList;
     }
@@ -78,8 +64,7 @@ public class Recipe extends FoodItem{
     }
 
     public String getPrepTime() {
-        return Integer.toString(prepTime) + " " + prepUnitTime.name();
-
+        return Integer.toString(prepTime) + " minutes";
     }
 
     public int getServings() {
@@ -100,10 +85,6 @@ public class Recipe extends FoodItem{
 
     public void setServings(int servings) {
         this.servings = servings;
-    }
-
-    public void setPrepUnitTime(timeUnit prepUnitTime) {
-        this.prepUnitTime = prepUnitTime;
     }
 
     public void setCategory(recipeCategory category) {
