@@ -36,6 +36,14 @@ public class IngredientListActivity extends AppCompatActivity {
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
         foodStorage.getIngredientStorageFromDatabase();
 
+        IngredientStorage sampleIngredientStorage = new IngredientStorage();
+        IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", "kg",
+                5, 2022, 4, 24, Location.freezer, Category.meat);
+        sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
+        sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
+
+
+
         ingredientButton = findViewById(R.id.ingr_nav);
         recipesButton = findViewById(R.id.recipes_nav);
         mealsButton = findViewById(R.id.meals_nav);
