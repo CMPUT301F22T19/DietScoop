@@ -21,11 +21,16 @@ public class IngredientStorageTest {
         return new IngredientStorage();
     }
 
-    public IngredientStorage getSampleIngredientStorageWithData() {
-        IngredientStorage sample = new IngredientStorage();
-        sample.addIngredientToStorage(new IngredientInStorage("Chicken", "kg",
-                5, 2022, 4, 24, Location.freezer, Category.meat));
-        return sample;
+//    public IngredientStorage getSampleIngredientStorageWithData() {
+//        IngredientStorage sample = new IngredientStorage();
+//        sample.addIngredientToStorage(new IngredientInStorage("Chicken", "kg",
+//                5, 2022, 4, 24, Location.freezer, Category.meat));
+//        return sample;
+//    }
+
+    public IngredientInStorage getSampleIngredient() {
+        return new IngredientInStorage("Pop", "kg",
+                5, 2022, 4, 24, Location.freezer, Category.meat);
     }
 
     public void idle() {
@@ -34,9 +39,11 @@ public class IngredientStorageTest {
 
     @Test
     public void testAddIngredientToStorage() {
-        sampleIngredientStorage = getSampleIngredientStorage();
-        sampleIngredientStorage.addIngredientToStorage(new IngredientInStorage("Pop", "kg",
-                5, 2022, 4, 24, Location.freezer, Category.meat));
+        sampleIngredientStorage = new IngredientStorage();
+        IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", "kg",
+                5, 2022, 4, 24, Location.freezer, Category.meat);
+        sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
+        sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
     }
 
 //    @Test
@@ -44,11 +51,11 @@ public class IngredientStorageTest {
 //
 //    }
 
-    @Test
-    public void testGetIngredientStorage() {
-        sampleIngredientStorage = getSampleIngredientStorage();
-        ArrayList<IngredientInStorage> ingredients = sampleIngredientStorage.getIngredientStorage();
-        assertEquals(ingredients.size(), 1); //This value might change with the database contents.
-    }
+//    @Test
+//    public void testGetIngredientStorage() {
+//        sampleIngredientStorage = getSampleIngredientStorage();
+//        ArrayList<IngredientInStorage> ingredients = sampleIngredientStorage.getIngredientStorage();
+//        assertEquals(ingredients.size(), 1); //This value might change with the database contents.
+//    }
 
 }
