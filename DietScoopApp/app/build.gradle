@@ -71,4 +71,6 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
 }
