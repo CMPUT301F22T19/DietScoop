@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -13,12 +14,12 @@ import java.util.ArrayList;
 
 /**
  * This class encapsulates the Database interface class.
- *
  * This class also acts as a container for the Storing of Ingredients in Storage.
  */
 public class IngredientStorage {
     private ArrayList<IngredientInStorage> storage;
     Database db;
+
 
     public IngredientStorage() {
         db = new Database();
@@ -26,6 +27,7 @@ public class IngredientStorage {
     }
 
     public void addIngredientToStorage(IngredientInStorage ingredientInStorage) {
+        storage.add(ingredientInStorage); // -> Added this method @Marcos
         db.addIngredientToStorage(ingredientInStorage);
     }
 
@@ -39,6 +41,10 @@ public class IngredientStorage {
 
     public void getIngredientStorageFromDatabase() {
         db.getIngredientStorage();
+    }
+
+    public void setupIngredientSnapshotListener() {
+        setupIngredientSnapshotListener(null);
     }
 
     public void setupIngredientSnapshotListener(IngredientStorageAdapter adapter) {
@@ -64,7 +70,9 @@ public class IngredientStorage {
                                         Category.stringToCategory(doc.getData().get("category").toString())));
                             }
                         }
-                        adapter.notifyDataSetChanged();
+                        if (adapter != null) { //This is for testing.
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                 });
     }

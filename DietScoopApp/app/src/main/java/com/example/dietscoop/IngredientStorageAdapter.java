@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 /**
  * This class acts as a container for the IngredientInStorage Objects retrieved from Database.
- * Also wraps the behaviour of setting the main ListView activity for the
  */
 public class IngredientStorageAdapter extends ArrayAdapter<IngredientInStorage> {
 

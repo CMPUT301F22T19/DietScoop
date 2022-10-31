@@ -21,13 +21,17 @@ public class Database {
     private CollectionReference ingredientsInRecipe;
 
     public Database() {
-        db = FirebaseFirestore.getInstance();
-        ingredientStorage = db.collection("IngredientStorage");
-        recipeStorage = db.collection("Recipes");
+//        db = FirebaseFirestore.getInstance();
+//        ingredientStorage = db.collection("IngredientStorage");
+//        recipeStorage = db.collection("Recipes");
+    }
+
+    private FirebaseFirestore db() {
+        return FirebaseFirestore.getInstance();
     }
 
     public CollectionReference getIngredientStorageRef() {
-        return ingredientStorage;
+        return db().collection("IngredientStorage");
     }
     public CollectionReference getRecipeStorageRef() {
         return recipeStorage;
@@ -49,7 +53,7 @@ public class Database {
         ingredientDetails.put("category", ingredient.getCategory().toString());
 
 
-        ingredientStorage.document(ingredient.getDescription()).set(ingredientDetails);
+        getIngredientStorageRef().document(ingredient.getDescription()).set(ingredientDetails);
     }
     public void getIngredientStorage() {
 
@@ -65,12 +69,12 @@ public class Database {
 
         // hacky way of getting all ingredients as query (none of them should have amount 0)
         //ingredientStorage.whereNotEqualTo("amount",0);
-        ingredientStorage.get();
+        getIngredientStorageRef().get();
     }
 
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
         Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
-        ingredientStorage.document(ingredientInStorage.getDescription()).delete()
+        getIngredientStorageRef().document(ingredientInStorage.getDescription()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
