@@ -58,7 +58,7 @@ public class IngredientStorage {
                             Log.w(TAG, "Listen failed.", e);
                             return;
                         }
-                        storage.clear();
+                        //storage.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.getId() != null) {
                                 Log.d(TAG, doc.getId() + " => " + doc.getData());
@@ -70,7 +70,7 @@ public class IngredientStorage {
                                         Category.stringToCategory(doc.getData().get("category").toString())));
                             }
                         }
-                        if (adapter != null) { //This is for testing.
+                        if (adapter!=null) {
                             adapter.notifyDataSetChanged();
                         }
                     }

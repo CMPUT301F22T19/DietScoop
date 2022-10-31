@@ -19,4 +19,12 @@ public class RecipeStorage {
     public void getRecipeStorageFromDatabase() {
         db.getRecipeStorage();
     }
+
+    public void addRecipeToStorage(Recipe recipe) {
+        db.addRecipeToStorage(recipe);
+    }
+
+    public void removeRecipeFromStorage(Recipe recipe) {
+        db.removeRecipeFromStorage(recipe);
+    }
 }

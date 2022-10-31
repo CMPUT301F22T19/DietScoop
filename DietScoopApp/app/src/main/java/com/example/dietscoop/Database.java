@@ -83,7 +83,7 @@ public class Database {
 
 
 
-    public void addRecipe(Recipe recipe) {
+    public void addRecipeToStorage(Recipe recipe) {
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepMins", Integer.valueOf(recipe.getPrepTime()));
         recipeDetails.put("numOfServings", Integer.valueOf(recipe.getNumOfServings()));
@@ -101,7 +101,17 @@ public class Database {
             recipeStorage.document(recipe.getName()).collection("IngredientsInRecipe")
                     .document(ingredientInRecipe.getDescription()).set(ingredientDetails);
         }
+    }
 
+    public void removeRecipeFromStorage(Recipe recipe) {
+        Log.d(TAG, "delete recipe from storage: "+ recipe.getDescription());
+        recipeStorage.document(recipe.getDescription()).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "Data has been deleted successfully!");
+                    }
+                });
     }
 
     public void getRecipeStorage() {
