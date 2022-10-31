@@ -10,8 +10,6 @@ import java.util.ArrayList;
 /**
  * This Test oversees the 'local' functionality of the methods
  * within the FoodStorage Class.
- *
- *TODO: Add potential interactivity with Database Object.
  */
 public class IngredientStorageTest {
 
