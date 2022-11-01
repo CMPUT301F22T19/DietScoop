@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.firestore.CollectionReference;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
@@ -26,13 +27,19 @@ public class Database {
         recipeStorage = db.collection("Recipes");
     }
 
-    public CollectionReference getIngredientStorageRef() {
-        return db.collection("IngredientStorage");
+
+
+    /*************************** INGREDIENT METHODS ******************************/
+
+
+    /**
+     * Getter for Firestore collection reference of Recipes collection. Does not query database
+     * @return
+     */
+    public CollectionReference getIngredientCollectionRef() {
+        return ingredientStorage;
     }
 
-    public CollectionReference getRecipeStorageRef() {
-        return recipeStorage;
-    }
 
     public void addIngredientToStorage(IngredientInStorage ingredient) {
         Map<String, Object> ingredientDetails = new HashMap<>();
@@ -40,8 +47,9 @@ public class Database {
         int year = expiry.get(Calendar.YEAR);
         int month = expiry.get(Calendar.MONTH);
         int day = expiry.get(Calendar.DATE);
-        ingredientDetails.put("amount", Integer.valueOf(ingredient.getAmount()));
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit());
+        ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
+        ingredientDetails.put("amount", Double.valueOf(ingredient.getAmount()));
+        ingredientDetails.put("unit", ingredient.getMeasurementUnit().toLowerCase());
         ingredientDetails.put("year", Integer.valueOf(year));
         ingredientDetails.put("month", Integer.valueOf(month));
         ingredientDetails.put("day", Integer.valueOf(day));
@@ -49,10 +57,13 @@ public class Database {
         ingredientDetails.put("location", ingredient.getLocation().toString());
         ingredientDetails.put("category", ingredient.getCategory().toString());
 
-
-        ingredientStorage.document(ingredient.getDescription()).set(ingredientDetails);
+        // .add() auto generates document ID in Firestore; this doesn't use ingredient's name as ID
+        ingredientStorage.add(ingredientDetails);
     }
 
+    /**
+     * queries IngredientStorage collection in database
+     */
     public void getIngredientStorage() {
 
         //was trying to get this to work
@@ -65,14 +76,13 @@ public class Database {
 //            System.out.println(document.getId() + " => " + document.toObject(City.class));
 //        }
 
-        // hacky way of getting all ingredients as query (none of them should have amount 0)
-        //ingredientStorage.whereNotEqualTo("amount",0);
+        // queries ingredients in storage from DB
         ingredientStorage.get();
     }
 
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
         Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
-        ingredientStorage.document(ingredientInStorage.getDescription()).delete()
+        ingredientStorage.document(ingredientInStorage.getId()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -81,31 +91,63 @@ public class Database {
                 });
     }
 
+    public void updateIngredientInStorage(IngredientInStorage ingredient) {
+        // also, this requires the passed-in ingredient to already have an ID, which we get from
+        // Firestore, so it has to get the ID from the ingredient being edited
+        Map<String, Object> ingredientDetails = new HashMap<>();
+        Calendar expiry = ingredient.getBestBeforeDate();
+        int year = expiry.get(Calendar.YEAR);
+        int month = expiry.get(Calendar.MONTH);
+        int day = expiry.get(Calendar.DATE);
+        ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
+        ingredientDetails.put("amount", Double.valueOf(ingredient.getAmount()));
+        ingredientDetails.put("unit", ingredient.getMeasurementUnit().toLowerCase());
+        ingredientDetails.put("year", Integer.valueOf(year));
+        ingredientDetails.put("month", Integer.valueOf(month));
+        ingredientDetails.put("day", Integer.valueOf(day));
+
+        ingredientDetails.put("location", ingredient.getLocation().toString());
+        ingredientDetails.put("category", ingredient.getCategory().toString());
+
+        ingredientStorage.document(ingredient.getId()).set(ingredientDetails);
+        Log.e("update ingredientInStor","ID: "+ingredient.getId());
+
+    }
+
+
+
+    /*************************** RECIPE METHODS ******************************/
 
 
     public void addRecipeToStorage(Recipe recipe) {
+        // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepMins", Integer.valueOf(recipe.getPrepTime()));
         recipeDetails.put("numOfServings", Integer.valueOf(recipe.getNumOfServings()));
-        recipeDetails.put("description", recipe.getDescription());
+        recipeDetails.put("description", recipe.getDescription().toLowerCase());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
-        recipeStorage.document(recipe.getName()).set(recipeDetails);
+
+        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
+
         for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
+            // hash map for each ingredient document in sub-collection IngredientsInRecipe
             Map<String, Object> ingredientDetails = new HashMap<>();
-            ingredientDetails.put("amount", Integer.valueOf(ingredientInRecipe.getAmount()));
-            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit());
-            ingredientDetails.put("description", ingredientInRecipe.getDescription());
+            ingredientDetails.put("amount", Double.valueOf(ingredientInRecipe.getAmount()));
+            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
+            ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
             ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
 
-            recipeStorage.document(recipe.getName()).collection("IngredientsInRecipe")
-                    .document(ingredientInRecipe.getDescription()).set(ingredientDetails);
+            recipeStorage.document(recipe.getDescription()).collection("IngredientsInRecipe")
+                    .document(ingredientInRecipe.getDescription().toLowerCase()).set(ingredientDetails);
         }
     }
 
     public void removeRecipeFromStorage(Recipe recipe) {
+        //TODO: serious issue: removing doc does not remove subcollection, so need to go through and delete
+        // each doc in sub-collection, but HOW??
         Log.d(TAG, "delete recipe from storage: "+ recipe.getDescription());
-        recipeStorage.document(recipe.getDescription()).delete()
+        recipeStorage.document(recipe.getDescription().toLowerCase()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -114,9 +156,43 @@ public class Database {
                 });
     }
 
+    /**
+     * Getter for Firestore collection reference for Recipes collection. Does not query database
+     * @return
+     */
+    public CollectionReference getRecipeCollectionRef() {return this.recipeStorage;}
+
     public void getRecipeStorage() {
+        // queries recipes collection in DB
         recipeStorage.get();
     }
+
+    public void updateRecipeInStorage(Recipe recipe) {
+        // hash map containing details EXCEPT list of ingredients in recipe
+        Map<String, Object> recipeDetails = new HashMap<>();
+        recipeDetails.put("prepMins", Integer.valueOf(recipe.getPrepTime()));
+        recipeDetails.put("numOfServings", Integer.valueOf(recipe.getNumOfServings()));
+        recipeDetails.put("description", recipe.getDescription().toLowerCase());
+        recipeDetails.put("instructions", recipe.getInstructions());
+        recipeDetails.put("category", recipe.getCategory().toString());
+
+        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
+
+        for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
+            // hash map for each ingredient document in sub-collection IngredientsInRecipe
+            Map<String, Object> ingredientDetails = new HashMap<>();
+            ingredientDetails.put("amount", Double.valueOf(ingredientInRecipe.getAmount()));
+            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
+            ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
+            ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
+
+            recipeStorage.document(recipe.getDescription()).collection("IngredientsInRecipe")
+                    .document(ingredientInRecipe.getDescription().toLowerCase()).set(ingredientDetails);
+        }
+    }
+
+
+
 
 }
 

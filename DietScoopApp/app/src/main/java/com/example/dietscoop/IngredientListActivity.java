@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,11 +37,13 @@ public class IngredientListActivity extends AppCompatActivity {
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
         foodStorage.getIngredientStorageFromDatabase();
 
-        IngredientStorage sampleIngredientStorage = new IngredientStorage();
+        //testing code:
+        //IngredientStorage sampleIngredientStorage = new IngredientStorage();
         IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", "kg",
-                5, 2022, 4, 24, Location.freezer, Category.meat);
-        sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
-        sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
+                5, 2022, 4, 25, Location.freezer, Category.meat);
+        //sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
+        //sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
+        foodStorage.addIngredientToStorage(sampleIngredient);
 
 
 

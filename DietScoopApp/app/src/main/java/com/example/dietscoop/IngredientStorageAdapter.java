@@ -48,7 +48,7 @@ public class IngredientStorageAdapter extends ArrayAdapter<IngredientInStorage> 
 
         IngredientInStorage currentIngredientInStorage = dataList.get(position);
 
-        descriptionText.setText(currentIngredientInStorage.getDescription());
+        descriptionText.setText(String.valueOf(currentIngredientInStorage.getId()));
         countText.setText(String.valueOf(currentIngredientInStorage.getAmount()));
         unitText.setText(String.valueOf(currentIngredientInStorage.getMeasurementUnit()));
 

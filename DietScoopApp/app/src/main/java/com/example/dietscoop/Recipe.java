@@ -7,7 +7,7 @@ enum timeUnit {
     hour,
     minute;
 
-    public static timeUnit stringToCategory(String unit) {
+    public static timeUnit stringToTimeUnit(String unit) {
         unit = unit.toUpperCase(Locale.ROOT);
 
         if (unit == "HOUR") {
@@ -30,7 +30,7 @@ enum recipeCategory {
     salad,
     baked;
 
-    public static recipeCategory stringToCategory(String name) {
+    public static recipeCategory stringToRecipeCategory(String name) {
         name = name.toUpperCase(Locale.ROOT);
 
         if (name == "BREAKFAST") {
@@ -62,10 +62,9 @@ public class Recipe extends FoodItem{
     ArrayList<IngredientInRecipe> ingredientsList;
     private String instructions;
 
-    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList,
-                  String description) {
+    public Recipe(String description, int prepTime, int servings, timeUnit prepUnitTime,
+                  recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList) {
         this.description = description;
-        this.name = name;
         this.prepTime = prepTime;
         this.servings = servings;
         this.prepUnitTime = prepUnitTime;
@@ -73,20 +72,11 @@ public class Recipe extends FoodItem{
         this.ingredientsList = ingredientsList;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public int getPrepTime() {
         return prepTime;
 
     }
 
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setPrepTime(int prepTime) {
         this.prepTime = prepTime;
