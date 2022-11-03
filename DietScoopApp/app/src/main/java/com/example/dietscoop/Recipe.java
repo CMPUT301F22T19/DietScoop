@@ -3,20 +3,17 @@ package com.example.dietscoop;
 import java.util.ArrayList;
 import java.util.Locale;
 
-//TODO: What are categories? Ask Jakaria
-enum RecipeCategory {
-    dinner,
-    lunch,
-    breakfast;
-    public static RecipeCategory stringToCategory(String name) {
-        name = name.toUpperCase(Locale.ROOT);
+enum timeUnit {
+    hour,
+    minute;
 
-        if (name == "DINNER") {
-            return dinner;
-        } else if (name == "LUNCH") {
-            return lunch;
-        } else if (name == "BREAKFAST") {
-            return breakfast;
+    public static timeUnit stringToTimeUnit(String unit) {
+        unit = unit.toUpperCase(Locale.ROOT);
+
+        if (unit.equals("HOUR")) {
+            return hour;
+        } else if (unit.equals("MINUTE")) {
+            return minute;
         } else {
             // TODO: MAKE THIS THROW ERROR
             return null;
@@ -24,28 +21,116 @@ enum RecipeCategory {
 
     }
 }
+
+enum recipeCategory {
+    breakfast,
+    lunch,
+    dinner,
+    appetizer,
+    salad,
+    baked;
+
+    public static recipeCategory stringToRecipeCategory(String name) {
+        name = name.toUpperCase(Locale.ROOT);
+
+        if (name.equals("BREAKFAST")) {
+            return breakfast;
+        } else if (name.equals("LUNCH")) {
+            return lunch;
+        } else if (name.equals("DINNER")) {
+            return dinner;
+        } else if (name.equals("APPETIZER")) {
+            return appetizer;
+        } else if (name.equals("SALAD")) {
+            return salad;
+        } else if (name.equals("BAKED")) {
+            return baked;
+        } else {
+            // TODO: MAKE THIS THROW ERROR
+            return null;
+        }
+
+    }
+}
+
 public class Recipe extends FoodItem{
-    private ArrayList<Ingredient> ingredients;
-    private int numOfServings;
-    private int prepTime; // in minutes??
-    private String comments;
-    private RecipeCategory category;
-    //TODO: how to store picture??
+    private String name;
+    private int prepTime;
+    private int servings;
+    private timeUnit prepUnitTime;
+    private recipeCategory category;
+    ArrayList<IngredientInRecipe> ingredientsList;
+    private String instructions;
 
-    public Recipe(int numOfServings, int prepTime, String comments, RecipeCategory recipeCategory,
-                  ArrayList<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public Recipe(String description, int prepTime, int servings, timeUnit prepUnitTime,
+                  recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList, String instructions) {
+        this.description = description;
         this.prepTime = prepTime;
-        this.comments = comments;
-        this.category = recipeCategory;
-        this.numOfServings = numOfServings;
+        this.servings = servings;
+        this.prepUnitTime = prepUnitTime;
+        this.category = category;
+        this.ingredientsList = ingredientsList;
+        this.instructions = instructions;
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        ingredients.add(ingredient);
+    public int getPrepTime() {
+        return prepTime;
     }
 
-    public void removeIngredient(Ingredient ingredient) {
-        ingredients.remove(ingredient);
+    public void setPrepTime(int prepTime) {
+        this.prepTime = prepTime;
+    }
+
+    public void setNumOfServings(int servings) {
+        this.servings = servings;
+    }
+
+    public void setPrepUnitTime(timeUnit prepUnitTime) {
+        this.prepUnitTime = prepUnitTime;
+    }
+
+    public timeUnit getPrepUnitTime() {
+        return prepUnitTime;
+    }
+
+    public void setCategory(recipeCategory category) {
+        this.category = category;
+    }
+
+    public void setIngredientsList(ArrayList<IngredientInRecipe> ingredientsList) {
+        this.ingredientsList = ingredientsList;
+    }
+
+    public void setInstructions(String description) {
+        this.description = description;
+    }
+
+    public int getNumberOfIngredients() {
+        return ingredientsList.size();
+    }
+
+    public String getInstructions() {
+        return this.instructions;
+    }
+
+    public ArrayList<IngredientInRecipe> getIngredients() {
+        return this.ingredientsList;
+    }
+
+    public recipeCategory getCategory() {
+        return this.category;
+    }
+    public String getCategoryName() {return this.category.name(); }
+
+    public int getNumOfServings() {
+        return this.servings;
+    }
+
+    public void addIngredient(IngredientInRecipe ingredient){
+        this.ingredientsList.add(ingredient);
+    }
+
+    public void removeIngredient(IngredientInRecipe ingredient){
+        this.ingredientsList.remove(ingredient);
     }
 }

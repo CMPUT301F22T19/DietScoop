@@ -1,25 +1,48 @@
 package com.example.dietscoop;
 
+import java.util.Locale;
 
+enum Category {
+    vegetable,
+    meat,
+    fruit;
 
+    public static Category stringToCategory(String name) {
+        name = name.toUpperCase(Locale.ROOT);
 
-public class Ingredient extends FoodItem {
+        if (name.equals("VEGETABLE")) {
+            return vegetable;
+        } else if (name.equals("MEAT")) {
+            return meat;
+        } else if (name.equals("FRUIT")) {
+            return fruit;
+        } else {
+            // TODO: MAKE THIS THROW ERROR
+            return null;
+        }
 
-    int amount;
-    String measurementUnit;
+    }
+}
 
-    public Ingredient(String description, String measurementUnit, int amount) {
+public abstract class Ingredient extends FoodItem{
+
+    private double amount;
+    private String measurementUnit;
+    private Category category;
+
+    public Ingredient(String description, String measurementUnit, double amount, Category category) {
         this.description = description;
         this.amount = amount;
         this.measurementUnit = measurementUnit;
+        this.category = category;
 
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -30,4 +53,9 @@ public class Ingredient extends FoodItem {
     public void setMeasurementUnit(String measurementUnit) {
         this.measurementUnit = measurementUnit;
     }
+    public Category getCategory() {
+        return category;
+    }
+    public String getCategoryName() {return category.name(); }
+
 }
