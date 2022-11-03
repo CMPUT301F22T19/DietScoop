@@ -120,6 +120,7 @@ public class Recipe extends FoodItem{
     public recipeCategory getCategory() {
         return this.category;
     }
+    public String getCategoryName() {return this.category.name(); }
 
     public int getNumOfServings() {
         return this.servings;
