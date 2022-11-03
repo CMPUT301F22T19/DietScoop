@@ -44,7 +44,6 @@ public class RecipeListActivity extends AppCompatActivity {
                 switchToIngredients();
             }
         });
-
     }
 
     // TODO: add bundled info
