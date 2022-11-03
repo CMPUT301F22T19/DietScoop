@@ -32,7 +32,7 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
         if (ingredientsList != null && ingredientsList.size() > 0) {
             Ingredient ingredient = ingredientsList.get(position);
             holder.recipe_ingredient_name_tv.setText(ingredient.getDescription());
-            holder.recipe_ingredient_amount_tv.setText(Integer.toString(ingredient.getAmount()));
+            holder.recipe_ingredient_amount_tv.setText(Double.toString(ingredient.getAmount()));
             holder.recipe_ingredient_unit_tv.setText(ingredient.getMeasurementUnit());
             holder.recipe_ingredient_category_tv.setText(ingredient.getCategoryName());
         }

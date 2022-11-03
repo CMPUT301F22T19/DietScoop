@@ -9,13 +9,26 @@ import android.widget.Button;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;//for testing
+
 public class MainActivity extends AppCompatActivity {
 
     Button temp;
+    RecipeStorage recipeStorage;//for testing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //testing code
+        ArrayList<IngredientInRecipe> listy = new ArrayList<IngredientInRecipe>();
+        listy.add(new IngredientInRecipe("chicken","kg",4,Category.meat));
+        listy.add(new IngredientInRecipe("butter","kg",4,Category.vegetable));
+        listy.add(new IngredientInRecipe("spice","kg",4,Category.fruit));
+        Recipe recipe = new Recipe("butTer chicken",125,4,timeUnit.minute,
+                recipeCategory.dinner,listy);
+        recipeStorage = new RecipeStorage();
+        recipeStorage.addRecipeToStorage(recipe);
 
 
     }
@@ -23,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void goToIngredientList(View view) {
+
+//        //testing code
+//        recipeStorage.removeRecipeFromStorage(recipeStorage.getRecipeStorage().get(0));
+
         Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);
     }

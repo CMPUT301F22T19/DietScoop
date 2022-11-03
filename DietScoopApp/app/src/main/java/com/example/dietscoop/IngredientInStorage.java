@@ -1,9 +1,12 @@
 package com.example.dietscoop;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -18,16 +21,17 @@ enum Location {
     fridge;
 
     public static Location stringToLocation(String name) {
-        name = name.toUpperCase(Locale.ROOT);
+        name = name.toUpperCase();
 
-        if (name == "PANTRY") {
+        if (name.equals("PANTRY")) {
             return pantry;
-        } else if (name == "FREEZER") {
+        } else if (name.equals("FREEZER")) {
             return freezer;
-        } else if (name == "FRIDGE") {
+        } else if (name.equals("FRIDGE")) {
             return fridge;
         } else {
             // TODO: MAKE THIS THROW ERROR
+            Log.i("null?", "LOCATION NOT RECOGNIZED");
             return null;
         }
 
@@ -58,15 +62,16 @@ enum Location {
 
 public class IngredientInStorage extends Ingredient{
 
-    Calendar bestBeforeDate;
+    LocalDate bestBeforeDate;
     Location location;
     Category category;
+    String id;
     //TODO: change year,month,day to Calendar pls pls
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public IngredientInStorage(String description, String measurementUnit, int amount,
+    public IngredientInStorage(String description, String measurementUnit, double amount,
                                int year, int month, int day, Location location, Category category){
         super(description,measurementUnit,amount, category);
-        bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
+        bestBeforeDate = LocalDate.of(year, month, day);
         this.location = location;
         this.category = category;
     }
@@ -75,20 +80,30 @@ public class IngredientInStorage extends Ingredient{
         return location;
     }
 
+    public String getLocationName() {return location.name(); } // ADDED
+
     public void setLocation(Location location) {
         this.location = location;
     }
 
-    public Calendar getBestBeforeDate() {
+    public LocalDate getBestBeforeDate() {
         return bestBeforeDate;
+    }
+
+    public String getFormattedBestBefore() {
+        return bestBeforeDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setBestBeforeDate(int year, int month, int day) {
-        bestBeforeDate = new Calendar.Builder().setDate(year,month,day).build();
+        bestBeforeDate = LocalDate.of(year, month, day);
     }
 
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public String getId(){return this.id;}
+
+    public void setId(String id){this.id=id;}
 }
