@@ -36,6 +36,16 @@ public class RecipeListActivity extends AppCompatActivity {
         recipeStorage = new RecipeStorage();
         recipeListAdapter = new RecipeListAdapter(this, recipeStorage.getRecipeStorage());
         recipeListView.setAdapter(recipeListAdapter);
+        recipeStorage.setupRecipeSnapshotListener(recipeListAdapter);
+        recipeStorage.getRecipeStorageFromDatabase();
+
+        ArrayList<IngredientInRecipe> listy = new ArrayList<IngredientInRecipe>();
+        listy.add(new IngredientInRecipe("chicken","kg",4,Category.meat));
+        listy.add(new IngredientInRecipe("butter","kg",4,Category.vegetable));
+        listy.add(new IngredientInRecipe("spice","kg",4,Category.fruit));
+        Recipe recipe = new Recipe("butTer chicken",125,4,timeUnit.minute,
+                recipeCategory.dinner,listy, "cook it nice");
+        recipeStorage.addRecipeToStorage(recipe);
 
         ingredientButton = findViewById(R.id.ingr_nav);
         recipesButton = findViewById(R.id.recipes_nav);
@@ -50,7 +60,6 @@ public class RecipeListActivity extends AppCompatActivity {
                 switchToIngredients();
             }
         });
-
     }
 
     // TODO: add bundled info
