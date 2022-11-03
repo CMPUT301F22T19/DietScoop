@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     public void goToIngredientList(View view) {
         Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);

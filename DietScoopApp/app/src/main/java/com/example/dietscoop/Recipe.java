@@ -53,15 +53,18 @@ enum recipeCategory {
     }
 }
 
-public class Recipe {
+public class Recipe extends FoodItem{
     private String name;
     private int prepTime;
     private int servings;
     private timeUnit prepUnitTime;
     private recipeCategory category;
-    ArrayList<Ingredient> ingredientsList;
+    ArrayList<IngredientInRecipe> ingredientsList;
+    private String instructions;
 
-    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<Ingredient> ingredientsList) {
+    public Recipe(String name, int prepTime, int servings, timeUnit prepUnitTime, recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList,
+                  String description) {
+        this.description = description;
         this.name = name;
         this.prepTime = prepTime;
         this.servings = servings;
@@ -74,22 +77,12 @@ public class Recipe {
         return name;
     }
 
-    public String getPrepTime() {
-        return Integer.toString(prepTime) + " " + prepUnitTime.name();
+    public int getPrepTime() {
+        return prepTime;
 
     }
 
-    public int getServings() {
-        return servings;
-    }
 
-    public String getCategoryName() {
-        return category.name();
-    } // RENAMED
-
-    public ArrayList<Ingredient> getIngredientsList() {
-        return ingredientsList;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -111,15 +104,39 @@ public class Recipe {
         this.category = category;
     }
 
-    public void setIngredientsList(ArrayList<Ingredient> ingredientsList) {
+    public void setIngredientsList(ArrayList<IngredientInRecipe> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 
-    public void addIngredient(Ingredient ingredient){
+    public void setInstructions(String description) {
+        this.description = description;
+    }
+
+    public int getNumberOfIngredients() {
+        return ingredientsList.size();
+    }
+
+    public String getInstructions() {
+        return this.instructions;
+    }
+
+    public ArrayList<IngredientInRecipe> getIngredients() {
+        return this.ingredientsList;
+    }
+
+    public recipeCategory getCategory() {
+        return this.category;
+    }
+
+    public int getNumOfServings() {
+        return this.servings;
+    }
+
+    public void addIngredient(IngredientInRecipe ingredient){
         this.ingredientsList.add(ingredient);
     }
 
-    public void removeIngredient(Ingredient ingredient){
+    public void removeIngredient(IngredientInRecipe ingredient){
         this.ingredientsList.remove(ingredient);
     }
 }

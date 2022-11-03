@@ -18,33 +18,42 @@ public class Database {
     private static final String TAG = "testing";
     private FirebaseFirestore db;
     private CollectionReference ingredientStorage;
-    private CollectionReference recipes;
+    private CollectionReference recipeStorage;
     private CollectionReference ingredientsInRecipe;
 
     public Database() {
         db = FirebaseFirestore.getInstance();
         ingredientStorage = db.collection("IngredientStorage");
-        recipes = db.collection("Recipes");
+        recipeStorage = db.collection("Recipes");
+    }
+
+    public CollectionReference getIngredientStorageRef() {
+        return db.collection("IngredientStorage");
+    }
+
+    public CollectionReference getRecipeStorageRef() {
+        return recipeStorage;
     }
 
     public void addIngredientToStorage(IngredientInStorage ingredient) {
-        Map<String, Object> data1 = new HashMap<>();
-        LocalDate expiry = ingredient.getBestBeforeDate();
-        int year = expiry.getYear();
-        int month = expiry.getMonthValue();
-        int day = expiry.getDayOfMonth();
-        data1.put("amount", Integer.valueOf(ingredient.getAmount()));
-        data1.put("unit", ingredient.getMeasurementUnit());
-        data1.put("year", Integer.valueOf(year));
-        data1.put("month", Integer.valueOf(month));
-        data1.put("day", Integer.valueOf(day));
+        Map<String, Object> ingredientDetails = new HashMap<>();
+        Calendar expiry = ingredient.getBestBeforeDate();
+        int year = expiry.get(Calendar.YEAR);
+        int month = expiry.get(Calendar.MONTH);
+        int day = expiry.get(Calendar.DATE);
+        ingredientDetails.put("amount", Integer.valueOf(ingredient.getAmount()));
+        ingredientDetails.put("unit", ingredient.getMeasurementUnit());
+        ingredientDetails.put("year", Integer.valueOf(year));
+        ingredientDetails.put("month", Integer.valueOf(month));
+        ingredientDetails.put("day", Integer.valueOf(day));
 
-        data1.put("location", ingredient.getLocation().toString());
-        data1.put("category", ingredient.getCategory().toString());
+        ingredientDetails.put("location", ingredient.getLocation().toString());
+        ingredientDetails.put("category", ingredient.getCategory().toString());
 
 
-        ingredientStorage.document(ingredient.getDescription()).set(data1);
+        ingredientStorage.document(ingredient.getDescription()).set(ingredientDetails);
     }
+
     public void getIngredientStorage() {
 
         //was trying to get this to work
@@ -73,7 +82,33 @@ public class Database {
                 });
     }
 
-    public CollectionReference getIngredientStorageRef() {
-        return ingredientStorage;
+
+
+    public void addRecipe(Recipe recipe) {
+        Map<String, Object> recipeDetails = new HashMap<>();
+        recipeDetails.put("prepMins", Integer.valueOf(recipe.getPrepTime()));
+        recipeDetails.put("numOfServings", Integer.valueOf(recipe.getNumOfServings()));
+        recipeDetails.put("description", recipe.getDescription());
+        recipeDetails.put("instructions", recipe.getInstructions());
+        recipeDetails.put("category", recipe.getCategory().toString());
+        recipeStorage.document(recipe.getName()).set(recipeDetails);
+        for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
+            Map<String, Object> ingredientDetails = new HashMap<>();
+            ingredientDetails.put("amount", Integer.valueOf(ingredientInRecipe.getAmount()));
+            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit());
+            ingredientDetails.put("description", ingredientInRecipe.getDescription());
+            ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
+
+            recipeStorage.document(recipe.getName()).collection("IngredientsInRecipe")
+                    .document(ingredientInRecipe.getDescription()).set(ingredientDetails);
+        }
+
     }
+
+    public void getRecipeStorage() {
+        recipeStorage.get();
+    }
+
 }
+
+
