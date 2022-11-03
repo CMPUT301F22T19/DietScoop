@@ -1,6 +1,7 @@
 package com.example.dietscoop;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -20,16 +21,17 @@ enum Location {
     fridge;
 
     public static Location stringToLocation(String name) {
-        name = name.toUpperCase(Locale.ROOT);
+        name = name.toUpperCase();
 
-        if (name == "PANTRY") {
+        if (name.equals("PANTRY")) {
             return pantry;
-        } else if (name == "FREEZER") {
+        } else if (name.equals("FREEZER")) {
             return freezer;
-        } else if (name == "FRIDGE") {
+        } else if (name.equals("FRIDGE")) {
             return fridge;
         } else {
             // TODO: MAKE THIS THROW ERROR
+            Log.i("null?", "LOCATION NOT RECOGNIZED");
             return null;
         }
 

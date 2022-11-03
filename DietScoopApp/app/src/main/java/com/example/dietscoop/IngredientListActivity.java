@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
-public class IngredientListActivity extends AppCompatActivity {
+public class IngredientListActivity extends AppCompatActivity implements sortIngredientByFragment.OnFragmentInteractionListener {
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -25,6 +25,7 @@ public class IngredientListActivity extends AppCompatActivity {
     Button recipesButton;
     Button mealsButton;
     Button shoppingButton;
+    Button sortButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,23 @@ public class IngredientListActivity extends AppCompatActivity {
         //sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
         foodStorage.addIngredientToStorage(sampleIngredient);
 
+        sampleIngredient = new IngredientInStorage("Roop", "kg",
+                5, 2022, 5, 25, Location.fridge, Category.meat);
+        foodStorage.addIngredientToStorage(sampleIngredient);
+
+        sampleIngredient = new IngredientInStorage("Toop", "kg",
+                5, 2022, 6, 25, Location.fridge, Category.fruit);
+        foodStorage.addIngredientToStorage(sampleIngredient);
+
+        sampleIngredient = new IngredientInStorage("Scoop", "kg",
+                5, 2022, 6, 25, Location.pantry, Category.vegetable);
+        foodStorage.addIngredientToStorage(sampleIngredient);
+
         ingredientButton = findViewById(R.id.ingr_nav);
         recipesButton = findViewById(R.id.recipes_nav);
         mealsButton = findViewById(R.id.meals_nav);
         shoppingButton = findViewById(R.id.shopping_nav);
+        sortButton = findViewById((R.id.sort_button));
 
         ingredientButton.setBackgroundColor(Color.rgb(252, 186, 3));
 
@@ -63,11 +77,24 @@ public class IngredientListActivity extends AppCompatActivity {
                 switchToRecipes();
             }
         });
+
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new sortIngredientByFragment().show(getFragmentManager(),"SORT_BY");
+            }
+        });
     }
     // TODO: add bundled info
     private void switchToRecipes() {
         Intent switchActivityIntent = new Intent(this, RecipeListActivity.class);
         startActivity(switchActivityIntent);
+    }
+
+    @Override
+    public void onSortSelection(sortIngredientByFragment.selection sortBy) {
+        foodStorage.sortBy(sortBy);
+        ingredientStorageAdapter.notifyDataSetChanged();
     }
 
     // POSSIBLE TODO: could be used to fix animations

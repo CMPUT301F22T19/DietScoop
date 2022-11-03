@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 public class IngredientComparator {
 
-    public class byName implements Comparator<IngredientInStorage> {
+    public static class byName implements Comparator<IngredientInStorage> {
         
         @Override
         public int compare(IngredientInStorage t1, IngredientInStorage t2) {
@@ -12,7 +12,7 @@ public class IngredientComparator {
         }
     }
 
-    public class byLocation implements  Comparator<IngredientInStorage> {
+    public static class byLocation implements  Comparator<IngredientInStorage> {
 
         @Override
         public int compare(IngredientInStorage t1, IngredientInStorage t2) {
@@ -20,7 +20,7 @@ public class IngredientComparator {
         }
     }
 
-    public class byCategory implements Comparator<IngredientInStorage> {
+    public static class byCategory implements Comparator<IngredientInStorage> {
 
         @Override
         public int compare(IngredientInStorage t1, IngredientInStorage t2) {
@@ -28,7 +28,7 @@ public class IngredientComparator {
         }
     }
 
-    public class byBestBefore implements Comparator<IngredientInStorage> {
+    public static class byBestBefore implements Comparator<IngredientInStorage> {
 
         @Override
         public int compare(IngredientInStorage t1, IngredientInStorage t2) {

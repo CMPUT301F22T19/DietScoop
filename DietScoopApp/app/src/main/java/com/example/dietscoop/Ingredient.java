@@ -10,11 +10,11 @@ enum Category {
     public static Category stringToCategory(String name) {
         name = name.toUpperCase(Locale.ROOT);
 
-        if (name == "VEGETABLE") {
+        if (name.equals("VEGETABLE")) {
             return vegetable;
-        } else if (name == "MEAT") {
+        } else if (name.equals("MEAT")) {
             return meat;
-        } else if (name == "FRUIT") {
+        } else if (name.equals("FRUIT")) {
             return fruit;
         } else {
             // TODO: MAKE THIS THROW ERROR
@@ -56,18 +56,6 @@ public abstract class Ingredient extends FoodItem{
     public Category getCategory() {
         return category;
     }
-
-    public String getCategoryName() {
-        switch (category) {
-            case vegetable:
-                return "vegetable";
-            case meat:
-                return "meat";
-            case fruit:
-                return "fruit";
-        }
-        // TODO: MAKE THIS THROW ERROR
-        return null;
-    }
+    public String getCategoryName() {return category.name(); }
 
 }

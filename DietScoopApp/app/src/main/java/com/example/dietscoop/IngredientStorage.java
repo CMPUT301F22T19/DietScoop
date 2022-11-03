@@ -85,4 +85,21 @@ public class IngredientStorage {
                     }
                 });
     }
+
+    public void sortBy(sortIngredientByFragment.selection sortBy) {
+        switch (sortBy) {
+            case NAME:
+                storage.sort(new IngredientComparator.byName());
+                break;
+            case DATE:
+                storage.sort(new IngredientComparator.byBestBefore());
+                break;
+            case CATEGORY:
+                storage.sort(new IngredientComparator.byCategory());
+                break;
+            case LOCATION:
+                storage.sort(new IngredientComparator.byLocation());
+                break;
+        }
+    }
 }
