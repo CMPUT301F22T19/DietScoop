@@ -27,7 +27,10 @@ public class IngredientStorage {
     }
 
     public void addIngredientToStorage(IngredientInStorage ingredientInStorage) {
-        storage.add(ingredientInStorage); // -> Added this method @Marcos
+        //storage.add(ingredientInStorage); // -> Added this method @Marcos
+        // ^^ this happens whenever something is added to DB (in snapshot listener).
+        // By doing this, we won't know if something actually gets added to DB
+
         db.addIngredientToStorage(ingredientInStorage);
     }
 
@@ -43,13 +46,17 @@ public class IngredientStorage {
         db.getIngredientStorage();
     }
 
+    public void updateIngredientInStorage(IngredientInStorage ingredient) {
+        db.updateIngredientInStorage(ingredient);
+    }
+
     public void setupIngredientSnapshotListener() {
         setupIngredientSnapshotListener(null);
     }
 
     public void setupIngredientSnapshotListener(IngredientStorageAdapter adapter) {
 
-        db.getIngredientStorageRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.getIngredientCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
                                         @Nullable FirebaseFirestoreException e) {
@@ -61,16 +68,18 @@ public class IngredientStorage {
                         storage.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.getId() != null) {
-                                Log.d(TAG, doc.getId() + " => " + doc.getData());
-                                storage.add(new IngredientInStorage(doc.getId(), (String)doc.getData()
-                                        .get("unit"), ((Long)doc.getData().get("amount")).intValue(),
-                                        ((Long)doc.getData().get("year")).intValue(),
-                                        ((Long)doc.getData().get("month")).intValue(), ((Long)doc.getData().get("day")).intValue(),
+                                Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
+                                IngredientInStorage ingredient = new IngredientInStorage(doc.getString("description"),
+                                        doc.getString("unit"), doc.getDouble("amount"),
+                                        (doc.getLong("year")).intValue(),
+                                        (doc.getLong("month")).intValue(), (doc.getLong("day")).intValue(),
                                         Location.stringToLocation(doc.getData().get("location").toString()),
-                                        Category.stringToCategory(doc.getData().get("category").toString())));
+                                        Category.stringToCategory(doc.getData().get("category").toString()));
+                                storage.add(ingredient);
+                                ingredient.setId(doc.getId());
                             }
                         }
-                        if (adapter != null) { //This is for testing.
+                        if (adapter!=null) {
                             adapter.notifyDataSetChanged();
                         }
                     }

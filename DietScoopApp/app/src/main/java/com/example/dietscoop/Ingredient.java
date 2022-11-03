@@ -26,11 +26,11 @@ enum Category {
 
 public abstract class Ingredient extends FoodItem{
 
-    int amount;
+    double amount;
     String measurementUnit;
     Category category;
 
-    public Ingredient(String description, String measurementUnit, int amount, Category category) {
+    public Ingredient(String description, String measurementUnit, double amount, Category category) {
         this.description = description;
         this.amount = amount;
         this.measurementUnit = measurementUnit;
@@ -38,11 +38,11 @@ public abstract class Ingredient extends FoodItem{
 
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

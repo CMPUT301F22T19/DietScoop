@@ -63,9 +63,10 @@ public class IngredientInStorage extends Ingredient{
     LocalDate bestBeforeDate;
     Location location;
     Category category;
+    String id;
     //TODO: change year,month,day to Calendar pls pls
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public IngredientInStorage(String description, String measurementUnit, int amount,
+    public IngredientInStorage(String description, String measurementUnit, double amount,
                                int year, int month, int day, Location location, Category category){
         super(description,measurementUnit,amount, category);
         bestBeforeDate = LocalDate.of(year, month, day);
@@ -99,4 +100,8 @@ public class IngredientInStorage extends Ingredient{
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public String getId(){return this.id;}
+
+    public void setId(String id){this.id=id;}
 }
