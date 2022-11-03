@@ -37,10 +37,10 @@ public class Database {
 
     public void addIngredientToStorage(IngredientInStorage ingredient) {
         Map<String, Object> ingredientDetails = new HashMap<>();
-        Calendar expiry = ingredient.getBestBeforeDate();
-        int year = expiry.get(Calendar.YEAR);
-        int month = expiry.get(Calendar.MONTH);
-        int day = expiry.get(Calendar.DATE);
+        LocalDate expiry = ingredient.getBestBeforeDate();
+        int year = expiry.getYear();
+        int month = expiry.getMonthValue();
+        int day = expiry.getDayOfMonth();
         ingredientDetails.put("amount", Integer.valueOf(ingredient.getAmount()));
         ingredientDetails.put("unit", ingredient.getMeasurementUnit());
         ingredientDetails.put("year", Integer.valueOf(year));
