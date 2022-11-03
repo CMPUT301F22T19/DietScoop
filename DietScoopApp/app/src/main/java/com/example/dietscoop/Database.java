@@ -122,14 +122,15 @@ public class Database {
     public void addRecipeToStorage(Recipe recipe) {
         // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
-        recipeDetails.put("prepMins", Integer.valueOf(recipe.getPrepTime()));
-        recipeDetails.put("numOfServings", Integer.valueOf(recipe.getNumOfServings()));
+        recipeDetails.put("prepTime", Integer.valueOf(recipe.getPrepTime()));
+        recipeDetails.put("servings", Integer.valueOf(recipe.getNumOfServings()));
         recipeDetails.put("description", recipe.getDescription().toLowerCase());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
+        recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
 
-        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
 
+        ArrayList<Map<String, Object>> ingredientsInRecipe = new ArrayList<>();
         for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
             // hash map for each ingredient document in sub-collection IngredientsInRecipe
             Map<String, Object> ingredientDetails = new HashMap<>();
@@ -137,10 +138,11 @@ public class Database {
             ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
             ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
             ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
+            ingredientsInRecipe.add(ingredientDetails);
 
-            recipeStorage.document(recipe.getDescription()).collection("IngredientsInRecipe")
-                    .document(ingredientInRecipe.getDescription().toLowerCase()).set(ingredientDetails);
         }
+        recipeDetails.put("ingredients", ingredientsInRecipe);
+        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
     }
 
     public void removeRecipeFromStorage(Recipe recipe) {
@@ -170,8 +172,8 @@ public class Database {
     public void updateRecipeInStorage(Recipe recipe) {
         // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
-        recipeDetails.put("prepMins", Integer.valueOf(recipe.getPrepTime()));
-        recipeDetails.put("numOfServings", Integer.valueOf(recipe.getNumOfServings()));
+        recipeDetails.put("prepTime", Integer.valueOf(recipe.getPrepTime()));
+        recipeDetails.put("servings", Integer.valueOf(recipe.getNumOfServings()));
         recipeDetails.put("description", recipe.getDescription().toLowerCase());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());

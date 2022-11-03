@@ -57,13 +57,28 @@ public class RecipeStorage {
                 for (QueryDocumentSnapshot doc : value) {
                     if (doc.getId() != null) {
                         Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
+                        Object balls = doc.getData().get("ingredients");
+                        String [] ingredos = doc.getData().get("ingredients").toString().split(",")[0].split(",");
+                        for (int i = 0; i<4;i++) {
+                            
+                        }
+                        Log.i("balls",doc.getData().get("ingredients").toString().split(","));
+//                        Log.i("balls",doc.getData().entrySet().toArray()[1].toString());
+                        Log.i("balls",doc.getData().entrySet().toArray()[2].toString());
+//                        Log.i("balls",doc.getData().entrySet().toArray()[3].toString());
+                        Log.i("balls",balls.toString());
+                        Log.i("preptime:",doc.getLong("prepTime").toString());
+                        Log.i("preptime:",doc.getLong("prepTime").toString());
                         Recipe recipe = new Recipe(doc.getString("description"),
-                                doc.getLong("prepTime").intValue(), doc.getLong("servings").intValue(),
+                                doc.getLong("prepTime").intValue(),
+                                doc.getLong("servings").intValue(),
                                 timeUnit.stringToTimeUnit(doc.getData().get("prepUnitTime").toString()),
                                 recipeCategory.stringToRecipeCategory(doc.getData().get("category").toString()),
-                                ingredients);
+                                ingredients, doc.getString("instructions"));
+                        recipes.add(recipe);
                     }
                 }
+
                 if (adapter!=null) {
                     adapter.notifyDataSetChanged();
                 }

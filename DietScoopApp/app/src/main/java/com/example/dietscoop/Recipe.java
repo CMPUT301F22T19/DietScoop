@@ -10,9 +10,9 @@ enum timeUnit {
     public static timeUnit stringToTimeUnit(String unit) {
         unit = unit.toUpperCase(Locale.ROOT);
 
-        if (unit == "HOUR") {
+        if (unit.equals("HOUR")) {
             return hour;
-        } else if (unit == "MINUTE") {
+        } else if (unit.equals("MINUTE")) {
             return minute;
         } else {
             // TODO: MAKE THIS THROW ERROR
@@ -33,17 +33,17 @@ enum recipeCategory {
     public static recipeCategory stringToRecipeCategory(String name) {
         name = name.toUpperCase(Locale.ROOT);
 
-        if (name == "BREAKFAST") {
+        if (name.equals("BREAKFAST")) {
             return breakfast;
-        } else if (name == "LUNCH") {
+        } else if (name.equals("LUNCH")) {
             return lunch;
-        } else if (name == "DINNER") {
+        } else if (name.equals("DINNER")) {
             return dinner;
-        } else if (name == "APPETIZER") {
+        } else if (name.equals("APPETIZER")) {
             return appetizer;
-        } else if (name == "SALAD") {
+        } else if (name.equals("SALAD")) {
             return salad;
-        } else if (name == "BAKED") {
+        } else if (name.equals("BAKED")) {
             return baked;
         } else {
             // TODO: MAKE THIS THROW ERROR
@@ -63,31 +63,34 @@ public class Recipe extends FoodItem{
     private String instructions;
 
     public Recipe(String description, int prepTime, int servings, timeUnit prepUnitTime,
-                  recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList) {
+                  recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList, String instructions) {
         this.description = description;
         this.prepTime = prepTime;
         this.servings = servings;
         this.prepUnitTime = prepUnitTime;
         this.category = category;
         this.ingredientsList = ingredientsList;
+        this.instructions = instructions;
     }
 
     public int getPrepTime() {
         return prepTime;
-
     }
-
 
     public void setPrepTime(int prepTime) {
         this.prepTime = prepTime;
     }
 
-    public void setServings(int servings) {
+    public void setNumOfServings(int servings) {
         this.servings = servings;
     }
 
     public void setPrepUnitTime(timeUnit prepUnitTime) {
         this.prepUnitTime = prepUnitTime;
+    }
+
+    public timeUnit getPrepUnitTime() {
+        return prepUnitTime;
     }
 
     public void setCategory(recipeCategory category) {
