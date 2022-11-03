@@ -1,10 +1,13 @@
 package com.example.dietscoop;
 
+import static java.lang.String.valueOf;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +16,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import java.time.LocalDate;
+import java.util.Calendar;
 
 public class IngredientAddFragment extends DialogFragment {
     private EditText description;
@@ -25,6 +31,10 @@ public class IngredientAddFragment extends DialogFragment {
     private EditText unit;
     private OnFragmentInteractionListener listener;
     private IngredientInStorage ingredientToBeChanged;
+    private String locationString;
+    private String categoryString;
+    private Calendar bestBeforeDateTemp;
+    // For getting the string version of Calendar
 
     public interface OnFragmentInteractionListener {
         void onOkPressed(IngredientInStorage newIngredientInStorage);
@@ -65,27 +75,78 @@ public class IngredientAddFragment extends DialogFragment {
 
         if (ingredientToBeChanged == null) {
             builder
-                    .setView(view)
-                    .setTitle("Add ingredient")
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            String strDescription = description.getText().toString();
-                            String strAmount = amount.getText().toString();
-                            String strCategory = category.getText().toString();
-                            String strLocation = location.getText().toString();
-                            String strUnit = unit.getText().toString();
-                            String strDay = day.getText().toString();
-                            String strMonth = month.getText().toString();
-                            String strYear = year.getText().toString();
-                            Location location = Location.stringToLocation(strLocation);
-                            IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
-                            listener.onOkPressed(new IngredientInStorage(strDescription, strUnit,
-                                    Integer.parseInt(strAmount), Integer.parseInt(strYear), Integer.parseInt(strMonth),
-                                    Integer.parseInt(strDay), location, ingredientCategory));
-                        }
-                    });
+                .setView(view)
+                .setTitle("Add ingredient")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String strDescription = description.getText().toString();
+                        String strAmount = amount.getText().toString();
+                        String strCategory = category.getText().toString();
+                        String strLocation = location.getText().toString();
+                        String strUnit = unit.getText().toString();
+                        String strDay = day.getText().toString();
+                        String strMonth = month.getText().toString();
+                        String strYear = year.getText().toString();
+                        Location location = Location.stringToLocation(strLocation);
+                        IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
+                        listener.onOkPressed(new IngredientInStorage(strDescription, strUnit,
+                                Integer.parseInt(strAmount), Integer.parseInt(strYear), Integer.parseInt(strMonth),
+                                Integer.parseInt(strDay), location, ingredientCategory));
+                    }
+                });
+        } else {
+            description.setText(ingredientToBeChanged.getDescription());
+            amount.setText(valueOf(ingredientToBeChanged.getAmount()));
+
+            if (ingredientToBeChanged.getLocation().equals(Location.pantry)) {
+                locationString = "pantry";
+            } else if (ingredientToBeChanged.getLocation().equals(Location.freezer)) {
+                locationString = "freezer";
+            } else if (ingredientToBeChanged.getLocation().equals(Location.fridge)) {
+                locationString = "fridge";
+            }
+            location.setText(locationString);
+
+            bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
+
+            if (ingredientToBeChanged.getLocation().equals(IngredientCategory.vegetable)) {
+                categoryString = "vegetable";
+            } else if (ingredientToBeChanged.getLocation().equals(IngredientCategory.meat)) {
+                categoryString = "meat";
+            } else if (ingredientToBeChanged.getLocation().equals(IngredientCategory.fruit)) {
+                categoryString = "fruit";
+            }
+            category.setText(categoryString);
+
+            int dayOfMonth = bestBeforeDateTemp.get(Calendar.DAY_OF_MONTH);
+            String dayOfMonthStr = String.valueOf(dayOfMonth);
+            day.setText(dayOfMonthStr);
+            int monthInt = bestBeforeDateTemp.get(Calendar.MONTH);
+            String monthStr = String.valueOf(monthInt);
+            month.setText(monthStr);
+            int yearInt = bestBeforeDateTemp.get(Calendar.YEAR);
+            String yearStr = String.valueOf(yearInt);
+            year.setText(yearStr);
+            unit.setText(ingredientToBeChanged.getMeasurementUnit());
+
+            builder
+                .setView(view)
+                .setTitle("Modify ingredient")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ingredientToBeChanged.setDescription(description.getText().toString());
+                        ingredientToBeChanged.setAmount(Integer.parseInt(amount.getText().toString()));
+                        ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory(category.getText().toString()));
+                        ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString()));
+                        ingredientToBeChanged.setBestBeforeDate(Integer.parseInt(year.getText().toString()), Integer.parseInt(month.getText().toString()),
+                                Integer.parseInt(year.getText().toString()));
+                        ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
+                    }
+                });
         }
         return builder.create();
     }

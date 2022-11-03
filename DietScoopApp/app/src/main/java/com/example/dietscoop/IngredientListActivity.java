@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,6 +34,13 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
 
         addIngredientButton.setOnClickListener((e) -> {
             new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
+        });
+
+        ingredientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                new IngredientAddFragment(foodStorage.getIngredientStorage().get(i)).show(getSupportFragmentManager(), "MODIFY_INGREDIENT");
+            }
         });
     }
 

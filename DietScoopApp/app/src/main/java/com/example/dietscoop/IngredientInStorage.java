@@ -26,7 +26,6 @@ enum Location {
             // TODO: MAKE THIS THROW ERROR
             return null;
         }
-
     }
 }
 enum IngredientCategory {
