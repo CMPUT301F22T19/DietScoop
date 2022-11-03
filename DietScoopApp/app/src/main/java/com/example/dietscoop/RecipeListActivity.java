@@ -1,5 +1,6 @@
 package com.example.dietscoop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity implements RecipeListItemClickListener {
     RecyclerView recipeListView;
     RecipeStorage recipeStorage;
     RecipeListAdapter recipeListAdapter;
@@ -60,6 +63,24 @@ public class RecipeListActivity extends AppCompatActivity {
                 switchToIngredients();
             }
         });
+
+        recipeListView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+
     }
 
     // TODO: add bundled info
@@ -68,4 +89,8 @@ public class RecipeListActivity extends AppCompatActivity {
         startActivity(switchActivityIntent);
     }
 
+    @Override
+    public void onClick(View view, int position) {
+        Log.i("CLICKED ITEM", recipeStorage.getRecipeStorage().get(position).getDescription());
+    }
 }

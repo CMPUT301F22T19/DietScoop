@@ -16,10 +16,15 @@ import java.util.ArrayList;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Recipe> dataList;
+    private RecipeListItemClickListener listener;
 
     public RecipeListAdapter(Context context, ArrayList<Recipe> dataList) {
         this.context = context;
         this.dataList = dataList;
+    }
+
+    public void setItemClickListener(RecipeListItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -45,7 +50,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         return dataList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTV, prepTimeTV, servingsTV, categoryTV;
 
         public ViewHolder(@NonNull View itemView) {
@@ -55,6 +60,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             prepTimeTV = itemView.findViewById(R.id.list_prep_time);
             servingsTV = itemView.findViewById(R.id.list_num_servings);
             categoryTV = itemView.findViewById(R.id.list_recipe_category);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (listener != null) {
+                listener.onClick(view, getAdapterPosition());
+            }
         }
     }
 }
