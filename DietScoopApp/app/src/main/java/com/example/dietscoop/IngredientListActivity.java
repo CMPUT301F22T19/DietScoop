@@ -32,7 +32,7 @@ public class IngredientListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ingredient_list);
 
         ingredientListView = findViewById(R.id.ingredient_list);
-        ingredientListView.setHasFixedSize(true);
+        ingredientListView.setHasFixedSize(false);
         ingredientListView.setLayoutManager(new LinearLayoutManager(this));
 
         //Main container declarations:
@@ -44,13 +44,11 @@ public class IngredientListActivity extends AppCompatActivity {
 
         //testing code:
         //IngredientStorage sampleIngredientStorage = new IngredientStorage();
-        IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", "kg",
+        IngredientInStorage sampleIngredient = new IngredientInStorage("Poop", "kg",
                 5, 2022, 4, 25, Location.freezer, Category.meat);
         //sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
         //sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
         foodStorage.addIngredientToStorage(sampleIngredient);
-
-
 
         ingredientButton = findViewById(R.id.ingr_nav);
         recipesButton = findViewById(R.id.recipes_nav);

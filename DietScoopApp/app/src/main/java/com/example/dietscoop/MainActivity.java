@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToIngredientList(View view) {
 
-        //testing code
-        recipeStorage.removeRecipeFromStorage(recipeStorage.getRecipeStorage().get(0));
+//        //testing code
+//        recipeStorage.removeRecipeFromStorage(recipeStorage.getRecipeStorage().get(0));
 
         Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);

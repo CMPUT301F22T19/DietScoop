@@ -26,9 +26,9 @@ enum Category {
 
 public abstract class Ingredient extends FoodItem{
 
-    double amount;
-    String measurementUnit;
-    Category category;
+    private double amount;
+    private String measurementUnit;
+    private Category category;
 
     public Ingredient(String description, String measurementUnit, double amount, Category category) {
         this.description = description;

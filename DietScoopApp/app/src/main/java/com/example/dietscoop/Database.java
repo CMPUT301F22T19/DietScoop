@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class Database {
@@ -46,7 +47,8 @@ public class Database {
         int year = expiry.getYear();
         int month = expiry.getMonthValue();
         int day = expiry.getDayOfMonth();
-        ingredientDetails.put("amount", Integer.valueOf(ingredient.getAmount()));
+        ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
+        ingredientDetails.put("amount", Double.valueOf(ingredient.getAmount()));
         ingredientDetails.put("unit", ingredient.getMeasurementUnit());
         ingredientDetails.put("year", Integer.valueOf(year));
         ingredientDetails.put("month", Integer.valueOf(month));
@@ -93,10 +95,10 @@ public class Database {
         // also, this requires the passed-in ingredient to already have an ID, which we get from
         // Firestore, so it has to get the ID from the ingredient being edited
         Map<String, Object> ingredientDetails = new HashMap<>();
-        Calendar expiry = ingredient.getBestBeforeDate();
-        int year = expiry.get(Calendar.YEAR);
-        int month = expiry.get(Calendar.MONTH);
-        int day = expiry.get(Calendar.DATE);
+        LocalDate expiry = ingredient.getBestBeforeDate();
+        int year = expiry.getYear();
+        int month = expiry.getMonthValue();
+        int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", Double.valueOf(ingredient.getAmount()));
         ingredientDetails.put("unit", ingredient.getMeasurementUnit().toLowerCase());

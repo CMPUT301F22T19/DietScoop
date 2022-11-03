@@ -43,7 +43,7 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
         if (dataList != null && dataList.size() > 0) {
             IngredientInStorage ingredient = dataList.get(position);
             holder.unitTV.setText(ingredient.getMeasurementUnit());
-            holder.dateTV.setText(ingredient.getDescription());
+            holder.nameTV.setText(ingredient.getDescription());
             holder.countTV.setText(String.valueOf(ingredient.getAmount()));
             holder.dateTV.setText(ingredient.getFormattedBestBefore());
         }
