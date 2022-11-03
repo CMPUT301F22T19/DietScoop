@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class RecipeListActivity extends AppCompatActivity {
     ListView recipeListView;
-    ArrayList<Recipe> recipes;
+
     RecipeListAdapter recipeListAdapter;
 
     RecipeStorage recipeStorage;
