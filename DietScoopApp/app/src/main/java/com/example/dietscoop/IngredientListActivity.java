@@ -135,8 +135,9 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         ingredientStorageAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
 
-    public void onClick(View view, int position) {
         ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
         IngredientInStorage ingredient = ingredients.get(position);
         new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");

@@ -75,7 +75,7 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
         @Override
         public void onClick(View view){
             if(listener != null){
-                listener.onClick(view, getAdapterPosition());
+                listener.onItemClick(view, getAdapterPosition());
             }
         }
     }
