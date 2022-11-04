@@ -17,7 +17,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * The Database class provides the methods and functionality for connecting with the Firestore database.
+ */
 public class Database implements Serializable {
+
     private static final String TAG = "testing";
     private FirebaseFirestore db;
     private CollectionReference ingredientStorage;

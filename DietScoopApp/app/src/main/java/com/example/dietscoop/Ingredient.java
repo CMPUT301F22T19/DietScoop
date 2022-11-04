@@ -4,10 +4,19 @@ import java.io.Serializable;
 import java.util.Locale;
 
 enum Category implements Serializable {
+/**
+ *  Category for different ingredients
+ */
+enum Category {
     vegetable,
     meat,
     fruit;
 
+    /**
+     * Method change string to Enum class
+     * @param name String to change to enum
+     * @return Enum value of category
+     */
     public static Category stringToCategory(String name) {
         name = name.toUpperCase(Locale.ROOT);
 
@@ -25,12 +34,21 @@ enum Category implements Serializable {
     }
 }
 
+/**
+ * Ingredient abstract class to be inherented by ingredient and ingredient in storage
+ */
 public abstract class Ingredient extends FoodItem implements Serializable {
-
     private double amount;
     private String measurementUnit;
     private Category category;
 
+    /**
+     * Constructor for Ingredient
+     * @param description Description of ingredient
+     * @param measurementUnit Measurement unit of ingredient
+     * @param amount Amount of ingredient
+     * @param category Category of ingredient.
+     */
     public Ingredient(String description, String measurementUnit, double amount, Category category) {
         this.description = description;
         this.amount = amount;
@@ -39,6 +57,10 @@ public abstract class Ingredient extends FoodItem implements Serializable {
 
     }
 
+    /**
+     * getter for ingredient amount
+     * @return ingredient amount
+     */
     public double getAmount() {
         return amount;
     }
