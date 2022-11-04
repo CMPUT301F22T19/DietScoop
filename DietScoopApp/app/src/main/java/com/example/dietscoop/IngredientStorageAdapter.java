@@ -46,6 +46,8 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
             holder.nameTV.setText(ingredient.getDescription());
             holder.countTV.setText(String.valueOf(ingredient.getAmount()));
             holder.dateTV.setText(ingredient.getFormattedBestBefore());
+            holder.locationTV.setText(ingredient.getLocationName());
+            holder.categoryTV.setText(ingredient.getCategoryName());
         }
     }
 
@@ -56,7 +58,7 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTV, countTV, unitTV, dateTV;
+        TextView nameTV, countTV, unitTV, dateTV, locationTV, categoryTV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -64,6 +66,8 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
             countTV = itemView.findViewById(R.id.count_text);
             unitTV = itemView.findViewById(R.id.unit_text);
             dateTV = itemView.findViewById(R.id.Best_Before_Text);
+            locationTV = itemView.findViewById(R.id.Location_Text);
+            categoryTV = itemView.findViewById(R.id.Category_Text);
         }
     }
 
