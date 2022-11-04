@@ -98,7 +98,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             }
         });
 
-        ingredientStorageAdapter.setClickListener(this);
+        ingredientStorageAdapter.setItemClickListener(this);
 
     }
     // TODO: add bundled info
@@ -118,11 +118,27 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.addIngredientToStorage(newIngredientInStorage);
     }
 
+    @Override
+    public void onOkPressedUpdate(IngredientInStorage updateIngredientInStorage){
+        foodStorage.updateIngredientInStorage(updateIngredientInStorage);
+    }
+
+    @Override
+    public void onDeletePressed(IngredientInStorage deleteIngredientInStorage){
+        foodStorage.removeIngredientFromStorage(deleteIngredientInStorage);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSortSelection(sortIngredientByFragment.selection sortBy) {
         foodStorage.sortBy(sortBy);
         ingredientStorageAdapter.notifyDataSetChanged();
+    }
+
+    public void onClick(View view, int position) {
+        ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
+        IngredientInStorage ingredient = ingredients.get(position);
+        new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
     }
 
     // POSSIBLE TODO: could be used to fix animations

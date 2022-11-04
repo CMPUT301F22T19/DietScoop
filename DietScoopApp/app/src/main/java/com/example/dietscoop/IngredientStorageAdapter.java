@@ -33,8 +33,6 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
         this.dataList = dataList;
     }
 
-
-
     @NonNull
     @Override
     public IngredientStorageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -58,15 +56,20 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
         return dataList.size();
     }
 
+    public void setItemClickListener(RecyclerItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, countTV, unitTV, dateTV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             nameTV = itemView.findViewById(R.id.description_text);
             countTV = itemView.findViewById(R.id.count_text);
             unitTV = itemView.findViewById(R.id.unit_text);
             dateTV = itemView.findViewById(R.id.Best_Before_Text);
+
             itemView.setOnClickListener(this);
         }
         @Override
@@ -76,7 +79,6 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
             }
         }
     }
-
 
     public void addIngredientStorage(IngredientInStorage ingredient) {
         dataList.add(ingredient);
