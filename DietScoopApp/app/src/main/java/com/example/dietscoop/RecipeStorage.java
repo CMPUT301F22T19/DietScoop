@@ -69,18 +69,11 @@ public class RecipeStorage implements Serializable {
 
     public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener
             (RecyclerView.Adapter adapter) {
-    /**
-     * Initialize listener for snapshots of the recipes in the database
-     */
-    public void setupRecipeSnapshotListener() {
-        setupRecipeSnapshotListener(null);
-    }
 
     /**
      * Method to listen for snapshot with recipe adapter passed in.
      * @param adapter adapter notifying the database of change in recipes
      */
-    public void setupRecipeSnapshotListener(RecipeListAdapter adapter) {
         //TODO: How is this gonna work???
         com.google.firebase.firestore.ListenerRegistration registration =
                 db.getRecipeCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {

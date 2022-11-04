@@ -6,7 +6,6 @@ public abstract class FoodItem implements Serializable {
 /**
  * The abstract class FoodItem abstracts the shared methods of ingredient and recipe
  */
-public abstract class FoodItem {
     protected String description;
 
     /**

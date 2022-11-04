@@ -8,7 +8,6 @@ enum timeUnit implements Serializable {
 /**
  * Enum representing time units
  */
-enum timeUnit {
     hour,
     minute;
 
