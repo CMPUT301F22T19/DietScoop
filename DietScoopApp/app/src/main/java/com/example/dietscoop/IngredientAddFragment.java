@@ -99,34 +99,49 @@ public class IngredientAddFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String strDescription = description.getText().toString();
-
+                        if (strDescription.length() == 0) {
+                            strDescription = "No description available";
+                        }
                         String strAmount = amount.getText().toString();
-                        double doubleAmount = 0;
+                        double doubleAmount = 0.0;
                         int yearI = 0;
                         int monthI = 0;
                         int dayI = 0;
                         if (!isNumeric(strAmount, TypeIsNumeric.d)) {
-                            doubleAmount = -1.0;
+                            doubleAmount = 1.0;
                         }
 
                         String strYear = year.getText().toString();
                         if (!isNumeric(strYear, TypeIsNumeric.i)) {
-                            yearI = -1;
+                            yearI = 2001;
                         }
 
                         String strCategory = category.getText().toString();
-                        String strLocation = location.getText().toString();
-                        String strUnit = unit.getText().toString();
+                        if (strCategory != "vegetable" || strCategory != "meat" || strCategory != "fruit") {
+                            strCategory = "No category";
+                        }
 
+                        String strLocation = location.getText().toString();
+                        if (strLocation.toLowerCase() != "pantry"
+                                || strLocation.toLowerCase() != "freezer"
+                                || strLocation.toLowerCase() != "freezer") {
+                            strLocation = "freezer";
+                        }
+                        String strUnit = unit.getText().toString();
+                        if (strUnit.length() == 0) {
+                            strUnit = "kg";
+                        }
                         String strDay = day.getText().toString();
                         if (!isNumeric(strDay, TypeIsNumeric.i)) {
-                            dayI = -1;
+                            dayI = 19;
                         }
 
                         String strMonth = month.getText().toString();
                         if (!isNumeric(strMonth, TypeIsNumeric.i)) {
-                            monthI = -1;
+                            monthI = 9;
                         }
+
+                        Log.i("d", strDescription);
 
                         Location location = Location.stringToLocation(strLocation);
                         Category ingredientCategory = Category.stringToCategory(strCategory);
