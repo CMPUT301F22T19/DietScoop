@@ -11,8 +11,8 @@
         android:layout_weight="1"
         android:height="10dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Description" />
+        android:hint="Enter description"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/edit_amount_ingredient_storage"
@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Amount" />
+        android:hint="Enter amount"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/edit_category_ingredient_storage"
@@ -29,8 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Category" />
+        android:hint="Enter category"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/edit_location_ingredient_storage"
@@ -38,8 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Location" />
+        android:hint="Enter location"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/edit_unit_ingredient_storage"
@@ -47,8 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Unit" />
+        android:hint="Enter unit"
+        android:inputType="textPersonName" />
 
 
     <EditText
@@ -57,8 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Day" />
+        android:hint="Enter day"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/edit_month_ingredient_storage"
@@ -66,8 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Month" />
+        android:hint="Enter month"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/edit_year_ingredient_storage"
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Year" />
+        android:hint="Enter year"
+        android:inputType="textPersonName" />
 
 </LinearLayout>
