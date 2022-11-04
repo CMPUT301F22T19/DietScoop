@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 public class ViewRecipe extends AppCompatActivity {
 
-    TextView prepTime, numServings, category, instructions;
+    TextView prepTime, numServings, category, instructions, name;
     RecyclerView ingredientsView;
     RecipeStorage storage;
     IngredientRecipeAdapter adapter;
-    int currentRecipePosition;
+    Recipe currentRecipe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +24,7 @@ public class ViewRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_view_recipe);
 
         Intent intent = getIntent();
-        storage = (RecipeStorage) intent.getSerializableExtra("RECIPE STORAGE");
-        currentRecipePosition = intent.getIntExtra("POSITION", -1);
-        if (currentRecipePosition == -1) {
-            throw new RuntimeException("FAILED TO GET POSITION FROM INTENT");
-        }
+        currentRecipe = (Recipe) intent.getSerializableExtra("RECIPE");
 
         initialize();
         updateTextViews();
@@ -41,9 +38,13 @@ public class ViewRecipe extends AppCompatActivity {
         category = findViewById(R.id.recipe_category);
         instructions = findViewById(R.id.recipe_instructions);
         ingredientsView = findViewById(R.id.recipe_recycler_view);
+        name = findViewById(R.id.recipe_title);
+
+        storage = new RecipeStorage();
+        storage.getRecipeStorageFromDatabase();
 
         adapter = new IngredientRecipeAdapter(this,
-                storage.getRecipeStorage().get(currentRecipePosition).getIngredients());
+                currentRecipe.getIngredients());
 
         ingredientsView.setAdapter(adapter);
         ingredientsView.setHasFixedSize(false);
@@ -56,12 +57,12 @@ public class ViewRecipe extends AppCompatActivity {
 
     private void updateTextViews() {
 
-        Recipe recipe = storage.getRecipeStorage().get(currentRecipePosition);
+        prepTime.setText(String.valueOf(currentRecipe.getPrepTime()));
+        numServings.setText(String.valueOf(currentRecipe.getNumOfServings()));
+        category.setText(currentRecipe.getCategoryName());
+        instructions.setText(currentRecipe.getInstructions());
+        name.setText(String.valueOf(currentRecipe.getDescription()));
 
-        prepTime.setText(String.valueOf(recipe.getPrepTime()));
-        numServings.setText(String.valueOf(recipe.getNumOfServings()));
-        category.setText(recipe.getCategoryName());
-        instructions.setText(recipe.getInstructions());
     }
 
 }

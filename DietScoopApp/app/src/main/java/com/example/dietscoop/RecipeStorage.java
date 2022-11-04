@@ -89,4 +89,15 @@ public class RecipeStorage implements Serializable {
         });
         return registration;
     }
+
+    public Recipe getRecipeByDesc(String description) {
+        for (Recipe recipe : recipes) {
+            Log.i("CHECKED NAME", recipe.getDescription());
+            if (recipe.getDescription().equals(description)) {
+                return recipe;
+            }
+        }
+
+        return null;
+    }
 }

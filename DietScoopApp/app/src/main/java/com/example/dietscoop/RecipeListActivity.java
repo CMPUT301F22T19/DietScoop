@@ -77,7 +77,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, ViewRecipe.class);
-        intent.putExtra("RECIPE NAME", recipeStorage.getRecipeStorage().get(position).getDescription());
+        intent.putExtra("RECIPE", recipeStorage.getRecipeStorage().get(position));
         startActivity(intent);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.dietscoop;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,13 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
     public void onBindViewHolder(@NonNull IngredientRecipeAdapter.ViewHolder holder, int position) {
         if (ingredientsList != null && ingredientsList.size() > 0) {
             Ingredient ingredient = ingredientsList.get(position);
-            holder.recipe_ingredient_name_tv.setText(ingredient.getDescription());
+            holder.recipe_ingredient_name_tv.setText(String.valueOf(ingredient.getDescription()));
             holder.recipe_ingredient_amount_tv.setText(Double.toString(ingredient.getAmount()));
             holder.recipe_ingredient_unit_tv.setText(ingredient.getMeasurementUnit());
             holder.recipe_ingredient_category_tv.setText(ingredient.getCategoryName());
+
+            Log.i("INGREDIENT NAME", holder.recipe_ingredient_name_tv.getText().toString());
+            Log.i("INGREDIENT AMOUNT", holder.recipe_ingredient_amount_tv.getText().toString());
         }
     }
 
