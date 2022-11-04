@@ -32,7 +32,7 @@ public class EditInstructionsEntryFragmnet extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         return builder
                 .setView(view)
-                .setTitle("LMAO TESTEES")
+                .setTitle("Edit Instructions")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
