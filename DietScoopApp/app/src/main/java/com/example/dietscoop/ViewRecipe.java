@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ViewRecipe extends AppCompatActivity {
+public class ViewRecipe extends AppCompatActivity implements  View.OnClickListener {
 
     TextView prepTime, numServings, category, instructions, name;
     RecyclerView ingredientsView;
@@ -20,6 +20,7 @@ public class ViewRecipe extends AppCompatActivity {
     Recipe currentRecipe;
 
     Button backButton;
+    Button modifyRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class ViewRecipe extends AppCompatActivity {
 
         Intent intent = getIntent();
         currentRecipe = (Recipe) intent.getSerializableExtra("RECIPE");
+        modifyRecipe = findViewById(R.id.recipe_modify_button);
 
         initialize();
         updateTextViews();
@@ -83,4 +85,8 @@ public class ViewRecipe extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }
