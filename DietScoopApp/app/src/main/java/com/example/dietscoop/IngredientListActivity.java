@@ -50,24 +50,24 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.getIngredientStorageFromDatabase();
 
         //testing code:
-        //IngredientStorage sampleIngredientStorage = new IngredientStorage();
-        IngredientInStorage sampleIngredient = new IngredientInStorage("Poop", "kg",
-                5, 2022, 4, 25, Location.freezer, Category.meat);
-        //sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
-        //sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
-        foodStorage.addIngredientToStorage(sampleIngredient);
-
-        sampleIngredient = new IngredientInStorage("Roop", "kg",
-                5, 2022, 5, 25, Location.fridge, Category.meat);
-        foodStorage.addIngredientToStorage(sampleIngredient);
-
-        sampleIngredient = new IngredientInStorage("Toop", "kg",
-                5, 2022, 6, 25, Location.fridge, Category.fruit);
-        foodStorage.addIngredientToStorage(sampleIngredient);
-
-        sampleIngredient = new IngredientInStorage("Scoop", "kg",
-                5, 2022, 6, 25, Location.pantry, Category.vegetable);
-        foodStorage.addIngredientToStorage(sampleIngredient);
+//        //IngredientStorage sampleIngredientStorage = new IngredientStorage();
+//        IngredientInStorage sampleIngredient = new IngredientInStorage("Poop", "kg",
+//                5, 2022, 4, 25, Location.freezer, Category.meat);
+//        //sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
+//        //sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
+//
+//        sampleIngredient = new IngredientInStorage("Roop", "kg",
+//                5, 2022, 5, 25, Location.fridge, Category.meat);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
+//
+//        sampleIngredient = new IngredientInStorage("Toop", "kg",
+//                5, 2022, 6, 25, Location.fridge, Category.fruit);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
+//
+//        sampleIngredient = new IngredientInStorage("Scoop", "kg",
+//                5, 2022, 6, 25, Location.pantry, Category.vegetable);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
 
         ingredientButton = findViewById(R.id.ingr_nav);
         recipesButton = findViewById(R.id.recipes_nav);
