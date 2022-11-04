@@ -20,6 +20,7 @@ public class ViewRecipe extends AppCompatActivity {
     Recipe currentRecipe;
 
     Button backButton;
+    Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,14 @@ public class ViewRecipe extends AppCompatActivity {
             }
         });
 
+        deleteButton = findViewById(R.id.recipe_delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteThisRecipe();
+            }
+        });
+
         storage = new RecipeStorage();
         storage.getRecipeStorageFromDatabase();
 
@@ -78,9 +87,15 @@ public class ViewRecipe extends AppCompatActivity {
 
     }
 
-    public void goBack() {
+    private void goBack() {
         Intent intent = new Intent(this, RecipeListActivity.class);
         startActivity(intent);
     }
+
+    private void deleteThisRecipe() {
+        storage.removeRecipeFromStorage(currentRecipe);
+        goBack();
+    }
+
 
 }
