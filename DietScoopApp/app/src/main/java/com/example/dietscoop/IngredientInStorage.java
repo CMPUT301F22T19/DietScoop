@@ -7,8 +7,6 @@ import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * TODO: Need to add a custom equals() method for this wrapper class.
@@ -37,28 +35,6 @@ enum Location {
 
     }
 }
-
-//enum IngredientCategory {
-//    vegetable,
-//    meat,
-//    fruit;
-//
-//    public static IngredientCategory stringToCategory(String name) {
-//        name = name.toUpperCase(Locale.ROOT);
-//
-//        if (name == "VEGETABLE") {
-//            return vegetable;
-//        } else if (name == "MEAT") {
-//            return meat;
-//        } else if (name == "FRUIT") {
-//            return fruit;
-//        } else {
-//            // TODO: MAKE THIS THROW ERROR
-//            return null;
-//        }
-//
-//    }
-//}
 
 public class IngredientInStorage extends Ingredient{
 
@@ -90,6 +66,7 @@ public class IngredientInStorage extends Ingredient{
         return bestBeforeDate;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public String getFormattedBestBefore() {
         return bestBeforeDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }

@@ -1,12 +1,14 @@
 package com.example.dietscoop;
 
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -27,6 +29,7 @@ public class IngredientListActivity extends AppCompatActivity implements sortIng
     Button shoppingButton;
     Button sortButton;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
