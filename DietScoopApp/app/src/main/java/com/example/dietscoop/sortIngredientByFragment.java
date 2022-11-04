@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Fragment class for prompting user with sorting options for ingredients
+ */
 public class sortIngredientByFragment extends DialogFragment {
     private Button name, location, category, date;
     private OnFragmentInteractionListener listener;

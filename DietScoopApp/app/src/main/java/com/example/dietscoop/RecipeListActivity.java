@@ -18,6 +18,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+/**
+ * Class associated with the activity_recipe_list.xml file.
+ * This class handles the relation of Recipe list to display
+ */
 public class RecipeListActivity extends AppCompatActivity implements RecyclerItemClickListener {
     RecyclerView recipeListView;
     RecipeStorage recipeStorage;
@@ -101,7 +105,12 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
 
 
     // TODO: add bundled info
+
+    /**
+     * Method to handle navigation to Ingredients List Activity
+     */
     private void switchToIngredients() {
+        // TODO: add bundled info
         Intent switchActivityIntent = new Intent(this, IngredientListActivity.class);
         startActivity(switchActivityIntent);
     }

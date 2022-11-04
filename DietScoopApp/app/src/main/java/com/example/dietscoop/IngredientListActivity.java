@@ -22,6 +22,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+/**
+ * Class tying to Ingredient list. Associated with the activity_ingredient_list.xml layout.
+ */
 public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
     IngredientStorage foodStorage;
@@ -101,8 +104,12 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         ingredientStorageAdapter.setItemClickListener(this);
 
     }
-    // TODO: add bundled info
+
+    /**
+     * handler for switching to Recipe activity.
+     */
     private void switchToRecipes() {
+        // TODO: add bundled info
         Intent switchActivityIntent = new Intent(this, RecipeListActivity.class);
         startActivity(switchActivityIntent);
         final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
@@ -112,7 +119,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         });
 
     }
-
+    
     @Override
     public void onOkPressed(IngredientInStorage newIngredientInStorage) {
         foodStorage.addIngredientToStorage(newIngredientInStorage);

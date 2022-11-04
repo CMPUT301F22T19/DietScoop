@@ -15,28 +15,50 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+/**
+ * This class encapsulates the Database interface class.
+ * This class also acts as a container for the Storing of Recipes.
+ */
 public class RecipeStorage implements Serializable {
 
     private ArrayList<Recipe> recipes;
     private Database db;
 
+    /**
+     * Constructor for a recipe in storage. Initializes Database class.
+     */
     public RecipeStorage() {
         db = new Database();
         recipes = new ArrayList<Recipe>();
     }
 
+    /**
+     * Getter for ArrayList of recipes
+     * @return ArrayList of Recipes
+     */
     public ArrayList<Recipe> getRecipeStorage() {
         return recipes;
     }
 
+    /**
+     * Getter for Database recipes storage
+     */
     public void getRecipeStorageFromDatabase() {
         db.getRecipeStorage();
     }
 
+    /**
+     * Add Recipe to database recipe storage
+     * @param recipe Object to be added to database
+     */
     public void addRecipeToStorage(Recipe recipe) {
         db.addRecipeToStorage(recipe);
     }
 
+    /**
+     * Remove recipe from database recipe storage
+     * @param recipe Object to be removed from database
+     */
     public void removeRecipeFromStorage(Recipe recipe) {
         db.removeRecipeFromStorage(recipe);
     }
@@ -47,6 +69,18 @@ public class RecipeStorage implements Serializable {
 
     public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener
             (RecyclerView.Adapter adapter) {
+    /**
+     * Initialize listener for snapshots of the recipes in the database
+     */
+    public void setupRecipeSnapshotListener() {
+        setupRecipeSnapshotListener(null);
+    }
+
+    /**
+     * Method to listen for snapshot with recipe adapter passed in.
+     * @param adapter adapter notifying the database of change in recipes
+     */
+    public void setupRecipeSnapshotListener(RecipeListAdapter adapter) {
         //TODO: How is this gonna work???
         com.google.firebase.firestore.ListenerRegistration registration =
                 db.getRecipeCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {

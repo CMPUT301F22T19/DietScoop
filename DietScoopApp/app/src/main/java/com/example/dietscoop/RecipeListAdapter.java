@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * Class to adapt an ArrayList of recipes for a recycler view.
+ */
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Recipe> dataList;
@@ -51,6 +54,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         return dataList.size();
     }
 
+    /**
+     * ViewHolder for Recipes for recycler list use
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleTV, prepTimeTV, servingsTV, categoryTV;
 

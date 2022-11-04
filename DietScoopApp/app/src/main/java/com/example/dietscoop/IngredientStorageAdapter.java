@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
@@ -28,6 +27,11 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
     private ArrayList<IngredientInStorage> dataList;
     private RecyclerItemClickListener listener;
 
+    /**
+     * Constructor for IngredientStorage adapter
+     * @param context context to be used
+     * @param dataList ArrayList to be adapted
+     */
     public IngredientStorageAdapter(Context context, ArrayList<IngredientInStorage> dataList) {
         this.context = context;
         this.dataList = dataList;
@@ -63,6 +67,9 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
     }
 
 
+    /**
+     * ViewHolder of Adapter for RecyclerView
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, countTV, unitTV, dateTV, locationTV, categoryTV;
 
