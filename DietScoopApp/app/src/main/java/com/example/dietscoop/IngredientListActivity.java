@@ -100,11 +100,4 @@ public class IngredientListActivity extends AppCompatActivity implements sortIng
         ingredientStorageAdapter.notifyDataSetChanged();
     }
 
-    // POSSIBLE TODO: could be used to fix animations
-//    @Override
-//    public void finish() {
-//        super.finish();
-//        overridePendingTransition(androidx.navigation.ui.R.anim.nav_default_exit_anim, androidx.navigation.ui.R.anim.nav_default_enter_anim);
-//    }
-
 }
