@@ -16,6 +16,7 @@ import org.w3c.dom.Text;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.concurrent.RecursiveAction;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +26,7 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
 
     private Context context;
     private ArrayList<IngredientInStorage> dataList;
+    private RecyclerItemClickListener listener;
 
     public IngredientStorageAdapter(Context context, ArrayList<IngredientInStorage> dataList) {
         this.context = context;
@@ -54,8 +56,11 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
         return dataList.size();
     }
 
+    public void setItemClickListener(RecyclerItemClickListener listener) {
+        this.listener = listener;
+    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, countTV, unitTV, dateTV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,9 +69,16 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
             countTV = itemView.findViewById(R.id.count_text);
             unitTV = itemView.findViewById(R.id.unit_text);
             dateTV = itemView.findViewById(R.id.Best_Before_Text);
+
+            itemView.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View view){
+            if(listener != null){
+                listener.onClick(view, getAdapterPosition());
+            }
         }
     }
-
 
     public void addIngredientStorage(IngredientInStorage ingredient) {
         dataList.add(ingredient);

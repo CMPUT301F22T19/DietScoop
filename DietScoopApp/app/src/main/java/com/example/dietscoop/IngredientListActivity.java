@@ -20,7 +20,9 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener {
+import java.util.ArrayList;
+
+public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -95,6 +97,9 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
                 new sortIngredientByFragment().show(getFragmentManager(),"SORT_BY");
             }
         });
+
+        ingredientStorageAdapter.setItemClickListener(this);
+
     }
     // TODO: add bundled info
     private void switchToRecipes() {
@@ -113,11 +118,35 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.addIngredientToStorage(newIngredientInStorage);
     }
 
+    @Override
+    public void onOkPressedUpdate(IngredientInStorage updateIngredientInStorage){
+        foodStorage.updateIngredientInStorage(updateIngredientInStorage);
+    }
+
+    @Override
+    public void onDeletePressed(IngredientInStorage deleteIngredientInStorage){
+        foodStorage.removeIngredientFromStorage(deleteIngredientInStorage);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSortSelection(sortIngredientByFragment.selection sortBy) {
         foodStorage.sortBy(sortBy);
         ingredientStorageAdapter.notifyDataSetChanged();
     }
+
+
+    public void onClick(View view, int position) {
+        ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
+        IngredientInStorage ingredient = ingredients.get(position);
+        new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
+    }
+
+    // POSSIBLE TODO: could be used to fix animations
+//    @Override
+//    public void finish() {
+//        super.finish();
+//        overridePendingTransition(androidx.navigation.ui.R.anim.nav_default_exit_anim, androidx.navigation.ui.R.anim.nav_default_enter_anim);
+//    }
 
 }
