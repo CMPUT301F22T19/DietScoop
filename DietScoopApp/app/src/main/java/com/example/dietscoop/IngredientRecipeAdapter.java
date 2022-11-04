@@ -11,11 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
+/**
+ * Class for adapting IngredientRecipe for view in recycler view.
+ */
 public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientRecipeAdapter.ViewHolder> {
 
     Context context;
     ArrayList<IngredientInRecipe> ingredientsList;
 
+    /**
+     * Constructor for an IngredientRecipeAdapter.
+     * @param context context in which adapter operates.
+     * @param ingredientsList ArrayList of ingredients to be adapted.
+     */
     public IngredientRecipeAdapter(Context context, ArrayList<IngredientInRecipe> ingredientsList) {
         this.context = context;
         this.ingredientsList = ingredientsList;
@@ -48,6 +56,9 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
         return ingredientsList.size();
     }
 
+    /**
+     * View holder for ingredient in recipe adapter.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView recipe_ingredient_name_tv,recipe_ingredient_amount_tv,recipe_ingredient_unit_tv,recipe_ingredient_category_tv;
         public ViewHolder(@NonNull View itemView) {
