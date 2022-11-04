@@ -17,14 +17,14 @@ import java.util.ArrayList;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Recipe> dataList;
-    private RecipeListItemClickListener listener;
+    private RecyclerItemClickListener listener;
 
     public RecipeListAdapter(Context context, ArrayList<Recipe> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
 
-    public void setItemClickListener(RecipeListItemClickListener listener) {
+    public void setItemClickListener(RecyclerItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -68,7 +68,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         @Override
         public void onClick(View view) {
             if (listener != null) {
-                listener.onRecipeItemClick(view, getAdapterPosition());
+                listener.onItemClick(view, getAdapterPosition());
             }
         }
     }

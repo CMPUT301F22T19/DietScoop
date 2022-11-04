@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class RecipeListActivity extends AppCompatActivity implements RecipeListItemClickListener {
+public class RecipeListActivity extends AppCompatActivity implements RecyclerItemClickListener {
     RecyclerView recipeListView;
     RecipeStorage recipeStorage;
     RecipeListAdapter recipeListAdapter;
@@ -75,10 +75,9 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListI
     }
 
     @Override
-    public void onRecipeItemClick(View view, int position) {
+    public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, ViewRecipe.class);
-        intent.putExtra("RECIPE STORAGE", recipeStorage);
-        intent.putExtra("POSITION", position);
+        intent.putExtra("RECIPE NAME", recipeStorage.getRecipeStorage().get(position).getDescription());
         startActivity(intent);
     }
 }
