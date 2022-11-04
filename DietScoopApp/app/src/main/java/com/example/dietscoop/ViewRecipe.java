@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ViewRecipe extends AppCompatActivity {
@@ -16,7 +17,6 @@ public class ViewRecipe extends AppCompatActivity {
     RecipeStorage storage;
     IngredientRecipeAdapter adapter;
     Recipe currentRecipe;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,8 @@ public class ViewRecipe extends AppCompatActivity {
 
         adapter = new IngredientRecipeAdapter(this,
                 currentRecipe.getIngredients());
+
+        Log.i("DESCRIPTION IN INIT", currentRecipe.getDescription());
 
         ingredientsView.setAdapter(adapter);
         ingredientsView.setHasFixedSize(false);
