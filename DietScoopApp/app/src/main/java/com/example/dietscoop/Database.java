@@ -24,6 +24,9 @@ public class Database implements Serializable {
     private CollectionReference recipeStorage;
     private CollectionReference ingredientsInRecipe;
 
+    /**
+     * Constructor for the Database class.
+     */
     public Database() {
         db = FirebaseFirestore.getInstance();
         ingredientStorage = db.collection("IngredientStorage");
@@ -36,13 +39,17 @@ public class Database implements Serializable {
 
 
     /**
-     * Getter for Firestore collection reference of Recipes collection. Does not query database
-     * @return
+     * Getter for Firestore collection reference of Recipes collection. Does not query database.
+     * @return collection reference to Ingredients storage
      */
     public CollectionReference getIngredientCollectionRef() {
         return ingredientStorage;
     }
 
+    /**
+     * Method for adding ingredient to Firestore database.
+     * @param ingredient the ingredient object to be added to database
+     */
     public void addIngredientToStorage(IngredientInStorage ingredient) {
         Map<String, Object> ingredientDetails = new HashMap<>();
         LocalDate expiry = ingredient.getBestBeforeDate();
@@ -64,7 +71,7 @@ public class Database implements Serializable {
     }
 
     /**
-     * queries IngredientStorage collection in database
+     * queries IngredientStorage collection in database.
      */
     public void getIngredientStorage() {
 
@@ -82,6 +89,10 @@ public class Database implements Serializable {
         ingredientStorage.get();
     }
 
+    /**
+     * Method for removing ingredient from Firestore database. Method removes associated object.
+     * @param ingredientInStorage general ingredient in storage to remove
+     */
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
         Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
         ingredientStorage.document(ingredientInStorage.getId()).delete()
@@ -93,6 +104,10 @@ public class Database implements Serializable {
                 });
     }
 
+    /**
+     * Method to update the an ingredient in storage.
+     * @param ingredient new ingredient to be added in place of old
+     */
     public void updateIngredientInStorage(IngredientInStorage ingredient) {
         // also, this requires the passed-in ingredient to already have an ID, which we get from
         // Firestore, so it has to get the ID from the ingredient being edited
@@ -120,7 +135,10 @@ public class Database implements Serializable {
 
     /*************************** RECIPE METHODS ******************************/
 
-
+    /**
+     * Method for adding recipe to Firestore database.
+     * @param recipe the recipe object to be added to database
+     */
     public void addRecipeToStorage(Recipe recipe) {
         // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
@@ -147,6 +165,10 @@ public class Database implements Serializable {
         recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
     }
 
+    /**
+     * Method for removing Recipe from Firestore database. Method removes associated object.
+     * @param recipe Object to be removed from the database
+     */
     public void removeRecipeFromStorage(Recipe recipe) {
         //TODO: serious issue: removing doc does not remove subcollection, so need to go through and delete
         // each doc in sub-collection, but HOW??
@@ -162,15 +184,22 @@ public class Database implements Serializable {
 
     /**
      * Getter for Firestore collection reference for Recipes collection. Does not query database
-     * @return
+     * @return reference to remote recipe collection
      */
     public CollectionReference getRecipeCollectionRef() {return this.recipeStorage;}
 
+    /**
+     * Query recipe collection in Firestore databases
+     */
     public void getRecipeStorage() {
         // queries recipes collection in DB
         recipeStorage.get();
     }
 
+    /**
+     * Method to update the a recipe in storage.
+     * @param recipe object that will be updated with new recipe
+     */
     public void updateRecipeInStorage(Recipe recipe) {
         // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
@@ -194,10 +223,6 @@ public class Database implements Serializable {
                     .document(ingredientInRecipe.getDescription().toLowerCase()).set(ingredientDetails);
         }
     }
-
-
-
-
 }
 
 
