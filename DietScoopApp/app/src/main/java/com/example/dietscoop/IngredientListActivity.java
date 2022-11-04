@@ -20,7 +20,9 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener {
+import java.util.ArrayList;
+
+public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -95,6 +97,9 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
                 new sortIngredientByFragment().show(getFragmentManager(),"SORT_BY");
             }
         });
+
+        ingredientStorageAdapter.setClickListener(this);
+
     }
     // TODO: add bundled info
     private void switchToRecipes() {
