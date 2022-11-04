@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Name"
         android:textAlignment="center"
         android:textColor="#757575"/>
     <EditText
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Prep time"
+        android:hint="Prep time"
         android:textAlignment="center"
         android:textColor="#757575"/>
     <EditText
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="No. of servings"
+        android:hint="No. of servings"
         android:textAlignment="center"
         android:textColor="#757575"/>
     <EditText
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Category"
+        android:hint="Category"
         android:textAlignment="center"
         android:textColor="#757575"/>
 </LinearLayout>
