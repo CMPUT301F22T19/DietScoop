@@ -118,7 +118,7 @@ public class IngredientAddFragment extends DialogFragment {
 
                         String strCategory = category.getText().toString();
                         if (strCategory != "vegetable" || strCategory != "meat" || strCategory != "fruit") {
-                            strCategory = "No category";
+                            strCategory = "vegetable";
                         }
 
                         String strLocation = location.getText().toString();
@@ -140,8 +140,6 @@ public class IngredientAddFragment extends DialogFragment {
                         if (!isNumeric(strMonth, TypeIsNumeric.i)) {
                             monthI = 9;
                         }
-
-                        Log.i("d", strDescription);
 
                         Location location = Location.stringToLocation(strLocation);
                         Category ingredientCategory = Category.stringToCategory(strCategory);
@@ -192,13 +190,59 @@ public class IngredientAddFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        ingredientToBeChanged.setDescription(description.getText().toString());
-                        ingredientToBeChanged.setAmount(Integer.parseInt(amount.getText().toString()));
-                        ingredientToBeChanged.setCategory(Category.stringToCategory(category.getText().toString()));
-                        ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString()));
-                        ingredientToBeChanged.setBestBeforeDate(Integer.parseInt(year.getText().toString()), Integer.parseInt(month.getText().toString()),
-                                Integer.parseInt(year.getText().toString()));
-                        ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
+                        if (description.getText().toString().length() == 0) {
+                            ingredientToBeChanged.setDescription("No description available");
+                        } else {
+                            ingredientToBeChanged.setDescription(description.getText().toString());
+                        }
+
+                        int yearI = 0;
+                        int monthI = 0;
+                        int dayI = 0;
+                        if (!isNumeric(amount.getText().toString(), TypeIsNumeric.d)) {
+                            ingredientToBeChanged.setAmount(0.0);
+                        } else {
+                            ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
+                        }
+
+                        if (!isNumeric(year.getText().toString(), TypeIsNumeric.i)) {
+                            yearI = 2001;
+                        } else {
+                            yearI = Integer.parseInt(year.getText().toString());
+                        }
+
+                        if (!isNumeric(day.getText().toString(), TypeIsNumeric.i)) {
+                            dayI = 19;
+                        } else {
+                            dayI = Integer.parseInt(day.getText().toString());
+                        }
+
+                        if (!isNumeric(month.getText().toString(), TypeIsNumeric.i)) {
+                            monthI = 9;
+                        } else {
+                            monthI = Integer.parseInt(month.getText().toString());
+                        }
+                        ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
+
+                        if (category.getText().toString() != "vegetable" || category.getText().toString() != "meat" || category.getText().toString() != "fruit") {
+                            ingredientToBeChanged.setCategory(Category.stringToCategory("vegetable"));
+                        } else {
+                            ingredientToBeChanged.setCategory(Category.stringToCategory(category.getText().toString()));
+                        }
+
+                        if (location.getText().toString().toLowerCase() != "pantry"
+                                || location.getText().toString().toLowerCase() != "freezer"
+                                || location.getText().toString().toLowerCase() != "fridge") {
+                            ingredientToBeChanged.setLocation(Location.stringToLocation("freezer"));
+                        } else {
+                            ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString().toLowerCase()));
+                        }
+
+                        if (unit.getText().toString().length() == 0) {
+                            ingredientToBeChanged.setMeasurementUnit("kg");
+                        } else {
+                            ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
+                        }
                     }
                 });
         }
