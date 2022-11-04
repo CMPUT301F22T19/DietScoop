@@ -3,20 +3,22 @@ package com.example.dietscoop;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class RecipeStorage {
+public class RecipeStorage implements Serializable {
 
     private ArrayList<Recipe> recipes;
-    Database db;
+    private Database db;
 
     public RecipeStorage() {
         db = new Database();
@@ -39,13 +41,15 @@ public class RecipeStorage {
         db.removeRecipeFromStorage(recipe);
     }
 
-    public void setupRecipeSnapshotListener() {
-        setupRecipeSnapshotListener(null);
-    }
+//    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {
+//        return(setupRecipeSnapshotListener(null));
+//    }
 
-    public void setupRecipeSnapshotListener(RecipeListAdapter adapter) {
+    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener
+            (RecyclerView.Adapter adapter) {
         //TODO: How is this gonna work???
-        db.getRecipeCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
+        com.google.firebase.firestore.ListenerRegistration registration =
+                db.getRecipeCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
@@ -68,14 +72,6 @@ public class RecipeStorage {
                                     Category.stringToCategory(ingredient.get("category").toString())));
                         }
 
-//                        Log.i("balls",doc.getData().get("ingredients").toString().split(",")[i].split("=")[0]);
-//                        Log.i("balls",doc.getData().get("ingredients").toString().split(",")[0]);
-////                        Log.i("balls",doc.getData().entrySet().toArray()[1].toString());
-//                        Log.i("balls",doc.getData().entrySet().toArray()[2].toString());
-////                        Log.i("balls",doc.getData().entrySet().toArray()[3].toString());
-//                        Log.i("balls",balls.toString());
-//                        Log.i("preptime:",doc.getLong("prepTime").toString());
-//                        Log.i("preptime:",doc.getLong("prepTime").toString());
                         Recipe recipe = new Recipe(doc.getString("description"),
                                 doc.getLong("prepTime").intValue(),
                                 doc.getLong("servings").intValue(),
@@ -91,5 +87,17 @@ public class RecipeStorage {
                 }
             }
         });
+        return registration;
+    }
+
+    public Recipe getRecipeByDesc(String description) {
+        for (Recipe recipe : recipes) {
+            Log.i("CHECKED NAME", recipe.getDescription());
+            if (recipe.getDescription().equals(description)) {
+                return recipe;
+            }
+        }
+
+        return null;
     }
 }
