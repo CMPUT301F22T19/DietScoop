@@ -1,8 +1,10 @@
 package com.example.dietscoop;
 
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,6 +59,7 @@ public class IngredientStorage {
     public void setupIngredientSnapshotListener(IngredientStorageAdapter adapter) {
 
         db.getIngredientCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
                                         @Nullable FirebaseFirestoreException e) {
@@ -86,6 +89,7 @@ public class IngredientStorage {
                 });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortBy(sortIngredientByFragment.selection sortBy) {
         switch (sortBy) {
             case NAME:

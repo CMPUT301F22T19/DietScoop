@@ -1,21 +1,26 @@
 package com.example.dietscoop;
 
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class IngredientListActivity extends AppCompatActivity implements sortIngredientByFragment.OnFragmentInteractionListener {
+public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener {
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -27,6 +32,7 @@ public class IngredientListActivity extends AppCompatActivity implements sortIng
     Button shoppingButton;
     Button sortButton;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,11 @@ public class IngredientListActivity extends AppCompatActivity implements sortIng
 
         ingredientButton.setBackgroundColor(Color.rgb(252, 186, 3));
 
+        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
+        addIngredientButton.setOnClickListener((v) -> {
+            new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
+        });
+
         recipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,8 +100,20 @@ public class IngredientListActivity extends AppCompatActivity implements sortIng
     private void switchToRecipes() {
         Intent switchActivityIntent = new Intent(this, RecipeListActivity.class);
         startActivity(switchActivityIntent);
+        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
+
+        addIngredientButton.setOnClickListener((e) -> {
+            new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
+        });
+
     }
 
+    @Override
+    public void onOkPressed(IngredientInStorage newIngredientInStorage) {
+        foodStorage.addIngredientToStorage(newIngredientInStorage);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSortSelection(sortIngredientByFragment.selection sortBy) {
         foodStorage.sortBy(sortBy);

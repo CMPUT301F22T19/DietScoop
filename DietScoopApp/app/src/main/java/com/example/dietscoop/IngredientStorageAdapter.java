@@ -67,4 +67,8 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
         }
     }
 
+
+    public void addIngredientStorage(IngredientInStorage ingredient) {
+        dataList.add(ingredient);
+    }
 }

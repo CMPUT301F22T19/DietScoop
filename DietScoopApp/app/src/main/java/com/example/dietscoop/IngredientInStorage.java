@@ -34,7 +34,6 @@ enum Location {
             Log.i("null?", "LOCATION NOT RECOGNIZED");
             return null;
         }
-
     }
 }
 
