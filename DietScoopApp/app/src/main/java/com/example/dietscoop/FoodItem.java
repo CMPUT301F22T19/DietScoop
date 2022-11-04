@@ -1,6 +1,8 @@
 package com.example.dietscoop;
 
-public abstract class FoodItem {
+import java.io.Serializable;
+
+public abstract class FoodItem implements Serializable {
     protected String description;
 
     public String getDescription() {

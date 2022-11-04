@@ -1,8 +1,9 @@
 package com.example.dietscoop;
 
+import java.io.Serializable;
 import java.util.Locale;
 
-enum Category {
+enum Category implements Serializable {
     vegetable,
     meat,
     fruit;
@@ -24,7 +25,7 @@ enum Category {
     }
 }
 
-public abstract class Ingredient extends FoodItem{
+public abstract class Ingredient extends FoodItem implements Serializable {
 
     private double amount;
     private String measurementUnit;

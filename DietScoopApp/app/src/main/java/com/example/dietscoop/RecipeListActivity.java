@@ -1,5 +1,6 @@
 package com.example.dietscoop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity implements RecyclerItemClickListener {
     RecyclerView recipeListView;
     RecipeStorage recipeStorage;
     RecipeListAdapter recipeListAdapter;
@@ -60,6 +63,9 @@ public class RecipeListActivity extends AppCompatActivity {
                 switchToIngredients();
             }
         });
+
+        recipeListAdapter.setItemClickListener(this);
+
     }
 
     // TODO: add bundled info
@@ -68,4 +74,10 @@ public class RecipeListActivity extends AppCompatActivity {
         startActivity(switchActivityIntent);
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(this, ViewRecipe.class);
+        intent.putExtra("RECIPE", recipeStorage.getRecipeStorage().get(position));
+        startActivity(intent);
+    }
 }

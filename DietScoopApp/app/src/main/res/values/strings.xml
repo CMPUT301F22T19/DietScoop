@@ -13,6 +13,6 @@
     <string name="name_label">Name</string>
     <string name="amount_label">Amount</string>
     <string name="unit_label">Unit</string>
-    <string name="comment_label">Comments</string>
+    <string name="instructions_label">Instructions</string>
 
 </resources>
