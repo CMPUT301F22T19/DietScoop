@@ -44,10 +44,12 @@ public class IngredientAddFragment extends DialogFragment {
     // Error handing
     public interface OnFragmentInteractionListener {
         void onOkPressed(IngredientInStorage newIngredientInStorage);
+        void onOkPressedUpdate(IngredientInStorage updateIngredientInStorage);
+        void onDeletePressed(IngredientInStorage deleteIngredientInStorage);
     }
 
     public IngredientAddFragment(IngredientInStorage newStorageIngredient) {
-        ingredientToBeChanged = newStorageIngredient;
+        this.ingredientToBeChanged = newStorageIngredient;
     }
 
     public IngredientAddFragment() {
@@ -202,6 +204,12 @@ public class IngredientAddFragment extends DialogFragment {
                 .setView(view)
                 .setTitle("Modify ingredient")
                 .setNegativeButton("Cancel", null)
+                    .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            listener.onDeletePressed(ingredientToBeChanged);
+                        }
+                    })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -258,6 +266,7 @@ public class IngredientAddFragment extends DialogFragment {
                         } else {
                             ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
                         }
+                        listener.onOkPressedUpdate(ingredientToBeChanged);
                     }
                 });
         }

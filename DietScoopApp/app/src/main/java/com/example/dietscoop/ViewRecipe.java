@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ public class ViewRecipe extends AppCompatActivity {
     RecipeStorage storage;
     IngredientRecipeAdapter adapter;
     Recipe currentRecipe;
+
+    Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,14 @@ public class ViewRecipe extends AppCompatActivity {
         instructions = findViewById(R.id.recipe_instructions);
         ingredientsView = findViewById(R.id.recipe_recycler_view);
         name = findViewById(R.id.recipe_title);
+
+        backButton = findViewById(R.id.recipe_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBack();
+            }
+        });
 
         storage = new RecipeStorage();
         storage.getRecipeStorageFromDatabase();
@@ -65,6 +76,11 @@ public class ViewRecipe extends AppCompatActivity {
         instructions.setText(currentRecipe.getInstructions());
         name.setText(String.valueOf(currentRecipe.getDescription()));
 
+    }
+
+    public void goBack() {
+        Intent intent = new Intent(this, RecipeListActivity.class);
+        startActivity(intent);
     }
 
 }
