@@ -8,6 +8,7 @@
         android:id="@+id/list_recipe_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="7dp"
         android:layout_weight="1"
         android:text="title" />
 
@@ -15,6 +16,7 @@
         android:id="@+id/list_prep_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="4dp"
         android:layout_weight="1"
         android:text="prep time" />
 
@@ -22,6 +24,7 @@
         android:id="@+id/list_num_servings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="4dp"
         android:layout_weight="1"
         android:text="Servings" />
 
@@ -29,6 +32,7 @@
         android:id="@+id/list_recipe_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="4dp"
         android:layout_weight="1"
         android:text="Category" />
 </LinearLayout>
