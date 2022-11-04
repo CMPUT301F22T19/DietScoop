@@ -7,9 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * This class handles the creation of the
+ * recipe view activity.
+ *
+ * It handles the
+ * logic instantiation for the events that
+ * go on in this activity.
+ */
 public class ViewRecipe extends AppCompatActivity {
 
     TextView prepTime, numServings, category, instructions, name;
@@ -17,6 +26,7 @@ public class ViewRecipe extends AppCompatActivity {
     RecipeStorage storage;
     IngredientRecipeAdapter adapter;
     Recipe currentRecipe;
+    Button editInstructions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,8 @@ public class ViewRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_view_recipe);
 
         Intent intent = getIntent();
+
+        //Fetching the serialized recipe:
         currentRecipe = (Recipe) intent.getSerializableExtra("RECIPE");
 
         initialize();
@@ -55,6 +67,15 @@ public class ViewRecipe extends AppCompatActivity {
         storage.setupRecipeSnapshotListener(adapter);
         storage.getRecipeStorageFromDatabase();
 
+        //Adding the button here for instruction updating:
+        editInstructions = findViewById(R.id.recipe_add_comment_button);
+        editInstructions.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Need to launch the new fragment activity for editing the instructions.
+                new EditInstructionsEntryFragmnet().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
+            }
+        });
+
     }
 
     private void updateTextViews() {
@@ -65,6 +86,17 @@ public class ViewRecipe extends AppCompatActivity {
         instructions.setText(currentRecipe.getInstructions());
         name.setText(String.valueOf(currentRecipe.getDescription()));
 
+    }
+
+    public void updateInstructions(String text) {
+        //Changing the text for instructions and the recipe.
+        instructions.setText(text);
+        currentRecipe.setInstructions(text);
+
+        //Updating the recipe in the Database: Deletion of current recipe:
+        //+ updating with the most recently update.
+//        storage.removeRecipeFromStorage(currentRecipe);
+        storage.addRecipeToStorage(currentRecipe);
     }
 
 }

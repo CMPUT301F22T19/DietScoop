@@ -103,7 +103,7 @@ public class Recipe extends FoodItem implements Serializable {
     }
 
     public void setInstructions(String description) {
-        this.description = description;
+        this.instructions = description;
     }
 
     public int getNumberOfIngredients() {
