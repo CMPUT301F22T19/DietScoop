@@ -2,6 +2,7 @@ package com.example.dietscoop;
 
 import android.content.Context;
 import android.content.pm.LabeledIntent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             prepTimeTV = itemView.findViewById(R.id.list_prep_time);
             servingsTV = itemView.findViewById(R.id.list_num_servings);
             categoryTV = itemView.findViewById(R.id.list_recipe_category);
+
+            itemView.setOnClickListener(this);
         }
 
         @Override

@@ -64,22 +64,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListI
             }
         });
 
-        recipeListView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
+        recipeListAdapter.setItemClickListener(this);
 
     }
 
@@ -91,6 +76,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListI
 
     @Override
     public void onClick(View view, int position) {
-        Log.i("CLICKED ITEM", recipeStorage.getRecipeStorage().get(position).getDescription());
+        // TODO FOR KARAN
     }
 }
