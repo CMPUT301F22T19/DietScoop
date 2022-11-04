@@ -76,6 +76,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListI
 
     @Override
     public void onClick(View view, int position) {
-        // TODO FOR KARAN
+        Intent intent = new Intent(this, ViewRecipe.class);
+        startActivity(intent);
     }
 }
