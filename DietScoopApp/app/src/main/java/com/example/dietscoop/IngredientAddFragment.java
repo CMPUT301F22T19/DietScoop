@@ -20,6 +20,11 @@ import androidx.fragment.app.DialogFragment;
 import java.time.LocalDate;
 import java.util.Calendar;
 
+enum TypeIsNumeric {
+    i,
+    d;
+}
+
 public class IngredientAddFragment extends DialogFragment {
     private EditText description;
     private EditText amount;
@@ -35,7 +40,7 @@ public class IngredientAddFragment extends DialogFragment {
     private String categoryString;
     private LocalDate bestBeforeDateTemp;
     // For getting the string version of Calendar
-
+    // Error handing
     public interface OnFragmentInteractionListener {
         void onOkPressed(IngredientInStorage newIngredientInStorage);
     }
@@ -58,6 +63,19 @@ public class IngredientAddFragment extends DialogFragment {
         }
     }
 
+    private static boolean isNumeric(String str, TypeIsNumeric t) {
+        try {
+            if (t.equals(TypeIsNumeric.i)) {
+                Integer.parseInt(str);
+            } else if (t.equals(TypeIsNumeric.d)) {
+                Double.parseDouble(str);
+            }
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -70,7 +88,6 @@ public class IngredientAddFragment extends DialogFragment {
         day = view.findViewById(R.id.edit_day_ingredient_storage);
         month = view.findViewById(R.id.edit_month_ingredient_storage);
         year = view.findViewById(R.id.edit_year_ingredient_storage);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         if (ingredientToBeChanged == null) {
@@ -82,18 +99,40 @@ public class IngredientAddFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String strDescription = description.getText().toString();
+
                         String strAmount = amount.getText().toString();
+                        double doubleAmount = 0;
+                        int yearI = 0;
+                        int monthI = 0;
+                        int dayI = 0;
+                        if (!isNumeric(strAmount, TypeIsNumeric.d)) {
+                            doubleAmount = -1.0;
+                        }
+
+                        String strYear = year.getText().toString();
+                        if (!isNumeric(strYear, TypeIsNumeric.i)) {
+                            yearI = -1;
+                        }
+
                         String strCategory = category.getText().toString();
                         String strLocation = location.getText().toString();
                         String strUnit = unit.getText().toString();
+
                         String strDay = day.getText().toString();
+                        if (!isNumeric(strDay, TypeIsNumeric.i)) {
+                            dayI = -1;
+                        }
+
                         String strMonth = month.getText().toString();
-                        String strYear = year.getText().toString();
+                        if (!isNumeric(strMonth, TypeIsNumeric.i)) {
+                            monthI = -1;
+                        }
+
                         Location location = Location.stringToLocation(strLocation);
                         Category ingredientCategory = Category.stringToCategory(strCategory);
                         listener.onOkPressed(new IngredientInStorage(strDescription, strUnit,
-                                Integer.parseInt(strAmount), Integer.parseInt(strYear), Integer.parseInt(strMonth),
-                                Integer.parseInt(strDay), location, ingredientCategory));
+                                doubleAmount, yearI, monthI,
+                                dayI, location, ingredientCategory));
                     }
                 });
         } else {
