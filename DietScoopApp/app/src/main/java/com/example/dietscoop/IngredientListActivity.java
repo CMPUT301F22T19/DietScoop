@@ -20,7 +20,12 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener {
+import java.util.ArrayList;
+
+/**
+ * Class tying to Ingredient list. Associated with the activity_ingredient_list.xml layout.
+ */
+public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -50,24 +55,24 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.getIngredientStorageFromDatabase();
 
         //testing code:
-        //IngredientStorage sampleIngredientStorage = new IngredientStorage();
-        IngredientInStorage sampleIngredient = new IngredientInStorage("Poop", "kg",
-                5, 2022, 4, 25, Location.freezer, Category.meat);
-        //sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
-        //sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
-        foodStorage.addIngredientToStorage(sampleIngredient);
-
-        sampleIngredient = new IngredientInStorage("Roop", "kg",
-                5, 2022, 5, 25, Location.fridge, Category.meat);
-        foodStorage.addIngredientToStorage(sampleIngredient);
-
-        sampleIngredient = new IngredientInStorage("Toop", "kg",
-                5, 2022, 6, 25, Location.fridge, Category.fruit);
-        foodStorage.addIngredientToStorage(sampleIngredient);
-
-        sampleIngredient = new IngredientInStorage("Scoop", "kg",
-                5, 2022, 6, 25, Location.pantry, Category.vegetable);
-        foodStorage.addIngredientToStorage(sampleIngredient);
+//        //IngredientStorage sampleIngredientStorage = new IngredientStorage();
+//        IngredientInStorage sampleIngredient = new IngredientInStorage("Poop", "kg",
+//                5, 2022, 4, 25, Location.freezer, Category.meat);
+//        //sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
+//        //sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
+//
+//        sampleIngredient = new IngredientInStorage("Roop", "kg",
+//                5, 2022, 5, 25, Location.fridge, Category.meat);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
+//
+//        sampleIngredient = new IngredientInStorage("Toop", "kg",
+//                5, 2022, 6, 25, Location.fridge, Category.fruit);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
+//
+//        sampleIngredient = new IngredientInStorage("Scoop", "kg",
+//                5, 2022, 6, 25, Location.pantry, Category.vegetable);
+//        foodStorage.addIngredientToStorage(sampleIngredient);
 
         ingredientButton = findViewById(R.id.ingr_nav);
         recipesButton = findViewById(R.id.recipes_nav);
@@ -95,9 +100,16 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
                 new sortIngredientByFragment().show(getFragmentManager(),"SORT_BY");
             }
         });
+
+        ingredientStorageAdapter.setItemClickListener(this);
+
     }
-    // TODO: add bundled info
+
+    /**
+     * handler for switching to Recipe activity.
+     */
     private void switchToRecipes() {
+        // TODO: add bundled info
         Intent switchActivityIntent = new Intent(this, RecipeListActivity.class);
         startActivity(switchActivityIntent);
         final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
@@ -107,10 +119,20 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         });
 
     }
-
+    
     @Override
     public void onOkPressed(IngredientInStorage newIngredientInStorage) {
         foodStorage.addIngredientToStorage(newIngredientInStorage);
+    }
+
+    @Override
+    public void onOkPressedUpdate(IngredientInStorage updateIngredientInStorage){
+        foodStorage.updateIngredientInStorage(updateIngredientInStorage);
+    }
+
+    @Override
+    public void onDeletePressed(IngredientInStorage deleteIngredientInStorage){
+        foodStorage.removeIngredientFromStorage(deleteIngredientInStorage);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -119,5 +141,20 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.sortBy(sortBy);
         ingredientStorageAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
+        IngredientInStorage ingredient = ingredients.get(position);
+        new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
+    }
+
+    // POSSIBLE TODO: could be used to fix animations
+//    @Override
+//    public void finish() {
+//        super.finish();
+//        overridePendingTransition(androidx.navigation.ui.R.anim.nav_default_exit_anim, androidx.navigation.ui.R.anim.nav_default_enter_anim);
+//    }
 
 }

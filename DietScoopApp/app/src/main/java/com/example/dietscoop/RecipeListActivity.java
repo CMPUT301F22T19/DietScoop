@@ -14,8 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
+/**
+ * Class associated with the activity_recipe_list.xml file.
+ * This class handles the relation of Recipe list to display
+ */
 public class RecipeListActivity extends AppCompatActivity implements RecyclerItemClickListener {
     RecyclerView recipeListView;
     RecipeStorage recipeStorage;
@@ -26,6 +32,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
     Button mealsButton;
     Button shoppingButton;
     Button sortButton;
+    FloatingActionButton addRecipeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,14 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         recipesButton = findViewById(R.id.recipes_nav);
         mealsButton = findViewById(R.id.meals_nav);
         shoppingButton = findViewById(R.id.shopping_nav);
+        addRecipeButton = findViewById(R.id.add_new_recipe_button);
+
+        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewRecipe();
+            }
+        });
 
         recipesButton.setBackgroundColor(Color.rgb(252, 186, 3));
 
@@ -66,10 +81,36 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
 
         recipeListAdapter.setItemClickListener(this);
 
+
+
     }
 
+    private void addNewRecipe() {
+        Recipe dummy = new Recipe(
+                "ENTER",
+                -1,
+                -1,
+                timeUnit.minute,
+                recipeCategory.appetizer,
+                new ArrayList<IngredientInRecipe>(),
+                ""
+        );
+
+        recipeStorage.addRecipeToStorage(dummy);
+
+        Intent intent = new Intent(this, ViewRecipe.class);
+        intent.putExtra("RECIPE", dummy);
+        startActivity(intent);
+    }
+
+
     // TODO: add bundled info
+
+    /**
+     * Method to handle navigation to Ingredients List Activity
+     */
     private void switchToIngredients() {
+        // TODO: add bundled info
         Intent switchActivityIntent = new Intent(this, IngredientListActivity.class);
         startActivity(switchActivityIntent);
     }

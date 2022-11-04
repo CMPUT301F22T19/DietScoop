@@ -28,6 +28,9 @@ public class ViewRecipe extends AppCompatActivity {
     Recipe currentRecipe;
     Button editInstructions;
 
+    Button backButton;
+    Button deleteButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,22 @@ public class ViewRecipe extends AppCompatActivity {
         instructions = findViewById(R.id.recipe_instructions);
         ingredientsView = findViewById(R.id.recipe_recycler_view);
         name = findViewById(R.id.recipe_title);
+
+        backButton = findViewById(R.id.recipe_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBack();
+            }
+        });
+
+        deleteButton = findViewById(R.id.recipe_delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteThisRecipe();
+            }
+        });
 
         storage = new RecipeStorage();
         storage.getRecipeStorageFromDatabase();
@@ -88,6 +107,7 @@ public class ViewRecipe extends AppCompatActivity {
 
     }
 
+
     public void updateInstructions(String text) {
         //Changing the text for instructions and the recipe.
         instructions.setText(text);
@@ -97,6 +117,16 @@ public class ViewRecipe extends AppCompatActivity {
         //+ updating with the most recently update.
 //        storage.removeRecipeFromStorage(currentRecipe);
         storage.addRecipeToStorage(currentRecipe);
+    }
+
+    private void goBack() {
+        Intent intent = new Intent(this, RecipeListActivity.class);
+        startActivity(intent);
+    }
+
+    private void deleteThisRecipe() {
+        storage.removeRecipeFromStorage(currentRecipe);
+        goBack();
     }
 
 }

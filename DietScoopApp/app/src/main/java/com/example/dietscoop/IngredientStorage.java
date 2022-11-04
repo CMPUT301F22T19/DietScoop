@@ -16,18 +16,26 @@ import java.util.ArrayList;
 
 /**
  * This class encapsulates the Database interface class.
- * This class also acts as a container for the Storing of Ingredients in Storage.
+ * This class also acts as a container for the Storing of IngredientsInStorage.
+ * @implNote IngredientInStorage is a defined class. Database is a separate class entity.
  */
 public class IngredientStorage {
     private ArrayList<IngredientInStorage> storage;
     Database db;
 
 
+    /**
+     * Constructor for ingredient in storage. Creates Database object.
+     */
     public IngredientStorage() {
         db = new Database();
         storage = new ArrayList<IngredientInStorage>();
     }
 
+    /**
+     * Method for adding an ingredient to storage.
+     * @param ingredientInStorage Ingredient in storage to be added to Database
+     */
     public void addIngredientToStorage(IngredientInStorage ingredientInStorage) {
         //storage.add(ingredientInStorage); // -> Added this method @Marcos
         // ^^ this happens whenever something is added to DB (in snapshot listener).
@@ -36,26 +44,49 @@ public class IngredientStorage {
         db.addIngredientToStorage(ingredientInStorage);
     }
 
+    /**
+     * Method for removing an ingredient in storage.
+     * @param ingredientInStorage IngredientInStorage to be removed from the database.
+     */
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
         db.removeIngredientFromStorage(ingredientInStorage);
     }
 
+    /**
+     * Getter for ingredientStorage
+     * @return ArrayList of IngredientInStorage
+     */
     public ArrayList<IngredientInStorage> getIngredientStorage() {
         return storage;
     }
 
+    /**
+     * Getter wrapper method for accessing IngredientStorage portion of database.
+     */
     public void getIngredientStorageFromDatabase() {
         db.getIngredientStorage();
     }
 
+    /**
+     * Method to update an IngredientInStorage within the database.
+     * @param ingredient ingredient to be updated in Database
+     */
     public void updateIngredientInStorage(IngredientInStorage ingredient) {
         db.updateIngredientInStorage(ingredient);
     }
 
+    /**
+     * Method to initialize a listen for an Ingredient Snapshot
+     */
     public void setupIngredientSnapshotListener() {
         setupIngredientSnapshotListener(null);
     }
 
+    /**
+     * Method to initialize a listener for an ingredient snapshot
+     * @param adapter Adapter that will notify Database if changed
+     */
+    // TODO: improve documentation for snapshot methods
     public void setupIngredientSnapshotListener(IngredientStorageAdapter adapter) {
 
         db.getIngredientCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -89,6 +120,10 @@ public class IngredientStorage {
                 });
     }
 
+    /**
+     * Method to sort Ingredients by given selection
+     * @param sortBy selection to be sorted by
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortBy(sortIngredientByFragment.selection sortBy) {
         switch (sortBy) {

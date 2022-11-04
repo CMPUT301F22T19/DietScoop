@@ -2,8 +2,14 @@ package com.example.dietscoop;
 
 import java.util.Comparator;
 
+/**
+ * Comparator class for ingredient object allows for ordering and comparisons.
+ */
 public class IngredientComparator {
 
+    /**
+     * static ordering method for ordering by ingredient name
+     */
     public static class byName implements Comparator<IngredientInStorage> {
         
         @Override
@@ -12,6 +18,9 @@ public class IngredientComparator {
         }
     }
 
+    /**
+     * static ordering method for ordering by location
+     */
     public static class byLocation implements  Comparator<IngredientInStorage> {
 
         @Override
@@ -20,6 +29,9 @@ public class IngredientComparator {
         }
     }
 
+    /**
+     * static ordering method for ordering by category
+     */
     public static class byCategory implements Comparator<IngredientInStorage> {
 
         @Override
@@ -28,6 +40,9 @@ public class IngredientComparator {
         }
     }
 
+    /**
+     * static ordering method for ordering by best before date (ASC)
+     */
     public static class byBestBefore implements Comparator<IngredientInStorage> {
 
         @Override

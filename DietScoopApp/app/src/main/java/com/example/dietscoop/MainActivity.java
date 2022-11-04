@@ -15,12 +15,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Handler for navigating to ingredient list activity
+     * @param view current view
+     */
     public void goToIngredientList(View view) {
 
         Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Handler for navigating to recipe list activity
+     * @param view current view
+     */
     public void goToRecipeList(View view) {
         Intent intent = new Intent(this, RecipeListActivity.class);
         startActivity(intent);
