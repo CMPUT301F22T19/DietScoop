@@ -164,7 +164,7 @@ public class Recipe extends FoodItem implements Serializable {
      * @param description new instructions for recipe
      */
     public void setInstructions(String description) {
-        this.description = description;
+        this.instructions = description;
     }
 
     /**
