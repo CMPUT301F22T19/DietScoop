@@ -63,7 +63,7 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameTV, countTV, unitTV, dateTV, locationTV, categoryTV;
 
         public ViewHolder(@NonNull View itemView) {
@@ -88,7 +88,7 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
 
         }
     }
-
+    
     public void addIngredientStorage(IngredientInStorage ingredient) {
         dataList.add(ingredient);
     }
