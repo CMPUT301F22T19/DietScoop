@@ -137,6 +137,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
 
     @Override
     public void onItemClick(View view, int position) {
+
         ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
         IngredientInStorage ingredient = ingredients.get(position);
         new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
