@@ -12,7 +12,7 @@
         android:height="10dp"
         android:ems="10"
         android:hint="Enter description"
-        android:inputType="textPersonName" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/edit_amount_ingredient_storage"

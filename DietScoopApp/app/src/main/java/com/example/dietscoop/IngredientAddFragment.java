@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,14 +16,14 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 
 enum TypeIsNumeric {
-    i,
-    d;
+    integer,
+    decimal
 }
 
 public class IngredientAddFragment extends DialogFragment {
@@ -59,15 +60,15 @@ public class IngredientAddFragment extends DialogFragment {
         if (context instanceof OnFragmentInteractionListener) {
             listener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context + " must implement OnFragmentInteractionListener");
         }
     }
 
     private static boolean isNumeric(String str, TypeIsNumeric t) {
         try {
-            if (t.equals(TypeIsNumeric.i)) {
+            if (t.equals(TypeIsNumeric.integer)) {
                 Integer.parseInt(str);
-            } else if (t.equals(TypeIsNumeric.d)) {
+            } else if (t.equals(TypeIsNumeric.decimal)) {
                 Double.parseDouble(str);
             }
             return true;
@@ -76,6 +77,7 @@ public class IngredientAddFragment extends DialogFragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -102,43 +104,56 @@ public class IngredientAddFragment extends DialogFragment {
                         if (strDescription.length() == 0) {
                             strDescription = "No description available";
                         }
+
                         String strAmount = amount.getText().toString();
-                        double doubleAmount = 0.0;
-                        int yearI = 0;
-                        int monthI = 0;
-                        int dayI = 0;
-                        if (!isNumeric(strAmount, TypeIsNumeric.d)) {
-                            doubleAmount = 1.0;
+                        double doubleAmount;
+                        if (!isNumeric(strAmount, TypeIsNumeric.decimal)) {
+                            doubleAmount = -1.0;
+                        } else {
+                            doubleAmount = Double.parseDouble(strAmount);
                         }
+
+                        int yearI;
+                        int monthI;
+                        int dayI;
 
                         String strYear = year.getText().toString();
-                        if (!isNumeric(strYear, TypeIsNumeric.i)) {
-                            yearI = 2001;
-                        }
-
-                        String strCategory = category.getText().toString();
-                        if (strCategory != "vegetable" || strCategory != "meat" || strCategory != "fruit") {
-                            strCategory = "vegetable";
-                        }
-
-                        String strLocation = location.getText().toString();
-                        if (strLocation.toLowerCase() != "pantry"
-                                || strLocation.toLowerCase() != "freezer"
-                                || strLocation.toLowerCase() != "freezer") {
-                            strLocation = "freezer";
-                        }
-                        String strUnit = unit.getText().toString();
-                        if (strUnit.length() == 0) {
-                            strUnit = "kg";
-                        }
-                        String strDay = day.getText().toString();
-                        if (!isNumeric(strDay, TypeIsNumeric.i)) {
-                            dayI = 19;
+                        if (!isNumeric(strYear, TypeIsNumeric.integer)) {
+                            yearI = 1500;
+                        } else {
+                            yearI = Integer.valueOf(strYear);
                         }
 
                         String strMonth = month.getText().toString();
-                        if (!isNumeric(strMonth, TypeIsNumeric.i)) {
-                            monthI = 9;
+                        if (!isNumeric(strMonth, TypeIsNumeric.integer)) {
+                            monthI = 1;
+                        } else {
+                            monthI = Integer.valueOf(strMonth);
+                        }
+
+                        String strDay = day.getText().toString();
+                        if (!isNumeric(strDay, TypeIsNumeric.integer)) {
+                            dayI = 1;
+                        } else {
+                            dayI = Integer.valueOf(strDay);
+                        }
+
+
+                        String strCategory = category.getText().toString().toLowerCase();
+                        if (!strCategory.equals("vegetable") && !strCategory.equals("meat") && !strCategory.equals("fruit")) {
+                            strCategory = "vegetable";
+                        }
+
+                        String strLocation = location.getText().toString().toLowerCase();
+                        if (!strLocation.equalsIgnoreCase("pantry")
+                                && !strLocation.equalsIgnoreCase("freezer")
+                                && !strLocation.equalsIgnoreCase("freezer")) {
+                            strLocation = "freezer";
+                        }
+
+                        String strUnit = unit.getText().toString();
+                        if (strUnit.length() == 0) {
+                            strUnit = "units";
                         }
 
                         Location location = Location.stringToLocation(strLocation);
@@ -163,11 +178,11 @@ public class IngredientAddFragment extends DialogFragment {
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
 
-            if (ingredientToBeChanged.getLocation().equals(Category.vegetable)) {
+            if (ingredientToBeChanged.getCategory().equals(Category.vegetable)) {
                 categoryString = "vegetable";
-            } else if (ingredientToBeChanged.getLocation().equals(Category.meat)) {
+            } else if (ingredientToBeChanged.getCategory().equals(Category.meat)) {
                 categoryString = "meat";
-            } else if (ingredientToBeChanged.getLocation().equals(Category.fruit)) {
+            } else if (ingredientToBeChanged.getCategory().equals(Category.fruit)) {
                 categoryString = "fruit";
             }
             category.setText(categoryString);
@@ -196,43 +211,43 @@ public class IngredientAddFragment extends DialogFragment {
                             ingredientToBeChanged.setDescription(description.getText().toString());
                         }
 
-                        int yearI = 0;
-                        int monthI = 0;
-                        int dayI = 0;
-                        if (!isNumeric(amount.getText().toString(), TypeIsNumeric.d)) {
+                        int yearI;
+                        int monthI;
+                        int dayI;
+                        if (!isNumeric(amount.getText().toString(), TypeIsNumeric.decimal)) {
                             ingredientToBeChanged.setAmount(0.0);
                         } else {
                             ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
                         }
 
-                        if (!isNumeric(year.getText().toString(), TypeIsNumeric.i)) {
+                        if (!isNumeric(year.getText().toString(), TypeIsNumeric.integer)) {
                             yearI = 2001;
                         } else {
                             yearI = Integer.parseInt(year.getText().toString());
                         }
 
-                        if (!isNumeric(day.getText().toString(), TypeIsNumeric.i)) {
+                        if (!isNumeric(day.getText().toString(), TypeIsNumeric.integer)) {
                             dayI = 19;
                         } else {
                             dayI = Integer.parseInt(day.getText().toString());
                         }
 
-                        if (!isNumeric(month.getText().toString(), TypeIsNumeric.i)) {
+                        if (!isNumeric(month.getText().toString(), TypeIsNumeric.integer)) {
                             monthI = 9;
                         } else {
                             monthI = Integer.parseInt(month.getText().toString());
                         }
                         ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
 
-                        if (category.getText().toString() != "vegetable" || category.getText().toString() != "meat" || category.getText().toString() != "fruit") {
+                        if (!category.getText().toString().equals("vegetable") || !category.getText().toString().equals("meat") || !category.getText().toString().equals("fruit")) {
                             ingredientToBeChanged.setCategory(Category.stringToCategory("vegetable"));
                         } else {
                             ingredientToBeChanged.setCategory(Category.stringToCategory(category.getText().toString()));
                         }
 
-                        if (location.getText().toString().toLowerCase() != "pantry"
-                                || location.getText().toString().toLowerCase() != "freezer"
-                                || location.getText().toString().toLowerCase() != "fridge") {
+                        if (!location.getText().toString().equalsIgnoreCase("pantry")
+                                || !location.getText().toString().equalsIgnoreCase("freezer")
+                                || !location.getText().toString().equalsIgnoreCase("fridge")) {
                             ingredientToBeChanged.setLocation(Location.stringToLocation("freezer"));
                         } else {
                             ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString().toLowerCase()));

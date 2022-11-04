@@ -1,12 +1,14 @@
 package com.example.dietscoop;
 
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -30,6 +32,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
     Button shoppingButton;
     Button sortButton;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,19 +106,14 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
         });
 
-//        ingredientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                new IngredientAddFragment(foodStorage.getIngredientStorage().get(i)).show(getSupportFragmentManager(), "MODIFY_INGREDIENT");
-//            }
-//        });
     }
 
     @Override
     public void onOkPressed(IngredientInStorage newIngredientInStorage) {
-        ingredientStorageAdapter.addIngredientStorage(newIngredientInStorage);
+        foodStorage.addIngredientToStorage(newIngredientInStorage);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSortSelection(sortIngredientByFragment.selection sortBy) {
         foodStorage.sortBy(sortBy);
