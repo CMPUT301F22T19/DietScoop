@@ -3,6 +3,7 @@ package com.example.dietscoop;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -39,13 +40,15 @@ public class RecipeStorage {
         db.removeRecipeFromStorage(recipe);
     }
 
-    public void setupRecipeSnapshotListener() {
-        setupRecipeSnapshotListener(null);
-    }
+//    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {
+//        return(setupRecipeSnapshotListener(null));
+//    }
 
-    public void setupRecipeSnapshotListener(RecipeListAdapter adapter) {
+    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener
+            (RecyclerView.Adapter adapter) {
         //TODO: How is this gonna work???
-        db.getRecipeCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
+        com.google.firebase.firestore.ListenerRegistration registration =
+                db.getRecipeCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
@@ -91,5 +94,6 @@ public class RecipeStorage {
                 }
             }
         });
+        return registration;
     }
 }
