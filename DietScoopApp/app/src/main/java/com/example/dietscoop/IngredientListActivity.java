@@ -18,9 +18,7 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class IngredientListActivity extends AppCompatActivity implements sortIngredientByFragment.OnFragmentInteractionListener {
-
-public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener {
+public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, sortIngredientByFragment.OnFragmentInteractionListener {
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -76,6 +74,12 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
 
         ingredientButton.setBackgroundColor(Color.rgb(252, 186, 3));
 
+        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
+        addIngredientButton.setOnClickListener((v) -> {
+            new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
+        });
+
+
         recipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,12 +104,12 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
         });
 
-        ingredientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                new IngredientAddFragment(foodStorage.getIngredientStorage().get(i)).show(getSupportFragmentManager(), "MODIFY_INGREDIENT");
-            }
-        });
+//        ingredientListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                new IngredientAddFragment(foodStorage.getIngredientStorage().get(i)).show(getSupportFragmentManager(), "MODIFY_INGREDIENT");
+//            }
+//        });
     }
 
     @Override

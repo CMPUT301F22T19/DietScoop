@@ -33,7 +33,7 @@ public class IngredientAddFragment extends DialogFragment {
     private IngredientInStorage ingredientToBeChanged;
     private String locationString;
     private String categoryString;
-    private Calendar bestBeforeDateTemp;
+    private LocalDate bestBeforeDateTemp;
     // For getting the string version of Calendar
 
     public interface OnFragmentInteractionListener {
@@ -90,7 +90,7 @@ public class IngredientAddFragment extends DialogFragment {
                         String strMonth = month.getText().toString();
                         String strYear = year.getText().toString();
                         Location location = Location.stringToLocation(strLocation);
-                        IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
+                        Category ingredientCategory = Category.stringToCategory(strCategory);
                         listener.onOkPressed(new IngredientInStorage(strDescription, strUnit,
                                 Integer.parseInt(strAmount), Integer.parseInt(strYear), Integer.parseInt(strMonth),
                                 Integer.parseInt(strDay), location, ingredientCategory));
@@ -111,23 +111,23 @@ public class IngredientAddFragment extends DialogFragment {
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
 
-            if (ingredientToBeChanged.getLocation().equals(IngredientCategory.vegetable)) {
+            if (ingredientToBeChanged.getLocation().equals(Category.vegetable)) {
                 categoryString = "vegetable";
-            } else if (ingredientToBeChanged.getLocation().equals(IngredientCategory.meat)) {
+            } else if (ingredientToBeChanged.getLocation().equals(Category.meat)) {
                 categoryString = "meat";
-            } else if (ingredientToBeChanged.getLocation().equals(IngredientCategory.fruit)) {
+            } else if (ingredientToBeChanged.getLocation().equals(Category.fruit)) {
                 categoryString = "fruit";
             }
             category.setText(categoryString);
 
-            int dayOfMonth = bestBeforeDateTemp.get(Calendar.DAY_OF_MONTH);
-            String dayOfMonthStr = String.valueOf(dayOfMonth);
+            int dayOfMonth = bestBeforeDateTemp.getDayOfMonth();
+            String dayOfMonthStr = valueOf(dayOfMonth);
             day.setText(dayOfMonthStr);
-            int monthInt = bestBeforeDateTemp.get(Calendar.MONTH);
-            String monthStr = String.valueOf(monthInt);
+            int monthInt = bestBeforeDateTemp.getMonthValue();
+            String monthStr = valueOf(monthInt);
             month.setText(monthStr);
-            int yearInt = bestBeforeDateTemp.get(Calendar.YEAR);
-            String yearStr = String.valueOf(yearInt);
+            int yearInt = bestBeforeDateTemp.getYear();
+            String yearStr = valueOf(yearInt);
             year.setText(yearStr);
             unit.setText(ingredientToBeChanged.getMeasurementUnit());
 
@@ -140,7 +140,7 @@ public class IngredientAddFragment extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ingredientToBeChanged.setDescription(description.getText().toString());
                         ingredientToBeChanged.setAmount(Integer.parseInt(amount.getText().toString()));
-                        ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory(category.getText().toString()));
+                        ingredientToBeChanged.setCategory(Category.stringToCategory(category.getText().toString()));
                         ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString()));
                         ingredientToBeChanged.setBestBeforeDate(Integer.parseInt(year.getText().toString()), Integer.parseInt(month.getText().toString()),
                                 Integer.parseInt(year.getText().toString()));
