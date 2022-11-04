@@ -1,56 +1,70 @@
 package com.example.dietscoop;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ModifyRecipeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModifyRecipeFragment extends Fragment {
+public class ModifyRecipeFragment extends DialogFragment {
 
     private EditText recipeName, recipePrepTime, recipeServings, recipeCategory;
-    Recipe recipeToModify;
+    private Recipe recipeToModify;
+    private OnFragmentInteractionListener listener;
 
-    public ModifyRecipeFragment() {
-        // Required empty public constructor
+    ModifyRecipeFragment(){}
+
+    ModifyRecipeFragment(Recipe recipeToModify){
+        this.recipeToModify = recipeToModify;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ModifyRecipeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ModifyRecipeFragment newInstance(String param1, String param2) {
-        ModifyRecipeFragment fragment = new ModifyRecipeFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public interface OnFragmentInteractionListener {
+        void onOkPressed(Recipe recipeToChange, String newName, Integer newPrepTime, Integer newServings, recipeCategory newCategory);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            recipeName =
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            listener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + "must implement OnFragmentInteractionListener");
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_modify_recipe, container, false);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_modify_recipe, null);
+        recipeName = view.findViewById(R.id.editRecipeName);
+        recipePrepTime = view.findViewById(R.id.editRecipePrepTime);
+        recipeServings = view.findViewById(R.id.editRecipeServings);
+        recipeCategory = view.findViewById(R.id.editRecipeCategory);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        return builder
+                .setView(view)
+                .setTitle("Modify Recipe")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String recipeNewName = recipeName.getText().toString();
+                        String recipeNewPrepTime = recipePrepTime.getText().toString();
+                        String recipeNewServings = recipeServings.getText().toString();
+                        String recipeNewCategory = recipeCategory.getText().toString();
+                        listener.onOkPressed(recipeToModify, recipeNewName, Integer.valueOf(recipeNewPrepTime), Integer.valueOf(recipeNewServings), com.example.dietscoop.recipeCategory.stringToRecipeCategory(recipeNewCategory));
+                    }
+                }).create();
     }
 }

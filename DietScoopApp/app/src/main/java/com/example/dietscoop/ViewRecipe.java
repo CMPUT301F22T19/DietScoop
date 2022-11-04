@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ViewRecipe extends AppCompatActivity implements  View.OnClickListener {
+public class ViewRecipe extends AppCompatActivity implements ModifyRecipeFragment.OnFragmentInteractionListener{
 
     TextView prepTime, numServings, category, instructions, name;
     RecyclerView ingredientsView;
@@ -33,6 +33,13 @@ public class ViewRecipe extends AppCompatActivity implements  View.OnClickListen
 
         initialize();
         updateTextViews();
+
+        modifyRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ModifyRecipeFragment(currentRecipe).show(getSupportFragmentManager(), "MODIFY_RECIPE");
+            }
+        });
 
     }
 
@@ -86,7 +93,12 @@ public class ViewRecipe extends AppCompatActivity implements  View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) {
+    public void onOkPressed(Recipe recipeToChange, String newName, Integer newPrepTime, Integer newServings, recipeCategory newCategory) {
+        recipeToChange.setDescription(newName);
+        recipeToChange.setPrepTime(newPrepTime);
+        recipeToChange.setNumOfServings(newServings);
+        recipeToChange.setCategory(newCategory);
 
+        storage.addRecipeToStorage(recipeToChange);
     }
 }

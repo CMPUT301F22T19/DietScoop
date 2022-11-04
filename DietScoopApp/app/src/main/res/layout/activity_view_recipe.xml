@@ -58,6 +58,7 @@
                         android:id="@+id/recipe_modify_button"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
+                        android:clickable="true"
                         android:background="@drawable/button"
                         app:backgroundTint="#D9D9D9"
                         android:paddingVertical="0dp"
