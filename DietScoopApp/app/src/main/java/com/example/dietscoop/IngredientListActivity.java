@@ -79,7 +79,6 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
         });
 
-
         recipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
