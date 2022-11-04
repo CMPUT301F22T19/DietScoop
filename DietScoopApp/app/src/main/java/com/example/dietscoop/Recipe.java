@@ -1,5 +1,6 @@
 package com.example.dietscoop;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -53,7 +54,7 @@ enum recipeCategory {
     }
 }
 
-public class Recipe extends FoodItem{
+public class Recipe extends FoodItem implements Serializable {
     private String name;
     private int prepTime;
     private int servings;

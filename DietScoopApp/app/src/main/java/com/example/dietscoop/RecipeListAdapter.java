@@ -68,7 +68,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         @Override
         public void onClick(View view) {
             if (listener != null) {
-                listener.onClick(view, getAdapterPosition());
+                listener.onRecipeItemClick(view, getAdapterPosition());
             }
         }
     }

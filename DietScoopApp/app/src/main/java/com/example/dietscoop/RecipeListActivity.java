@@ -75,8 +75,10 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeListI
     }
 
     @Override
-    public void onClick(View view, int position) {
+    public void onRecipeItemClick(View view, int position) {
         Intent intent = new Intent(this, ViewRecipe.class);
+        intent.putExtra("RECIPE STORAGE", recipeStorage);
+        intent.putExtra("POSITION", position);
         startActivity(intent);
     }
 }
