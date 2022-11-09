@@ -19,7 +19,7 @@ import android.widget.TextView;
  * logic instantiation for the events that
  * go on in this activity.
  */
-public class ViewRecipe extends AppCompatActivity {
+public class ViewRecipeActivity extends AppCompatActivity {
 
     TextView prepTime, numServings, category, instructions, name;
     RecyclerView ingredientsView;
@@ -91,7 +91,7 @@ public class ViewRecipe extends AppCompatActivity {
         editInstructions.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Need to launch the new fragment activity for editing the instructions.
-                new EditInstructionsEntryFragmnet().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
+                new EditInstructionsEntryFragment().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
             }
         });
 

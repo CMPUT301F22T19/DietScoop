@@ -13,7 +13,7 @@
         android:theme="@style/Theme.DietScoop"
         tools:targetApi="31">
         <activity
-            android:name=".ViewRecipe"
+            android:name=".ViewRecipeActivity"
             android:exported="false" />
         <activity
             android:name=".RecipeListActivity"

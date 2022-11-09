@@ -3,7 +3,7 @@ package com.example.dietscoop;
 import java.io.Serializable;
 import java.util.Locale;
 
-enum Category implements Serializable {
+enum IngredientCategory implements Serializable {
     /**
      * Category for different ingredients
      */
@@ -17,7 +17,7 @@ enum Category implements Serializable {
          * @param name String to change to enum
          * @return Enum value of category
          */
-        public static Category stringToCategory(String name) {
+        public static IngredientCategory stringToCategory(String name) {
             name = name.toUpperCase(Locale.ROOT);
 
             if (name.equals("VEGETABLE")) {
@@ -40,7 +40,7 @@ enum Category implements Serializable {
     public abstract class Ingredient extends FoodItem implements Serializable {
         private double amount;
         private String measurementUnit;
-        private Category category;
+        private IngredientCategory category;
 
 
         /**
