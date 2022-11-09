@@ -2,24 +2,21 @@ package com.example.dietscoop;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 /**
  * Fragment handles the editing of the instructions entry in
  * the recipe view.
  */
-public class EditInstructionsEntryFragmnet extends DialogFragment {
+public class EditInstructionsEntryFragment extends DialogFragment {
 
     private EditText instructionEntries;
 
@@ -36,7 +33,7 @@ public class EditInstructionsEntryFragmnet extends DialogFragment {
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        ((ViewRecipe)getActivity()).updateInstructions(instructionEntries.getText().toString());
+                        ((ViewRecipeActivity)getActivity()).updateInstructions(instructionEntries.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancel", null)

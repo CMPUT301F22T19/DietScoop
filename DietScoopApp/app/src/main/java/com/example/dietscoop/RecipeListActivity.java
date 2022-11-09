@@ -1,6 +1,5 @@
 package com.example.dietscoop;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,11 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -90,7 +86,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
 
         recipeStorage.addRecipeToStorage(dummy);
 
-        Intent intent = new Intent(this, ViewRecipe.class);
+        Intent intent = new Intent(this, ViewRecipeActivity.class);
         intent.putExtra("RECIPE", dummy);
         startActivity(intent);
     }
@@ -109,7 +105,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(this, ViewRecipe.class);
+        Intent intent = new Intent(this, ViewRecipeActivity.class);
         intent.putExtra("RECIPE", recipeStorage.getRecipeStorage().get(position));
         startActivity(intent);
     }
