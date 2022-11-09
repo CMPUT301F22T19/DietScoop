@@ -75,21 +75,11 @@ public class Database implements Serializable {
     }
 
     /**
-     * queries IngredientStorage collection in database.
+     * Asynchronously queries IngredientStorage collection in database.
+     * All classes with snapshot listeners for this database will be updated when the asynchronous
+     * call returns.
      */
     public void getIngredientStorage() {
-
-        //was trying to get this to work
-        //https://cloud.google.com/firestore/docs/samples/firestore-data-get-all-documents
-//        // asynchronously retrieve all documents
-//        ApiFuture<QuerySnapshot> future = db.collection("cities").get();
-//        // future.get() blocks on response
-//        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-//        for (QueryDocumentSnapshot document : documents) {
-//            System.out.println(document.getId() + " => " + document.toObject(City.class));
-//        }
-
-        // queries ingredients in storage from DB
         ingredientStorage.get();
     }
 
@@ -134,7 +124,6 @@ public class Database implements Serializable {
         Log.e("update ingredientInStor","ID: "+ingredient.getId());
 
     }
-
 
 
     /*************************** RECIPE METHODS ******************************/
@@ -190,10 +179,12 @@ public class Database implements Serializable {
      * Getter for Firestore collection reference for Recipes collection. Does not query database
      * @return reference to remote recipe collection
      */
-    public CollectionReference getRecipeCollectionRef() {return this.recipeStorage;}
+    public CollectionReference getRecipeCollectionRef() { return this.recipeStorage; }
 
     /**
-     * Query recipe collection in Firestore databases
+     * Asynchronously query recipe collection in Firestore database
+     * All classes with snapshot listeners for this database will be updated when the asynchronous
+     * call returns.
      */
     public void getRecipeStorage() {
         // queries recipes collection in DB
