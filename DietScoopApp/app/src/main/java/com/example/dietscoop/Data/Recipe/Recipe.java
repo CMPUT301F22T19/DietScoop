@@ -183,4 +183,8 @@ public class Recipe extends FoodItem implements Serializable {
 
     public ArrayList<String> getIngredientIDs() {return this.ingredientIDs;}
 
+    public void updateIngredient(IngredientInRecipe ingredient, int index) {
+        this.ingredientsList.set(index, ingredient);
+    }
+
 }
