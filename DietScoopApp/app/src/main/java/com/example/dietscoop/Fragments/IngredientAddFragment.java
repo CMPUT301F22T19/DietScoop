@@ -145,7 +145,7 @@ public class IngredientAddFragment extends DialogFragment {
                     String strLocation = location.getText().toString().toLowerCase();
                     if (!strLocation.equalsIgnoreCase("pantry")
                             && !strLocation.equalsIgnoreCase("freezer")
-                            && !strLocation.equalsIgnoreCase("freezer")) {
+                            && !strLocation.equalsIgnoreCase("fridge")) {
                         strLocation = "freezer";
                     }
 
@@ -235,15 +235,15 @@ public class IngredientAddFragment extends DialogFragment {
                     }
                     ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
 
-                    if (!category.getText().toString().equals("vegetable") || !category.getText().toString().equals("meat") || !category.getText().toString().equals("fruit")) {
+                    if (!category.getText().toString().equals("vegetable") && !category.getText().toString().equals("meat") && !category.getText().toString().equals("fruit")) {
                         ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory("vegetable"));
                     } else {
                         ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory(category.getText().toString()));
                     }
 
                     if (!location.getText().toString().equalsIgnoreCase("pantry")
-                            || !location.getText().toString().equalsIgnoreCase("freezer")
-                            || !location.getText().toString().equalsIgnoreCase("fridge")) {
+                            && !location.getText().toString().equalsIgnoreCase("freezer")
+                            && !location.getText().toString().equalsIgnoreCase("fridge")) {
                         ingredientToBeChanged.setLocation(Location.stringToLocation("freezer"));
                     } else {
                         ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString().toLowerCase()));
