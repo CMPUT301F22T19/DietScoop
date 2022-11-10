@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.dietscoop.Data.IngredientInRecipe;
+import com.example.dietscoop.R;
+import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Adapters.RecipeListAdapter;
+import com.example.dietscoop.Database.RecipeStorage;
+import com.example.dietscoop.Data.recipeCategory;
+import com.example.dietscoop.Data.timeUnit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

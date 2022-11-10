@@ -2,10 +2,12 @@ package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.jetbrains.annotations.TestOnly;
-import org.junit.jupiter.api.Test;
+import com.example.dietscoop.Data.IngredientCategory;
+import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Data.Location;
+import com.example.dietscoop.Database.IngredientStorage;
 
-import java.util.ArrayList;
+import org.junit.jupiter.api.Test;
 
 /**
  * This Test oversees the 'local' functionality of the methods
@@ -19,16 +21,9 @@ public class IngredientStorageTest {
         return new IngredientStorage();
     }
 
-//    public IngredientStorage getSampleIngredientStorageWithData() {
-//        IngredientStorage sample = new IngredientStorage();
-//        sample.addIngredientToStorage(new IngredientInStorage("Chicken", "kg",
-//                5, 2022, 4, 24, Location.freezer, Category.meat));
-//        return sample;
-//    }
-
     public IngredientInStorage getSampleIngredient() {
         return new IngredientInStorage("Pop", "kg",
-                5, 2022, 4, 24, Location.freezer, Category.meat);
+                5, 2022, 4, 24, Location.freezer, IngredientCategory.meat);
     }
 
     public void idle() {
@@ -39,21 +34,9 @@ public class IngredientStorageTest {
     public void testAddIngredientToStorage() {
         sampleIngredientStorage = new IngredientStorage();
         IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", "kg",
-                5, 2022, 4, 24, Location.freezer, Category.meat);
+                5, 2022, 4, 24, Location.freezer, IngredientCategory.meat);
         sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
         sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
     }
-
-//    @Test
-//    public void testremoveIngredientFromStorage() {
-//
-//    }
-
-//    @Test
-//    public void testGetIngredientStorage() {
-//        sampleIngredientStorage = getSampleIngredientStorage();
-//        ArrayList<IngredientInStorage> ingredients = sampleIngredientStorage.getIngredientStorage();
-//        assertEquals(ingredients.size(), 1); //This value might change with the database contents.
-//    }
 
 }

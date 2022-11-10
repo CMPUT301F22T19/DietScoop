@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Activities;
 
 
 import androidx.annotation.RequiresApi;
@@ -11,13 +11,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
+import com.example.dietscoop.Fragments.IngredientAddFragment;
+import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Database.IngredientStorage;
+import com.example.dietscoop.Adapters.IngredientStorageAdapter;
+import com.example.dietscoop.R;
+import com.example.dietscoop.Fragments.sortIngredientByFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

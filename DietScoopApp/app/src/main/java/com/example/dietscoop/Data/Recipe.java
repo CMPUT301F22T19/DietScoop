@@ -1,74 +1,7 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Locale;
-
-enum timeUnit implements Serializable {
-/**
- * Enum representing time units
- */
-    hour,
-    minute;
-
-    /**
-     * Converts string to associated time unit
-     * @param unit String unit to be converted to timeUnit Enum
-     * @return timeUnit enum value
-     */
-    public static timeUnit stringToTimeUnit(String unit) {
-        unit = unit.toUpperCase(Locale.ROOT);
-
-        if (unit.equals("HOUR")) {
-            return hour;
-        } else if (unit.equals("MINUTE")) {
-            return minute;
-        } else {
-            // TODO: MAKE THIS THROW ERROR
-            return null;
-        }
-
-    }
-}
-
-/**
- * Enum representing recipe categories
- */
-enum recipeCategory implements Serializable {
-    breakfast,
-    lunch,
-    dinner,
-    appetizer,
-    salad,
-    baked;
-
-    /**
-     * Converts string to associated recipe category
-     * @param name String name to be converted to recipeCategory enum
-     * @return recipeCategory enum value
-     */
-    public static recipeCategory stringToRecipeCategory(String name) {
-        name = name.toUpperCase(Locale.ROOT);
-
-        if (name.equals("BREAKFAST")) {
-            return breakfast;
-        } else if (name.equals("LUNCH")) {
-            return lunch;
-        } else if (name.equals("DINNER")) {
-            return dinner;
-        } else if (name.equals("APPETIZER")) {
-            return appetizer;
-        } else if (name.equals("SALAD")) {
-            return salad;
-        } else if (name.equals("BAKED")) {
-            return baked;
-        } else {
-            // TODO: MAKE THIS THROW ERROR
-            return null;
-        }
-
-    }
-}
 
 /**
  * Class representing a Recipe
@@ -228,4 +161,7 @@ public class Recipe extends FoodItem implements Serializable {
     public void removeIngredient(IngredientInRecipe ingredient){
         this.ingredientsList.remove(ingredient);
     }
+
+    public String getName() { return name; }
+
 }

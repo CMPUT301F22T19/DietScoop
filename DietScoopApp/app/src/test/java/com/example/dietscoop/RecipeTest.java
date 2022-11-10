@@ -2,6 +2,12 @@ package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.example.dietscoop.Data.IngredientCategory;
+import com.example.dietscoop.Data.IngredientInRecipe;
+import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Data.recipeCategory;
+import com.example.dietscoop.Data.timeUnit;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,9 +20,9 @@ public class RecipeTest {
     public ArrayList<IngredientInRecipe> generateSampleIngredients() {
         //Generating a sampleIngredients array list to contain the sample ingredients.
         ArrayList<IngredientInRecipe> sampleIngredients = new ArrayList<>();
-        sampleIngredients.add(new IngredientInRecipe("Chicken", "kg", 5, Category.meat));
-        sampleIngredients.add(new IngredientInRecipe("Beans", "kg", 10, Category.vegetable));
-        sampleIngredients.add(new IngredientInRecipe("Rice", "mg", 1, Category.vegetable));
+        sampleIngredients.add(new IngredientInRecipe("Chicken", "kg", 5, IngredientCategory.meat));
+        sampleIngredients.add(new IngredientInRecipe("Beans", "kg", 10, IngredientCategory.vegetable));
+        sampleIngredients.add(new IngredientInRecipe("Rice", "mg", 1, IngredientCategory.vegetable));
         return sampleIngredients;
     }
 
@@ -82,7 +88,7 @@ public class RecipeTest {
     public void testRemoveIngredient() {
         Recipe sampleRecipe = getSampleRecipe();
 
-        IngredientInRecipe sampleIngredient = new IngredientInRecipe("eggs", "kg", 4, Category.vegetable);
+        IngredientInRecipe sampleIngredient = new IngredientInRecipe("eggs", "kg", 4, IngredientCategory.vegetable);
 
         sampleRecipe.addIngredient(sampleIngredient);
 

@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Activities;
 
 import android.view.View;
 

@@ -1,10 +1,12 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.dietscoop.R;
 
 public class MainActivity extends AppCompatActivity {
 

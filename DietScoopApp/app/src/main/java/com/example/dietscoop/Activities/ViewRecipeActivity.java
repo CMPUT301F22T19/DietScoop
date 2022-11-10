@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,9 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.dietscoop.Fragments.EditInstructionsEntryFragment;
+import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
+import com.example.dietscoop.R;
+import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Database.RecipeStorage;
 
 /**
  * This class handles the creation of the
@@ -56,20 +61,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
         name = findViewById(R.id.recipe_title);
 
         backButton = findViewById(R.id.recipe_back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goBack();
-            }
-        });
+        backButton.setOnClickListener(view -> goBack());
 
         deleteButton = findViewById(R.id.recipe_delete_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteThisRecipe();
-            }
-        });
+        deleteButton.setOnClickListener(view -> deleteThisRecipe());
 
         storage = new RecipeStorage();
         storage.getRecipeStorageFromDatabase();
@@ -88,11 +83,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         //Adding the button here for instruction updating:
         editInstructions = findViewById(R.id.recipe_add_comment_button);
-        editInstructions.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //Need to launch the new fragment activity for editing the instructions.
-                new EditInstructionsEntryFragment().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
-            }
+        editInstructions.setOnClickListener(v -> {
+            //Need to launch the new fragment activity for editing the instructions.
+            new EditInstructionsEntryFragment().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
         });
 
     }

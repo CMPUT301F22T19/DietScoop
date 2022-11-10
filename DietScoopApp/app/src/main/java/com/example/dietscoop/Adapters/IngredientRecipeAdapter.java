@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.dietscoop.Data.Ingredient;
+import com.example.dietscoop.Data.IngredientInRecipe;
+import com.example.dietscoop.R;
+
 import java.util.ArrayList;
 
 /**

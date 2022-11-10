@@ -1,9 +1,12 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Data;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+
+import com.example.dietscoop.Data.Ingredient;
+import com.example.dietscoop.Data.IngredientCategory;
+import com.example.dietscoop.Data.Location;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,66 +16,13 @@ import java.time.format.DateTimeFormatter;
  */
 
 /**
- * Location of ingredient enum.
- */
-enum Location {
-    //TODO: What are locations and categories? Ask Jakaria
-    pantry,
-    freezer,
-    fridge;
-
-    /**
-     * Converts string to enum type for location.
-     * @param name String name to convert to enum.
-     * @return
-     */
-    public static Location stringToLocation(String name) {
-        name = name.toUpperCase();
-
-        if (name.equals("PANTRY")) {
-            return pantry;
-        } else if (name.equals("FREEZER")) {
-            return freezer;
-        } else if (name.equals("FRIDGE")) {
-            return fridge;
-        } else {
-            // TODO: MAKE THIS THROW ERROR
-            Log.i("null?", "LOCATION NOT RECOGNIZED");
-            return null;
-        }
-    }
-}
-
-//enum IngredientCategory {
-//    vegetable,
-//    meat,
-//    fruit;
-//
-//    public static IngredientCategory stringToCategory(String name) {
-//        name = name.toUpperCase(Locale.ROOT);
-//
-//        if (name == "VEGETABLE") {
-//            return vegetable;
-//        } else if (name == "MEAT") {
-//            return meat;
-//        } else if (name == "FRUIT") {
-//            return fruit;
-//        } else {
-//            // TODO: MAKE THIS THROW ERROR
-//            return null;
-//        }
-//
-//    }
-//}
-
-/**
  * Class representing an ingredient in storage.
  */
-public class IngredientInStorage extends Ingredient{
+public class IngredientInStorage extends Ingredient {
 
     LocalDate bestBeforeDate;
     Location location;
-    Category category;
+    IngredientCategory category;
     String id;
     //TODO: change year,month,day to Calendar pls pls
 
@@ -89,7 +39,7 @@ public class IngredientInStorage extends Ingredient{
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public IngredientInStorage(String description, String measurementUnit, double amount,
-                               int year, int month, int day, Location location, Category category){
+                               int year, int month, int day, Location location, IngredientCategory category){
         super(description,measurementUnit,amount, category);
         bestBeforeDate = LocalDate.of(year, month, day);
         this.location = location;
@@ -150,7 +100,7 @@ public class IngredientInStorage extends Ingredient{
      * Setter for category of ingredient in storage.
      * @param category
      */
-    public void setCategory(Category category) {
+    public void setCategory(IngredientCategory category) {
         this.category = category;
     }
 

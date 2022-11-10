@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Database;
 
 import android.os.Build;
 import android.util.Log;
@@ -6,8 +6,13 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.example.dietscoop.Data.IngredientCategory;
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
+import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Adapters.IngredientStorageAdapter;
+import com.example.dietscoop.Fragments.sortIngredientByFragment;
+import com.example.dietscoop.Data.Location;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -108,7 +113,7 @@ public class IngredientStorage {
                                         (doc.getLong("year")).intValue(),
                                         (doc.getLong("month")).intValue(), (doc.getLong("day")).intValue(),
                                         Location.stringToLocation(doc.getData().get("location").toString()),
-                                        Category.stringToCategory(doc.getData().get("category").toString()));
+                                        IngredientCategory.stringToCategory(doc.getData().get("category").toString()));
                                 storage.add(ingredient);
                                 ingredient.setId(doc.getId());
                             }

@@ -1,12 +1,14 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Database;
 
 import android.util.Log;
 
+import com.example.dietscoop.Data.IngredientInRecipe;
+import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Data.Recipe;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.firestore.CollectionReference;
 
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
@@ -14,7 +16,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import java.util.Locale;
 import java.util.Map;
 
 /**

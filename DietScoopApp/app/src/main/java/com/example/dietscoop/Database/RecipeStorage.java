@@ -1,10 +1,15 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Database;
 
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Data.IngredientCategory;
+import com.example.dietscoop.Data.IngredientInRecipe;
+import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Data.recipeCategory;
+import com.example.dietscoop.Data.timeUnit;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -13,7 +18,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 /**
  * This class encapsulates the Database interface class.
@@ -96,7 +100,7 @@ public class RecipeStorage implements Serializable {
                             ingredients.add(new IngredientInRecipe(ingredient.get("description").toString(),
                                     (ingredient.get("unit").toString()),
                                     (Double) ingredient.get("amount"),
-                                    Category.stringToCategory(ingredient.get("category").toString())));
+                                    IngredientCategory.stringToCategory(ingredient.get("category").toString())));
                         }
 
                         Recipe recipe = new Recipe(doc.getString("description"),
