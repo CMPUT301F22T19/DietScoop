@@ -1,22 +1,19 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
+import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.R;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.concurrent.RecursiveAction;
-import java.util.logging.Logger;
 
 /**
  * This class acts as a container for the IngredientInStorage Objects retrieved from Database.

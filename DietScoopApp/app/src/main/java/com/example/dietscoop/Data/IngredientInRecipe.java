@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Data;
 
 /**
  * Class representing ingredient in a recipe.
@@ -12,7 +12,7 @@ public class IngredientInRecipe extends Ingredient {
      * @param amount amount of ingredient in recipe.
      * @param category category of ingredient in recipe.
      */
-    public IngredientInRecipe(String description, String measurementUnit, double amount, Category category) {
+    public IngredientInRecipe(String description, String measurementUnit, double amount, IngredientCategory category) {
         super(description,measurementUnit,amount, category);
         
     }

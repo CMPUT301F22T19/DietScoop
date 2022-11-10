@@ -1,40 +1,8 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Data;
 
 import java.io.Serializable;
-import java.util.Locale;
 
-enum IngredientCategory implements Serializable {
-    /**
-     * Category for different ingredients
-     */
-        vegetable,
-        meat,
-        fruit;
-
-        /**
-         * Method change string to Enum class
-         *
-         * @param name String to change to enum
-         * @return Enum value of category
-         */
-        public static IngredientCategory stringToCategory(String name) {
-            name = name.toUpperCase(Locale.ROOT);
-
-            if (name.equals("VEGETABLE")) {
-                return vegetable;
-            } else if (name.equals("MEAT")) {
-                return meat;
-            } else if (name.equals("FRUIT")) {
-                return fruit;
-            } else {
-                // TODO: MAKE THIS THROW ERROR
-                return null;
-            }
-
-        }
-}
-
-    /**
+/**
      * Ingredient abstract class to be inherited by ingredient and ingredient in storage
      */
     public abstract class Ingredient extends FoodItem implements Serializable {
@@ -51,7 +19,7 @@ enum IngredientCategory implements Serializable {
          * @param amount          Amount of ingredient
          * @param category        Category of ingredient.
          */
-        public Ingredient(String description, String measurementUnit, double amount, Category category) {
+        public Ingredient(String description, String measurementUnit, double amount, IngredientCategory category) {
             this.description = description;
             this.amount = amount;
             this.measurementUnit = measurementUnit;
@@ -100,7 +68,7 @@ enum IngredientCategory implements Serializable {
          *
          * @return ingredient category
          */
-        public Category getCategory() {
+        public IngredientCategory getCategory() {
             return category;
         }
 

@@ -1,16 +1,17 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Adapters;
 
 import android.content.Context;
-import android.content.pm.LabeledIntent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.dietscoop.R;
+import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
 
 import java.util.ArrayList;
 

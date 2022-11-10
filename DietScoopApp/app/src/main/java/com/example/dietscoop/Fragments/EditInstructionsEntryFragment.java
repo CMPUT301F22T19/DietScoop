@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.dietscoop.Activities.ViewRecipeActivity;
+import com.example.dietscoop.R;
 
 /**
  * Fragment handles the editing of the instructions entry in

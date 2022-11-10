@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Data;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.example.dietscoop;
+package com.example.dietscoop.Fragments;
 
 import static java.lang.String.valueOf;
 
@@ -8,10 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -19,12 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
-import java.time.LocalDate;
+import com.example.dietscoop.Data.IngredientCategory;
+import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Data.Location;
+import com.example.dietscoop.R;
+import com.example.dietscoop.Data.TypeIsNumeric;
 
-enum TypeIsNumeric {
-    integer,
-    decimal
-}
+import java.time.LocalDate;
 
 public class IngredientAddFragment extends DialogFragment {
     private EditText description;
@@ -159,7 +158,7 @@ public class IngredientAddFragment extends DialogFragment {
                         }
 
                         Location location = Location.stringToLocation(strLocation);
-                        Category ingredientCategory = Category.stringToCategory(strCategory);
+                        IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
                         listener.onOkPressed(new IngredientInStorage(strDescription, strUnit,
                                 doubleAmount, yearI, monthI,
                                 dayI, location, ingredientCategory));
@@ -180,11 +179,11 @@ public class IngredientAddFragment extends DialogFragment {
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
 
-            if (ingredientToBeChanged.getCategory().equals(Category.vegetable)) {
+            if (ingredientToBeChanged.getCategory().equals(IngredientCategory.vegetable)) {
                 categoryString = "vegetable";
-            } else if (ingredientToBeChanged.getCategory().equals(Category.meat)) {
+            } else if (ingredientToBeChanged.getCategory().equals(IngredientCategory.meat)) {
                 categoryString = "meat";
-            } else if (ingredientToBeChanged.getCategory().equals(Category.fruit)) {
+            } else if (ingredientToBeChanged.getCategory().equals(IngredientCategory.fruit)) {
                 categoryString = "fruit";
             }
             category.setText(categoryString);
@@ -248,9 +247,9 @@ public class IngredientAddFragment extends DialogFragment {
                         ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
 
                         if (!category.getText().toString().equals("vegetable") || !category.getText().toString().equals("meat") || !category.getText().toString().equals("fruit")) {
-                            ingredientToBeChanged.setCategory(Category.stringToCategory("vegetable"));
+                            ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory("vegetable"));
                         } else {
-                            ingredientToBeChanged.setCategory(Category.stringToCategory(category.getText().toString()));
+                            ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory(category.getText().toString()));
                         }
 
                         if (!location.getText().toString().equalsIgnoreCase("pantry")
