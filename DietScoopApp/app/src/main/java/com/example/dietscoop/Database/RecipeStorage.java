@@ -84,16 +84,16 @@ public class RecipeStorage implements Serializable {
                 return;
             }
             recipes.clear();
-            ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
+
             for (QueryDocumentSnapshot doc : value) {
                 if (doc.getId() != null) {
                     Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
-
+                    ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
                     ArrayList<HashMap> ingredientMaps = (ArrayList<HashMap>)doc.getData().get("ingredients");
                     for (HashMap ingredient: ingredientMaps) {
                         ingredients.add(new IngredientInRecipe(ingredient.get("description").toString(),
                                 (ingredient.get("unit").toString()),
-                                (Double) ingredient.get("amount"),
+                                ((Long)ingredient.get("amount")).doubleValue(),
                                 IngredientCategory.stringToCategory(ingredient.get("category").toString())));
                     }
 
