@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.example.dietscoop.Fragments.EditInstructionsEntryFragment;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.R;
-import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.RecipeStorage;
 
 /**

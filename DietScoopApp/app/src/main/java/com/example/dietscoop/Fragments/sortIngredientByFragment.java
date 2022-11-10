@@ -49,33 +49,13 @@ public class sortIngredientByFragment extends DialogFragment {
         category = view.findViewById(R.id.sort_category);
         date = view.findViewById(R.id.sort_date);
 
-        name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onSortSelection(selection.NAME);
-            }
-        });
+        name.setOnClickListener(clicked_view -> listener.onSortSelection(selection.NAME));
 
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onSortSelection(selection.LOCATION);
-            }
-        });
+        location.setOnClickListener(clicked_view -> listener.onSortSelection(selection.LOCATION));
 
-        category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onSortSelection(selection.CATEGORY);
-            }
-        });
+        category.setOnClickListener(clicked_view -> listener.onSortSelection(selection.CATEGORY));
 
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onSortSelection(selection.DATE);
-            }
-        });
+        date.setOnClickListener(clicked_view -> listener.onSortSelection(selection.DATE));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 

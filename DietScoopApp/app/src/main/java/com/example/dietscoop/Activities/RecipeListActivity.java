@@ -10,13 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.dietscoop.Data.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.R;
-import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Adapters.RecipeListAdapter;
 import com.example.dietscoop.Database.RecipeStorage;
-import com.example.dietscoop.Data.recipeCategory;
-import com.example.dietscoop.Data.timeUnit;
+import com.example.dietscoop.Data.Recipe.recipeCategory;
+import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -58,21 +58,11 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         shoppingButton = findViewById(R.id.shopping_nav);
         addRecipeButton = findViewById(R.id.add_new_recipe_button);
 
-        addRecipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addNewRecipe();
-            }
-        });
+        addRecipeButton.setOnClickListener(view -> addNewRecipe());
 
         recipesButton.setBackgroundColor(Color.rgb(252, 186, 3));
 
-        ingredientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchToIngredients();
-            }
-        });
+        ingredientButton.setOnClickListener(view -> switchToIngredients());
 
         recipeListAdapter.setItemClickListener(this);
 
@@ -87,7 +77,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
                 -1,
                 timeUnit.minute,
                 recipeCategory.appetizer,
-                new ArrayList<IngredientInRecipe>(),
+                new ArrayList<>(),
                 ""
         );
 

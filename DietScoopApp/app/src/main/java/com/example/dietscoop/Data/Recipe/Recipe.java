@@ -1,4 +1,7 @@
-package com.example.dietscoop.Data;
+package com.example.dietscoop.Data.Recipe;
+
+import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -134,7 +137,7 @@ public class Recipe extends FoodItem implements Serializable {
 
     /**
      * Getter for the recipe category in string form
-     * @return
+     * @return String of category.
      */
     public String getCategoryName() {return this.category.name(); }
 

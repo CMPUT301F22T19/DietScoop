@@ -1,4 +1,4 @@
-package com.example.dietscoop.Data;
+package com.example.dietscoop.Data.Recipe;
 
 import java.io.Serializable;
 import java.util.Locale;

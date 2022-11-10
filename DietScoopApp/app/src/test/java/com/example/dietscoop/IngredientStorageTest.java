@@ -2,9 +2,9 @@ package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.example.dietscoop.Data.IngredientCategory;
-import com.example.dietscoop.Data.IngredientInStorage;
-import com.example.dietscoop.Data.Location;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.Database.IngredientStorage;
 
 import org.junit.jupiter.api.Test;
@@ -24,10 +24,6 @@ public class IngredientStorageTest {
     public IngredientInStorage getSampleIngredient() {
         return new IngredientInStorage("Pop", "kg",
                 5, 2022, 4, 24, Location.freezer, IngredientCategory.meat);
-    }
-
-    public void idle() {
-        return;
     }
 
     @Test

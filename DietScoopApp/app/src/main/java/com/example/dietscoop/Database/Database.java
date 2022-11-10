@@ -2,9 +2,9 @@ package com.example.dietscoop.Database;
 
 import android.util.Log;
 
-import com.example.dietscoop.Data.IngredientInRecipe;
-import com.example.dietscoop.Data.IngredientInStorage;
-import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -42,7 +42,6 @@ public class Database implements Serializable {
 
     /*************************** INGREDIENT METHODS ******************************/
 
-
     /**
      * Getter for Firestore collection reference of Recipes collection. Does not query database.
      * @return collection reference to Ingredients storage
@@ -62,11 +61,11 @@ public class Database implements Serializable {
         int month = expiry.getMonthValue();
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
-        ingredientDetails.put("amount", Double.valueOf(ingredient.getAmount()));
+        ingredientDetails.put("amount", ingredient.getAmount());
         ingredientDetails.put("unit", ingredient.getMeasurementUnit());
-        ingredientDetails.put("year", Integer.valueOf(year));
-        ingredientDetails.put("month", Integer.valueOf(month));
-        ingredientDetails.put("day", Integer.valueOf(day));
+        ingredientDetails.put("year", year);
+        ingredientDetails.put("month", month);
+        ingredientDetails.put("day", day);
 
         ingredientDetails.put("location", ingredient.getLocation().toString());
         ingredientDetails.put("category", ingredient.getCategory().toString());
@@ -91,12 +90,7 @@ public class Database implements Serializable {
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
         Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
         ingredientStorage.document(ingredientInStorage.getId()).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d(TAG, "Data has been deleted successfully!");
-                    }
-                });
+                .addOnSuccessListener(unused -> Log.d(TAG, "Data has been deleted successfully!"));
     }
 
     /**
@@ -104,7 +98,7 @@ public class Database implements Serializable {
      * @param ingredient new ingredient to be added in place of old
      */
     public void updateIngredientInStorage(IngredientInStorage ingredient) {
-        // also, this requires the passed-in ingredient to already have an ID, which we get from
+        // This requires the passed-in ingredient to already have an ID, which we get from
         // Firestore, so it has to get the ID from the ingredient being edited
         Map<String, Object> ingredientDetails = new HashMap<>();
         LocalDate expiry = ingredient.getBestBeforeDate();
@@ -112,11 +106,11 @@ public class Database implements Serializable {
         int month = expiry.getMonthValue();
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
-        ingredientDetails.put("amount", Double.valueOf(ingredient.getAmount()));
+        ingredientDetails.put("amount", ingredient.getAmount());
         ingredientDetails.put("unit", ingredient.getMeasurementUnit().toLowerCase());
-        ingredientDetails.put("year", Integer.valueOf(year));
-        ingredientDetails.put("month", Integer.valueOf(month));
-        ingredientDetails.put("day", Integer.valueOf(day));
+        ingredientDetails.put("year", year);
+        ingredientDetails.put("month", month);
+        ingredientDetails.put("day", day);
 
         ingredientDetails.put("location", ingredient.getLocation().toString());
         ingredientDetails.put("category", ingredient.getCategory().toString());
@@ -136,8 +130,8 @@ public class Database implements Serializable {
     public void addRecipeToStorage(Recipe recipe) {
         // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
-        recipeDetails.put("prepTime", Integer.valueOf(recipe.getPrepTime()));
-        recipeDetails.put("servings", Integer.valueOf(recipe.getNumOfServings()));
+        recipeDetails.put("prepTime", recipe.getPrepTime());
+        recipeDetails.put("servings", recipe.getNumOfServings());
         recipeDetails.put("description", recipe.getDescription().toLowerCase());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
@@ -148,7 +142,7 @@ public class Database implements Serializable {
         for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
             // hash map for each ingredient document in sub-collection IngredientsInRecipe
             Map<String, Object> ingredientDetails = new HashMap<>();
-            ingredientDetails.put("amount", Double.valueOf(ingredientInRecipe.getAmount()));
+            ingredientDetails.put("amount", ingredientInRecipe.getAmount());
             ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
             ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
             ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
@@ -168,12 +162,7 @@ public class Database implements Serializable {
         // each doc in sub-collection, but HOW??
         Log.d(TAG, "delete recipe from storage: "+ recipe.getDescription());
         recipeStorage.document(recipe.getDescription().toLowerCase()).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d(TAG, "Data has been deleted successfully!");
-                    }
-                });
+                .addOnSuccessListener(unused -> Log.d(TAG, "Data has been deleted successfully!"));
     }
 
     /**
@@ -199,8 +188,8 @@ public class Database implements Serializable {
     public void updateRecipeInStorage(Recipe recipe) {
         // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
-        recipeDetails.put("prepTime", Integer.valueOf(recipe.getPrepTime()));
-        recipeDetails.put("servings", Integer.valueOf(recipe.getNumOfServings()));
+        recipeDetails.put("prepTime", recipe.getPrepTime());
+        recipeDetails.put("servings", recipe.getNumOfServings());
         recipeDetails.put("description", recipe.getDescription().toLowerCase());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());

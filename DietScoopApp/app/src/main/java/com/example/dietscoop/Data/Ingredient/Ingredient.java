@@ -1,4 +1,6 @@
-package com.example.dietscoop.Data;
+package com.example.dietscoop.Data.Ingredient;
+
+import com.example.dietscoop.Data.FoodItem;
 
 import java.io.Serializable;
 

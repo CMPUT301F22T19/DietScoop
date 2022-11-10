@@ -1,4 +1,4 @@
-package com.example.dietscoop.Data;
+package com.example.dietscoop.Data.Ingredient;
 
 /**
  * Class representing ingredient in a recipe.
