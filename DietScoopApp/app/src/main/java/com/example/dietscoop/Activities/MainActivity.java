@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,6 +17,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //testing
+
+        RecipeStorage r = new RecipeStorage();
+        r.addIngredientBlah(new IngredientInRecipe("banana","dongs",69, IngredientCategory.fruit));
 
     }
 
