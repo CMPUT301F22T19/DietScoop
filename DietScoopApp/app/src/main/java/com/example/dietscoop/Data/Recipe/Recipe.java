@@ -168,4 +168,8 @@ public class Recipe extends FoodItem implements Serializable {
 
     public String getName() { return name; }
 
+    public void updateIngredient(IngredientInRecipe ingredient, int index) {
+        this.ingredientsList.set(index, ingredient);
+    }
+
 }
