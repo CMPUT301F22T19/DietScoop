@@ -6,12 +6,12 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.example.dietscoop.Data.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Comparators.IngredientComparator;
-import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Adapters.IngredientStorageAdapter;
 import com.example.dietscoop.Fragments.sortIngredientByFragment;
-import com.example.dietscoop.Data.Location;
+import com.example.dietscoop.Data.Ingredient.Location;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,7 +34,7 @@ public class IngredientStorage {
      */
     public IngredientStorage() {
         db = new Database();
-        storage = new ArrayList<IngredientInStorage>();
+        storage = new ArrayList<>();
     }
 
     /**
@@ -94,42 +94,36 @@ public class IngredientStorage {
     // TODO: improve documentation for snapshot methods
     public void setupIngredientSnapshotListener(IngredientStorageAdapter adapter) {
 
-        db.getIngredientCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        String TAG = "test";
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-                        storage.clear();
-                        for (QueryDocumentSnapshot doc : value) {
-                            if (doc.getId() != null) {
-                                Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
-                                IngredientInStorage ingredient = new IngredientInStorage(doc.getString("description"),
-                                        doc.getString("unit"), doc.getDouble("amount"),
-                                        (doc.getLong("year")).intValue(),
-                                        (doc.getLong("month")).intValue(), (doc.getLong("day")).intValue(),
-                                        Location.stringToLocation(doc.getData().get("location").toString()),
-                                        IngredientCategory.stringToCategory(doc.getData().get("category").toString()));
-                                storage.add(ingredient);
-                                ingredient.setId(doc.getId());
-                            }
-                        }
-                        if (adapter!=null) {
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                });
+        db.getIngredientCollectionRef().addSnapshotListener((value, e) -> {
+            String TAG = "test";
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
+            storage.clear();
+            for (QueryDocumentSnapshot doc : value) {
+                if (doc.getId() != null) {
+                    Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
+                    IngredientInStorage ingredient = new IngredientInStorage(doc.getString("description"),
+                            doc.getString("unit"), doc.getDouble("amount"),
+                            (doc.getLong("year")).intValue(),
+                            (doc.getLong("month")).intValue(), (doc.getLong("day")).intValue(),
+                            Location.stringToLocation(doc.getData().get("location").toString()),
+                            IngredientCategory.stringToCategory(doc.getData().get("category").toString()));
+                    storage.add(ingredient);
+                    ingredient.setId(doc.getId());
+                }
+            }
+            if (adapter!=null) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /**
      * Method to sort Ingredients by given selection
      * @param sortBy selection to be sorted by
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortBy(sortIngredientByFragment.selection sortBy) {
         switch (sortBy) {
             case NAME:

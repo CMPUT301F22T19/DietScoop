@@ -1,6 +1,6 @@
 package com.example.dietscoop.Data.Comparators;
 
-import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 
 import java.util.Comparator;
 

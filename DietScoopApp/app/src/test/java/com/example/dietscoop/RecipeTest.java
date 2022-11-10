@@ -2,11 +2,11 @@ package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.example.dietscoop.Data.IngredientCategory;
-import com.example.dietscoop.Data.IngredientInRecipe;
-import com.example.dietscoop.Data.Recipe;
-import com.example.dietscoop.Data.recipeCategory;
-import com.example.dietscoop.Data.timeUnit;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.recipeCategory;
+import com.example.dietscoop.Data.Recipe.timeUnit;
 
 import org.junit.jupiter.api.Test;
 

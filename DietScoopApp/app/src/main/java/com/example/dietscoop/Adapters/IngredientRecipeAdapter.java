@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dietscoop.Data.Ingredient;
-import com.example.dietscoop.Data.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.Ingredient;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;

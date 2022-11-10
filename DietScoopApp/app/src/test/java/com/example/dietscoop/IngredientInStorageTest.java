@@ -2,9 +2,9 @@ package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.example.dietscoop.Data.IngredientCategory;
-import com.example.dietscoop.Data.IngredientInStorage;
-import com.example.dietscoop.Data.Location;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.Location;
 
 import org.junit.jupiter.api.Test;
 

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.R;
-import com.example.dietscoop.Data.Recipe;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
 
 import java.util.ArrayList;
@@ -44,8 +44,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         if (dataList != null && dataList.size() > 0) {
             Recipe recipe = dataList.get(position);
             holder.categoryTV.setText(recipe.getCategoryName());
-            holder.servingsTV.setText(String.valueOf(recipe.getNumOfServings())+" servings");
-            holder.prepTimeTV.setText(String.valueOf(recipe.getPrepTime())+" "+ recipe.getPrepUnitTime().toString()+"s");
+            holder.servingsTV.setText(recipe.getNumOfServings() + " servings");
+            holder.prepTimeTV.setText(recipe.getPrepTime() + " " + recipe.getPrepUnitTime().toString() + "s" );
             holder.titleTV.setText(String.valueOf(recipe.getDescription()).toUpperCase());
         }
     }

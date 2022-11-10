@@ -1,12 +1,8 @@
-package com.example.dietscoop.Data;
+package com.example.dietscoop.Data.Ingredient;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
-
-import com.example.dietscoop.Data.Ingredient;
-import com.example.dietscoop.Data.IngredientCategory;
-import com.example.dietscoop.Data.Location;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -37,7 +33,6 @@ public class IngredientInStorage extends Ingredient {
      * @param location Location of ingredient in storage.
      * @param category Category of ingredient in storage.
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public IngredientInStorage(String description, String measurementUnit, double amount,
                                int year, int month, int day, Location location, IngredientCategory category){
         super(description,measurementUnit,amount, category);
@@ -80,7 +75,6 @@ public class IngredientInStorage extends Ingredient {
      * Getter for formatted best before date
      * @return Best before date formatted via LOCAL_DATE
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public String getFormattedBestBefore() {
         return bestBeforeDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
@@ -91,14 +85,13 @@ public class IngredientInStorage extends Ingredient {
      * @param month month value to be set
      * @param day day value to be set
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setBestBeforeDate(int year, int month, int day) {
         bestBeforeDate = LocalDate.of(year, month, day);
     }
 
     /**
      * Setter for category of ingredient in storage.
-     * @param category
+     * @param category Category to set for this ingredient.
      */
     public void setCategory(IngredientCategory category) {
         this.category = category;

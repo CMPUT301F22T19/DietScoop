@@ -1,4 +1,4 @@
-package com.example.dietscoop.Data;
+package com.example.dietscoop.Data.Recipe;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -23,21 +23,22 @@ public enum recipeCategory implements Serializable {
     public static recipeCategory stringToRecipeCategory(String name) {
         name = name.toUpperCase(Locale.ROOT);
 
-        if (name.equals("BREAKFAST")) {
-            return breakfast;
-        } else if (name.equals("LUNCH")) {
-            return lunch;
-        } else if (name.equals("DINNER")) {
-            return dinner;
-        } else if (name.equals("APPETIZER")) {
-            return appetizer;
-        } else if (name.equals("SALAD")) {
-            return salad;
-        } else if (name.equals("BAKED")) {
-            return baked;
-        } else {
-            // TODO: MAKE THIS THROW ERROR
-            return null;
+        switch (name) {
+            case "BREAKFAST":
+                return breakfast;
+            case "LUNCH":
+                return lunch;
+            case "DINNER":
+                return dinner;
+            case "APPETIZER":
+                return appetizer;
+            case "SALAD":
+                return salad;
+            case "BAKED":
+                return baked;
+            default:
+                // TODO: MAKE THIS THROW ERROR
+                return null;
         }
 
     }

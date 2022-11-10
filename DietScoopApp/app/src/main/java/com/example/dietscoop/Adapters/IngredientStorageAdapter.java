@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
-import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;

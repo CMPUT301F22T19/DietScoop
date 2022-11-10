@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.dietscoop.Fragments.IngredientAddFragment;
-import com.example.dietscoop.Data.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Adapters.IngredientStorageAdapter;
 import com.example.dietscoop.R;
@@ -39,7 +39,6 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
     Button shoppingButton;
     Button sortButton;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,23 +84,11 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         ingredientButton.setBackgroundColor(Color.rgb(252, 186, 3));
 
         final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
-        addIngredientButton.setOnClickListener((v) -> {
-            new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
-        });
+        addIngredientButton.setOnClickListener((v) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
 
-        recipesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchToRecipes();
-            }
-        });
+        recipesButton.setOnClickListener(unused -> switchToRecipes());
 
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new sortIngredientByFragment().show(getFragmentManager(),"SORT_BY");
-            }
-        });
+        sortButton.setOnClickListener(view -> new sortIngredientByFragment().show(getFragmentManager(),"SORT_BY"));
 
         ingredientStorageAdapter.setItemClickListener(this);
 
@@ -116,9 +103,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         startActivity(switchActivityIntent);
         final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
 
-        addIngredientButton.setOnClickListener((e) -> {
-            new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
-        });
+        addIngredientButton.setOnClickListener((e) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
 
     }
     
@@ -137,7 +122,6 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.removeIngredientFromStorage(deleteIngredientInStorage);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSortSelection(sortIngredientByFragment.selection sortBy) {
         foodStorage.sortBy(sortBy);
