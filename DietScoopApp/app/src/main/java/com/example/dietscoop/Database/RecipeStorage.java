@@ -123,4 +123,8 @@ public class RecipeStorage implements Serializable {
 
         return null;
     }
+
+    public void addIngredientBlah(IngredientInRecipe ingo) {
+        db.addIngredientToIngredientsInRecipesCollection(ingo);
+    }
 }

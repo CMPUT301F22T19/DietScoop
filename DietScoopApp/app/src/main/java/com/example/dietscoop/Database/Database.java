@@ -21,13 +21,13 @@ import java.util.Map;
 /**
  * The Database class provides the methods and functionality for connecting with the Firestore database.
  */
-public class Database implements Serializable {
+class Database implements Serializable {
 
     private static final String TAG = "testing";
     private FirebaseFirestore db;
     private CollectionReference ingredientStorage;
     private CollectionReference recipeStorage;
-    private CollectionReference ingredientsInRecipe;
+    private CollectionReference ingredientsInRecipes;
 
     /**
      * Constructor for the Database class.
@@ -36,6 +36,7 @@ public class Database implements Serializable {
         db = FirebaseFirestore.getInstance();
         ingredientStorage = db.collection("IngredientStorage");
         recipeStorage = db.collection("Recipes");
+        ingredientsInRecipes = db.collection("IngredientsInRecipes");
     }
 
 
@@ -67,8 +68,8 @@ public class Database implements Serializable {
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
 
-        ingredientDetails.put("location", ingredient.getLocation().toString());
-        ingredientDetails.put("category", ingredient.getCategory().toString());
+        ingredientDetails.put("location", ingredient.getLocation());
+        ingredientDetails.put("category", ingredient.getCategory());
 
         // .add() auto generates document ID in Firestore; this doesn't use ingredient's name as ID
         ingredientStorage.add(ingredientDetails);
@@ -112,8 +113,8 @@ public class Database implements Serializable {
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
 
-        ingredientDetails.put("location", ingredient.getLocation().toString());
-        ingredientDetails.put("category", ingredient.getCategory().toString());
+        ingredientDetails.put("location", ingredient.getLocation());
+        ingredientDetails.put("category", ingredient.getCategory());
 
         ingredientStorage.document(ingredient.getId()).set(ingredientDetails);
         Log.e("update ingredientInStor","ID: "+ingredient.getId());
@@ -207,6 +208,10 @@ public class Database implements Serializable {
             recipeStorage.document(recipe.getDescription()).collection("IngredientsInRecipe")
                     .document(ingredientInRecipe.getDescription().toLowerCase()).set(ingredientDetails);
         }
+    }
+
+    public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
+        ingredientsInRecipes.add(ingredientInRecipe);
     }
 }
 
