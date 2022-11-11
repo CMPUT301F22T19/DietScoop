@@ -127,4 +127,8 @@ public class RecipeStorage implements Serializable {
     public void addIngredientBlah(IngredientInRecipe ingo) {
         db.addIngredientToIngredientsInRecipesCollection(ingo);
     }
+
+    public void addSnapshotListener() {db.setupAllIngredientsInRecipesSnapshotListener();}
+
+    public void getAllIngsInRecipes() {db.getAllIngredientsInRecipes();}
 }
