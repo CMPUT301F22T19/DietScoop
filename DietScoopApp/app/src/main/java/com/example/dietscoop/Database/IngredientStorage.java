@@ -1,21 +1,14 @@
 package com.example.dietscoop.Database;
 
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-
+import com.example.dietscoop.Activities.IngredientListActivity;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Adapters.IngredientStorageAdapter;
-import com.example.dietscoop.Fragments.sortIngredientByFragment;
 import com.example.dietscoop.Data.Ingredient.Location;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -124,7 +117,7 @@ public class IngredientStorage {
      * Method to sort Ingredients by given selection
      * @param sortBy selection to be sorted by
      */
-    public void sortBy(sortIngredientByFragment.selection sortBy) {
+    public void sortBy(IngredientListActivity.sortSelection sortBy) {
         switch (sortBy) {
             case NAME:
                 storage.sort(new IngredientComparator.byName());
