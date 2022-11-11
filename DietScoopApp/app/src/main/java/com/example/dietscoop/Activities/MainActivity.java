@@ -8,22 +8,25 @@ import android.view.View;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.R;
 
 public class MainActivity extends AppCompatActivity {
 
     RecipeStorage r;//testing
+    IngredientStorage i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //testing
-
+        i = new IngredientStorage();
+        i.setupIngredientSnapshotListener();
         r = new RecipeStorage();
         r.addSnapshotListener();
-        r.getAllIngsInRecipes();
+        //r.getAllIngsInRecipes();
 
 
     }
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         //testing
-        r.addIngredientBlah(new IngredientInRecipe("bana","dongs",75, IngredientCategory.fruit));
+        r.addIngredientBlah(new IngredientInRecipe("babann","dongs",95, IngredientCategory.fruit));
     }
 
     /**
