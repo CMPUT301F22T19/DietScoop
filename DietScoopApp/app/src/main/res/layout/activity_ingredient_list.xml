@@ -24,6 +24,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/name_sort"
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:text="Name"
@@ -33,6 +34,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
+                    android:id="@+id/category_sort"
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:text="Category"
@@ -41,6 +43,7 @@
                     android:textStyle="bold"
                     android:textAlignment="center"/>
                 <TextView
+                    android:id="@+id/bestbefore_sort"
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:text="Best Before"
@@ -57,6 +60,7 @@
                     android:textStyle="bold"
                     android:textAlignment="center"/>
                 <TextView
+                    android:id="@+id/location_sort"
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:text="Location"
