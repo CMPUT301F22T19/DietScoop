@@ -9,7 +9,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.firestore.CollectionReference;
 
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -210,8 +212,29 @@ class Database implements Serializable {
         }
     }
 
+    public void getAllIngredientsInRecipes() {
+        ingredientsInRecipes.get();
+    }
+
     public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
+
         ingredientsInRecipes.add(ingredientInRecipe);
+    }
+
+    public void setupAllIngredientsInRecipesSnapshotListener() {
+        ingredientsInRecipes.addSnapshotListener((value, e) -> {
+            String TAG = "test";
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
+            for (DocumentChange doc : value.getDocumentChanges()) {
+                if (doc.getType() == DocumentChange.Type.ADDED) {
+                    Log.i("added", doc.getDocument().getData().toString());
+
+                }
+            }
+        });
     }
 }
 
