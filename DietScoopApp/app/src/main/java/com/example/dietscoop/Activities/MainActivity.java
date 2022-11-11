@@ -13,6 +13,7 @@ import com.example.dietscoop.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    RecipeStorage r;//testing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         //testing
 
-        RecipeStorage r = new RecipeStorage();
-        r.addIngredientBlah(new IngredientInRecipe("banana","dongs",69, IngredientCategory.fruit));
+        r = new RecipeStorage();
+        r.addSnapshotListener();
+        r.getAllIngsInRecipes();
+
 
     }
 
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);
+
+        //testing
+        r.addIngredientBlah(new IngredientInRecipe("bana","dongs",75, IngredientCategory.fruit));
     }
 
     /**
