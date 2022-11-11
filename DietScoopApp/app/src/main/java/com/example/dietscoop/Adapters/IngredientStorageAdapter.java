@@ -45,9 +45,8 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
     public void onBindViewHolder(@NonNull IngredientStorageAdapter.ViewHolder holder, int position) {
         if (dataList != null && dataList.size() > 0) {
             IngredientInStorage ingredient = dataList.get(position);
-            holder.unitTV.setText(ingredient.getMeasurementUnit());
             holder.nameTV.setText(ingredient.getDescription());
-            holder.countTV.setText(String.valueOf(ingredient.getAmount()));
+            holder.countTV.setText(ingredient.getCountWithMeasurement());
             holder.dateTV.setText(ingredient.getFormattedBestBefore());
             holder.locationTV.setText(ingredient.getLocationName());
             holder.categoryTV.setText(ingredient.getCategoryName());
@@ -68,14 +67,13 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
      * ViewHolder of Adapter for RecyclerView
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameTV, countTV, unitTV, dateTV, locationTV, categoryTV;
+        TextView nameTV, countTV, dateTV, locationTV, categoryTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTV = itemView.findViewById(R.id.description_text);
             countTV = itemView.findViewById(R.id.count_text);
-            unitTV = itemView.findViewById(R.id.unit_text);
             dateTV = itemView.findViewById(R.id.Best_Before_Text);
 
             locationTV = itemView.findViewById(R.id.Location_Text);

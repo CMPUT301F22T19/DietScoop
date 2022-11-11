@@ -65,6 +65,10 @@ import java.io.Serializable;
             this.measurementUnit = measurementUnit;
         }
 
+        public String getCountWithMeasurement(){
+            return String.valueOf(this.getAmount()) + " " + this.getMeasurementUnit();
+        }
+
         /**
          * getter for ingredient category
          *
