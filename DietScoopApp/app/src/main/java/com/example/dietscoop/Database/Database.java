@@ -229,9 +229,16 @@ class Database implements Serializable {
                 return;
             }
             for (DocumentChange doc : value.getDocumentChanges()) {
-                if (doc.getType() == DocumentChange.Type.ADDED) {
-                    Log.i("added", doc.getDocument().getData().toString());
-
+                switch (doc.getType()) {
+                    case ADDED:
+                        Log.i("added", doc.getDocument().getData().toString());
+                        break;
+                    case MODIFIED:
+                        Log.i("modified", doc.getDocument().getData().toString());
+                        break;
+                    case REMOVED:
+                        Log.i("removed", doc.getDocument().getData().toString());
+                        break;
                 }
             }
         });
