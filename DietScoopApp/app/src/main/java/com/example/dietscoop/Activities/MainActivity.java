@@ -16,7 +16,6 @@ import com.example.dietscoop.R;
 public class MainActivity extends AppCompatActivity {
 
     RecipeStorage r;//testing
-    IngredientStorage i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
