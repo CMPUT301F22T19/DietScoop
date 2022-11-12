@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Fragments.EditInstructionsEntryFragment;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.R;
@@ -53,6 +55,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
     private void initialize() {
 
+
         prepTime = findViewById(R.id.recipe_prep_time);
         numServings = findViewById(R.id.recipe_no_of_servings);
         category = findViewById(R.id.recipe_category);
@@ -79,6 +82,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         ingredientsView.setLayoutManager(new LinearLayoutManager(this));
 
         storage.setupRecipeSnapshotListener(adapter);
+        storage.addRealSnapshotListener(currentRecipe, adapter, false);//testing
         storage.getRecipeStorageFromDatabase();
 
         //Adding the button here for instruction updating:
@@ -118,8 +122,11 @@ public class ViewRecipeActivity extends AppCompatActivity {
     }
 
     private void deleteThisRecipe() {
-        storage.removeRecipeFromStorage(currentRecipe);
-        goBack();
+
+
+        storage.addIngredientBlah(new IngredientInRecipe("babann","dongs",95, IngredientCategory.fruit));
+//        storage.removeRecipeFromStorage(currentRecipe);
+//        goBack();
     }
 
 }

@@ -49,8 +49,11 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         recipeStorage = new RecipeStorage();
         recipeListAdapter = new RecipeListAdapter(this, recipeStorage.getRecipeStorage());
         recipeListView.setAdapter(recipeListAdapter);
+
+
         recipeStorage.setupRecipeSnapshotListener(recipeListAdapter);
         recipeStorage.getRecipeStorageFromDatabase();
+        //recipeStorage.addRealSnapshotListener();
 
         ingredientButton = findViewById(R.id.ingr_nav);
         recipesButton = findViewById(R.id.recipes_nav);

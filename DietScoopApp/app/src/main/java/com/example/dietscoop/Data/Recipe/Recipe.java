@@ -3,6 +3,8 @@ package com.example.dietscoop.Data.Recipe;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,13 +13,13 @@ import java.util.ArrayList;
  * Extends FoodItem to obtain a category property.
  */
 public class Recipe extends FoodItem implements Serializable {
-    private String name;
     private int prepTime;
     private int servings;
     private timeUnit prepUnitTime;
     private recipeCategory category;
     ArrayList<IngredientInRecipe> ingredientsList;
     private String instructions;
+    private ArrayList<String> ingredientIDs;
 
     /**
      * Constructor for Recipe object
@@ -38,6 +40,7 @@ public class Recipe extends FoodItem implements Serializable {
         this.category = category;
         this.ingredientsList = ingredientsList;
         this.instructions = instructions;
+        this.ingredientIDs = new ArrayList<String>();
     }
 
     /**
@@ -166,10 +169,18 @@ public class Recipe extends FoodItem implements Serializable {
         this.ingredientsList.remove(ingredient);
     }
 
-    public String getName() { return name; }
-
     public void updateIngredient(IngredientInRecipe ingredient, int index) {
         this.ingredientsList.set(index, ingredient);
     }
+
+    public void addIngredientID(String id) {
+        this.ingredientIDs.add(id);
+    }
+
+    public void removeIngredientID(String id) {
+        this.ingredientIDs.remove(id);
+    }
+
+    public ArrayList<String> getIngredientIDs() {return this.ingredientIDs;}
 
 }

@@ -2,6 +2,8 @@ package com.example.dietscoop.Database;
 
 import android.util.Log;
 
+import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.Recipe;
@@ -131,6 +133,10 @@ class Database implements Serializable {
      * @param recipe the recipe object to be added to database
      */
     public void addRecipeToStorage(Recipe recipe) {
+        //setupRealIngredientInRecipesSnapshotListener();
+        for (IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
+            addIngredientToIngredientsInRecipesCollection(ingredientInRecipe);
+        }
         // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipe.getPrepTime());
@@ -216,12 +222,14 @@ class Database implements Serializable {
         ingredientsInRecipes.get();
     }
 
+    public CollectionReference getIngredientsInRecipesCollectionRef() {return this.ingredientsInRecipes;}
+
     public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
 
         ingredientsInRecipes.add(ingredientInRecipe);
     }
 
-    public void setupAllIngredientsInRecipesSnapshotListener() {
+    public void setupDummyAllIngredientsInRecipesSnapshotListener() {
         ingredientsInRecipes.addSnapshotListener((value, e) -> {
             String TAG = "test";
             if (e != null) {
@@ -231,13 +239,41 @@ class Database implements Serializable {
             for (DocumentChange doc : value.getDocumentChanges()) {
                 switch (doc.getType()) {
                     case ADDED:
-                        Log.i("added", doc.getDocument().getData().toString());
+                        Log.i("added initial", doc.getDocument().getData().toString());
                         break;
                     case MODIFIED:
-                        Log.i("modified", doc.getDocument().getData().toString());
+                        Log.i("modified initial", doc.getDocument().getData().toString());
                         break;
                     case REMOVED:
-                        Log.i("removed", doc.getDocument().getData().toString());
+                        Log.i("removed initial", doc.getDocument().getData().toString());
+                        break;
+                }
+            }
+        });
+    }
+
+    public void setupRealIngredientInRecipesSnapshotListener(Recipe recipe) {
+        ingredientsInRecipes.addSnapshotListener((value, e) -> {
+            String TAG = "test";
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
+            for (DocumentChange doc : value.getDocumentChanges()) {
+                switch (doc.getType()) {
+                    case ADDED:
+                        recipe.addIngredientID(doc.getDocument().getId());
+                        IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
+                                doc.getDocument().getString("unit"), doc.getDocument().getDouble("amount"),
+                                IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
+                        ingredient.setId(doc.getDocument().getId());
+                        Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
+                        break;
+                    case MODIFIED:
+                        Log.i("modified new", doc.getDocument().getData().toString());
+                        break;
+                    case REMOVED:
+                        Log.i("removed new", doc.getDocument().getData().toString());
                         break;
                 }
             }

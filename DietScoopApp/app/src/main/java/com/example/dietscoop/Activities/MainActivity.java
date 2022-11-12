@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.R;
@@ -24,10 +25,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, MealPlanActivity.class);
         startActivity(intent);
         //testing
-        i = new IngredientStorage();
-        i.setupIngredientSnapshotListener();
         r = new RecipeStorage();
-        r.addSnapshotListener();
+        r.addDummySnapshotListener();
+
         //r.getAllIngsInRecipes();
 
 
@@ -40,10 +40,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToIngredientList(View view) {
 
-        Intent intent = new Intent(this, IngredientListActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, IngredientListActivity.class);
+//        startActivity(intent);
 
         //testing
+
         r.addIngredientBlah(new IngredientInRecipe("babann","dongs",95, IngredientCategory.fruit));
     }
 
