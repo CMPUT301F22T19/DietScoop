@@ -5,7 +5,7 @@ import com.example.dietscoop.Data.FoodItem;
 import java.io.Serializable;
 
 /**
-     * Ingredient abstract class to be inherited by ingredient and ingredient in storage
+     * Ingredient abstract class to be inherited by ingredient in recipe and ingredient in storage
      */
     public abstract class Ingredient extends FoodItem implements Serializable {
         private double amount;

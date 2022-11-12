@@ -7,7 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Class representing a Recipe
+ * Class representing a Recipe.
+ * Extends FoodItem to obtain a category property.
  */
 public class Recipe extends FoodItem implements Serializable {
     private String name;
