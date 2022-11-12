@@ -2,6 +2,7 @@ package com.example.dietscoop.Data.Recipe;
 
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.google.firebase.firestore.DocumentReference;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -19,7 +20,7 @@ public class Recipe extends FoodItem implements Serializable {
     private recipeCategory category;
     ArrayList<IngredientInRecipe> ingredientsList;
     private String instructions;
-    private ArrayList<String> ingredientIDs;
+    private ArrayList<DocumentReference> ingredientRefs;
 
     /**
      * Constructor for Recipe object
@@ -40,7 +41,7 @@ public class Recipe extends FoodItem implements Serializable {
         this.category = category;
         this.ingredientsList = ingredientsList;
         this.instructions = instructions;
-        this.ingredientIDs = new ArrayList<String>();
+        this.ingredientRefs = new ArrayList<DocumentReference>();
     }
 
     /**
@@ -173,18 +174,17 @@ public class Recipe extends FoodItem implements Serializable {
         this.ingredientsList.set(index, ingredient);
     }
 
-    public void addIngredientID(String id) {
-        this.ingredientIDs.add(id);
+    public void addIngredientRef(DocumentReference docref) {
+        this.ingredientRefs.add(docref);
     }
 
-    public void removeIngredientID(String id) {
-        this.ingredientIDs.remove(id);
+    public void removeIngredientID(DocumentReference docref) {
+        this.ingredientRefs.remove(docref);
     }
 
-    public ArrayList<String> getIngredientIDs() {return this.ingredientIDs;}
+    public ArrayList<DocumentReference> getIngredientRefs() {return this.ingredientRefs;}
 
-    public void updateIngredient(IngredientInRecipe ingredient, int index) {
-        this.ingredientsList.set(index, ingredient);
-    }
+    public void setIngredientRefs(ArrayList<DocumentReference> refs) {this.ingredientRefs = refs;}
+
 
 }

@@ -40,12 +40,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToIngredientList(View view) {
 
-//        Intent intent = new Intent(this, IngredientListActivity.class);
-//        startActivity(intent);
-
-        //testing
-
-        r.addIngredientBlah(new IngredientInRecipe("babann","dongs",95, IngredientCategory.fruit));
+        Intent intent = new Intent(this, IngredientListActivity.class);
+        startActivity(intent);
     }
 
     /**

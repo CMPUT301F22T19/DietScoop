@@ -7,6 +7,7 @@ public abstract class FoodItem implements Serializable {
  * The abstract class FoodItem abstracts the shared methods of ingredient and recipe
  */
     protected String description;
+    protected String id;
 
     /**
      * Getter method for FoodItem description
@@ -24,4 +25,15 @@ public abstract class FoodItem implements Serializable {
         this.description = description;
     }
 
+    /**
+     * Getter for ID of ingredient in storage
+     * @return ID of ingredient in storage
+     */
+    public String getId(){return this.id;}
+
+    /**
+     * Setter for ID of ingredient in storage
+     * @param id Value to be set.
+     */
+    public void setId(String id){this.id=id;}
 }

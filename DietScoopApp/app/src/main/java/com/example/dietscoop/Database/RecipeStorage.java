@@ -91,7 +91,22 @@ public class RecipeStorage implements Serializable {
                 if (doc.getId() != null) {
                     Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
                     ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
+
+                    Recipe recipe = new Recipe(doc.getString("description"),
+                            doc.getLong("prepTime").intValue(),
+                            doc.getLong("servings").intValue(),
+                            timeUnit.stringToTimeUnit(doc.getData().get("prepUnitTime").toString()),
+                            recipeCategory.stringToRecipeCategory(doc.getData().get("category").toString()),
+                            ingredients, doc.getString("instructions"));
+                    recipe.setId(doc.getId());
+                    recipes.add(recipe);
+
                     ArrayList<DocumentReference> ingredientMaps = (ArrayList<DocumentReference>)doc.getData().get("ingredients");
+
+                    //TODO: this makes Recipe non-serializable i think cuz of DocumentReference
+                    //TODO: try just using strings as path
+                    //recipe.setIngredientRefs(ingredientMaps);
+
                     for (DocumentReference ingredient: ingredientMaps) {
                             ingredient.addSnapshotListener((doc1, e1) -> {
                                 String TAG1 = "BALLSSS";
@@ -104,6 +119,7 @@ public class RecipeStorage implements Serializable {
                                     ingredients.add(new IngredientInRecipe(doc1.getString("description"),
                                             doc1.getString("measurementUnit"),doc1.getDouble("amount"),
                                             IngredientCategory.stringToCategory(doc1.getString("category"))));
+
                                 }
                                 if (adapter!=null) {
                                     adapter.notifyDataSetChanged();
@@ -118,13 +134,7 @@ public class RecipeStorage implements Serializable {
 //                        ingredients.add(new IngredientInRecipe(descr,unit, amount,cat));
                     }
 
-                    Recipe recipe = new Recipe(doc.getString("description"),
-                            doc.getLong("prepTime").intValue(),
-                            doc.getLong("servings").intValue(),
-                            timeUnit.stringToTimeUnit(doc.getData().get("prepUnitTime").toString()),
-                            recipeCategory.stringToRecipeCategory(doc.getData().get("category").toString()),
-                            ingredients, doc.getString("instructions"));
-                    recipes.add(recipe);
+
                 }
             }
 
@@ -149,11 +159,6 @@ public class RecipeStorage implements Serializable {
         db.addIngredientToIngredientsInRecipesCollection(ingo);
     }
 
-    public void addDummySnapshotListener() {db.setupDummyAllIngredientsInRecipesSnapshotListener();}
-
-//    public void addRealSnapshotListener() {
-//        addRealSnapshotListener(null,null);
-//    }
     public void addRealSnapshotListener(Recipe recipe, RecyclerView.Adapter adapter, boolean flag) {
         db.getIngredientsInRecipesCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -169,12 +174,16 @@ public class RecipeStorage implements Serializable {
                 switch (doc.getType()) {
                     case ADDED:
                         if (recipe != null && adapter != null) {
-                            recipe.addIngredientID(doc.getDocument().getId());
+                            recipe.addIngredientRef(doc.getDocument().getReference());
                             IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
                                     doc.getDocument().getString("unit"), doc.getDocument().getDouble("amount"),
                                     IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
                             ingredient.setId(doc.getDocument().getId());
                             recipe.addIngredient(ingredient);
+                            for (IngredientInRecipe i: recipe.getIngredients()) {
+                                Log.i("ingros in recip", i.getDescription());
+                            }
+
                             adapter.notifyDataSetChanged();
                         }
                         Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
@@ -192,4 +201,6 @@ public class RecipeStorage implements Serializable {
     }});}
 
     public void getAllIngsInRecipes() {db.getAllIngredientsInRecipes();}
+
+    public void updateRecipeInStorage(Recipe recipe) {db.updateRecipeInStorage(recipe);}
 }
