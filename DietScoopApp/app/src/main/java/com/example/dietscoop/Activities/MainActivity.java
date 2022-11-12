@@ -15,18 +15,10 @@ import com.example.dietscoop.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecipeStorage r;//testing
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //testing
-        r = new RecipeStorage();
-        r.addDummySnapshotListener();
-
-        //r.getAllIngsInRecipes();
-
 
     }
 
@@ -37,12 +29,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToIngredientList(View view) {
 
-//        Intent intent = new Intent(this, IngredientListActivity.class);
-//        startActivity(intent);
-
-        //testing
-
-        r.addIngredientBlah(new IngredientInRecipe("babann","dongs",95, IngredientCategory.fruit));
+        Intent intent = new Intent(this, IngredientListActivity.class);
+        startActivity(intent);
     }
 
     /**

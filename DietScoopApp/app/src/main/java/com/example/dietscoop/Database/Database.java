@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -133,11 +134,6 @@ class Database implements Serializable {
      * @param recipe the recipe object to be added to database
      */
     public void addRecipeToStorage(Recipe recipe) {
-        //setupRealIngredientInRecipesSnapshotListener();
-        for (IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
-            addIngredientToIngredientsInRecipesCollection(ingredientInRecipe);
-        }
-        // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipe.getPrepTime());
         recipeDetails.put("servings", recipe.getNumOfServings());
@@ -145,21 +141,8 @@ class Database implements Serializable {
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
-
-
-        ArrayList<Map<String, Object>> ingredientsInRecipe = new ArrayList<>();
-        for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
-            // hash map for each ingredient document in sub-collection IngredientsInRecipe
-            Map<String, Object> ingredientDetails = new HashMap<>();
-            ingredientDetails.put("amount", ingredientInRecipe.getAmount());
-            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
-            ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
-            ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
-            ingredientsInRecipe.add(ingredientDetails);
-
-        }
-        recipeDetails.put("ingredients", ingredientsInRecipe);
-        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
+        recipeDetails.put("ingredients", recipe.getIngredientRefs());
+        recipeStorage.add(recipeDetails);
     }
 
     /**
@@ -195,27 +178,17 @@ class Database implements Serializable {
      * @param recipe object that will be updated with new recipe
      */
     public void updateRecipeInStorage(Recipe recipe) {
-        // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipe.getPrepTime());
         recipeDetails.put("servings", recipe.getNumOfServings());
         recipeDetails.put("description", recipe.getDescription().toLowerCase());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
+        recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
+        recipeDetails.put("ingredients", recipe.getIngredientRefs());
+        recipeStorage.document(recipe.getId()).set(recipeDetails);
 
-        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
 
-        for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
-            // hash map for each ingredient document in sub-collection IngredientsInRecipe
-            Map<String, Object> ingredientDetails = new HashMap<>();
-            ingredientDetails.put("amount", Double.valueOf(ingredientInRecipe.getAmount()));
-            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
-            ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
-            ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
-
-            recipeStorage.document(recipe.getDescription()).collection("IngredientsInRecipe")
-                    .document(ingredientInRecipe.getDescription().toLowerCase()).set(ingredientDetails);
-        }
     }
 
     public void getAllIngredientsInRecipes() {
@@ -229,29 +202,6 @@ class Database implements Serializable {
         ingredientsInRecipes.add(ingredientInRecipe);
     }
 
-    public void setupDummyAllIngredientsInRecipesSnapshotListener() {
-        ingredientsInRecipes.addSnapshotListener((value, e) -> {
-            String TAG = "test";
-            if (e != null) {
-                Log.w(TAG, "Listen failed.", e);
-                return;
-            }
-            for (DocumentChange doc : value.getDocumentChanges()) {
-                switch (doc.getType()) {
-                    case ADDED:
-                        Log.i("added initial", doc.getDocument().getData().toString());
-                        break;
-                    case MODIFIED:
-                        Log.i("modified initial", doc.getDocument().getData().toString());
-                        break;
-                    case REMOVED:
-                        Log.i("removed initial", doc.getDocument().getData().toString());
-                        break;
-                }
-            }
-        });
-    }
-
     public void setupRealIngredientInRecipesSnapshotListener(Recipe recipe) {
         ingredientsInRecipes.addSnapshotListener((value, e) -> {
             String TAG = "test";
@@ -262,7 +212,7 @@ class Database implements Serializable {
             for (DocumentChange doc : value.getDocumentChanges()) {
                 switch (doc.getType()) {
                     case ADDED:
-                        recipe.addIngredientID(doc.getDocument().getId());
+                        recipe.addIngredientRef(doc.getDocument().getReference());
                         IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
                                 doc.getDocument().getString("unit"), doc.getDocument().getDouble("amount"),
                                 IngredientCategory.stringToCategory(doc.getDocument().getString("category")));

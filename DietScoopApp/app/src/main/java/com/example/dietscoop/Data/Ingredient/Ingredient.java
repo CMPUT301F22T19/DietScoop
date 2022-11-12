@@ -11,7 +11,6 @@ import java.io.Serializable;
         private double amount;
         private String measurementUnit;
         private IngredientCategory category;
-        String id;
 
 
         /**
@@ -88,16 +87,6 @@ import java.io.Serializable;
             return category.name();
         }
 
-        /**
-         * Getter for ID of ingredient in storage
-         * @return ID of ingredient in storage
-         */
-        public String getId(){return this.id;}
 
-        /**
-         * Setter for ID of ingredient in storage
-         * @param id Value to be set.
-         */
-        public void setId(String id){this.id=id;}
 
     }
