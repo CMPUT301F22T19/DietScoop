@@ -22,6 +22,10 @@
             android:name=".Activities.IngredientListActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.MealPlanActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
