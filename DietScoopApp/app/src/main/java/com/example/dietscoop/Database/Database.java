@@ -72,10 +72,8 @@ class Database implements Serializable {
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
-
         ingredientDetails.put("location", ingredient.getLocation());
         ingredientDetails.put("category", ingredient.getCategory());
-
         // .add() auto generates document ID in Firestore; this doesn't use ingredient's name as ID
         ingredientStorage.add(ingredientDetails);
     }
