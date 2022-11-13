@@ -150,11 +150,14 @@ class Database implements Serializable {
      * @param recipe Object to be removed from the database
      */
     public void removeRecipeFromStorage(Recipe recipe) {
-        //TODO: serious issue: removing doc does not remove subcollection, so need to go through and delete
-        // each doc in sub-collection, but HOW??
+        ArrayList<String> temp = recipe.getIngredientRefs();
+
         Log.d(TAG, "delete recipe from storage: "+ recipe.getDescription());
-        recipeStorage.document(recipe.getDescription().toLowerCase()).delete()
+        recipeStorage.document(recipe.getId()).delete()
                 .addOnSuccessListener(unused -> Log.d(TAG, "Data has been deleted successfully!"));
+        for (String ingredient: temp) {
+            ingredientsInRecipes.document(ingredient).delete();
+        }
     }
 
     /**
@@ -187,8 +190,6 @@ class Database implements Serializable {
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
         recipeDetails.put("ingredients", recipe.getIngredientRefs());
         recipeStorage.document(recipe.getId()).set(recipeDetails);
-
-
     }
 
     public void getAllIngredientsInRecipes() {
@@ -198,36 +199,16 @@ class Database implements Serializable {
     public CollectionReference getIngredientsInRecipesCollectionRef() {return this.ingredientsInRecipes;}
 
     public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
-
         ingredientsInRecipes.add(ingredientInRecipe);
     }
 
-    public void setupRealIngredientInRecipesSnapshotListener(Recipe recipe) {
-        ingredientsInRecipes.addSnapshotListener((value, e) -> {
-            String TAG = "test";
-            if (e != null) {
-                Log.w(TAG, "Listen failed.", e);
-                return;
-            }
-            for (DocumentChange doc : value.getDocumentChanges()) {
-                switch (doc.getType()) {
-                    case ADDED:
-                        recipe.addIngredientRef(doc.getDocument().getReference());
-                        IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
-                                doc.getDocument().getString("unit"), doc.getDocument().getDouble("amount"),
-                                IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
-                        ingredient.setId(doc.getDocument().getId());
-                        Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
-                        break;
-                    case MODIFIED:
-                        Log.i("modified new", doc.getDocument().getData().toString());
-                        break;
-                    case REMOVED:
-                        Log.i("removed new", doc.getDocument().getData().toString());
-                        break;
-                }
-            }
-        });
+    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
+        ingredientsInRecipes.document(docref).delete();
+    }
+
+    //TODO: not tested yet; test when editing-ingredient-in-recipe thing is implemented
+    public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        ingredientsInRecipes.document(ingredient.getId()).set(ingredient);
     }
 }
 

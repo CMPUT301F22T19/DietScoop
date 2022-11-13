@@ -69,9 +69,9 @@ public class RecipeStorage implements Serializable {
         db.removeRecipeFromStorage(recipe);
     }
 
-//    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {
-//        return(setupRecipeSnapshotListener(null));
-//    }
+    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {
+        return(setupRecipeSnapshotListener(null));
+    }
 
     /**
      * Method to listen for snapshot with recipe adapter passed in.
@@ -101,43 +101,31 @@ public class RecipeStorage implements Serializable {
                     recipe.setId(doc.getId());
                     recipes.add(recipe);
 
-                    ArrayList<DocumentReference> ingredientMaps = (ArrayList<DocumentReference>)doc.getData().get("ingredients");
+                    ArrayList<String> ingredientMaps = (ArrayList<String>)doc.getData().get("ingredients");
+                    recipe.setIngredientRefs(ingredientMaps);
 
-                    //TODO: this makes Recipe non-serializable i think cuz of DocumentReference
-                    //TODO: try just using strings as path
-                    //recipe.setIngredientRefs(ingredientMaps);
-
-                    for (DocumentReference ingredient: ingredientMaps) {
-                            ingredient.addSnapshotListener((doc1, e1) -> {
+                    for (String ingredient: ingredientMaps) {
+                            db.getIngredientsInRecipesCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
                                 String TAG1 = "BALLSSS";
+
                                 if (e != null) {
                                     Log.w(TAG1, "Listen failed.", e);
                                     return;
                                 }
-                                if (doc1.getId() != null) {
+                                if (doc1.exists()) {
                                     Log.i(TAG1, doc1.getData().toString());
                                     ingredients.add(new IngredientInRecipe(doc1.getString("description"),
                                             doc1.getString("measurementUnit"),doc1.getDouble("amount"),
                                             IngredientCategory.stringToCategory(doc1.getString("category"))));
-
                                 }
                                 if (adapter!=null) {
                                     adapter.notifyDataSetChanged();
                                 }
                             });
-                            ingredient.get();
-
-//                        String descr = ingredient.get().getResult().get("description").toString();
-//                        String unit = ingredient.get().getResult().get("unit").toString();
-//                        Double amount = ((Long)ingredient.get().getResult().get("amount")).doubleValue();
-//                        IngredientCategory cat = IngredientCategory.stringToCategory(ingredient.get().getResult().get("category").toString());
-//                        ingredients.add(new IngredientInRecipe(descr,unit, amount,cat));
+                            db.getIngredientsInRecipesCollectionRef().document(ingredient).get();
                     }
-
-
                 }
             }
-
             if (adapter!=null) {
                 adapter.notifyDataSetChanged();
             }
@@ -151,15 +139,14 @@ public class RecipeStorage implements Serializable {
                 return recipe;
             }
         }
-
         return null;
     }
 
-    public void addIngredientBlah(IngredientInRecipe ingo) {
+    public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingo) {
         db.addIngredientToIngredientsInRecipesCollection(ingo);
     }
 
-    public void addRealSnapshotListener(Recipe recipe, RecyclerView.Adapter adapter, boolean flag) {
+    public void addIngredientsInRecipesSnapshotListener(Recipe recipe, RecyclerView.Adapter adapter) {
         db.getIngredientsInRecipesCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
@@ -174,16 +161,12 @@ public class RecipeStorage implements Serializable {
                 switch (doc.getType()) {
                     case ADDED:
                         if (recipe != null && adapter != null) {
-                            recipe.addIngredientRef(doc.getDocument().getReference());
+                            recipe.addIngredientRef(doc.getDocument().getId());
                             IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
-                                    doc.getDocument().getString("unit"), doc.getDocument().getDouble("amount"),
+                                    doc.getDocument().getString("measurementUnit"), doc.getDocument().getDouble("amount"),
                                     IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
                             ingredient.setId(doc.getDocument().getId());
                             recipe.addIngredient(ingredient);
-                            for (IngredientInRecipe i: recipe.getIngredients()) {
-                                Log.i("ingros in recip", i.getDescription());
-                            }
-
                             adapter.notifyDataSetChanged();
                         }
                         Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
@@ -197,10 +180,18 @@ public class RecipeStorage implements Serializable {
                 }
             }
         }
-        //final boolean flag = true;
     }});}
 
-    public void getAllIngsInRecipes() {db.getAllIngredientsInRecipes();}
+    public void getAllIngredientsInRecipes() {db.getAllIngredientsInRecipes();}
 
     public void updateRecipeInStorage(Recipe recipe) {db.updateRecipeInStorage(recipe);}
+
+    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
+        db.removeIngredientFromIngredientsInRecipesCollection(docref);
+    }
+
+    // TODO: to be tested
+    public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        db.updateIngredientInIngredientsInRecipesCollection(ingredient);
+    }
 }
