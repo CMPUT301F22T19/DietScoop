@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.Fragments.IngredientAddFragment;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Database.IngredientStorage;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
  * Class tying to Ingredient list. Associated with the activity_ingredient_list.xml layout.
  */
 public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
+
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -48,6 +50,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_list);
+
 
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientListView.setHasFixedSize(false);

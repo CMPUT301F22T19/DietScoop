@@ -19,7 +19,6 @@ public class IngredientInStorage extends Ingredient {
     LocalDate bestBeforeDate;
     Location location;
     IngredientCategory category;
-    String id;
     //TODO: change year,month,day to Calendar pls pls
 
     /**
@@ -97,15 +96,5 @@ public class IngredientInStorage extends Ingredient {
         this.category = category;
     }
 
-    /**
-     * Getter for ID of ingredient in storage
-     * @return ID of ingredient in storage
-     */
-    public String getId(){return this.id;}
 
-    /**
-     * Setter for ID of ingredient in storage
-     * @param id Value to be set.
-     */
-    public void setId(String id){this.id=id;}
 }

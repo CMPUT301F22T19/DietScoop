@@ -2,6 +2,8 @@ package com.example.dietscoop.Database;
 
 import android.util.Log;
 
+import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.Recipe;
@@ -9,7 +11,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.firestore.CollectionReference;
 
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -21,13 +26,13 @@ import java.util.Map;
 /**
  * The Database class provides the methods and functionality for connecting with the Firestore database.
  */
-public class Database implements Serializable {
+class Database implements Serializable {
 
     private static final String TAG = "testing";
     private FirebaseFirestore db;
     private CollectionReference ingredientStorage;
     private CollectionReference recipeStorage;
-    private CollectionReference ingredientsInRecipe;
+    private CollectionReference ingredientsInRecipes;
 
     /**
      * Constructor for the Database class.
@@ -36,6 +41,7 @@ public class Database implements Serializable {
         db = FirebaseFirestore.getInstance();
         ingredientStorage = db.collection("IngredientStorage");
         recipeStorage = db.collection("Recipes");
+        ingredientsInRecipes = db.collection("IngredientsInRecipes");
     }
 
 
@@ -66,10 +72,8 @@ public class Database implements Serializable {
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
-
-        ingredientDetails.put("location", ingredient.getLocation().toString());
-        ingredientDetails.put("category", ingredient.getCategory().toString());
-
+        ingredientDetails.put("location", ingredient.getLocation());
+        ingredientDetails.put("category", ingredient.getCategory());
         // .add() auto generates document ID in Firestore; this doesn't use ingredient's name as ID
         ingredientStorage.add(ingredientDetails);
     }
@@ -112,8 +116,8 @@ public class Database implements Serializable {
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
 
-        ingredientDetails.put("location", ingredient.getLocation().toString());
-        ingredientDetails.put("category", ingredient.getCategory().toString());
+        ingredientDetails.put("location", ingredient.getLocation());
+        ingredientDetails.put("category", ingredient.getCategory());
 
         ingredientStorage.document(ingredient.getId()).set(ingredientDetails);
         Log.e("update ingredientInStor","ID: "+ingredient.getId());
@@ -128,7 +132,6 @@ public class Database implements Serializable {
      * @param recipe the recipe object to be added to database
      */
     public void addRecipeToStorage(Recipe recipe) {
-        // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipe.getPrepTime());
         recipeDetails.put("servings", recipe.getNumOfServings());
@@ -136,21 +139,8 @@ public class Database implements Serializable {
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
-
-
-        ArrayList<Map<String, Object>> ingredientsInRecipe = new ArrayList<>();
-        for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
-            // hash map for each ingredient document in sub-collection IngredientsInRecipe
-            Map<String, Object> ingredientDetails = new HashMap<>();
-            ingredientDetails.put("amount", ingredientInRecipe.getAmount());
-            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
-            ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
-            ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
-            ingredientsInRecipe.add(ingredientDetails);
-
-        }
-        recipeDetails.put("ingredients", ingredientsInRecipe);
-        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
+        recipeDetails.put("ingredients", recipe.getIngredientRefs());
+        recipeStorage.add(recipeDetails);
     }
 
     /**
@@ -158,11 +148,14 @@ public class Database implements Serializable {
      * @param recipe Object to be removed from the database
      */
     public void removeRecipeFromStorage(Recipe recipe) {
-        //TODO: serious issue: removing doc does not remove subcollection, so need to go through and delete
-        // each doc in sub-collection, but HOW??
+        ArrayList<String> temp = recipe.getIngredientRefs();
+
         Log.d(TAG, "delete recipe from storage: "+ recipe.getDescription());
-        recipeStorage.document(recipe.getDescription().toLowerCase()).delete()
+        recipeStorage.document(recipe.getId()).delete()
                 .addOnSuccessListener(unused -> Log.d(TAG, "Data has been deleted successfully!"));
+        for (String ingredient: temp) {
+            ingredientsInRecipes.document(ingredient).delete();
+        }
     }
 
     /**
@@ -186,27 +179,34 @@ public class Database implements Serializable {
      * @param recipe object that will be updated with new recipe
      */
     public void updateRecipeInStorage(Recipe recipe) {
-        // hash map containing details EXCEPT list of ingredients in recipe
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipe.getPrepTime());
         recipeDetails.put("servings", recipe.getNumOfServings());
         recipeDetails.put("description", recipe.getDescription().toLowerCase());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
+        recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
+        recipeDetails.put("ingredients", recipe.getIngredientRefs());
+        recipeStorage.document(recipe.getId()).set(recipeDetails);
+    }
 
-        recipeStorage.document(recipe.getDescription().toLowerCase()).set(recipeDetails);
+    public void getAllIngredientsInRecipes() {
+        ingredientsInRecipes.get();
+    }
 
-        for(IngredientInRecipe ingredientInRecipe: recipe.getIngredients()) {
-            // hash map for each ingredient document in sub-collection IngredientsInRecipe
-            Map<String, Object> ingredientDetails = new HashMap<>();
-            ingredientDetails.put("amount", Double.valueOf(ingredientInRecipe.getAmount()));
-            ingredientDetails.put("unit", ingredientInRecipe.getMeasurementUnit().toLowerCase());
-            ingredientDetails.put("description", ingredientInRecipe.getDescription().toLowerCase());
-            ingredientDetails.put("category", ingredientInRecipe.getCategory().toString());
+    public CollectionReference getIngredientsInRecipesCollectionRef() {return this.ingredientsInRecipes;}
 
-            recipeStorage.document(recipe.getDescription()).collection("IngredientsInRecipe")
-                    .document(ingredientInRecipe.getDescription().toLowerCase()).set(ingredientDetails);
-        }
+    public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
+        ingredientsInRecipes.add(ingredientInRecipe);
+    }
+
+    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
+        ingredientsInRecipes.document(docref).delete();
+    }
+
+    //TODO: not tested yet; test when editing-ingredient-in-recipe thing is implemented
+    public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        ingredientsInRecipes.document(ingredient.getId()).set(ingredient);
     }
 }
 

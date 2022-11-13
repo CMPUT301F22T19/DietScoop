@@ -10,11 +10,18 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Recipe.recipeCategory;
+import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.example.dietscoop.Fragments.EditInstructionsEntryFragment;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.RecipeStorage;
+import com.google.firebase.firestore.DocumentReference;
+
+import java.util.ArrayList;
 
 /**
  * This class handles the creation of the
@@ -35,6 +42,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
     Button backButton;
     Button deleteButton;
+    boolean adding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +52,13 @@ public class ViewRecipeActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         //Fetching the serialized recipe:
-        currentRecipe = (Recipe) intent.getSerializableExtra("RECIPE");
+        adding = intent.getBooleanExtra("ADDING", false);
+        if (adding) {
+            currentRecipe = new Recipe("",0,0, timeUnit.minute, recipeCategory.appetizer,
+                    new ArrayList<>(),"");
+        } else {
+            currentRecipe = (Recipe) intent.getSerializableExtra("RECIPE");
+        }
 
         initialize();
         updateTextViews();
@@ -52,6 +66,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+
 
         prepTime = findViewById(R.id.recipe_prep_time);
         numServings = findViewById(R.id.recipe_no_of_servings);
@@ -61,12 +76,14 @@ public class ViewRecipeActivity extends AppCompatActivity {
         name = findViewById(R.id.recipe_title);
 
         backButton = findViewById(R.id.recipe_back_button);
-        backButton.setOnClickListener(view -> goBack());
+        backButton.setOnClickListener(view -> confirmRecipe());
 
         deleteButton = findViewById(R.id.recipe_delete_button);
         deleteButton.setOnClickListener(view -> deleteThisRecipe());
 
         storage = new RecipeStorage();
+
+        // not sure if this is even needed;TODO: try removing?
         storage.getRecipeStorageFromDatabase();
 
         adapter = new IngredientRecipeAdapter(this,
@@ -78,8 +95,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         ingredientsView.setHasFixedSize(false);
         ingredientsView.setLayoutManager(new LinearLayoutManager(this));
 
-        storage.setupRecipeSnapshotListener(adapter);
-        storage.getRecipeStorageFromDatabase();
+        storage.addIngredientsInRecipesSnapshotListener(currentRecipe, adapter);
 
         //Adding the button here for instruction updating:
         editInstructions = findViewById(R.id.recipe_add_comment_button);
@@ -106,10 +122,28 @@ public class ViewRecipeActivity extends AppCompatActivity {
         instructions.setText(text);
         currentRecipe.setInstructions(text);
 
-        //Updating the recipe in the Database: Deletion of current recipe:
-        //+ updating with the most recently update.
-//        storage.removeRecipeFromStorage(currentRecipe);
-        storage.addRecipeToStorage(currentRecipe);
+    }
+
+    private void confirmRecipe() {
+        if (adding) {
+            for (String i: currentRecipe.getIngredientRefs()) {
+                Log.i("adding ingros in recip", i);
+            }
+            storage.addRecipeToStorage(currentRecipe);
+        } else {
+            for (String i: currentRecipe.getIngredientRefs()) {
+                Log.i("editing ingros in recip", i);
+            }
+            storage.updateRecipeInStorage(currentRecipe);
+        }
+        goBack();
+    }
+
+    private void cancel() {
+        for (String doc: currentRecipe.getIngredientRefs()) {
+            storage.removeIngredientFromIngredientsInRecipesCollection(doc);
+        }
+        goBack();
     }
 
     private void goBack() {

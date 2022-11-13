@@ -10,6 +10,8 @@ import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -67,9 +69,9 @@ public class RecipeStorage implements Serializable {
         db.removeRecipeFromStorage(recipe);
     }
 
-//    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {
-//        return(setupRecipeSnapshotListener(null));
-//    }
+    public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {
+        return(setupRecipeSnapshotListener(null));
+    }
 
     /**
      * Method to listen for snapshot with recipe adapter passed in.
@@ -84,18 +86,11 @@ public class RecipeStorage implements Serializable {
                 return;
             }
             recipes.clear();
-            ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
+
             for (QueryDocumentSnapshot doc : value) {
                 if (doc.getId() != null) {
                     Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
-
-                    ArrayList<HashMap> ingredientMaps = (ArrayList<HashMap>)doc.getData().get("ingredients");
-                    for (HashMap ingredient: ingredientMaps) {
-                        ingredients.add(new IngredientInRecipe(ingredient.get("description").toString(),
-                                (ingredient.get("unit").toString()),
-                                (Double) ingredient.get("amount"),
-                                IngredientCategory.stringToCategory(ingredient.get("category").toString())));
-                    }
+                    ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
 
                     Recipe recipe = new Recipe(doc.getString("description"),
                             doc.getLong("prepTime").intValue(),
@@ -103,10 +98,34 @@ public class RecipeStorage implements Serializable {
                             timeUnit.stringToTimeUnit(doc.getData().get("prepUnitTime").toString()),
                             recipeCategory.stringToRecipeCategory(doc.getData().get("category").toString()),
                             ingredients, doc.getString("instructions"));
+                    recipe.setId(doc.getId());
                     recipes.add(recipe);
+
+                    ArrayList<String> ingredientMaps = (ArrayList<String>)doc.getData().get("ingredients");
+                    recipe.setIngredientRefs(ingredientMaps);
+
+                    for (String ingredient: ingredientMaps) {
+                            db.getIngredientsInRecipesCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
+                                String TAG1 = "BALLSSS";
+
+                                if (e != null) {
+                                    Log.w(TAG1, "Listen failed.", e);
+                                    return;
+                                }
+                                if (doc1.exists()) {
+                                    Log.i(TAG1, doc1.getData().toString());
+                                    ingredients.add(new IngredientInRecipe(doc1.getString("description"),
+                                            doc1.getString("measurementUnit"),doc1.getDouble("amount"),
+                                            IngredientCategory.stringToCategory(doc1.getString("category"))));
+                                }
+                                if (adapter!=null) {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                            db.getIngredientsInRecipesCollectionRef().document(ingredient).get();
+                    }
                 }
             }
-
             if (adapter!=null) {
                 adapter.notifyDataSetChanged();
             }
@@ -120,7 +139,59 @@ public class RecipeStorage implements Serializable {
                 return recipe;
             }
         }
-
         return null;
+    }
+
+    public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingo) {
+        db.addIngredientToIngredientsInRecipesCollection(ingo);
+    }
+
+    public void addIngredientsInRecipesSnapshotListener(Recipe recipe, RecyclerView.Adapter adapter) {
+        db.getIngredientsInRecipesCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value,
+                                @Nullable FirebaseFirestoreException e) {
+        String TAG = "test";
+        if (e != null) {
+            Log.w(TAG, "Listen failed.", e);
+            return;
+        }
+        if (value.getDocumentChanges().size()==1) {
+            for (DocumentChange doc : value.getDocumentChanges()) {
+                switch (doc.getType()) {
+                    case ADDED:
+                        if (recipe != null && adapter != null) {
+                            recipe.addIngredientRef(doc.getDocument().getId());
+                            IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
+                                    doc.getDocument().getString("measurementUnit"), doc.getDocument().getDouble("amount"),
+                                    IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
+                            ingredient.setId(doc.getDocument().getId());
+                            recipe.addIngredient(ingredient);
+                            adapter.notifyDataSetChanged();
+                        }
+                        Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
+                        break;
+                    case MODIFIED:
+                        Log.i("modified new", doc.getDocument().getData().toString());
+                        break;
+                    case REMOVED:
+                        Log.i("removed new", doc.getDocument().getData().toString());
+                        break;
+                }
+            }
+        }
+    }});}
+
+    public void getAllIngredientsInRecipes() {db.getAllIngredientsInRecipes();}
+
+    public void updateRecipeInStorage(Recipe recipe) {db.updateRecipeInStorage(recipe);}
+
+    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
+        db.removeIngredientFromIngredientsInRecipesCollection(docref);
+    }
+
+    // TODO: to be tested
+    public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        db.updateIngredientInIngredientsInRecipesCollection(ingredient);
     }
 }

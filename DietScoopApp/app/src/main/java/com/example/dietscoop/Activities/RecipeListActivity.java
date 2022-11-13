@@ -49,6 +49,8 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         recipeStorage = new RecipeStorage();
         recipeListAdapter = new RecipeListAdapter(this, recipeStorage.getRecipeStorage());
         recipeListView.setAdapter(recipeListAdapter);
+
+
         recipeStorage.setupRecipeSnapshotListener(recipeListAdapter);
         recipeStorage.getRecipeStorageFromDatabase();
 
@@ -71,20 +73,8 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
     }
 
     private void addNewRecipe() {
-        Recipe dummy = new Recipe(
-                "ENTER",
-                -1,
-                -1,
-                timeUnit.minute,
-                recipeCategory.appetizer,
-                new ArrayList<>(),
-                ""
-        );
-
-        recipeStorage.addRecipeToStorage(dummy);
-
         Intent intent = new Intent(this, ViewRecipeActivity.class);
-        intent.putExtra("RECIPE", dummy);
+        intent.putExtra("ADDING", true);
         startActivity(intent);
     }
 
@@ -103,6 +93,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, ViewRecipeActivity.class);
+        intent.putExtra("ADDING", false);
         intent.putExtra("RECIPE", recipeStorage.getRecipeStorage().get(position));
         startActivity(intent);
     }
