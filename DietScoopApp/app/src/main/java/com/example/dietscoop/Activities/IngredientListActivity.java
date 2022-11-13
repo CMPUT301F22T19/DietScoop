@@ -28,8 +28,6 @@ import java.util.ArrayList;
  */
 public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
-    //testing
-    RecipeStorage r;
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
@@ -53,9 +51,6 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_list);
 
-        //testing
-//        r = new RecipeStorage();
-//        r.addSnapshotListener();
 
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientListView.setHasFixedSize(false);
