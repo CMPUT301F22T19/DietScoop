@@ -20,7 +20,7 @@ public class Recipe extends FoodItem implements Serializable {
     private recipeCategory category;
     ArrayList<IngredientInRecipe> ingredientsList;
     private String instructions;
-    private ArrayList<DocumentReference> ingredientRefs;
+    private ArrayList<String> ingredientRefs;
 
     /**
      * Constructor for Recipe object
@@ -41,7 +41,7 @@ public class Recipe extends FoodItem implements Serializable {
         this.category = category;
         this.ingredientsList = ingredientsList;
         this.instructions = instructions;
-        this.ingredientRefs = new ArrayList<DocumentReference>();
+        this.ingredientRefs = new ArrayList<String>();
     }
 
     /**
@@ -174,17 +174,17 @@ public class Recipe extends FoodItem implements Serializable {
         this.ingredientsList.set(index, ingredient);
     }
 
-    public void addIngredientRef(DocumentReference docref) {
+    public void addIngredientRef(String docref) {
         this.ingredientRefs.add(docref);
     }
 
-    public void removeIngredientID(DocumentReference docref) {
+    public void removeIngredientID(String docref) {
         this.ingredientRefs.remove(docref);
     }
 
-    public ArrayList<DocumentReference> getIngredientRefs() {return this.ingredientRefs;}
+    public ArrayList<String> getIngredientRefs() {return this.ingredientRefs;}
 
-    public void setIngredientRefs(ArrayList<DocumentReference> refs) {this.ingredientRefs = refs;}
+    public void setIngredientRefs(ArrayList<String> refs) {this.ingredientRefs = refs;}
 
 
 }

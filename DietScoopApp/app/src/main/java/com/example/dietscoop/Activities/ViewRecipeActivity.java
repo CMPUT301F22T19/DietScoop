@@ -82,6 +82,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(view -> deleteThisRecipe());
 
         storage = new RecipeStorage();
+
+        // not sure if this is even needed;TODO: try removing?
         storage.getRecipeStorageFromDatabase();
 
         adapter = new IngredientRecipeAdapter(this,
@@ -93,9 +95,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         ingredientsView.setHasFixedSize(false);
         ingredientsView.setLayoutManager(new LinearLayoutManager(this));
 
-        //storage.setupRecipeSnapshotListener(adapter);
-        storage.addRealSnapshotListener(currentRecipe, adapter, false);//testing
-        //storage.getRecipeStorageFromDatabase();
+        storage.addIngredientsInRecipesSnapshotListener(currentRecipe, adapter);
 
         //Adding the button here for instruction updating:
         editInstructions = findViewById(R.id.recipe_add_comment_button);
@@ -122,21 +122,17 @@ public class ViewRecipeActivity extends AppCompatActivity {
         instructions.setText(text);
         currentRecipe.setInstructions(text);
 
-        //Updating the recipe in the Database: Deletion of current recipe:
-        //+ updating with the most recently update.
-//        storage.removeRecipeFromStorage(currentRecipe);
-        //storage.addRecipeToStorage(currentRecipe);
     }
 
     private void confirmRecipe() {
         if (adding) {
-            for (IngredientInRecipe i: currentRecipe.getIngredients()) {
-                Log.i("adding ingros in recip", i.getDescription());
+            for (String i: currentRecipe.getIngredientRefs()) {
+                Log.i("adding ingros in recip", i);
             }
             storage.addRecipeToStorage(currentRecipe);
         } else {
-            for (DocumentReference i: currentRecipe.getIngredientRefs()) {
-                Log.i("editing ingros in recip", i.toString());
+            for (String i: currentRecipe.getIngredientRefs()) {
+                Log.i("editing ingros in recip", i);
             }
             storage.updateRecipeInStorage(currentRecipe);
         }
@@ -144,8 +140,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
     }
 
     private void cancel() {
-        for (DocumentReference doc: currentRecipe.getIngredientRefs()) {
-            doc.delete();
+        for (String doc: currentRecipe.getIngredientRefs()) {
+            storage.removeIngredientFromIngredientsInRecipesCollection(doc);
         }
         goBack();
     }
@@ -156,9 +152,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
     }
 
     private void deleteThisRecipe() {
-        storage.addIngredientBlah(new IngredientInRecipe("babann","dongs",95, IngredientCategory.fruit));
-//        storage.removeRecipeFromStorage(currentRecipe);
-//        goBack();
+        storage.removeRecipeFromStorage(currentRecipe);
+        goBack();
     }
 
 }
