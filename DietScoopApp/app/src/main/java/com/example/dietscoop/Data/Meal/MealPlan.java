@@ -45,5 +45,21 @@ public class MealPlan {
 
     //Unique Methods:
 
+    /**
+     * Gets the specified meal day.
+     * @param i index of meal day.
+     * @return
+     */
+    public MealDay getMealDay(int i) {
+        return this.mealDays.get(i);
+    }
+
+    /**
+     * Removes the specified meal day.
+     * @param i index of meal day.
+     */
+    public void deleteMealDay(int i) {
+        this.mealDays.remove(i);
+    }
 
 }
