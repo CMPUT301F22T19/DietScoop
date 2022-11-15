@@ -10,8 +10,10 @@ public enum recipeCategory implements Serializable {
     breakfast,
     lunch,
     dinner,
+    dessert,
     appetizer,
-    salad,
+    holiday,
+    beverages,
     baked;
 
     /**
@@ -32,8 +34,12 @@ public enum recipeCategory implements Serializable {
                 return dinner;
             case "APPETIZER":
                 return appetizer;
-            case "SALAD":
-                return salad;
+            case "DESSERT":
+                return dessert;
+            case "HOLIDAY":
+                return holiday;
+            case "BEVERAGES":
+                return beverages;
             case "BAKED":
                 return baked;
             default:
