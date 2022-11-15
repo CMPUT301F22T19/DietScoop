@@ -7,14 +7,14 @@ import java.util.Locale;
  * Enum representing recipe categories
  */
 public enum recipeCategory implements Serializable {
-    breakfast,
-    lunch,
-    dinner,
-    dessert,
-    appetizer,
-    holiday,
-    beverages,
-    baked;
+    Breakfast,
+    Lunch,
+    Dinner,
+    Dessert,
+    Appetizer,
+    Holiday,
+    Beverages,
+    Baked;
 
     /**
      * Converts string to associated recipe category
@@ -27,21 +27,21 @@ public enum recipeCategory implements Serializable {
 
         switch (name) {
             case "BREAKFAST":
-                return breakfast;
+                return Breakfast;
             case "LUNCH":
-                return lunch;
+                return Lunch;
             case "DINNER":
-                return dinner;
+                return Dinner;
             case "APPETIZER":
-                return appetizer;
+                return Appetizer;
             case "DESSERT":
-                return dessert;
+                return Dessert;
             case "HOLIDAY":
-                return holiday;
+                return Holiday;
             case "BEVERAGES":
-                return beverages;
+                return Beverages;
             case "BAKED":
-                return baked;
+                return Baked;
             default:
                 // TODO: MAKE THIS THROW ERROR
                 return null;

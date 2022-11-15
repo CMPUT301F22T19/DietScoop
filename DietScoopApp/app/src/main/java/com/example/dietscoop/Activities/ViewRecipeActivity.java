@@ -52,6 +52,9 @@ public class ViewRecipeActivity extends AppCompatActivity{
     Spinner prepTimeUnitSpinner, categorySpinner;
     boolean adding;
 
+    ArrayAdapter<CharSequence> prepUnitSpinnerAdapter;
+    ArrayAdapter<CharSequence> categorySpinnerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +65,7 @@ public class ViewRecipeActivity extends AppCompatActivity{
         //Fetching the serialized recipe:
         adding = intent.getBooleanExtra("ADDING", false);
         if (adding) {
-            currentRecipe = new Recipe("",0,0, timeUnit.min, recipeCategory.appetizer,
+            currentRecipe = new Recipe("",0,0, timeUnit.min, recipeCategory.Breakfast,
                     new ArrayList<>(),"");
             currentRecipe.setId(UUID.randomUUID().toString());
 
@@ -111,7 +114,6 @@ public class ViewRecipeActivity extends AppCompatActivity{
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                currentRecipe.setPrepUnitTime(timeUnit.min);
             }
         });
 
@@ -129,9 +131,14 @@ public class ViewRecipeActivity extends AppCompatActivity{
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                currentRecipe.setCategory(recipeCategory.breakfast);
             }
         });
+
+        int spinnerUnitTimePosition = prepUnitSpinnerAdapter.getPosition(currentRecipe.getPrepUnitTime().toString());
+        prepTimeUnitSpinner.setSelection(spinnerUnitTimePosition);
+
+        int spinnerCategoryPosition = categorySpinnerAdapter.getPosition(currentRecipe.getCategoryName());
+        categorySpinner.setSelection(spinnerCategoryPosition);
 
         storage = new RecipeStorage();
 
@@ -161,6 +168,7 @@ public class ViewRecipeActivity extends AppCompatActivity{
         numServings.setText(String.valueOf(currentRecipe.getNumOfServings()));
         instructions.setText(currentRecipe.getInstructions());
         name.setText(String.valueOf(currentRecipe.getDescription()));
+
 
     }
 
