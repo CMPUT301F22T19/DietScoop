@@ -147,16 +147,17 @@
 
                         <EditText
                             android:id="@+id/recipe_prep_time"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="0.67"
                             android:hint="prep"
+                            android:inputType="number"
                             android:textAlignment="center"
                             android:textColor="@color/black" />
 
                         <Spinner
                             android:id="@+id/recipe_prep_time_unit_spinner"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="0.33"/>
                     </LinearLayout>
@@ -168,7 +169,8 @@
                         android:layout_weight="0.33"
                         android:hint="Servings"
                         android:textAlignment="center"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:inputType="number"/>
 
                     <Spinner
                         android:id="@+id/recipe_category_spinner"
