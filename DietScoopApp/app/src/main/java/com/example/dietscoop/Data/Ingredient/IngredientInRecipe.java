@@ -5,6 +5,7 @@ package com.example.dietscoop.Data.Ingredient;
  */
 public class IngredientInRecipe extends Ingredient {
 
+    String recipeID;
     /**
      * Ingredient in recipe constructor. Calls Ingredient Class constructor.
      * @param description Description of ingredient in recipe.
@@ -16,4 +17,8 @@ public class IngredientInRecipe extends Ingredient {
         super(description,measurementUnit,amount, category);
         
     }
+
+    public void setRecipeID(String id) {this.recipeID = id;}
+
+    public String getRecipeID(){return this.recipeID;}
 }
