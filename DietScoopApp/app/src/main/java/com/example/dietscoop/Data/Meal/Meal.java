@@ -44,6 +44,14 @@ public class Meal {
         return this.category;
     }
 
+    public ArrayList<Recipe> getRecipes() {
+        return this.recipesInMeal;
+    }
+
+    public ArrayList<IngredientInStorage> getIngredientsInMeal() {
+        return this.ingredientsInMeal;
+    }
+
     //Unique Methods:
     /**
      * Adds a new ingredient into the meal.
