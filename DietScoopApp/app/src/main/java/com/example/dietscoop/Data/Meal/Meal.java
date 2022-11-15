@@ -44,8 +44,7 @@ public class Meal {
         return this.category;
     }
 
-    //Instantiate New Meal Items:
-
+    //Unique Methods:
     /**
      * Adds a new ingredient into the meal.
      * @param ingredient IngredientInStorage
