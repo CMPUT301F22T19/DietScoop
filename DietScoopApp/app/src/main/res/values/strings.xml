@@ -2,7 +2,7 @@
     <string name="app_name">Diet Scoop</string>
     <string name="recipe_image_description">Image that would show the final result after making the recipe.</string>
     <string name="recipe_title_default">Recipe</string>
-    <string name="modify_button">Modify</string>
+    <string name="cancel_button">Cancel</string>
     <string name="delete_button">Delete</string>
     <string name="recipe_label_prep_time">Prep Time</string>
     <string name="recipe_label_no_of_servings">No. of Servings</string>
@@ -14,5 +14,21 @@
     <string name="amount_label">Amount</string>
     <string name="unit_label">Unit</string>
     <string name="instructions_label">Instructions</string>
+
+    <string-array name="categories">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Appetizer</item>
+        <item>Dessert</item>
+        <item>Holiday</item>
+        <item>Beverages</item>
+        <item>Baked</item>
+    </string-array>
+
+    <string-array name="prepUnitTime">
+        <item>min</item>
+        <item>hr</item>
+    </string-array>
 
 </resources>
