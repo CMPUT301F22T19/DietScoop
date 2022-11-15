@@ -7,8 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
@@ -33,9 +37,9 @@ import java.util.UUID;
  * logic instantiation for the events that
  * go on in this activity.
  */
-public class ViewRecipeActivity extends AppCompatActivity {
+public class ViewRecipeActivity extends AppCompatActivity{
 
-    EditText prepTime, numServings, category, instructions, name;
+    EditText prepTime, numServings, instructions, name;
     RecyclerView ingredientsView;
     RecipeStorage storage;
     IngredientRecipeAdapter adapter;
@@ -45,7 +49,11 @@ public class ViewRecipeActivity extends AppCompatActivity {
     Button backButton;
     Button deleteButton;
     Button cancelButton;
+    Spinner prepTimeUnitSpinner, categorySpinner;
     boolean adding;
+
+    ArrayAdapter<CharSequence> prepUnitSpinnerAdapter;
+    ArrayAdapter<CharSequence> categorySpinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +65,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         //Fetching the serialized recipe:
         adding = intent.getBooleanExtra("ADDING", false);
         if (adding) {
-            currentRecipe = new Recipe("",0,0, timeUnit.minute, recipeCategory.appetizer,
+            currentRecipe = new Recipe("",0,0, timeUnit.min, recipeCategory.Breakfast,
                     new ArrayList<>(),"");
             currentRecipe.setId(UUID.randomUUID().toString());
 
@@ -75,7 +83,6 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         prepTime = findViewById(R.id.recipe_prep_time);
         numServings = findViewById(R.id.recipe_no_of_servings);
-        category = findViewById(R.id.recipe_category);
         instructions = findViewById(R.id.recipe_instructions);
         ingredientsView = findViewById(R.id.recipe_recycler_view);
         name = findViewById(R.id.recipe_title);
@@ -88,6 +95,50 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         cancelButton = findViewById(R.id.recipe_cancel_button);
         cancelButton.setOnClickListener(unused -> cancel());
+
+
+        prepTimeUnitSpinner = findViewById(R.id.recipe_prep_time_unit_spinner);
+        categorySpinner = findViewById(R.id.recipe_category_spinner);
+
+        ArrayAdapter<CharSequence> prepUnitSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.prepUnitTime, android.R.layout.simple_spinner_item);
+        prepUnitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        prepTimeUnitSpinner.setAdapter(prepUnitSpinnerAdapter);
+
+        prepTimeUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String unitTime = parent.getItemAtPosition(position).toString();
+                currentRecipe.setPrepUnitTime(timeUnit.stringToTimeUnit(unitTime));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.categories, android.R.layout.simple_spinner_item);
+        categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categorySpinnerAdapter);
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String categoire = parent.getItemAtPosition(position).toString();
+                currentRecipe.setCategory(recipeCategory.stringToRecipeCategory(categoire));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        int spinnerUnitTimePosition = prepUnitSpinnerAdapter.getPosition(currentRecipe.getPrepUnitTime().toString());
+        prepTimeUnitSpinner.setSelection(spinnerUnitTimePosition);
+
+        int spinnerCategoryPosition = categorySpinnerAdapter.getPosition(currentRecipe.getCategoryName());
+        categorySpinner.setSelection(spinnerCategoryPosition);
 
         storage = new RecipeStorage();
 
@@ -115,9 +166,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         prepTime.setText(String.valueOf(currentRecipe.getPrepTime()));
         numServings.setText(String.valueOf(currentRecipe.getNumOfServings()));
-        category.setText(currentRecipe.getCategoryName());
         instructions.setText(currentRecipe.getInstructions());
         name.setText(String.valueOf(currentRecipe.getDescription()));
+
 
     }
 
@@ -133,8 +184,6 @@ public class ViewRecipeActivity extends AppCompatActivity {
         // TODO: do the getTexts and use setters to modify currentRecipe
         String recipeNumOfServings = numServings.getText().toString();
         currentRecipe.setNumOfServings(Integer.valueOf(recipeNumOfServings));
-        String categoire = category.getText().toString();
-        currentRecipe.setCategory(recipeCategory.stringToRecipeCategory(categoire));
         String recipePrepTime = prepTime.getText().toString();
         currentRecipe.setPrepTime(Integer.valueOf(recipePrepTime));
         String description = name.getText().toString();
@@ -173,5 +222,4 @@ public class ViewRecipeActivity extends AppCompatActivity {
         storage.removeRecipeFromStorage(currentRecipe);
         goBack();
     }
-
 }

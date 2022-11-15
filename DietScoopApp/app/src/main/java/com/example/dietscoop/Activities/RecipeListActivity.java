@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.R;
@@ -67,8 +69,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         ingredientButton.setOnClickListener(view -> switchToIngredients());
 
         recipeListAdapter.setItemClickListener(this);
-
-
 
     }
 

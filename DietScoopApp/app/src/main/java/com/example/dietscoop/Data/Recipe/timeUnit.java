@@ -7,8 +7,8 @@ public enum timeUnit implements Serializable {
     /**
      * Enum representing time units
      */
-    hour,
-    minute;
+    hr,
+    min;
 
     /**
      * Converts string to associated time unit
@@ -18,10 +18,10 @@ public enum timeUnit implements Serializable {
     public static timeUnit stringToTimeUnit(String unit) {
         unit = unit.toUpperCase(Locale.ROOT);
 
-        if (unit.equals("HOUR")) {
-            return hour;
-        } else if (unit.equals("MINUTE")) {
-            return minute;
+        if (unit.equals("HR")) {
+            return hr;
+        } else if (unit.equals("MIN")) {
+            return min;
         } else {
             // TODO: MAKE THIS THROW ERROR
             return null;
