@@ -15,4 +15,20 @@
     <string name="unit_label">Unit</string>
     <string name="instructions_label">Instructions</string>
 
+    <string-array name="categories">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Appetizer</item>
+        <item>Dessert</item>
+        <item>Holiday</item>
+        <item>Beverages</item>
+        <item>Baked</item>
+    </string-array>
+
+    <string-array name="prepUnitTime">
+        <item>min</item>
+        <item>hr</item>
+    </string-array>
+
 </resources>
