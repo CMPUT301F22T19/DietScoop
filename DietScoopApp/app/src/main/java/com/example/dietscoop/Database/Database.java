@@ -140,7 +140,7 @@ class Database implements Serializable {
         recipeDetails.put("category", recipe.getCategory().toString());
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
         recipeDetails.put("ingredients", recipe.getIngredientRefs());
-        recipeStorage.add(recipeDetails);
+        recipeStorage.document(recipe.getId()).set(recipeDetails);
     }
 
     /**

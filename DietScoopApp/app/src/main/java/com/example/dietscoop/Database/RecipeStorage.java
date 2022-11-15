@@ -156,30 +156,32 @@ public class RecipeStorage implements Serializable {
             Log.w(TAG, "Listen failed.", e);
             return;
         }
-        if (value.getDocumentChanges().size()==1) {
+
             for (DocumentChange doc : value.getDocumentChanges()) {
-                switch (doc.getType()) {
-                    case ADDED:
-                        if (recipe != null && adapter != null) {
-                            recipe.addIngredientRef(doc.getDocument().getId());
-                            IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
-                                    doc.getDocument().getString("measurementUnit"), doc.getDocument().getDouble("amount"),
-                                    IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
-                            ingredient.setId(doc.getDocument().getId());
-                            recipe.addIngredient(ingredient);
-                            adapter.notifyDataSetChanged();
-                        }
-                        Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
-                        break;
-                    case MODIFIED:
-                        Log.i("modified new", doc.getDocument().getData().toString());
-                        break;
-                    case REMOVED:
-                        Log.i("removed new", doc.getDocument().getData().toString());
-                        break;
+                if (doc.getDocument().get("recipeID")==recipe.getId()) {
+                    switch (doc.getType()) {
+                        case ADDED:
+                            if (recipe != null && adapter != null) {
+                                recipe.addIngredientRef(doc.getDocument().getId());
+                                IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
+                                        doc.getDocument().getString("measurementUnit"), doc.getDocument().getDouble("amount"),
+                                        IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
+                                ingredient.setId(doc.getDocument().getId());
+                                recipe.addIngredient(ingredient);
+                                adapter.notifyDataSetChanged();
+                            }
+                            Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
+                            break;
+                        case MODIFIED:
+                            Log.i("modified new", doc.getDocument().getData().toString());
+                            break;
+                        case REMOVED:
+                            Log.i("removed new", doc.getDocument().getData().toString());
+                            break;
+                    }
                 }
             }
-        }
+
     }});}
 
     public void getAllIngredientsInRecipes() {db.getAllIngredientsInRecipes();}

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
@@ -22,6 +23,7 @@ import com.example.dietscoop.Database.RecipeStorage;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * This class handles the creation of the
@@ -33,7 +35,7 @@ import java.util.ArrayList;
  */
 public class ViewRecipeActivity extends AppCompatActivity {
 
-    TextView prepTime, numServings, category, instructions, name;
+    EditText prepTime, numServings, category, instructions, name;
     RecyclerView ingredientsView;
     RecipeStorage storage;
     IngredientRecipeAdapter adapter;
@@ -42,6 +44,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
     Button backButton;
     Button deleteButton;
+    Button cancelButton;
     boolean adding;
 
     @Override
@@ -56,6 +59,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
         if (adding) {
             currentRecipe = new Recipe("",0,0, timeUnit.minute, recipeCategory.appetizer,
                     new ArrayList<>(),"");
+            currentRecipe.setId(UUID.randomUUID().toString());
+
         } else {
             currentRecipe = (Recipe) intent.getSerializableExtra("RECIPE");
         }
@@ -81,10 +86,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.recipe_delete_button);
         deleteButton.setOnClickListener(view -> deleteThisRecipe());
 
-        storage = new RecipeStorage();
+        cancelButton = findViewById(R.id.recipe_cancel_button);
+        cancelButton.setOnClickListener(unused -> cancel());
 
-        // not sure if this is even needed;TODO: try removing?
-        storage.getRecipeStorageFromDatabase();
+        storage = new RecipeStorage();
 
         adapter = new IngredientRecipeAdapter(this,
                 currentRecipe.getIngredients());
@@ -116,7 +121,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
     }
 
-
+    // TODO: abandon the dialogbox
     public void updateInstructions(String text) {
         //Changing the text for instructions and the recipe.
         instructions.setText(text);
@@ -125,6 +130,17 @@ public class ViewRecipeActivity extends AppCompatActivity {
     }
 
     private void confirmRecipe() {
+        // TODO: do the getTexts and use setters to modify currentRecipe
+        String recipeNumOfServings = numServings.getText().toString();
+        currentRecipe.setNumOfServings(Integer.valueOf(recipeNumOfServings));
+        String categoire = category.getText().toString();
+        currentRecipe.setCategory(recipeCategory.stringToRecipeCategory(categoire));
+        String recipePrepTime = prepTime.getText().toString();
+        currentRecipe.setPrepTime(Integer.valueOf(recipePrepTime));
+        String description = name.getText().toString();
+        currentRecipe.setDescription(description);
+        String instrucciones = instructions.getText().toString();
+        currentRecipe.setInstructions(instrucciones);
         if (adding) {
             for (String i: currentRecipe.getIngredientRefs()) {
                 Log.i("adding ingros in recip", i);
@@ -140,8 +156,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
     }
 
     private void cancel() {
-        for (String doc: currentRecipe.getIngredientRefs()) {
-            storage.removeIngredientFromIngredientsInRecipesCollection(doc);
+        if (adding) {
+            for (String doc : currentRecipe.getIngredientRefs()) {
+                storage.removeIngredientFromIngredientsInRecipesCollection(doc);
+            }
         }
         goBack();
     }
