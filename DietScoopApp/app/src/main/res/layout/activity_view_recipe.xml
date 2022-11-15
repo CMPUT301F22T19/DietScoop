@@ -46,7 +46,7 @@
                     android:textSize="45sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    tools:text="@string/recipe_title_default" />
+                    android:hint="Recipe Title"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -91,8 +91,9 @@
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:stretchColumns="*">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -100,9 +101,8 @@
                     android:layout_weight="0.5">
                     <TextView
                         android:id="@+id/recipe_label_prep_time"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.33"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textAlignment="center"
@@ -110,9 +110,8 @@
                         android:text="@string/recipe_label_prep_time"/>
                     <TextView
                         android:id="@+id/recipe_label_no_of_servings"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.33"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textAlignment="center"
@@ -121,9 +120,8 @@
 
                     <TextView
                         android:id="@+id/recipe_label_category"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.33"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textAlignment="center"
@@ -131,34 +129,55 @@
                         android:text="@string/category_label"/>
                 </TableRow>
 
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5">
-                    <EditText
-                        android:id="@+id/recipe_prep_time"
-                        android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.33"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:text="@string/filler"/>
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/recipe_prep_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.67"
+                            android:hint="prep"
+                            android:textAlignment="center"
+                            android:textColor="@color/black" />
+
+                        <Spinner
+                            android:id="@+id/recipe_prep_time_unit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.33"/>
+                    </LinearLayout>
+
                     <EditText
                         android:id="@+id/recipe_no_of_servings"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.33"
+                        android:hint="Servings"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:text="@string/filler"/>
-                    <EditText
+                        android:textColor="@color/black" />
+
+                    <Spinner
                         android:id="@+id/recipe_category"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.33"
+
                         android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:text="@string/filler"/>
+                        android:textColor="@color/black" />
 
                 </TableRow>
             </TableLayout>
