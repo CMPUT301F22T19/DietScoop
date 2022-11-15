@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.dietscoop.Database.IngredientStorage;
+import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.R;
 
 public class MainActivity extends AppCompatActivity {
