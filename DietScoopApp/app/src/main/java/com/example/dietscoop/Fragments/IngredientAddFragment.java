@@ -13,14 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.dietscoop.Activities.MainActivity;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.Location;
@@ -35,9 +39,6 @@ public class IngredientAddFragment extends DialogFragment {
     private EditText description;
     private EditText amount;
     private Spinner category;
-    private EditText day;
-    private EditText month;
-    private EditText year;
     private Spinner location;
     private EditText unit;
     private OnFragmentInteractionListener listener;
@@ -45,6 +46,8 @@ public class IngredientAddFragment extends DialogFragment {
     private String locationString;
     private String categoryString;
     private LocalDate bestBeforeDateTemp;
+    private Button selectDate;
+    private TextView bestBeforeDate;
     // For getting the string version of Calendar
     // Error handing
     public interface OnFragmentInteractionListener {
@@ -93,9 +96,8 @@ public class IngredientAddFragment extends DialogFragment {
         category = view.findViewById(R.id.edit_category_ingredient_storage);
         location = view.findViewById(R.id.edit_location_ingredient_storage);
         unit = view.findViewById(R.id.edit_unit_ingredient_storage);
-        day = view.findViewById(R.id.edit_day_ingredient_storage);
-        month = view.findViewById(R.id.edit_month_ingredient_storage);
-        year = view.findViewById(R.id.edit_year_ingredient_storage);
+        selectDate = view.findViewById(R.id.select_bestbefore_button);
+        bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -144,11 +146,40 @@ public class IngredientAddFragment extends DialogFragment {
             }
         });
 
-        int categorySpinnerPosition = categorySpinnerAdapter.getPosition(ingredientToBeChanged.getCategoryName());
-        category.setSelection(categorySpinnerPosition);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        int locationSpinnerPosition = locationSpinnerAdapter.getPosition(ingredientToBeChanged.getLocationName());
-        location.setSelection(locationSpinnerPosition);
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(IngredientAddFragment.this.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        if(ingredientToBeChanged == null){
+                            newIngredient.setBestBeforeDate(year, month + 1, dayOfMonth);
+                        } else {
+                            ingredientToBeChanged.setBestBeforeDate(year, month + 1, dayOfMonth);
+                        }
+                        bestBeforeDate.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
+                    }
+                }, year, month, dayOfMonth);
+                datePickerDialog.show();
+            }
+        });
+
+        if (ingredientToBeChanged != null) {
+            LocalDate date = ingredientToBeChanged.getBestBeforeDate();
+            int yearDate = date.getYear();
+            int monthDate = date.getMonthValue();
+            int dayDate = date.getDayOfMonth();
+            bestBeforeDate.setText(yearDate + "-" + monthDate + "-" + dayDate);
+            int categorySpinnerPosition = categorySpinnerAdapter.getPosition(ingredientToBeChanged.getCategoryName());
+            category.setSelection(categorySpinnerPosition);
+            int locationSpinnerPosition = locationSpinnerAdapter.getPosition(ingredientToBeChanged.getLocationName());
+            location.setSelection(locationSpinnerPosition);
+        }
 
         final Calendar c = Calendar.getInstance();
 
@@ -172,31 +203,6 @@ public class IngredientAddFragment extends DialogFragment {
                         doubleAmount = Double.parseDouble(strAmount);
                     }
 
-                    int yearI;
-                    int monthI;
-                    int dayI;
-
-                    String strYear = year.getText().toString();
-                    if (!isNumeric(strYear, NumericTypes.integer)) {
-                        yearI = 1500;
-                    } else {
-                        yearI = Integer.parseInt(strYear);
-                    }
-
-                    String strMonth = month.getText().toString();
-                    if (!isNumeric(strMonth, NumericTypes.integer)) {
-                        monthI = 1;
-                    } else {
-                        monthI = Integer.parseInt(strMonth);
-                    }
-
-                    String strDay = day.getText().toString();
-                    if (!isNumeric(strDay, NumericTypes.integer)) {
-                        dayI = 1;
-                    } else {
-                        dayI = Integer.parseInt(strDay);
-                    }
-
                     String strUnit = unit.getText().toString();
                     if (strUnit.length() == 0) {
                         strUnit = "units";
@@ -205,7 +211,6 @@ public class IngredientAddFragment extends DialogFragment {
                     newIngredient.setDescription(strDescription);
                     newIngredient.setMeasurementUnit(strUnit);
                     newIngredient.setAmount(doubleAmount);
-                    newIngredient.setBestBeforeDate(yearI, monthI, dayI);
 
                     listener.onOkPressed(newIngredient);
                 });
@@ -222,17 +227,6 @@ public class IngredientAddFragment extends DialogFragment {
             }
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
-
-            int dayOfMonth = bestBeforeDateTemp.getDayOfMonth();
-            String dayOfMonthStr = valueOf(dayOfMonth);
-            day.setText(dayOfMonthStr);
-            int monthInt = bestBeforeDateTemp.getMonthValue();
-            String monthStr = valueOf(monthInt);
-            month.setText(monthStr);
-            int yearInt = bestBeforeDateTemp.getYear();
-            String yearStr = valueOf(yearInt);
-            year.setText(yearStr);
-            unit.setText(ingredientToBeChanged.getMeasurementUnit());
 
             builder
                 .setView(view)
@@ -255,32 +249,13 @@ public class IngredientAddFragment extends DialogFragment {
                         ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
                     }
 
-                    if (!isNumeric(year.getText().toString(), NumericTypes.integer)) {
-                        yearI = 2001;
-                    } else {
-                        yearI = Integer.parseInt(year.getText().toString());
-                    }
-
-                    if (!isNumeric(day.getText().toString(), NumericTypes.integer)) {
-                        dayI = 19;
-                    } else {
-                        dayI = Integer.parseInt(day.getText().toString());
-                    }
-
-                    if (!isNumeric(month.getText().toString(), NumericTypes.integer)) {
-                        monthI = 9;
-                    } else {
-                        monthI = Integer.parseInt(month.getText().toString());
-                    }
-                    ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
+//                    ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
 
                     if (unit.getText().toString().length() == 0) {
                         ingredientToBeChanged.setMeasurementUnit("kg");
                     } else {
                         ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
                     }
-
-
 
                     listener.onOkPressedUpdate(ingredientToBeChanged);
                 });
