@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.example.dietscoop.Fragments.AddIngredientToRecipeFragment;
@@ -39,7 +40,7 @@ import java.util.UUID;
  * logic instantiation for the events that
  * go on in this activity.
  */
-public class ViewRecipeActivity extends AppCompatActivity{
+public class ViewRecipeActivity extends AppCompatActivity implements AddIngredientToRecipeFragment.OnFragmentInteractionListener{
 
     EditText prepTime, numServings, instructions, name;
     RecyclerView ingredientsView;
@@ -226,5 +227,13 @@ public class ViewRecipeActivity extends AppCompatActivity{
     private void deleteThisRecipe() {
         storage.removeRecipeFromStorage(currentRecipe);
         goBack();
+    }
+
+
+    @Override
+    public void onOkPressed(IngredientInRecipe newIngredientInRecipe) {
+        newIngredientInRecipe.setRecipeID(currentRecipe.getId());
+        storage.addIngredientToIngredientsInRecipesCollection(newIngredientInRecipe);
+//        Log.i("gaba", "gool");
     }
 }
