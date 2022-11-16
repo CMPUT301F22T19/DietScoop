@@ -181,8 +181,6 @@ public class IngredientAddFragment extends DialogFragment {
             location.setSelection(locationSpinnerPosition);
         }
 
-        final Calendar c = Calendar.getInstance();
-
         if (ingredientToBeChanged == null) {
             builder
                 .setView(view)
@@ -217,6 +215,7 @@ public class IngredientAddFragment extends DialogFragment {
         } else {
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
+            unit.setText(ingredientToBeChanged.getMeasurementUnit());
 
             if (ingredientToBeChanged.getLocation().equals(Location.Pantry)) {
                 locationString = "pantry";
@@ -240,16 +239,11 @@ public class IngredientAddFragment extends DialogFragment {
                         ingredientToBeChanged.setDescription(description.getText().toString());
                     }
 
-                    int yearI;
-                    int monthI;
-                    int dayI;
                     if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
                         ingredientToBeChanged.setAmount(0.0);
                     } else {
                         ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
                     }
-
-//                    ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
 
                     if (unit.getText().toString().length() == 0) {
                         ingredientToBeChanged.setMeasurementUnit("kg");
