@@ -7,14 +7,25 @@ public enum IngredientCategory implements Serializable {
     /**
      * Category for different ingredients
      */
-    Vegetable,
-    Meat,
-    Dairy,
-    Grains,
-    Oils,
-    Spices,
-    Fruit,
-    Other;
+    Vegetable("vegetable"),
+    Meat("meat"),
+    Dairy("dairy"),
+    Grains("grains"),
+    Oils("oils"),
+    Spices("spices"),
+    Fruit("fruit"),
+    Other("other");
+
+    private String categoryName;
+
+    private IngredientCategory(String name){
+        this.categoryName = name;
+    }
+
+    @Override public String toString(){
+        return categoryName;
+    }
+
 
     /**
      * Method change string to Enum class
@@ -48,5 +59,7 @@ public enum IngredientCategory implements Serializable {
         }
 
     }
+
+
 
 }
