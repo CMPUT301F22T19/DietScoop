@@ -115,7 +115,11 @@ public class IngredientAddFragment extends DialogFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String strCategory = parent.getItemAtPosition(position).toString();
                 IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
-                newIngredient.setCategory(ingredientCategory);
+                if(ingredientToBeChanged == null) {
+                    newIngredient.setCategory(ingredientCategory);
+                } else {
+                    ingredientToBeChanged.setCategory(ingredientCategory);
+                }
             }
 
             @Override
@@ -128,13 +132,23 @@ public class IngredientAddFragment extends DialogFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String strLocation = parent.getItemAtPosition(position).toString();
                 Location location = Location.stringToLocation(strLocation);
-                newIngredient.setLocation(location);
+                if(ingredientToBeChanged == null) {
+                    newIngredient.setLocation(location);
+                } else {
+                    ingredientToBeChanged.setLocation(location);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        int categorySpinnerPosition = categorySpinnerAdapter.getPosition(ingredientToBeChanged.getCategoryName());
+        category.setSelection(categorySpinnerPosition);
+
+        int locationSpinnerPosition = locationSpinnerAdapter.getPosition(ingredientToBeChanged.getLocationName());
+        location.setSelection(locationSpinnerPosition);
 
         final Calendar c = Calendar.getInstance();
 
@@ -265,6 +279,9 @@ public class IngredientAddFragment extends DialogFragment {
                     } else {
                         ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
                     }
+
+
+
                     listener.onOkPressedUpdate(ingredientToBeChanged);
                 });
         }
