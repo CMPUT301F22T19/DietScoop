@@ -63,7 +63,7 @@ public class IngredientInStorageTest {
         //Initializing object:
         sampleIngredientSTR = startSampleIngredientSTR();
 
-        sampleIngredientSTR.setCategory(IngredientCategory.fruit);
+        sampleIngredientSTR.setCategory(IngredientCategory.Fruit);
 
         //Asserting the validity of Object:
         assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.fruit);

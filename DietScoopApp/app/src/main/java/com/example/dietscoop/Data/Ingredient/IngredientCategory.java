@@ -7,9 +7,14 @@ public enum IngredientCategory implements Serializable {
     /**
      * Category for different ingredients
      */
-    vegetable,
-    meat,
-    fruit;
+    Vegetable,
+    Meat,
+    Dairy,
+    Grains,
+    Oils,
+    Spices,
+    Fruit,
+    Other;
 
     /**
      * Method change string to Enum class
@@ -22,11 +27,21 @@ public enum IngredientCategory implements Serializable {
 
         switch (name) {
             case "VEGETABLE":
-                return vegetable;
+                return Vegetable;
             case "MEAT":
-                return meat;
+                return Meat;
+            case "DAIRY":
+                return Dairy;
+            case "GRAINS":
+                return Grains;
+            case "OILS":
+                return Oils;
+            case "SPICES":
+                return Spices;
             case "FRUIT":
-                return fruit;
+                return Fruit;
+            case "OTHER":
+                return Other;
             default:
                 // TODO: MAKE THIS THROW ERROR
                 return null;

@@ -7,9 +7,9 @@ import android.util.Log;
  */
 public enum Location {
     //TODO: What are locations and categories? Ask Jakaria
-    pantry,
-    freezer,
-    fridge;
+    Pantry,
+    Freezer,
+    Fridge;
 
     /**
      * Converts string to enum type for location.
@@ -21,11 +21,11 @@ public enum Location {
 
         switch (name) {
             case "PANTRY":
-                return pantry;
+                return Pantry;
             case "FREEZER":
-                return freezer;
+                return Freezer;
             case "FRIDGE":
-                return fridge;
+                return Fridge;
             default:
                 // TODO: MAKE THIS THROW ERROR
                 Log.i("null?", "LOCATION NOT RECOGNIZED");

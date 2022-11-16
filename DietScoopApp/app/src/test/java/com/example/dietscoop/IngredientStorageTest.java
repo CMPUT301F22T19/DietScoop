@@ -23,7 +23,7 @@ public class IngredientStorageTest {
 
     public IngredientInStorage getSampleIngredient() {
         return new IngredientInStorage("Pop", "kg",
-                5, 2022, 4, 24, Location.freezer, IngredientCategory.meat);
+                5, 2022, 4, 24, Location.Freezer, IngredientCategory.meat);
     }
 
     @Test
