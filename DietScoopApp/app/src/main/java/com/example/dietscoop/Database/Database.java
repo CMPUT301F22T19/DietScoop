@@ -2,19 +2,12 @@ package com.example.dietscoop.Database;
 
 import android.util.Log;
 
-import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
-import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.Recipe;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.firestore.CollectionReference;
-
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -68,7 +61,7 @@ class Database implements Serializable {
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit());
+        ingredientDetails.put("unit", ingredient.getMeasurementUnit().toLowerCase());
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
@@ -135,7 +128,7 @@ class Database implements Serializable {
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipe.getPrepTime());
         recipeDetails.put("servings", recipe.getNumOfServings());
-        recipeDetails.put("description", recipe.getDescription().toLowerCase());
+        recipeDetails.put("description", recipe.getDescription());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
@@ -182,7 +175,7 @@ class Database implements Serializable {
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipe.getPrepTime());
         recipeDetails.put("servings", recipe.getNumOfServings());
-        recipeDetails.put("description", recipe.getDescription().toLowerCase());
+        recipeDetails.put("description", recipe.getDescription());
         recipeDetails.put("instructions", recipe.getInstructions());
         recipeDetails.put("category", recipe.getCategory().toString());
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
