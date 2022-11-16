@@ -236,4 +236,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         storage.addIngredientToIngredientsInRecipesCollection(newIngredientInRecipe);
 //        Log.i("gaba", "gool");
     }
+
+    @Override
+    public void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe) {
+        // ballz
+    }
 }

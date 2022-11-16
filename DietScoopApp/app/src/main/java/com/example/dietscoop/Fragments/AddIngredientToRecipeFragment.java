@@ -30,13 +30,23 @@ import java.util.List;
 
 public class AddIngredientToRecipeFragment extends DialogFragment {
     private AddIngredientToRecipeFragment.OnFragmentInteractionListener listener;
+    private IngredientInRecipe ingredientToBeChanged;
 
+
+    public AddIngredientToRecipeFragment(IngredientInRecipe newRecipeIngredient) {
+        this.ingredientToBeChanged = newRecipeIngredient;
+    }
+
+    public AddIngredientToRecipeFragment() {
+        this.ingredientToBeChanged = null;
+    }
 
     public interface OnFragmentInteractionListener {
         void onOkPressed(IngredientInRecipe newIngredientInRecipe);
-//        void onOkPressedUpdate(IngredientInStorage updateIngredientInStorage);
+        void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe);
 //        void onDeletePressed(IngredientInStorage deleteIngredientInStorage);
     }
+
     Spinner categorySpinner;
     EditText description;
     EditText amount;
@@ -64,28 +74,50 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
         description = view.findViewById(R.id.editTextDescription);
         amount = view.findViewById(R.id.editTextAmount);
         unit = view.findViewById(R.id.editTextUnit);
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        return builder
-                .setView(view)
-                .setTitle("End ME")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        if (this.ingredientToBeChanged == null)
+        {
+            return builder
+                    .setView(view)
+                    .setTitle("Add")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        String descText = description.getText().toString();
-                        IngredientCategory ingocat =  IngredientCategory.stringToCategory(categorySpinner.getSelectedItem().toString());
-                        String unitText = unit.getText().toString();
-                        int amountFloat = Integer.parseInt(amount.getText().toString());
-                       IngredientInRecipe newIngredientInRecipe = new IngredientInRecipe(descText, unitText,
-                               amountFloat, ingocat);
-                        listener.onOkPressed(newIngredientInRecipe);
+                            String descText = description.getText().toString();
+                            IngredientCategory ingocat =  IngredientCategory.stringToCategory(categorySpinner.getSelectedItem().toString());
+                            String unitText = unit.getText().toString();
+                            int amountFloat = Integer.parseInt(amount.getText().toString());
+                            IngredientInRecipe newIngredientInRecipe = new IngredientInRecipe(descText, unitText,
+                                    amountFloat, ingocat);
+                            listener.onOkPressed(newIngredientInRecipe);
 
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .create();
+        }
+        else {
+            return builder
+                    .setView(view)
+                    .setTitle("Modify")
+                    .setPositiveButton("Modify", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+//                            String descText = description.getText().toString();
+//                            IngredientCategory ingocat =  IngredientCategory.stringToCategory(categorySpinner.getSelectedItem().toString());
+//                            String unitText = unit.getText().toString();
+//                            int amountFloat = Integer.parseInt(amount.getText().toString());
+//                            IngredientInRecipe newIngredientInRecipe = new IngredientInRecipe(descText, unitText,
+//                                    amountFloat, ingocat);
+//                            listener.onOkPressed(newIngredientInRecipe);
+
+                        }
+                    })
+                    .setNegativeButton("Delete", null)
+                    .setNeutralButton("Cancel", null)
+                    .create();
+        }
     }
-
 }
