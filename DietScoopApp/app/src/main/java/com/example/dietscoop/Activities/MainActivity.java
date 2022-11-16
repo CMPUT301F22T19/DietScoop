@@ -6,14 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.dietscoop.Database.IngredientStorage;
-import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecipeStorage r;//testing
-    IngredientStorage i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,13 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, MealPlanActivity.class);
         startActivity(intent);
-        //testing
-        r = new RecipeStorage();
-        r.addDummySnapshotListener();
-
-        //r.getAllIngsInRecipes();
-
-
     }
 
 
