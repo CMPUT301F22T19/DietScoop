@@ -8,20 +8,19 @@ import java.io.Serializable;
      * Ingredient abstract class to be inherited by ingredient and ingredient in storage
      */
     public abstract class Ingredient extends FoodItem implements Serializable {
-        private double amount;
+        private Double amount;
         private String measurementUnit;
         private IngredientCategory category;
 
 
         /**
          * Constructor for Ingredient
-         *
-         * @param description     Description of ingredient
+         *  @param description     Description of ingredient
          * @param measurementUnit Measurement unit of ingredient
          * @param amount          Amount of ingredient
          * @param category        Category of ingredient.
          */
-        public Ingredient(String description, String measurementUnit, double amount, IngredientCategory category) {
+        public Ingredient(String description, String measurementUnit, Double amount, IngredientCategory category) {
             this.description = description;
             this.amount = amount;
             this.measurementUnit = measurementUnit;
@@ -29,7 +28,11 @@ import java.io.Serializable;
 
         }
 
-        /**
+    public Ingredient() {
+
+    }
+
+    /**
          * getter for ingredient amount
          *
          * @return ingredient amount
@@ -76,6 +79,10 @@ import java.io.Serializable;
          */
         public IngredientCategory getCategory() {
             return category;
+        }
+
+        public void setCategory(IngredientCategory ingredientCategory){
+            this.category = ingredientCategory;
         }
 
         /**

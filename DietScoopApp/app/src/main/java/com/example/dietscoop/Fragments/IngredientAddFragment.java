@@ -3,6 +3,7 @@ package com.example.dietscoop.Fragments;
 import static java.lang.String.valueOf;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,15 +28,17 @@ import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
 
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class IngredientAddFragment extends DialogFragment {
     private EditText description;
     private EditText amount;
-    private EditText category;
+    private Spinner category;
     private EditText day;
     private EditText month;
     private EditText year;
-    private EditText location;
+    private Spinner location;
     private EditText unit;
     private OnFragmentInteractionListener listener;
     private IngredientInStorage ingredientToBeChanged;
@@ -92,12 +98,53 @@ public class IngredientAddFragment extends DialogFragment {
         year = view.findViewById(R.id.edit_year_ingredient_storage);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
+        ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.IngredientInStorageCategory, android.R.layout.simple_spinner_item);
+        categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category.setAdapter(categorySpinnerAdapter);
+
+        ArrayAdapter<CharSequence> locationSpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.IngredientInStorageLocation, android.R.layout.simple_spinner_item);
+        locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        location.setAdapter(locationSpinnerAdapter);
+
+        IngredientInStorage newIngredient = new IngredientInStorage();
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String strCategory = parent.getItemAtPosition(position).toString();
+                IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
+                newIngredient.setCategory(ingredientCategory);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String strLocation = parent.getItemAtPosition(position).toString();
+                Location location = Location.stringToLocation(strLocation);
+                newIngredient.setLocation(location);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        final Calendar c = Calendar.getInstance();
+
         if (ingredientToBeChanged == null) {
             builder
                 .setView(view)
                 .setTitle("Add ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK", (dialogInterface, i) -> {
+
                     String strDescription = description.getText().toString();
                     if (strDescription.length() == 0) {
                         strDescription = "No description available";
@@ -136,53 +183,31 @@ public class IngredientAddFragment extends DialogFragment {
                         dayI = Integer.parseInt(strDay);
                     }
 
-
-                    String strCategory = category.getText().toString().toLowerCase();
-                    if (!strCategory.equals("vegetable") && !strCategory.equals("meat") && !strCategory.equals("fruit")) {
-                        strCategory = "vegetable";
-                    }
-
-                    String strLocation = location.getText().toString().toLowerCase();
-                    if (!strLocation.equalsIgnoreCase("pantry")
-                            && !strLocation.equalsIgnoreCase("freezer")
-                            && !strLocation.equalsIgnoreCase("fridge")) {
-                        strLocation = "freezer";
-                    }
-
                     String strUnit = unit.getText().toString();
                     if (strUnit.length() == 0) {
                         strUnit = "units";
                     }
 
-                    Location location = Location.stringToLocation(strLocation);
-                    IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
-                    listener.onOkPressed(new IngredientInStorage(strDescription, strUnit,
-                            doubleAmount, yearI, monthI,
-                            dayI, location, ingredientCategory));
+                    newIngredient.setDescription(strDescription);
+                    newIngredient.setMeasurementUnit(strUnit);
+                    newIngredient.setAmount(doubleAmount);
+                    newIngredient.setBestBeforeDate(yearI, monthI, dayI);
+
+                    listener.onOkPressed(newIngredient);
                 });
         } else {
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
 
-            if (ingredientToBeChanged.getLocation().equals(Location.pantry)) {
+            if (ingredientToBeChanged.getLocation().equals(Location.Pantry)) {
                 locationString = "pantry";
-            } else if (ingredientToBeChanged.getLocation().equals(Location.freezer)) {
+            } else if (ingredientToBeChanged.getLocation().equals(Location.Freezer)) {
                 locationString = "freezer";
-            } else if (ingredientToBeChanged.getLocation().equals(Location.fridge)) {
+            } else if (ingredientToBeChanged.getLocation().equals(Location.Fridge)) {
                 locationString = "fridge";
             }
-            location.setText(locationString);
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
-
-            if (ingredientToBeChanged.getCategory().equals(IngredientCategory.vegetable)) {
-                categoryString = "vegetable";
-            } else if (ingredientToBeChanged.getCategory().equals(IngredientCategory.meat)) {
-                categoryString = "meat";
-            } else if (ingredientToBeChanged.getCategory().equals(IngredientCategory.fruit)) {
-                categoryString = "fruit";
-            }
-            category.setText(categoryString);
 
             int dayOfMonth = bestBeforeDateTemp.getDayOfMonth();
             String dayOfMonthStr = valueOf(dayOfMonth);
@@ -234,20 +259,6 @@ public class IngredientAddFragment extends DialogFragment {
                         monthI = Integer.parseInt(month.getText().toString());
                     }
                     ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
-
-                    if (!category.getText().toString().equals("vegetable") && !category.getText().toString().equals("meat") && !category.getText().toString().equals("fruit")) {
-                        ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory("vegetable"));
-                    } else {
-                        ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory(category.getText().toString()));
-                    }
-
-                    if (!location.getText().toString().equalsIgnoreCase("pantry")
-                            && !location.getText().toString().equalsIgnoreCase("freezer")
-                            && !location.getText().toString().equalsIgnoreCase("fridge")) {
-                        ingredientToBeChanged.setLocation(Location.stringToLocation("freezer"));
-                    } else {
-                        ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString().toLowerCase()));
-                    }
 
                     if (unit.getText().toString().length() == 0) {
                         ingredientToBeChanged.setMeasurementUnit("kg");
