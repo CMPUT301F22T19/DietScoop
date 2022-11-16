@@ -52,4 +52,8 @@ public class MealDay {
         this.mealsInDay.remove(i);
     }
 
+    public LocalDate getDate() {
+        return this.date;
+    }
+
 }
