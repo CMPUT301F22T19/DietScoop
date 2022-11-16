@@ -153,13 +153,6 @@ public class ViewRecipeActivity extends AppCompatActivity{
 
         storage.addIngredientsInRecipesSnapshotListener(currentRecipe, adapter);
 
-        //Adding the button here for instruction updating:
-        editInstructions = findViewById(R.id.recipe_add_comment_button);
-        editInstructions.setOnClickListener(v -> {
-            //Need to launch the new fragment activity for editing the instructions.
-            new EditInstructionsEntryFragment().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
-        });
-
     }
 
     private void updateTextViews() {
