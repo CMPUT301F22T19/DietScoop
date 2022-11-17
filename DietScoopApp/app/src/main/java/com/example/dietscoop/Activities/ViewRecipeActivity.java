@@ -60,6 +60,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     ArrayList<IngredientInRecipe> tempIngListForUI;
     ArrayList<IngredientInRecipe> tempIngListUpdate;
     ArrayList<IngredientInRecipe> tempIngListAdd;
+    ArrayList<IngredientInRecipe> tempIngListDelete;
     ArrayAdapter<CharSequence> prepUnitSpinnerAdapter;
     ArrayAdapter<CharSequence> categorySpinnerAdapter;
 
@@ -157,6 +158,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         tempIngListUpdate = new ArrayList<>();
         tempIngListUpdate.addAll(currentRecipe.getIngredients());
         tempIngListAdd = new ArrayList<>();
+        tempIngListDelete = new ArrayList<>();
 
         adapter = new IngredientRecipeAdapter(this,
                 tempIngListForUI);
@@ -207,11 +209,14 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         String instrucciones = instructions.getText().toString();
         currentRecipe.setInstructions(instrucciones);
         for (IngredientInRecipe ingToAdd: tempIngListAdd) {
-            currentRecipe.addIngredientRef(ingToAdd.getId());
+            //currentRecipe.addIngredientRef(ingToAdd.getId());
             storage.addIngredientToIngredientsInRecipesCollection(ingToAdd);
         }
         for (IngredientInRecipe ingToUpdate: tempIngListUpdate) {
             storage.updateIngredientInIngredientsInRecipesCollection(ingToUpdate);
+        }
+        for (IngredientInRecipe ingToDelete: tempIngListDelete) {
+            storage.removeIngredientFromIngredientsInRecipesCollection(ingToDelete);
         }
         tempIngListUpdate.addAll(tempIngListAdd);
         currentRecipe.setIngredientsList(tempIngListUpdate);
@@ -255,7 +260,11 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     @Override
     public void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe, int index) {
-        tempIngListUpdate.set(index, updateIngredientInRecipe);
+        if (tempIngListUpdate.contains(updateIngredientInRecipe)) {
+            tempIngListUpdate.set(index, updateIngredientInRecipe);
+        } else {
+            tempIngListAdd.set(index, updateIngredientInRecipe);
+        }
         tempIngListForUI.set(index,updateIngredientInRecipe);
         adapter.notifyDataSetChanged();
     }
@@ -265,6 +274,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         tempIngListUpdate.remove(deleteIngredientInRecipe);// index??
         tempIngListAdd.remove(deleteIngredientInRecipe);
         tempIngListForUI.remove(deleteIngredientInRecipe);
+        tempIngListDelete.add(deleteIngredientInRecipe);
         adapter.notifyDataSetChanged();
     }
 

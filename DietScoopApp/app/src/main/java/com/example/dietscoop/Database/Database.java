@@ -200,8 +200,8 @@ class Database implements Serializable {
         ingredientsInRecipes.document(ingredientInRecipe.getId()).set(ingredientInRecipe);
     }
 
-    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
-        ingredientsInRecipes.document(docref).delete();
+    public void removeIngredientFromIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        ingredientsInRecipes.document(ingredient.getId()).delete();
     }
 
     //TODO: not tested yet; test when editing-ingredient-in-recipe thing is implemented
