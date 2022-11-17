@@ -1,3 +1,5 @@
+// DONE UML
+
 package com.example.dietscoop.Data;
 
 import java.io.Serializable;
@@ -29,7 +31,7 @@ public abstract class FoodItem implements Serializable {
      * Getter for ID of ingredient in storage
      * @return ID of ingredient in storage
      */
-    public String getId(){return this.id;}
+    public String getId() {return this.id;}
 
     /**
      * Setter for ID of ingredient in storage

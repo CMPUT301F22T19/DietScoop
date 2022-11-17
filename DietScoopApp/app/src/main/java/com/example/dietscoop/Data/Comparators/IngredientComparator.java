@@ -1,3 +1,5 @@
+// UML DONE
+
 package com.example.dietscoop.Data.Comparators;
 
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
