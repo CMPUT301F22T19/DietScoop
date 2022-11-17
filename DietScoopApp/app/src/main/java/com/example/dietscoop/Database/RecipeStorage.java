@@ -36,8 +36,8 @@ public class RecipeStorage implements Serializable {
      * Constructor for a recipe in storage. Initializes Database class.
      */
     public RecipeStorage() {
-        db = new Database();
-        recipes = new ArrayList<>();
+        this.db = new Database();
+        this.recipes = new ArrayList<>();
     }
 
     /**
@@ -45,14 +45,14 @@ public class RecipeStorage implements Serializable {
      * @return ArrayList of Recipes
      */
     public ArrayList<Recipe> getRecipeStorage() {
-        return recipes;
+        return this.recipes;
     }
 
     /**
      * Getter for Database recipes storage
      */
     public void getRecipeStorageFromDatabase() {
-        db.getRecipeStorage();
+        this.db.getRecipeStorage();
     }
 
     /**
@@ -60,7 +60,7 @@ public class RecipeStorage implements Serializable {
      * @param recipe Object to be added to database
      */
     public void addRecipeToStorage(Recipe recipe) {
-        db.addRecipeToStorage(recipe);
+        this.db.addRecipeToStorage(recipe);
     }
 
     /**
@@ -68,7 +68,7 @@ public class RecipeStorage implements Serializable {
      * @param recipe Object to be removed from database
      */
     public void removeRecipeFromStorage(Recipe recipe) {
-        db.removeRecipeFromStorage(recipe);
+        this.db.removeRecipeFromStorage(recipe);
     }
 
     public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {

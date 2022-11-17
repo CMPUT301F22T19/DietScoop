@@ -10,20 +10,19 @@ import java.io.Serializable;
      * Ingredient abstract class to be inherited by ingredient and ingredient in storage
      */
     public abstract class Ingredient extends FoodItem implements Serializable {
-        private double amount;
+        private Double amount;
         private String measurementUnit;
         private IngredientCategory category;
 
 
         /**
          * Constructor for Ingredient
-         *
-         * @param description     Description of ingredient
+         *  @param description     Description of ingredient
          * @param measurementUnit Measurement unit of ingredient
          * @param amount          Amount of ingredient
          * @param category        Category of ingredient.
          */
-        public Ingredient(String description, String measurementUnit, double amount, IngredientCategory category) {
+        public Ingredient(String description, String measurementUnit, Double amount, IngredientCategory category) {
             this.description = description;
             this.amount = amount;
             this.measurementUnit = measurementUnit;
@@ -31,13 +30,17 @@ import java.io.Serializable;
 
         }
 
-        /**
+    public Ingredient() {
+
+    }
+
+    /**
          * getter for ingredient amount
          *
          * @return ingredient amount
          */
         public double getAmount() {
-            return amount;
+            return this.amount;
         }
 
         /**
@@ -55,7 +58,7 @@ import java.io.Serializable;
          * @return measurement unit of ingredient
          */
         public String getMeasurementUnit() {
-            return measurementUnit;
+            return this.measurementUnit;
         }
 
         /**
@@ -77,7 +80,11 @@ import java.io.Serializable;
          * @return ingredient category
          */
         public IngredientCategory getCategory() {
-            return category;
+            return this.category;
+        }
+
+        public void setCategory(IngredientCategory ingredientCategory){
+            this.category = ingredientCategory;
         }
 
         /**
@@ -86,7 +93,7 @@ import java.io.Serializable;
          * @return Stringified ingredient category
          */
         public String getCategoryName() {
-            return category.name();
+            return this.category.name();
         }
 
 

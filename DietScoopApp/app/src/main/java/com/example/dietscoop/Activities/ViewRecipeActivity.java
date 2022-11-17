@@ -19,10 +19,13 @@ import android.widget.TextView;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
+import com.example.dietscoop.Fragments.AddIngredientToRecipeFragment;
 import com.example.dietscoop.Fragments.EditInstructionsEntryFragment;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
+import com.example.dietscoop.Fragments.IngredientAddFragment;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.RecipeStorage;
@@ -39,7 +42,7 @@ import java.util.UUID;
  * logic instantiation for the events that
  * go on in this activity.
  */
-public class ViewRecipeActivity extends AppCompatActivity{
+public class ViewRecipeActivity extends AppCompatActivity implements AddIngredientToRecipeFragment.OnFragmentInteractionListener{
 
     EditText prepTime, numServings, instructions, name;
     RecyclerView ingredientsView;
@@ -51,6 +54,7 @@ public class ViewRecipeActivity extends AppCompatActivity{
     Button backButton;
     Button deleteButton;
     Button cancelButton;
+    Button addButton;
     Spinner prepTimeUnitSpinner, categorySpinner;
     boolean adding;
 
@@ -88,6 +92,9 @@ public class ViewRecipeActivity extends AppCompatActivity{
         instructions = findViewById(R.id.recipe_instructions);
         ingredientsView = findViewById(R.id.recipe_recycler_view);
         name = findViewById(R.id.recipe_title);
+
+        addButton = findViewById(R.id.recipe_add_ingredient_button);
+        addButton.setOnClickListener(view -> addIngredient());
 
         backButton = findViewById(R.id.recipe_back_button);
         backButton.setOnClickListener(view -> confirmRecipe());
@@ -155,13 +162,6 @@ public class ViewRecipeActivity extends AppCompatActivity{
 
         storage.addIngredientsInRecipesSnapshotListener(currentRecipe, adapter);
 
-        //Adding the button here for instruction updating:
-        editInstructions = findViewById(R.id.recipe_add_comment_button);
-        editInstructions.setOnClickListener(v -> {
-            //Need to launch the new fragment activity for editing the instructions.
-            new EditInstructionsEntryFragment().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
-        });
-
     }
 
     private void updateTextViews() {
@@ -179,6 +179,12 @@ public class ViewRecipeActivity extends AppCompatActivity{
         //Changing the text for instructions and the recipe.
         instructions.setText(text);
         currentRecipe.setInstructions(text);
+
+    }
+
+    private void addIngredient() {
+        Log.i("gaba", "gool");
+        new AddIngredientToRecipeFragment().show(getSupportFragmentManager(), "ADD_Ingredient");
 
     }
 
@@ -223,5 +229,18 @@ public class ViewRecipeActivity extends AppCompatActivity{
     private void deleteThisRecipe() {
         storage.removeRecipeFromStorage(currentRecipe);
         goBack();
+    }
+
+
+    @Override
+    public void onOkPressed(IngredientInRecipe newIngredientInRecipe) {
+        newIngredientInRecipe.setRecipeID(currentRecipe.getId());
+        storage.addIngredientToIngredientsInRecipesCollection(newIngredientInRecipe);
+//        Log.i("gaba", "gool");
+    }
+
+    @Override
+    public void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe) {
+        // ballz
     }
 }

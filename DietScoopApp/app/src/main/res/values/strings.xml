@@ -14,6 +14,8 @@
     <string name="amount_label">Amount</string>
     <string name="unit_label">Unit</string>
     <string name="instructions_label">Instructions</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="categories">
         <item>Breakfast</item>
@@ -31,4 +33,21 @@
         <item>hr</item>
     </string-array>
 
+    <string-array name="IngredientInStorageLocation">
+        <item>Pantry</item>
+        <item>Freezer</item>
+        <item>Fridge</item>
+    </string-array>
+
+    <string-array name="IngredientInStorageCategory">
+        <item>Vegetable</item>
+        <item>Meat</item>
+        <item>Dairy</item>
+        <item>Grains</item>
+        <item>Oils</item>
+        <item>Spices</item>
+        <item>Fruit</item>
+        <item>Other</item>
+    </string-array>
+    
 </resources>

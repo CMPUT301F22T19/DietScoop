@@ -5,6 +5,7 @@ package com.example.dietscoop.Fragments;
 import static java.lang.String.valueOf;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,13 +13,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.dietscoop.Activities.MainActivity;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.Location;
@@ -26,21 +34,22 @@ import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
 
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class IngredientAddFragment extends DialogFragment {
     private EditText description;
     private EditText amount;
-    private EditText category;
-    private EditText day;
-    private EditText month;
-    private EditText year;
-    private EditText location;
+    private Spinner category;
+    private Spinner location;
     private EditText unit;
     private OnFragmentInteractionListener listener;
     private IngredientInStorage ingredientToBeChanged;
     private String locationString;
     private String categoryString;
     private LocalDate bestBeforeDateTemp;
+    private Button selectDate;
+    private TextView bestBeforeDate;
     // For getting the string version of Calendar
     // Error handing
     public interface OnFragmentInteractionListener {
@@ -89,10 +98,90 @@ public class IngredientAddFragment extends DialogFragment {
         category = view.findViewById(R.id.edit_category_ingredient_storage);
         location = view.findViewById(R.id.edit_location_ingredient_storage);
         unit = view.findViewById(R.id.edit_unit_ingredient_storage);
-        day = view.findViewById(R.id.edit_day_ingredient_storage);
-        month = view.findViewById(R.id.edit_month_ingredient_storage);
-        year = view.findViewById(R.id.edit_year_ingredient_storage);
+        selectDate = view.findViewById(R.id.select_bestbefore_button);
+        bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.IngredientInStorageCategory, android.R.layout.simple_spinner_item);
+        categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category.setAdapter(categorySpinnerAdapter);
+
+        ArrayAdapter<CharSequence> locationSpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.IngredientInStorageLocation, android.R.layout.simple_spinner_item);
+        locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        location.setAdapter(locationSpinnerAdapter);
+
+        IngredientInStorage newIngredient = new IngredientInStorage();
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String strCategory = parent.getItemAtPosition(position).toString();
+                IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
+                if(ingredientToBeChanged == null) {
+                    newIngredient.setCategory(ingredientCategory);
+                } else {
+                    ingredientToBeChanged.setCategory(ingredientCategory);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String strLocation = parent.getItemAtPosition(position).toString();
+                Location location = Location.stringToLocation(strLocation);
+                if(ingredientToBeChanged == null) {
+                    newIngredient.setLocation(location);
+                } else {
+                    ingredientToBeChanged.setLocation(location);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(IngredientAddFragment.this.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        if(ingredientToBeChanged == null){
+                            newIngredient.setBestBeforeDate(year, month + 1, dayOfMonth);
+                        } else {
+                            ingredientToBeChanged.setBestBeforeDate(year, month + 1, dayOfMonth);
+                        }
+                        bestBeforeDate.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
+                    }
+                }, year, month, dayOfMonth);
+                datePickerDialog.show();
+            }
+        });
+
+        if (ingredientToBeChanged != null) {
+            LocalDate date = ingredientToBeChanged.getBestBeforeDate();
+            int yearDate = date.getYear();
+            int monthDate = date.getMonthValue();
+            int dayDate = date.getDayOfMonth();
+            bestBeforeDate.setText(yearDate + "-" + monthDate + "-" + dayDate);
+            int categorySpinnerPosition = categorySpinnerAdapter.getPosition(ingredientToBeChanged.getCategoryName());
+            category.setSelection(categorySpinnerPosition);
+            int locationSpinnerPosition = locationSpinnerAdapter.getPosition(ingredientToBeChanged.getLocationName());
+            location.setSelection(locationSpinnerPosition);
+        }
 
         if (ingredientToBeChanged == null) {
             builder
@@ -100,6 +189,7 @@ public class IngredientAddFragment extends DialogFragment {
                 .setTitle("Add ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK", (dialogInterface, i) -> {
+
                     String strDescription = description.getText().toString();
                     if (strDescription.length() == 0) {
                         strDescription = "No description available";
@@ -113,89 +203,31 @@ public class IngredientAddFragment extends DialogFragment {
                         doubleAmount = Double.parseDouble(strAmount);
                     }
 
-                    int yearI;
-                    int monthI;
-                    int dayI;
-
-                    String strYear = year.getText().toString();
-                    if (!isNumeric(strYear, NumericTypes.integer)) {
-                        yearI = 1500;
-                    } else {
-                        yearI = Integer.parseInt(strYear);
-                    }
-
-                    String strMonth = month.getText().toString();
-                    if (!isNumeric(strMonth, NumericTypes.integer)) {
-                        monthI = 1;
-                    } else {
-                        monthI = Integer.parseInt(strMonth);
-                    }
-
-                    String strDay = day.getText().toString();
-                    if (!isNumeric(strDay, NumericTypes.integer)) {
-                        dayI = 1;
-                    } else {
-                        dayI = Integer.parseInt(strDay);
-                    }
-
-
-                    String strCategory = category.getText().toString().toLowerCase();
-                    if (!strCategory.equals("vegetable") && !strCategory.equals("meat") && !strCategory.equals("fruit")) {
-                        strCategory = "vegetable";
-                    }
-
-                    String strLocation = location.getText().toString().toLowerCase();
-                    if (!strLocation.equalsIgnoreCase("pantry")
-                            && !strLocation.equalsIgnoreCase("freezer")
-                            && !strLocation.equalsIgnoreCase("fridge")) {
-                        strLocation = "freezer";
-                    }
-
                     String strUnit = unit.getText().toString();
                     if (strUnit.length() == 0) {
                         strUnit = "units";
                     }
 
-                    Location location = Location.stringToLocation(strLocation);
-                    IngredientCategory ingredientCategory = IngredientCategory.stringToCategory(strCategory);
-                    listener.onOkPressed(new IngredientInStorage(strDescription, strUnit,
-                            doubleAmount, yearI, monthI,
-                            dayI, location, ingredientCategory));
+                    newIngredient.setDescription(strDescription);
+                    newIngredient.setMeasurementUnit(strUnit);
+                    newIngredient.setAmount(doubleAmount);
+
+                    listener.onOkPressed(newIngredient);
                 });
         } else {
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
+            unit.setText(ingredientToBeChanged.getMeasurementUnit());
 
-            if (ingredientToBeChanged.getLocation().equals(Location.pantry)) {
+            if (ingredientToBeChanged.getLocation().equals(Location.Pantry)) {
                 locationString = "pantry";
-            } else if (ingredientToBeChanged.getLocation().equals(Location.freezer)) {
+            } else if (ingredientToBeChanged.getLocation().equals(Location.Freezer)) {
                 locationString = "freezer";
-            } else if (ingredientToBeChanged.getLocation().equals(Location.fridge)) {
+            } else if (ingredientToBeChanged.getLocation().equals(Location.Fridge)) {
                 locationString = "fridge";
             }
-            location.setText(locationString);
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
-
-            if (ingredientToBeChanged.getCategory().equals(IngredientCategory.vegetable)) {
-                categoryString = "vegetable";
-            } else if (ingredientToBeChanged.getCategory().equals(IngredientCategory.meat)) {
-                categoryString = "meat";
-            } else if (ingredientToBeChanged.getCategory().equals(IngredientCategory.fruit)) {
-                categoryString = "fruit";
-            }
-            category.setText(categoryString);
-
-            int dayOfMonth = bestBeforeDateTemp.getDayOfMonth();
-            String dayOfMonthStr = valueOf(dayOfMonth);
-            day.setText(dayOfMonthStr);
-            int monthInt = bestBeforeDateTemp.getMonthValue();
-            String monthStr = valueOf(monthInt);
-            month.setText(monthStr);
-            int yearInt = bestBeforeDateTemp.getYear();
-            String yearStr = valueOf(yearInt);
-            year.setText(yearStr);
-            unit.setText(ingredientToBeChanged.getMeasurementUnit());
 
             builder
                 .setView(view)
@@ -209,46 +241,10 @@ public class IngredientAddFragment extends DialogFragment {
                         ingredientToBeChanged.setDescription(description.getText().toString());
                     }
 
-                    int yearI;
-                    int monthI;
-                    int dayI;
                     if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
                         ingredientToBeChanged.setAmount(0.0);
                     } else {
                         ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
-                    }
-
-                    if (!isNumeric(year.getText().toString(), NumericTypes.integer)) {
-                        yearI = 2001;
-                    } else {
-                        yearI = Integer.parseInt(year.getText().toString());
-                    }
-
-                    if (!isNumeric(day.getText().toString(), NumericTypes.integer)) {
-                        dayI = 19;
-                    } else {
-                        dayI = Integer.parseInt(day.getText().toString());
-                    }
-
-                    if (!isNumeric(month.getText().toString(), NumericTypes.integer)) {
-                        monthI = 9;
-                    } else {
-                        monthI = Integer.parseInt(month.getText().toString());
-                    }
-                    ingredientToBeChanged.setBestBeforeDate(yearI, monthI, dayI);
-
-                    if (!category.getText().toString().equals("vegetable") && !category.getText().toString().equals("meat") && !category.getText().toString().equals("fruit")) {
-                        ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory("vegetable"));
-                    } else {
-                        ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory(category.getText().toString()));
-                    }
-
-                    if (!location.getText().toString().equalsIgnoreCase("pantry")
-                            && !location.getText().toString().equalsIgnoreCase("freezer")
-                            && !location.getText().toString().equalsIgnoreCase("fridge")) {
-                        ingredientToBeChanged.setLocation(Location.stringToLocation("freezer"));
-                    } else {
-                        ingredientToBeChanged.setLocation(Location.stringToLocation(location.getText().toString().toLowerCase()));
                     }
 
                     if (unit.getText().toString().length() == 0) {
@@ -256,6 +252,7 @@ public class IngredientAddFragment extends DialogFragment {
                     } else {
                         ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
                     }
+
                     listener.onOkPressedUpdate(ingredientToBeChanged);
                 });
         }

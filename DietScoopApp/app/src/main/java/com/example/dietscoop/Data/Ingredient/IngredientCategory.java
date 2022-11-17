@@ -9,9 +9,25 @@ public enum IngredientCategory implements Serializable {
     /**
      * Category for different ingredients
      */
-    vegetable,
-    meat,
-    fruit;
+    Vegetable("vegetable"),
+    Meat("meat"),
+    Dairy("dairy"),
+    Grains("grains"),
+    Oils("oils"),
+    Spices("spices"),
+    Fruit("fruit"),
+    Other("other");
+
+    private String categoryName;
+
+    private IngredientCategory(String name){
+        this.categoryName = name;
+    }
+
+    @Override public String toString(){
+        return categoryName;
+    }
+
 
     /**
      * Method change string to Enum class
@@ -24,16 +40,28 @@ public enum IngredientCategory implements Serializable {
 
         switch (name) {
             case "VEGETABLE":
-                return vegetable;
+                return Vegetable;
             case "MEAT":
-                return meat;
+                return Meat;
+            case "DAIRY":
+                return Dairy;
+            case "GRAINS":
+                return Grains;
+            case "OILS":
+                return Oils;
+            case "SPICES":
+                return Spices;
             case "FRUIT":
-                return fruit;
+                return Fruit;
+            case "OTHER":
+                return Other;
             default:
                 // TODO: MAKE THIS THROW ERROR
                 return null;
         }
 
     }
+
+
 
 }
