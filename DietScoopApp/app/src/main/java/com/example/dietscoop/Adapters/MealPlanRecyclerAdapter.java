@@ -74,9 +74,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element:
-        String test = mealDays.get(position).getDate().toString();
-
-        viewHolder.getMealDayDateTextView().setText(test);
+        viewHolder.getMealDayDateTextView().setText(mealDays.get(position).getDate().toString());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

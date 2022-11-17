@@ -4,6 +4,7 @@ package com.example.dietscoop.Activities;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
@@ -47,11 +48,12 @@ public class MealPlanActivity extends AppCompatActivity {
 
         mealDays.add(testDay);
 
-        //Testing our adapter:
+        //Testing our adapter: TODO: Keep most of the following lines as they work.
         mealPlanAdapter = new MealPlanRecyclerAdapter(this, mealDays);
-
-        //Binding our adapter to our recycler view:
+        mealDayRecycler.setLayoutManager(new LinearLayoutManager(this));
         mealDayRecycler.setAdapter(mealPlanAdapter);
+
+
     }
 
 }
