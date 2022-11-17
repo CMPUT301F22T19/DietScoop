@@ -13,6 +13,10 @@
         android:theme="@style/Theme.DietScoop"
         tools:targetApi="31">
         <activity
+            android:name=".ui.login.LoginActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_login2" />
+        <activity
             android:name=".Activities.ViewRecipeActivity"
             android:exported="false" />
         <activity
