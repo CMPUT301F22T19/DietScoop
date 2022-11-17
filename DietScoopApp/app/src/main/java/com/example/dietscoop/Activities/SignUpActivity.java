@@ -25,8 +25,8 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseAuth auth;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
@@ -69,7 +69,6 @@ public class SignUpActivity extends AppCompatActivity {
     private void openApp() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        finish();
     }
 
 

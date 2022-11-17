@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.dietscoop.R;
@@ -20,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
+            Log.i("PROGRESS", "Starting Login");
             startActivity(intent);
-            finish(); // what does this do
         }
     }
 
