@@ -1,5 +1,6 @@
 package com.example.dietscoop.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecyclerAdapter.DayHolder> {
 
     //Variables:
-    private ArrayList<MealDay> mealDays;
+    Context context;
+    ArrayList<MealDay> mealDays;
 
     //Static Class for the sake of inflating views and connecting to backend:
     public static class DayHolder extends RecyclerView.ViewHolder {
@@ -49,18 +50,19 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     }
 
     /**
-     * WARNING: THIS IS A TEST CONSTUCTOR, PLEASE CHANGE AFTER TESTING IS DONE.
+     * WARNING: THIS IS A TEST CONSTRUCTOR, PLEASE CHANGE AFTER TESTING IS DONE.
      * @param mealDays
      */
-    public MealPlanRecyclerAdapter(ArrayList<MealDay> mealDays) {
-        this.mealDays = mealDays;
+    public MealPlanRecyclerAdapter(Context context, ArrayList<MealDay> mealDays) {
+        this.context = context;
+        this.mealDays = this.mealDays;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public DayHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.meal_day_display, viewGroup, false);
 
         return new DayHolder(view);
@@ -71,7 +73,8 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     public void onBindViewHolder(DayHolder viewHolder, final int position) {
 
         // Get element from your dataset at this position and replace the
-        // contents of the view with that element
+        // contents of the view with that element:
+
         viewHolder.getMealDayDateTextView().setText(mealDays.get(position).getDate().toString());
     }
 

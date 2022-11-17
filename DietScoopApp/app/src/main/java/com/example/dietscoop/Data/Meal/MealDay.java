@@ -15,7 +15,7 @@ public class MealDay {
     ArrayList<Meal> mealsInDay;
     LocalDate date;
 
-    //Constructors:
+    //Constructors: TODO: Incorporate more constructors for this class:
     public MealDay(LocalDate date) {
         mealsInDay = new ArrayList<>();
         this.date = date;
