@@ -13,12 +13,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
         Intent intent = new Intent(MainActivity.this, MealPlanActivity.class);
         startActivity(intent);
     }
-
 
     /**
      * Handler for navigating to ingredient list activity
