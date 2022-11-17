@@ -97,6 +97,10 @@ public class Recipe extends FoodItem implements Serializable {
      */
     public void setIngredientsList(ArrayList<IngredientInRecipe> ingredientsList) {
         this.ingredientsList = ingredientsList;
+        this.ingredientRefs.clear();
+        for (IngredientInRecipe ing: ingredientsList) {
+            this.ingredientRefs.add(ing.getId());
+        }
     }
 
     /**
@@ -166,6 +170,9 @@ public class Recipe extends FoodItem implements Serializable {
      * @param ingredient ingredient to be removed from ingredients list
      */
     public void removeIngredient(IngredientInRecipe ingredient){
+        if (ingredient.getId()!=null) {
+            this.removeIngredientID(ingredient.getId());
+        }
         this.ingredientsList.remove(ingredient);
     }
 

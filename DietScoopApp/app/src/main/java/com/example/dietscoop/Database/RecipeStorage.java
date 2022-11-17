@@ -197,8 +197,8 @@ public class RecipeStorage implements Serializable {
 
     public void updateRecipeInStorage(Recipe recipe) {db.updateRecipeInStorage(recipe);}
 
-    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
-        db.removeIngredientFromIngredientsInRecipesCollection(docref);
+    public void removeIngredientFromIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        db.removeIngredientFromIngredientsInRecipesCollection(ingredient);
     }
 
     // TODO: to be tested
