@@ -160,7 +160,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
         storage.addIngredientsInRecipesSnapshotListener(currentRecipe, adapter);
 
-        adapter.
+        adapter.setItemClickListener(this);
     }
 
     private void updateTextViews() {
@@ -243,9 +243,11 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         // ballz
     }
 
-
     @Override
     public void onItemClick(View view, int position) {
         Log.d("water", "onItemClick: ");
+
+        IngredientInRecipe ingredient = currentRecipe.getIngredients().get(position);;
+        new AddIngredientToRecipeFragment(ingredient).show(getSupportFragmentManager(), "MODIFY_Ingredient");
     }
 }
