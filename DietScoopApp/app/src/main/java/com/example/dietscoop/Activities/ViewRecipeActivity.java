@@ -240,13 +240,17 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     @Override
     public void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe) {
-        // ballz
+        storage.updateIngredientInIngredientsInRecipesCollection(updateIngredientInRecipe);
+    }
+
+    @Override
+    public void onDeletePressed(IngredientInRecipe deleteIngredientInRecipe) {
+        storage.removeIngredientFromIngredientsInRecipesCollection(deleteIngredientInRecipe.getId());
+//        TODO: the adapter is not updating when an item is deleted, check RecipeStorage for clues
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.d("water", "onItemClick: ");
-
         IngredientInRecipe ingredient = currentRecipe.getIngredients().get(position);;
         new AddIngredientToRecipeFragment(ingredient).show(getSupportFragmentManager(), "MODIFY_Ingredient");
     }
