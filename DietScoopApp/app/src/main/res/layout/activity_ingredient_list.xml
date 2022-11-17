@@ -30,7 +30,11 @@
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:clickable="true"
+<<<<<<< Updated upstream
                     android:text="Name"
+=======
+                    android:text="Name\n▲"
+>>>>>>> Stashed changes
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -40,7 +44,11 @@
                     android:id="@+id/category_sort"
                     android:layout_width="0dp"
                     android:layout_gravity="center"
+<<<<<<< Updated upstream
                     android:text="Category"
+=======
+                    android:text="Category\n▲"
+>>>>>>> Stashed changes
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -51,7 +59,11 @@
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:clickable="true"
+<<<<<<< Updated upstream
                     android:text="Best Before"
+=======
+                    android:text="Best Before\n▲"
+>>>>>>> Stashed changes
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -72,7 +84,11 @@
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:clickable="true"
+<<<<<<< Updated upstream
                     android:text="Location"
+=======
+                    android:text="Location\n▲"
+>>>>>>> Stashed changes
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"

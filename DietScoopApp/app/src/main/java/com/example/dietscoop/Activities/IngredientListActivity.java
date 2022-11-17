@@ -85,6 +85,10 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             @Override
             public void onClick(View view) {
                 onSortSelection(sortSelection.NAME);
+                nameSort.setText("Name\n▼");
+                categorySort.setText("Category\n▲");
+                bestBeforeSort.setText("Best Before\n▲");
+                locationSort.setText("Location\n▲");
             }
         });
 
@@ -92,6 +96,10 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             @Override
             public void onClick(View view) {
                 onSortSelection(sortSelection.CATEGORY);
+                nameSort.setText("Name\n▲");
+                categorySort.setText("Category\n▼");
+                bestBeforeSort.setText("Best Before\n▲");
+                locationSort.setText("Location\n▲");
             }
         });
 
@@ -99,6 +107,10 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             @Override
             public void onClick(View view) {
                 onSortSelection(sortSelection.DATE);
+                nameSort.setText("Name\n▲");
+                categorySort.setText("Category\n▲");
+                bestBeforeSort.setText("Best Before\n▼");
+                locationSort.setText("Location\n▲");
             }
         });
 
@@ -106,6 +118,10 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
             @Override
             public void onClick(View view) {
                 onSortSelection(sortSelection.LOCATION);
+                nameSort.setText("Name\n▲");
+                categorySort.setText("Category\n▲");
+                bestBeforeSort.setText("Best Before\n▲");
+                locationSort.setText("Location\n▼");
             }
         });
 
