@@ -36,4 +36,14 @@ public class RecipeComparator {
         }
     }
 
+    /**
+     * This orders the Recipes by recipe categories
+     */
+    public static class byRecipeCategory implements  Comparator<Recipe> {
+        @Override
+        public int compare(Recipe t1, Recipe t2) {
+            return t1.getCategoryName().compareTo(t2.getCategoryName());
+        }
+    }
+
 }
