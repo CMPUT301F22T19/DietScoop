@@ -32,10 +32,12 @@ import java.util.List;
 public class AddIngredientToRecipeFragment extends DialogFragment {
     private AddIngredientToRecipeFragment.OnFragmentInteractionListener listener;
     private IngredientInRecipe ingredientToBeChanged;
+    private int indexOfIngToBeUpdated;
 
 
-    public AddIngredientToRecipeFragment(IngredientInRecipe newRecipeIngredient) {
+    public AddIngredientToRecipeFragment(IngredientInRecipe newRecipeIngredient, int position) {
         this.ingredientToBeChanged = newRecipeIngredient;
+        this.indexOfIngToBeUpdated = position;
     }
 
     public AddIngredientToRecipeFragment() {
@@ -44,7 +46,7 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
 
     public interface OnFragmentInteractionListener {
         void onOkPressed(IngredientInRecipe newIngredientInRecipe);
-        void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe);
+        void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe, int indexOfIngToBeUpdated);
         void onDeletePressed(IngredientInRecipe deleteIngredientInRecipe);
     }
 
@@ -133,7 +135,7 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
                             ingredientToBeChanged.setMeasurementUnit(unitText);
                             ingredientToBeChanged.setAmount(amountDouble);
                             Log.i("ing. Test", ingredientToBeChanged.getId());
-                            listener.onOkPressedUpdate(ingredientToBeChanged);
+                            listener.onOkPressedUpdate(ingredientToBeChanged, indexOfIngToBeUpdated);
 
                         }
                     })
