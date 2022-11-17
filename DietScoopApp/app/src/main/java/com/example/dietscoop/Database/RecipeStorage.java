@@ -5,6 +5,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.IngredientListActivity;
+import com.example.dietscoop.Activities.RecipeListActivity;
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
+import com.example.dietscoop.Data.Comparators.RecipeComparator;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Recipe.Recipe;
@@ -195,5 +199,26 @@ public class RecipeStorage implements Serializable {
     // TODO: to be tested
     public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
         db.updateIngredientInIngredientsInRecipesCollection(ingredient);
+    }
+
+    /**
+     * Method to sort Ingredients by given selection
+     * @param sortBy selection to be sorted by
+     */
+    public void sortBy(RecipeListActivity.sortSelection sortBy) {
+        switch (sortBy) {
+            case TITLE:
+                recipes.sort(new RecipeComparator.byRecipeTitle());
+                break;
+            case PREPTIME:
+                recipes.sort(new RecipeComparator.byRecipePrepTime());
+                break;
+            case SERVING:
+                recipes.sort(new RecipeComparator.byRecipeServingNumber());
+                break;
+            case CATEGORY:
+                recipes.sort(new RecipeComparator.byRecipeCategory());
+                break;
+        }
     }
 }
