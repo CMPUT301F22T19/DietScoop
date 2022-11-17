@@ -2,6 +2,7 @@ package com.example.dietscoop.Activities;
 
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,10 +23,11 @@ import java.util.ArrayList;
  * 1. Need a means to add mealdays.
  * 2. Needs a means to generate fragments.
  * 3. Need to store everything back in this activity and send any updates to the firestore database.
+ * 4. Need to add the event for the floating button to query the user to add a new mealday.
  */
 public class MealPlanActivity extends AppCompatActivity {
 
-    FloatingActionButton addMealDay;
+    FloatingActionButton addMealDayButton;
     RecyclerView mealDayRecycler;
     MealPlanRecyclerAdapter mealPlanAdapter;
     ArrayList<MealDay> mealDays;
@@ -37,7 +39,7 @@ public class MealPlanActivity extends AppCompatActivity {
 
         //TESTING!!!!:
 
-        //Fetch the views in the current activity:
+        //Handling RecyclerView: *
         mealDayRecycler = (RecyclerView) findViewById(R.id.recycler_for_meal_plans);
 
         //Instancing our sample day:
@@ -53,6 +55,16 @@ public class MealPlanActivity extends AppCompatActivity {
         mealDayRecycler.setLayoutManager(new LinearLayoutManager(this));
         mealDayRecycler.setAdapter(mealPlanAdapter);
 
+        //Handling Button: *
+        addMealDayButton = (FloatingActionButton) findViewById(R.id.add_mealday_button);
+
+        //Click event handles the creation of a new DialogFragment:
+        addMealDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
