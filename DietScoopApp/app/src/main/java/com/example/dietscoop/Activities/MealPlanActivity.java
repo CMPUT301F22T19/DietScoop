@@ -4,6 +4,7 @@ package com.example.dietscoop.Activities;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
@@ -38,6 +39,7 @@ public class MealPlanActivity extends AppCompatActivity {
 
         //Fetch the views in the current activity:
         mealDayRecycler = (RecyclerView) findViewById(R.id.recycler_for_meal_plans);
+        mealDayRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         //Instancing our sample day:
         LocalDate now = LocalDate.now();

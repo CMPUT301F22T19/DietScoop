@@ -55,7 +55,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
      */
     public MealPlanRecyclerAdapter(Context context, ArrayList<MealDay> mealDays) {
         this.context = context;
-        this.mealDays = this.mealDays;
+        this.mealDays = mealDays;
     }
 
     // Create new views (invoked by the layout manager)
