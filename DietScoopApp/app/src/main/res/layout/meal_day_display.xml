@@ -10,7 +10,7 @@
         <!--        Adding a spacer view:?-->
         <View
             android:layout_width="50dp"
-            android:layout_height="match_parent"></View>
+            android:layout_height="match_parent"/>
         <!--        Adding a spacer view:-->
 
 <!--        Textview for displaying the date of the given mealplan date-->
@@ -19,19 +19,19 @@
             android:layout_height="match_parent"
             android:id="@+id/mealplan_for_date"
             android:gravity="center"
-            android:hint="Sample Date"></TextView>
+            android:hint="Sample Date" />
 
 <!--        Adding a spacer view:?-->
         <View
             android:layout_width="140dp"
-            android:layout_height="match_parent"></View>
+            android:layout_height="match_parent"/>
 <!--        Adding a spacer view:-->
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/modify_mealplan_for_date_button"
-            android:text="Modify"></Button>
+            android:text="Modify" />
 
     </LinearLayout>
 

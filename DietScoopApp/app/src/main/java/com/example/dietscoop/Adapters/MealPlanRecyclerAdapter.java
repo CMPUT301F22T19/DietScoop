@@ -55,12 +55,12 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
      */
     public MealPlanRecyclerAdapter(Context context, ArrayList<MealDay> mealDays) {
         this.context = context;
-        this.mealDays = this.mealDays;
+        this.mealDays = mealDays;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public DayHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public MealPlanRecyclerAdapter.DayHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.meal_day_display, viewGroup, false);
@@ -74,8 +74,9 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element:
+        String test = mealDays.get(position).getDate().toString();
 
-        viewHolder.getMealDayDateTextView().setText(mealDays.get(position).getDate().toString());
+        viewHolder.getMealDayDateTextView().setText(test);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
