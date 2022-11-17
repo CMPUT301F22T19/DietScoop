@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.R;
@@ -39,6 +40,13 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
     Button sortButton;
     FloatingActionButton addRecipeButton;
 
+    TextView titleSort, prepTimeSort, servingSort, categorySort;
+    public enum sortSelection {
+        TITLE,
+        PREPTIME,
+        SERVING,
+        CATEGORY
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +70,11 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         shoppingButton = findViewById(R.id.shopping_nav);
         addRecipeButton = findViewById(R.id.add_new_recipe_button);
 
+        titleSort = findViewById(R.id.title_sort);
+        prepTimeSort = findViewById(R.id.preptime_sort);
+        servingSort = findViewById(R.id.serving_sort);
+        categorySort = findViewById(R.id.category_sort);
+
         addRecipeButton.setOnClickListener(view -> addNewRecipe());
 
         recipesButton.setBackgroundColor(Color.rgb(252, 186, 3));
@@ -69,6 +82,35 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         ingredientButton.setOnClickListener(view -> switchToIngredients());
 
         recipeListAdapter.setItemClickListener(this);
+
+
+        titleSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSortSelection(sortSelection.TITLE);
+            }
+        });
+
+        prepTimeSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSortSelection(sortSelection.PREPTIME);
+            }
+        });
+
+        servingSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSortSelection(sortSelection.SERVING);
+            }
+        });
+
+        categorySort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSortSelection(sortSelection.CATEGORY);
+            }
+        });
 
     }
 
@@ -96,5 +138,10 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         intent.putExtra("ADDING", false);
         intent.putExtra("RECIPE", recipeStorage.getRecipeStorage().get(position));
         startActivity(intent);
+    }
+
+    public void onSortSelection(RecipeListActivity.sortSelection sortBy) {
+        recipeStorage.sortBy(sortBy);
+        recipeListAdapter.notifyDataSetChanged();
     }
 }
