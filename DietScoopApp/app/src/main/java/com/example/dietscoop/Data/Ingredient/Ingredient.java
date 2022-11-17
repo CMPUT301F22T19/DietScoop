@@ -1,5 +1,3 @@
-// UML DONE
-
 package com.example.dietscoop.Data.Ingredient;
 
 import com.example.dietscoop.Data.FoodItem;

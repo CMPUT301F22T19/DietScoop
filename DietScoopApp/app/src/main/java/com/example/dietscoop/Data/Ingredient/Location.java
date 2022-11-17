@@ -1,5 +1,3 @@
-// UML DONE
-
 package com.example.dietscoop.Data.Ingredient;
 
 import android.util.Log;

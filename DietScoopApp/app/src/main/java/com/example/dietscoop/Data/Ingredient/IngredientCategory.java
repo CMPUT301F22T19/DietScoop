@@ -1,5 +1,3 @@
-// DONE UML
-
 package com.example.dietscoop.Data.Ingredient;
 
 import java.io.Serializable;

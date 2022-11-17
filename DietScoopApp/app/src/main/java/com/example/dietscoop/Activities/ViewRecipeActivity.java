@@ -1,5 +1,3 @@
-// UML DONE
-
 package com.example.dietscoop.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;

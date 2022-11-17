@@ -1,5 +1,3 @@
-// DONE UML
-
 package com.example.dietscoop.Adapters;
 
 import android.content.Context;
