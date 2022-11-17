@@ -26,6 +26,14 @@ public class RecipeComparator {
         }
     }
 
-
+    /**
+     * This orders the Recipes by the number of servings
+     */
+    public static class byRecipeServingNumber implements  Comparator<Recipe> {
+        @Override
+        public int compare(Recipe t1, Recipe t2) {
+            return Integer.compare(t1.getNumOfServings(), t2.getNumOfServings());
+        }
+    }
 
 }
