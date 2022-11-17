@@ -118,9 +118,12 @@ public class RecipeStorage implements Serializable {
                                 }
                                 if (doc1.exists()) {
                                     Log.i(TAG1, doc1.getData().toString());
-                                    ingredients.add(new IngredientInRecipe(doc1.getString("description"),
+                                    IngredientInRecipe ing = new IngredientInRecipe(doc1.getString("description"),
                                             doc1.getString("measurementUnit"),doc1.getDouble("amount"),
-                                            IngredientCategory.stringToCategory(doc1.getString("category"))));
+                                            IngredientCategory.stringToCategory(doc1.getString("category")));
+                                    ing.setId(doc1.getId());
+                                    ing.setRecipeID(recipe.getId());
+                                    ingredients.add(ing);
                                 }
                                 if (adapter!=null) {
                                     adapter.notifyDataSetChanged();
@@ -178,9 +181,11 @@ public class RecipeStorage implements Serializable {
                             break;
                         case MODIFIED:
                             Log.i("modified new", doc.getDocument().getData().toString());
+                            adapter.notifyDataSetChanged();
                             break;
                         case REMOVED:
                             Log.i("removed new", doc.getDocument().getData().toString());
+                            adapter.notifyDataSetChanged();
                             break;
                     }
                 }

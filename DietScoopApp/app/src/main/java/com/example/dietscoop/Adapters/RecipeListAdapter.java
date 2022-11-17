@@ -32,13 +32,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         this.listener = listener;
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recipe_content, parent, false);
-        return new ViewHolder(view);
-    }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (dataList != null && dataList.size() > 0) {
@@ -49,6 +42,15 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             holder.titleTV.setText(String.valueOf(recipe.getDescription()).toUpperCase());
         }
     }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.recipe_content, parent, false);
+        return new ViewHolder(view);
+    }
+
+
 
     @Override
     public int getItemCount() {

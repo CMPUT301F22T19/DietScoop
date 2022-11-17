@@ -24,6 +24,7 @@ import com.example.dietscoop.Activities.ViewRecipeActivity;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.R;
 
 import java.util.List;
@@ -31,10 +32,12 @@ import java.util.List;
 public class AddIngredientToRecipeFragment extends DialogFragment {
     private AddIngredientToRecipeFragment.OnFragmentInteractionListener listener;
     private IngredientInRecipe ingredientToBeChanged;
+    private int indexOfIngToBeUpdated;
 
 
-    public AddIngredientToRecipeFragment(IngredientInRecipe newRecipeIngredient) {
+    public AddIngredientToRecipeFragment(IngredientInRecipe newRecipeIngredient, int position) {
         this.ingredientToBeChanged = newRecipeIngredient;
+        this.indexOfIngToBeUpdated = position;
     }
 
     public AddIngredientToRecipeFragment() {
@@ -43,8 +46,8 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
 
     public interface OnFragmentInteractionListener {
         void onOkPressed(IngredientInRecipe newIngredientInRecipe);
-        void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe);
-//        void onDeletePressed(IngredientInStorage deleteIngredientInStorage);
+        void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe, int indexOfIngToBeUpdated);
+        void onDeletePressed(IngredientInRecipe deleteIngredientInRecipe);
     }
 
     Spinner categorySpinner;
@@ -87,9 +90,9 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
                             String descText = description.getText().toString();
                             IngredientCategory ingocat =  IngredientCategory.stringToCategory(categorySpinner.getSelectedItem().toString());
                             String unitText = unit.getText().toString();
-                            int amountFloat = Integer.parseInt(amount.getText().toString());
+                            Double amountDouble = Double.parseDouble(amount.getText().toString());
                             IngredientInRecipe newIngredientInRecipe = new IngredientInRecipe(descText, unitText,
-                                    amountFloat, ingocat);
+                                    amountDouble, ingocat);
                             listener.onOkPressed(newIngredientInRecipe);
 
                         }
@@ -98,6 +101,23 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
                     .create();
         }
         else {
+
+            description.setText(this.ingredientToBeChanged.getDescription());
+            this.ingredientToBeChanged.getCategory();
+            IngredientCategory catValues[] = IngredientCategory.values();
+//          Populate spinner
+            for(int i = 0; i < catValues.length; ++i)
+            {
+                if(this.ingredientToBeChanged.getCategory() == catValues[i])
+                {
+                    categorySpinner.setSelection(i);
+                    break;
+                }
+            }
+
+            amount.setText(Double.toString(this.ingredientToBeChanged.getAmount()));
+            unit.setText(this.ingredientToBeChanged.getMeasurementUnit());
+
             return builder
                     .setView(view)
                     .setTitle("Modify")
@@ -105,17 +125,26 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-//                            String descText = description.getText().toString();
-//                            IngredientCategory ingocat =  IngredientCategory.stringToCategory(categorySpinner.getSelectedItem().toString());
-//                            String unitText = unit.getText().toString();
-//                            int amountFloat = Integer.parseInt(amount.getText().toString());
-//                            IngredientInRecipe newIngredientInRecipe = new IngredientInRecipe(descText, unitText,
-//                                    amountFloat, ingocat);
-//                            listener.onOkPressed(newIngredientInRecipe);
+                            String descText = description.getText().toString();
+                            String unitText = unit.getText().toString();
+                            Double amountDouble = Double.parseDouble(amount.getText().toString());
+
+                            ingredientToBeChanged.setDescription(descText);
+                            ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory
+                                            (categorySpinner.getSelectedItem().toString()));
+                            ingredientToBeChanged.setMeasurementUnit(unitText);
+                            ingredientToBeChanged.setAmount(amountDouble);
+                            Log.i("ing. Test", ingredientToBeChanged.getId());
+                            listener.onOkPressedUpdate(ingredientToBeChanged, indexOfIngToBeUpdated);
 
                         }
                     })
-                    .setNegativeButton("Delete", null)
+                    .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            listener.onDeletePressed(ingredientToBeChanged);
+                        }
+                    })
                     .setNeutralButton("Cancel", null)
                     .create();
         }
