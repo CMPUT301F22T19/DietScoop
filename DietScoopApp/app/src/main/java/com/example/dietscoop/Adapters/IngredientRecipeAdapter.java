@@ -61,6 +61,10 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
         return ingredientsList.size();
     }
 
+    public void setItemClickListener(Context context) {
+        this.context = context;
+    }
+
     /**
      * View holder for ingredient in recipe adapter.
      */

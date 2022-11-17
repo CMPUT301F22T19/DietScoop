@@ -40,7 +40,7 @@ import java.util.UUID;
  * logic instantiation for the events that
  * go on in this activity.
  */
-public class ViewRecipeActivity extends AppCompatActivity implements AddIngredientToRecipeFragment.OnFragmentInteractionListener{
+public class ViewRecipeActivity extends AppCompatActivity implements AddIngredientToRecipeFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
     EditText prepTime, numServings, instructions, name;
     RecyclerView ingredientsView;
@@ -160,6 +160,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
         storage.addIngredientsInRecipesSnapshotListener(currentRecipe, adapter);
 
+        adapter.
     }
 
     private void updateTextViews() {
@@ -240,5 +241,11 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     @Override
     public void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe) {
         // ballz
+    }
+
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Log.d("water", "onItemClick: ");
     }
 }
