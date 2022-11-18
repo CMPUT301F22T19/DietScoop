@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * DialogFragment that handles the user entry for a new mealday.
@@ -28,6 +31,7 @@ public class CreateMealDayFragment extends DialogFragment {
     EditText enterDateText;
     FloatingActionButton addMeal;
     RecyclerView mealRecycler;
+    DatePicker mealDayDate;
 
     //Containers:
     MealDay currentMealDay;
@@ -37,17 +41,25 @@ public class CreateMealDayFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         //Instancing our DialogFragment:
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        //Fetching Layout Inflater:
+
         LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View fragmentView = inflater.inflate(R.layout.add_meal_day_fragment, null);
+
+        initializeViews(fragmentView);
 
         //Initializing the main container for this activity:
         currentMealDay = new MealDay(LocalDate.now()); //Temporary placeholder date.
 
-        //Initializing Views:
-
+        enterDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar cldr = new Calendar() {
+                }
+            }
+        });
 
         //Inflating the fragment:
-        builder.setView(inflater.inflate(R.layout.add_meal_day_fragment, null))
+        builder.setView(fragmentView)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -62,7 +74,13 @@ public class CreateMealDayFragment extends DialogFragment {
                 });
 
         return builder.create();
+    }
 
+    public void initializeViews(View view) {
+        //Initializing Views:
+        enterDateText = (EditText) view.findViewById(R.id.meal_day_date_enter);
+        addMeal = (FloatingActionButton) view.findViewById(R.id.add_mealday_button);
+        mealRecycler = (RecyclerView) view.findViewById(R.id.recycler_in_add_meal_day);
     }
 
 }
