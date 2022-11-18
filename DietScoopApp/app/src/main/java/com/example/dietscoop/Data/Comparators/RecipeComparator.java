@@ -1,6 +1,10 @@
 package com.example.dietscoop.Data.Comparators;
 
+import android.util.Log;
+
 import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.timeUnit;
+
 import java.lang.Integer;
 import java.util.Comparator;
 
@@ -22,7 +26,7 @@ public class RecipeComparator {
     public static class byRecipePrepTime implements  Comparator<Recipe> {
         @Override
         public int compare(Recipe t1, Recipe t2) {
-            return Integer.compare(t1.getPrepTime(), t2.getPrepTime());
+            return Integer.compare(t1.getInMinutes(), t2.getInMinutes());
         }
     }
 
@@ -43,6 +47,7 @@ public class RecipeComparator {
         @Override
         public int compare(Recipe t1, Recipe t2) {
             return t1.getCategoryName().compareTo(t2.getCategoryName());
+
         }
     }
 
