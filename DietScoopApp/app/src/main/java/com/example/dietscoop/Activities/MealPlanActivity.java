@@ -24,6 +24,14 @@ import java.util.ArrayList;
  * 2. Needs a means to generate fragments.
  * 3. Need to store everything back in this activity and send any updates to the firestore database.
  * 4. Need to add the event for the floating button to query the user to add a new mealday.
+ *
+ * Workflow:
+ *
+ *  1. Query Database to check if mealplan already exists.
+ *  2. If exists -> fetch it and update the days that have passed. (Delete them)
+ *  3. If not exists -> query the user to create a new mealplan.
+ *  4. User can select the first date 
+ *
  */
 public class MealPlanActivity extends AppCompatActivity {
 
