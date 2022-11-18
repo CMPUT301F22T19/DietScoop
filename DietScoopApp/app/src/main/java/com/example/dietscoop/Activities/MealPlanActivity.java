@@ -67,7 +67,9 @@ public class MealPlanActivity extends AppCompatActivity {
         //Handling Button: *
         addMealDayButton = (FloatingActionButton) findViewById(R.id.add_mealday_button);
 
-        //Click event handles the creation of a new DialogFragment:
+        /**
+         * This onclick method will handle the fragment-chain for adding mealdays.
+         */
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
