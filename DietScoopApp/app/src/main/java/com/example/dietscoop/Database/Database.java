@@ -1,5 +1,6 @@
 package com.example.dietscoop.Database;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
@@ -9,6 +10,8 @@ import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.DocumentChange;
@@ -38,12 +41,24 @@ class Database implements Serializable {
      * Constructor for the Database class.
      */
     public Database() {
+
+        String user = getUserEmail();
+
         db = FirebaseFirestore.getInstance();
-        ingredientStorage = db.collection("IngredientStorage");
-        recipeStorage = db.collection("Recipes");
-        ingredientsInRecipes = db.collection("IngredientsInRecipes");
+        ingredientStorage = db.collection("Users").document(user).collection("IngredientsStorage");
+        recipeStorage = db.collection("Users").document(user).collection("Recipes");
+        ingredientsInRecipes = db.collection("Users").document(user).collection("IngredientsInRecipes");
     }
 
+    private String getUserEmail() throws RuntimeException {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            throw new RuntimeException("NO USER SIGNED IN TO DATABASE");
+        }
+
+        return user.getEmail();
+    }
 
 
     /*************************** INGREDIENT METHODS ******************************/
