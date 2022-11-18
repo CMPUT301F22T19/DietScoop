@@ -49,6 +49,7 @@ public class MealPlanActivity extends AppCompatActivity {
 
         //Handling RecyclerView: *
         mealDayRecycler = (RecyclerView) findViewById(R.id.recycler_for_meal_plans);
+        mealDayRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         //Instancing our sample day:
         LocalDate now = LocalDate.now();
