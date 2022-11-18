@@ -1,5 +1,6 @@
 package com.example.dietscoop.Fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -31,7 +32,8 @@ public class CreateMealDayFragment extends DialogFragment {
     EditText enterDateText;
     FloatingActionButton addMeal;
     RecyclerView mealRecycler;
-    DatePicker mealDayDate;
+    DatePickerDialog datePicker;
+    LocalDate mealDayDate;
 
     //Containers:
     MealDay currentMealDay;
@@ -53,8 +55,19 @@ public class CreateMealDayFragment extends DialogFragment {
         enterDateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar cldr = new Calendar() {
-                }
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                //Instancing the dialog view:
+                datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        setMealDayDate(day, month, year);
+                        enterDateText.setText(mealDayDate.toString());
+                    }
+                }, year, month, day);
+                datePicker.show();
             }
         });
 
@@ -74,6 +87,10 @@ public class CreateMealDayFragment extends DialogFragment {
                 });
 
         return builder.create();
+    }
+
+    public void setMealDayDate(int day, int month, int year) {
+        this.mealDayDate = LocalDate.of(year, month, day);
     }
 
     public void initializeViews(View view) {
