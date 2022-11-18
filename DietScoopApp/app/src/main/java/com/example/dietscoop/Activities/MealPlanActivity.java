@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
 import com.example.dietscoop.Data.Meal.MealDay;
+import com.example.dietscoop.Fragments.CreateMealDayFragment;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -73,7 +75,8 @@ public class MealPlanActivity extends AppCompatActivity {
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                DialogFragment addMealDayFragment = new CreateMealDayFragment();
+                addMealDayFragment.show(getSupportFragmentManager(), "Add Meal Day");
             }
         });
 
