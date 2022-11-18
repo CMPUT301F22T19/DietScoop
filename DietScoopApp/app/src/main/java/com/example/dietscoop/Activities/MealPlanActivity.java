@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,7 +71,7 @@ public class MealPlanActivity extends AppCompatActivity {
         addMealDayButton = (FloatingActionButton) findViewById(R.id.add_mealday_button);
 
         /**
-         * This onclick method will handle the fragment-chain for adding mealdays.
+         * This onclick method will handle the dialog fragment-chain for adding mealdays.
          */
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override

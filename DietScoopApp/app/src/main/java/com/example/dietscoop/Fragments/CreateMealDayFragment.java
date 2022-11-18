@@ -43,6 +43,9 @@ public class CreateMealDayFragment extends DialogFragment {
         //Initializing the main container for this activity:
         currentMealDay = new MealDay(LocalDate.now()); //Temporary placeholder date.
 
+        //Initializing Views:
+
+
         //Inflating the fragment:
         builder.setView(inflater.inflate(R.layout.add_meal_day_fragment, null))
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
