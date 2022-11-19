@@ -1,6 +1,7 @@
 package com.example.dietscoop.Data.Meal;
 
 
+import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Recipe.Recipe;
 
 import java.time.LocalDate;
@@ -14,14 +15,15 @@ import java.util.ArrayList;
  */
 public class MealDay {
 
-//    ArrayList<Meal> mealsInDay; TODO: Uncomment this if going for the meal in mealday schema.
+//    TODO: Uncomment this if going for the meal in mealday schema.
+    ArrayList<Meal> mealsInDay;
     LocalDate date;
-    ArrayList<Recipe> recipeMeals;
-    ArrayList<>
+    ArrayList<FoodItem> foodItems;
 
     //Constructors: TODO: Incorporate more constructors for this class:
     public MealDay(LocalDate date) {
         mealsInDay = new ArrayList<>();
+        foodItems = new ArrayList<>();
         this.date = date;
     }
 
@@ -54,6 +56,10 @@ public class MealDay {
      */
     public void deleteMeal(int i) {
         this.mealsInDay.remove(i);
+    }
+
+    public ArrayList<FoodItem> getFoodItems() {
+        return this.foodItems;
     }
 
     public LocalDate getDate() {
