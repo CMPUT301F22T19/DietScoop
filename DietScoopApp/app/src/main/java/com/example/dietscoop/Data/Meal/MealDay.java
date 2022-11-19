@@ -50,12 +50,17 @@ public class MealDay {
         this.mealsInDay.add(meal);
     }
 
+
     /**
      * Removes a meal from the MealDay.
      * @param i index of meal to remove.
      */
     public void deleteMeal(int i) {
         this.mealsInDay.remove(i);
+    }
+
+    public void addFoodItem(FoodItem foodItem) {
+        this.foodItems.add(foodItem);
     }
 
     public ArrayList<FoodItem> getFoodItems() {
