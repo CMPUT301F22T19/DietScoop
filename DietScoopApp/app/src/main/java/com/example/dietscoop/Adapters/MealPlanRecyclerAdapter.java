@@ -28,13 +28,15 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
 
         private final TextView mealDayDate;
         private final Button modifyMealDay;
+        private final Button deleteMealDay;
 
         public DayHolder(View view) {
             super(view);
 
             //View retrieval for each individual item in Recycler View:
             mealDayDate = (TextView) view.findViewById(R.id.mealplan_for_date);
-            modifyMealDay = (Button) view.findViewById(R.id.modify_mealplan_for_date_button);
+            modifyMealDay = (Button) view.findViewById(R.id.view_mealplan_for_date_button);
+            deleteMealDay = (Button) view.findViewById(R.id.delete_mealplan_for_date_button);
 
             //TODO: 1. Set Up OnClickListener for the modify button.
         }

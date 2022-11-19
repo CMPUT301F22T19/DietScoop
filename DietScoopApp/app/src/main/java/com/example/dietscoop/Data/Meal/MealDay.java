@@ -1,6 +1,8 @@
 package com.example.dietscoop.Data.Meal;
 
 
+import com.example.dietscoop.Data.Recipe.Recipe;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -12,8 +14,10 @@ import java.util.ArrayList;
  */
 public class MealDay {
 
-    ArrayList<Meal> mealsInDay;
+//    ArrayList<Meal> mealsInDay; TODO: Uncomment this if going for the meal in mealday schema.
     LocalDate date;
+    ArrayList<Recipe> recipeMeals;
+    ArrayList<>
 
     //Constructors: TODO: Incorporate more constructors for this class:
     public MealDay(LocalDate date) {

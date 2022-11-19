@@ -33,7 +33,6 @@ import java.util.ArrayList;
  *  1. Query Database to check if mealplan already exists.
  *  2. If exists -> fetch it and update the days that have passed. (Delete them)
  *  3. If not exists -> query the user to create a new mealplan.
- *  4. User can select the first date 
  *
  */
 public class MealPlanActivity extends AppCompatActivity {
@@ -48,11 +47,11 @@ public class MealPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_plan);
 
-        //TESTING!!!!:
-
         //Handling RecyclerView: *
         mealDayRecycler = (RecyclerView) findViewById(R.id.recycler_for_meal_plans);
         mealDayRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        //TESTING!!!!:******************************************************************
 
         //Instancing our sample day:
         LocalDate now = LocalDate.now();
@@ -61,6 +60,8 @@ public class MealPlanActivity extends AppCompatActivity {
         mealDays = new ArrayList<>();
 
         mealDays.add(testDay);
+
+        //TESTING!!!!:******************************************************************
 
         //Testing our adapter: TODO: Keep most of the following lines as they work.
         mealPlanAdapter = new MealPlanRecyclerAdapter(this, mealDays);
