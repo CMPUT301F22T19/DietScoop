@@ -2,22 +2,11 @@ package com.example.dietscoop.Activities;
 
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
-import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Fragments.AddMealDayFragment;
-import com.example.dietscoop.Fragments.CreateMealDayFragment;
 import com.example.dietscoop.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * This activity will handle the MealPlanner and will go through instantiating a new
@@ -42,7 +31,7 @@ public class MealPlanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meal_plan);
+        setContentView(R.layout.meal_plan_activity);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

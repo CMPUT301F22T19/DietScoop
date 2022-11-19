@@ -25,7 +25,7 @@ public class AddMealDayFragment extends Fragment {
     ArrayList<MealDay> mealDays;
 
     public AddMealDayFragment() {
-        super(R.layout.activity_meal_plan);
+        super(R.layout.meal_plan_fragment);
     }
 
     @Override
