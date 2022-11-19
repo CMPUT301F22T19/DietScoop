@@ -22,14 +22,14 @@ public class Recipe extends FoodItem implements Serializable {
     private ArrayList<String> ingredientRefs;
 
     public int getInMinutes() {
-        return inMinutes;
+
+        if (this.getPrepUnitTime().equals(timeUnit.hr)) {
+            return prepTime * 60;
+        } else if (this.getPrepUnitTime().equals(timeUnit.min)) {
+            return prepTime;
+        } else {return 0;}
     }
 
-    public void setInMinutes(int inMinutes) {
-        this.inMinutes = inMinutes;
-    }
-
-    private int inMinutes;
     /**
      * Constructor for Recipe object
      * @param description Description of recipe
@@ -44,11 +44,7 @@ public class Recipe extends FoodItem implements Serializable {
                   recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList,
                   String instructions) {
         this.description = description;
-        if (prepUnitTime.equals(timeUnit.hr)) {
-            this.inMinutes = prepTime * 60;
-        } else if (prepUnitTime.equals(timeUnit.min)) {
-            this.inMinutes = prepTime;
-        }
+
         // prepTime is only for display. inMinutes is used to sort recipes with regards to prep time
         this.prepTime = prepTime;
         this.servings = servings;
@@ -72,11 +68,6 @@ public class Recipe extends FoodItem implements Serializable {
      * @param prepTime new prepTime of recipe
      */
     public void setPrepTime(int prepTime) {
-        if (this.getPrepUnitTime().equals(timeUnit.hr)) {
-            setInMinutes(prepTime * 60);
-        } else if (this.getPrepUnitTime().equals(timeUnit.min)) {
-            setInMinutes(prepTime);
-        }
         this.prepTime = prepTime;
     }
 
