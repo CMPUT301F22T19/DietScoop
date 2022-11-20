@@ -4,8 +4,13 @@ package com.example.dietscoop.Activities;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
-import com.example.dietscoop.Fragments.AddMealDayFragment;
+import com.example.dietscoop.Data.Meal.MealDay;
+import com.example.dietscoop.Data.Meal.MealPlan;
+import com.example.dietscoop.Database.IngredientStorage;
+import com.example.dietscoop.Database.RecipeStorage;
+import com.example.dietscoop.Fragments.MealPlanFragment;
 import com.example.dietscoop.R;
 
 /**
@@ -26,20 +31,52 @@ import com.example.dietscoop.R;
  */
 public class MealPlanActivity extends AppCompatActivity {
 
-
+    //Variables:
+    FragmentManager mealPlanManager;
+    IngredientStorage ingredients;
+    RecipeStorage recipes;
+    MealPlan mealPlan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_activity);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.full_fragment_container_view, AddMealDayFragment.class, null)
-                    .commit();
-        }
+        mealPlanManager = getSupportFragmentManager();
+        recipes = new RecipeStorage();
+        ingredients = new IngredientStorage();
 
+        //Changing Fragment to MealPlan:
+        changeToMealPlan(null);
+    }
+
+    //Calls and Receipts from Fragments:
+
+    //Fragment View Switches:
+
+    /**
+     * TODO: Need to add a bundle that sends over the mealPlan for this user.
+     */
+    public void changeToMealPlan(Bundle planToSend) {
+        mealPlanManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.full_fragment_container_view, MealPlanFragment.class, null) //TODO: Make it so it sends over the current mealPlan.
+                .commit();
+    }
+
+    public void changeToAddDay() {
+//        mealPlanManager.beginTransaction()
+//                .replace(R.id.full_fragment_container_view, ) Need to finish this implementation afterwards.
+    }
+
+    //TODO: Add a means to retrieve ingredients and recipe change to our mealdays.
+
+    /**
+     * Will add the specified meal day to our mealPlan.
+     * @param mealDay MealDay
+     */
+    public void mealDayAdd(MealDay mealDay) {
+        this.mealPlan.addMealDay(mealDay);
     }
 
 }

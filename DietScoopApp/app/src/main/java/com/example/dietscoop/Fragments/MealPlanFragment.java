@@ -9,28 +9,33 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
 import com.example.dietscoop.Data.Meal.MealDay;
+import com.example.dietscoop.Data.Meal.MealPlan;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class AddMealDayFragment extends Fragment {
+public class MealPlanFragment extends Fragment {
 
     FloatingActionButton addMealDayButton;
     RecyclerView mealDayRecycler;
     MealPlanRecyclerAdapter mealPlanAdapter;
     ArrayList<MealDay> mealDays;
+    Bundle message;
+    MealPlan myMealPlan;
 
-    public AddMealDayFragment() {
+    public MealPlanFragment() {
         super(R.layout.meal_plan_fragment);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         //Handling RecyclerView: *
+        message = savedInstanceState;
         mealDayRecycler = (RecyclerView) view.findViewById(R.id.recycler_for_meal_plans);
         mealDayRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -55,15 +60,25 @@ public class AddMealDayFragment extends Fragment {
         addMealDayButton = (FloatingActionButton) view.findViewById(R.id.add_mealday_button);
 
         /**
-         * This onclick method will handle the dialog fragment-chain for adding mealdays.
+         * Method for adding a new MealDay.
          */
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment addMealDayFragment = new CreateMealDayFragment();
-                addMealDayFragment.show(getActivity().getSupportFragmentManager(), "Add Meal Day");
+                ((MealPlanActivity) getActivity()).changeToAddDay();
             }
         });
+
+        /**
+         * This onclick method will handle the dialog fragment-chain for adding mealdays.
+         */
+//        addMealDayButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                DialogFragment addMealDayFragment = new CreateMealDayFragment();
+//                addMealDayFragment.show(getActivity().getSupportFragmentManager(), "Add Meal Day");
+//            }
+//        });
 
     }
 
