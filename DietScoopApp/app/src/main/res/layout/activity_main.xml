@@ -22,7 +22,8 @@
         android:text="go to IngredientListActivity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="266dp" />
+        tools:layout_editor_absoluteY="266dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/buttonRecipe"

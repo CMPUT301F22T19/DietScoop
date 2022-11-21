@@ -23,15 +23,28 @@
 
 <!--        Adding a spacer view:?-->
         <View
-            android:layout_width="140dp"
-            android:layout_height="match_parent"/>
+            android:layout_width="61dp"
+            android:layout_height="match_parent" />
 <!--        Adding a spacer view:-->
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/modify_mealplan_for_date_button"
-            android:text="Modify" />
+            android:id="@+id/view_mealplan_for_date_button"
+            android:text="View" />
+
+
+        <!--        Adding a spacer view:?-->
+        <View
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
+        <!--        Adding a spacer view:-->
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/delete_mealplan_for_date_button"
+            android:text="Delete" />
 
     </LinearLayout>
 

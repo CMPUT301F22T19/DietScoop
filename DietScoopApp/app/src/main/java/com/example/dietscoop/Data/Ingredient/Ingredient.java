@@ -87,6 +87,9 @@ import java.io.Serializable;
             return category.name();
         }
 
-
+        @Override
+        public String getType() {
+            return "Ingredient";
+        }
 
     }

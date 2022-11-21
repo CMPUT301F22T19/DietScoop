@@ -36,4 +36,11 @@ public abstract class FoodItem implements Serializable {
      * @param id Value to be set.
      */
     public void setId(String id){this.id=id;}
+
+    /**
+     * Queries for the type of FoodItem this is.
+     * @return String with the type of class this is <Recipe or Ingredient>.
+     */
+    public abstract String getType();
+
 }

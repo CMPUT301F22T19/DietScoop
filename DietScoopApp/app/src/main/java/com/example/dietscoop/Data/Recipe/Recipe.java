@@ -186,5 +186,9 @@ public class Recipe extends FoodItem implements Serializable {
 
     public void setIngredientRefs(ArrayList<String> refs) {this.ingredientRefs = refs;}
 
+    @Override
+    public String getType() {
+        return "Recipe";
+    }
 
 }
