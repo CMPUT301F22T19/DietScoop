@@ -1,10 +1,12 @@
 package com.example.dietscoop.Activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dietscoop.R;
@@ -14,7 +16,7 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
 
     BottomNavigationView navBar;
 
-    protected void initializeNavBar() {
+    protected void initNavBar() {
         navBar = findViewById(R.id.bottomNavBar);
         navBar.setOnItemSelectedListener(this);
     }

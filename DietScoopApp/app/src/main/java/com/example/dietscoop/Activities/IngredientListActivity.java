@@ -26,17 +26,12 @@ import java.util.ArrayList;
 /**
  * Class tying to Ingredient list. Associated with the activity_ingredient_list.xml layout.
  */
-public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
+public class IngredientListActivity extends NavigationActivity implements IngredientAddFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
     RecyclerView ingredientListView;
-
-    Button ingredientButton;
-    Button recipesButton;
-    Button mealsButton;
-    Button shoppingButton;
 
     TextView nameSort, categorySort, bestBeforeSort, locationSort;
     public enum sortSelection {
@@ -51,6 +46,8 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_list);
 
+        initNavBar();
+        navBar.setSelectedItemId(R.id.ingredients);
 
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientListView.setHasFixedSize(false);
@@ -63,22 +60,14 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
         foodStorage.getIngredientStorageFromDatabase();
 
-        ingredientButton = findViewById(R.id.ingr_nav);
-        recipesButton = findViewById(R.id.recipes_nav);
-        mealsButton = findViewById(R.id.meals_nav);
-        shoppingButton = findViewById(R.id.shopping_nav);
-
         nameSort = findViewById(R.id.name_sort);
         categorySort = findViewById(R.id.category_sort);
         bestBeforeSort = findViewById(R.id.bestbefore_sort);
         locationSort = findViewById(R.id.location_sort);
 
-        ingredientButton.setBackgroundColor(Color.rgb(252, 186, 3));
-
         final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
         addIngredientButton.setOnClickListener((v) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
 
-        recipesButton.setOnClickListener(unused -> switchToRecipes());
         ingredientStorageAdapter.setItemClickListener(this);
 
         nameSort.setOnClickListener(new View.OnClickListener() {
@@ -108,19 +97,6 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
                 onSortSelection(sortSelection.LOCATION);
             }
         });
-
-    }
-
-    /**
-     * handler for switching to Recipe activity.
-     */
-    private void switchToRecipes() {
-        // TODO: add bundled info
-        Intent switchActivityIntent = new Intent(this, RecipeListActivity.class);
-        startActivity(switchActivityIntent);
-        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
-
-        addIngredientButton.setOnClickListener((e) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
 
     }
 

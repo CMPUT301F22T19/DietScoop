@@ -28,15 +28,11 @@ import java.util.ArrayList;
  * Class associated with the activity_recipe_list.xml file.
  * This class handles the relation of Recipe list to display
  */
-public class RecipeListActivity extends AppCompatActivity implements RecyclerItemClickListener {
+public class RecipeListActivity extends NavigationActivity implements RecyclerItemClickListener {
     RecyclerView recipeListView;
     RecipeStorage recipeStorage;
     RecipeListAdapter recipeListAdapter;
 
-    Button ingredientButton;
-    Button recipesButton;
-    Button mealsButton;
-    Button shoppingButton;
     Button sortButton;
     FloatingActionButton addRecipeButton;
 
@@ -52,6 +48,9 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
+        initNavBar();
+        navBar.setSelectedItemId(R.id.recipes);
+
         recipeListView = findViewById(R.id.recipe_list);
         recipeListView.setHasFixedSize(false);
         recipeListView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,10 +63,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         recipeStorage.setupRecipeSnapshotListener(recipeListAdapter);
         recipeStorage.getRecipeStorageFromDatabase();
 
-        ingredientButton = findViewById(R.id.ingr_nav);
-        recipesButton = findViewById(R.id.recipes_nav);
-        mealsButton = findViewById(R.id.meals_nav);
-        shoppingButton = findViewById(R.id.shopping_nav);
         addRecipeButton = findViewById(R.id.add_new_recipe_button);
 
         titleSort = findViewById(R.id.title_sort);
@@ -76,10 +71,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         categorySort = findViewById(R.id.category_sort);
 
         addRecipeButton.setOnClickListener(view -> addNewRecipe());
-
-        recipesButton.setBackgroundColor(Color.rgb(252, 186, 3));
-
-        ingredientButton.setOnClickListener(view -> switchToIngredients());
 
         recipeListAdapter.setItemClickListener(this);
 
@@ -118,18 +109,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         Intent intent = new Intent(this, ViewRecipeActivity.class);
         intent.putExtra("ADDING", true);
         startActivity(intent);
-    }
-
-
-    // TODO: add bundled info
-
-    /**
-     * Method to handle navigation to Ingredients List Activity
-     */
-    private void switchToIngredients() {
-        // TODO: add bundled info
-        Intent switchActivityIntent = new Intent(this, IngredientListActivity.class);
-        startActivity(switchActivityIntent);
     }
 
     @Override
