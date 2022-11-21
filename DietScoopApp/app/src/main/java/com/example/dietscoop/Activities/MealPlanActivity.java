@@ -6,13 +6,21 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.dietscoop.Data.Ingredient.Ingredient;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.Location;
+import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Meal.MealPlan;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.Fragments.MealDayFragment;
 import com.example.dietscoop.Fragments.MealPlanFragment;
 import com.example.dietscoop.R;
+
+import java.util.ArrayList;
 
 /**
  * This activity will handle the MealPlanner and will go through instantiating a new
@@ -23,7 +31,7 @@ import com.example.dietscoop.R;
  * 3. Need to store everything back in this activity and send any updates to the firestore database.
  * 4. Need to add the event for the floating button to query the user to add a new mealday.
  *
- * Workflow:
+ * Workflow for checking existence:
  *
  *  1. Query Database to check if mealplan already exists.
  *  2. If exists -> fetch it and update the days that have passed. (Delete them)
@@ -37,6 +45,8 @@ public class MealPlanActivity extends AppCompatActivity {
     IngredientStorage ingredients;
     RecipeStorage recipes;
     MealPlan mealPlan;
+    ArrayList<Recipe> recipesList;
+    ArrayList<IngredientInStorage> ingredientsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +57,35 @@ public class MealPlanActivity extends AppCompatActivity {
         recipes = new RecipeStorage();
         ingredients = new IngredientStorage();
 
+        //Fetching foodItems information: TODO: Uncomment these when the code works!!!
+//        recipesList = recipes.getRecipeStorage();
+//        ingredientsList = ingredients.getIngredientStorage();
+
+        //TESTING!!!!************************************************************************************
+        ingredientsList = new ArrayList<>();
+        ingredientsList.add(new IngredientInStorage("chicken", "kg", 4
+        , 2024, 11, 25, Location.freezer, IngredientCategory.fruit));
+        ingredientsList.add(new IngredientInStorage("billy", "kg", 4
+                , 2001, 1, 15, Location.freezer, IngredientCategory.vegetable));
+        //TESTING!!!!************************************************************************************
+
         //Changing Fragment to MealPlan:
         changeToMealPlan(null);
     }
 
     //Calls and Receipts from Fragments:
+    public ArrayList<Recipe> getRecipesList() {
+        return this.recipesList;
+    }
+
+    public ArrayList<IngredientInStorage> getIngredientsList() {
+        return this.ingredientsList;
+    }
+
+    //TODO: This function can be connected to the fragment view that handles the mealplan after the database works.
+    public MealPlan getMealPlan() {
+        return this.mealPlan;
+    }
 
     //Fragment View Switches:
 

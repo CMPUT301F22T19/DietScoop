@@ -16,18 +16,23 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.MealPlanActivity;
+import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Meal.MealDay;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * Generic Fragment that handles the events
  * to do with: Viewing, Adding and editing a MealDay.
  */
-public class MealDayFragment  extends Fragment {
+public class MealDayFragment  extends Fragment{
 
     View container;
     EditText enterDateText;
@@ -36,6 +41,8 @@ public class MealDayFragment  extends Fragment {
     LocalDate mealDayDate;
     Button addRecipeButton;
     Button addIngredientButton;
+    ArrayList<Recipe> recipesForAdding;
+    ArrayList<IngredientInStorage> ingredientsForAdding;
 
     //Containers:
     MealDay currentMealDay;
@@ -55,8 +62,10 @@ public class MealDayFragment  extends Fragment {
         //Binding Views:
         initializeViews();
 
-//        Listeners:
+        recipesForAdding = ((MealPlanActivity)getActivity()).getRecipesList();
+        ingredientsForAdding = ((MealPlanActivity)getActivity()).getIngredientsList();
 
+        //Listeners:
         /**
          * Queries user to specify date for current mealday.
          */
@@ -85,7 +94,24 @@ public class MealDayFragment  extends Fragment {
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Need to prompt user for a new existing recipe:
+                // Create an instance of the dialog fragment and show it
+                ArrayList<IngredientInStorage> test = ((MealPlanActivity)getActivity()).getIngredientsList();
+                AddFoodItemFragment dialog = new AddFoodItemFragment(ingredientsForAdding);
+                dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
+            }
+        });
 
+        /**
+         * Queries the user to select a new recipe into the current mealday.
+         */
+        addRecipeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Need to prompt user for a new existing recipe:
+                // Create an instance of the dialog fragment and show it
+                AddFoodItemFragment dialog = new AddFoodItemFragment(((MealPlanActivity)getActivity()).getRecipesList());
+                dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
             }
         });
 
@@ -99,7 +125,7 @@ public class MealDayFragment  extends Fragment {
         //Initializing Views:
         enterDateText = (EditText) container.findViewById(R.id.meal_day_date_enter);
         mealRecycler = (RecyclerView) container.findViewById(R.id.recycler_in_add_meal_day);
-        addRecipeButton = (Button) container.findViewById(R.id.add_ingredient_meal);
+        addRecipeButton = (Button) container.findViewById(R.id.add_recipe_meal);
         addIngredientButton = (Button) container.findViewById(R.id.add_ingredient_meal);
     }
 
