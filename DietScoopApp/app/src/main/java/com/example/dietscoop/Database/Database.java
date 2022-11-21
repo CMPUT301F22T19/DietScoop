@@ -34,6 +34,7 @@ class Database implements Serializable {
     private CollectionReference ingredientStorage;
     private CollectionReference recipeStorage;
     private CollectionReference ingredientsInRecipes;
+    private CollectionReference mealPlan;
 
     /**
      * Constructor for the Database class.
@@ -43,6 +44,7 @@ class Database implements Serializable {
         ingredientStorage = db.collection("IngredientStorage");
         recipeStorage = db.collection("Recipes");
         ingredientsInRecipes = db.collection("IngredientsInRecipes");
+        mealPlan = db.collection("MealPlan");
     }
 
 
@@ -213,7 +215,16 @@ class Database implements Serializable {
     /*************************** MEAL PLAN METHODS ******************************/
 
     public void addMealDayToMealPlan(MealDay mealday) {
-        
+        Map<String, Object> mealdayDetails = new HashMap<>();
+        LocalDate date = mealday.getDate();
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+        mealdayDetails.put("year", year);
+        mealdayDetails.put("month", month);
+        mealdayDetails.put("day", day);
+        mealdayDetails.put("foodItems",mealday.getFoodItemIDs());
+        mealPlan.document(mealday.getId()).set(mealdayDetails);
     }
 
 }

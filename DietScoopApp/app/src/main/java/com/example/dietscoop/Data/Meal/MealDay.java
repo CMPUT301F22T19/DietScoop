@@ -4,6 +4,7 @@ package com.example.dietscoop.Data.Meal;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Recipe.Recipe;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -19,11 +20,14 @@ public class MealDay {
     ArrayList<Meal> mealsInDay;
     LocalDate date;
     ArrayList<FoodItem> foodItems;
+    private ArrayList<String> foodItemIDs;
+    private String id;
 
     //Constructors: TODO: Incorporate more constructors for this class:
     public MealDay(LocalDate date) {
         mealsInDay = new ArrayList<>();
         foodItems = new ArrayList<>();
+        foodItemIDs = new ArrayList<>();
         this.date = date;
     }
 
@@ -60,15 +64,30 @@ public class MealDay {
     }
 
     public void addFoodItem(FoodItem foodItem) {
+        this.foodItemIDs.add(foodItem.getId());
         this.foodItems.add(foodItem);
+    }
+
+    public void deleteFoodItem(FoodItem foodItem) {
+        this.foodItemIDs.remove(foodItem.getId());
+        this.foodItems.remove(foodItem);
     }
 
     public ArrayList<FoodItem> getFoodItems() {
         return this.foodItems;
     }
 
+    public ArrayList<String> getFoodItemIDs() {return this.foodItemIDs;}
+
     public LocalDate getDate() {
         return this.date;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return this.id;
+    }
 }

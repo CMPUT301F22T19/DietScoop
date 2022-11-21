@@ -23,12 +23,10 @@ public class MealPlan implements Serializable {
     LocalDate to;
 
     //Constructors:
-    public MealPlan(LocalDate from, LocalDate to) {
+    public MealPlan() {
         mealDays = new ArrayList<>();
         recipes = new ArrayList<>();
         ingredients = new ArrayList<>();
-        this.from = from;
-        this.to = to;
     }
 
     //Getters and Setters:
