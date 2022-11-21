@@ -1,21 +1,24 @@
 package com.example.dietscoop.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends NavigationActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        authorize();
+
         setContentView(R.layout.activity_main);
+        initializeNavBar();
+    }
+
+    private void authorize() {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -24,25 +27,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("PROGRESS", "Starting Login");
             startActivity(intent);
         }
+
     }
 
-
-    /**
-     * Handler for navigating to ingredient list activity
-     * @param view current view
-     */
-    public void goToIngredientList(View view) {
-
-        Intent intent = new Intent(this, IngredientListActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Handler for navigating to recipe list activity
-     * @param view current view
-     */
-    public void goToRecipeList(View view) {
-        Intent intent = new Intent(this, RecipeListActivity.class);
-        startActivity(intent);
-    }
 }
