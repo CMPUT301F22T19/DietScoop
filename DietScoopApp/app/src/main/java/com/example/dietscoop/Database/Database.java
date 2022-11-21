@@ -6,6 +6,7 @@ import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -208,6 +209,13 @@ class Database implements Serializable {
     public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
         ingredientsInRecipes.document(ingredient.getId()).set(ingredient);
     }
+
+    /*************************** MEAL PLAN METHODS ******************************/
+
+    public void addMealDayToMealPlan(MealDay mealday) {
+        
+    }
+
 }
 
 
