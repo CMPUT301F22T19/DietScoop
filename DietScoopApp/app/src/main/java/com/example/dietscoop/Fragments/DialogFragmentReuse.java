@@ -15,19 +15,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * DialogFragment that handles the user entry for a new mealday.
+ *
+ * Can reuse this fragment to also handle the viewing and editting of individual days. (meal days)
  */
-public class CreateMealDayFragment extends DialogFragment {
+public class DialogFragmentReuse extends DialogFragment {
 
     EditText enterDateText;
     FloatingActionButton addMeal;
@@ -45,7 +45,7 @@ public class CreateMealDayFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View fragmentView = inflater.inflate(R.layout.add_meal_day_fragment, null);
+        View fragmentView = inflater.inflate(R.layout.meal_day_fragment, null);
 
         initializeViews(fragmentView);
 
@@ -71,7 +71,7 @@ public class CreateMealDayFragment extends DialogFragment {
             }
         });
 
-        //Inflating the fragment:
+        //Inflating the fragment: ***
         builder.setView(fragmentView)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override

@@ -10,6 +10,7 @@ import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Meal.MealPlan;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Database.RecipeStorage;
+import com.example.dietscoop.Fragments.MealDayFragment;
 import com.example.dietscoop.Fragments.MealPlanFragment;
 import com.example.dietscoop.R;
 
@@ -65,8 +66,9 @@ public class MealPlanActivity extends AppCompatActivity {
     }
 
     public void changeToAddDay() {
-//        mealPlanManager.beginTransaction()
-//                .replace(R.id.full_fragment_container_view, ) Need to finish this implementation afterwards.
+        mealPlanManager.beginTransaction()
+                .replace(R.id.full_fragment_container_view, MealDayFragment.class, null)
+                .commit();
     }
 
     //TODO: Add a means to retrieve ingredients and recipe change to our mealdays.
