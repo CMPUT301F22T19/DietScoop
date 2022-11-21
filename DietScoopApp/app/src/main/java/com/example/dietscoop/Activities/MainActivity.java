@@ -14,10 +14,7 @@ public class MainActivity extends NavigationActivity {
         super.onCreate(savedInstanceState);
         authorize();
 
-        setContentView(R.layout.activity_main
-
-        mo
-        po[  ]);
+        setContentView(R.layout.activity_main);
         initNavBar();
     }
 
