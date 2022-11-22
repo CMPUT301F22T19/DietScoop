@@ -28,7 +28,6 @@ import java.util.ArrayList;
  */
 public class IngredientListActivity extends NavigationActivity implements IngredientAddFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
-
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
     RecyclerView ingredientListView;
@@ -47,7 +46,7 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         setContentView(R.layout.activity_ingredient_list);
 
         initNavBar();
-        navBar.setSelectedItemId(R.id.ingredients);
+//        navBar.setSelectedItemId(R.id.ingredients);
 
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientListView.setHasFixedSize(false);
