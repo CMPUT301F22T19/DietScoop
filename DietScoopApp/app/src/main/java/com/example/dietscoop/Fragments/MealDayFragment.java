@@ -44,6 +44,7 @@ public class MealDayFragment  extends Fragment{
     Button addIngredientButton;
     ArrayList<Recipe> recipesForAdding;
     ArrayList<IngredientInStorage> ingredientsForAdding;
+    String currentDescription; //Holds the desc
 
     //Containers:
     MealDay currentMealDay;

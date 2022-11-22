@@ -63,10 +63,10 @@ public class MealPlanActivity extends AppCompatActivity {
 
         //TESTING!!!!************************************************************************************
         ingredientsList = new ArrayList<>();
-        ingredientsList.add(new IngredientInStorage("chicken", "kg", 4
-        , 2024, 11, 25, Location.freezer, IngredientCategory.fruit));
-        ingredientsList.add(new IngredientInStorage("billy", "kg", 4
-                , 2001, 1, 15, Location.freezer, IngredientCategory.vegetable));
+        ingredientsList.add(new IngredientInStorage("chicken", "kg", 4.0
+        , 2024, 11, 25, Location.Freezer, IngredientCategory.Fruit));
+        ingredientsList.add(new IngredientInStorage("billy", "kg", 4.0
+                , 2001, 1, 15, Location.Freezer, IngredientCategory.Vegetable));
         //TESTING!!!!************************************************************************************
 
         //Changing Fragment to MealPlan:

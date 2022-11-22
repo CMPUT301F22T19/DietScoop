@@ -23,7 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".Activities.MealPlanActivity"
-            android:exported="false">
+            android:exported="false"/>
         <activity
             android:name=".Activities.SignUpActivity"
             android:exported="false" />
