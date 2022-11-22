@@ -17,6 +17,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
@@ -32,11 +34,25 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     ArrayList<FoodItem> foodItems;
     EditText quantityInput;
     View dialogView;
-    FoodItem spinnerSelection;
-    int spinnerSelNum;
+
+    //Results from Selection:
+    int spinnerSelectNum;
+    FoodItem editMeal;
+    String currentMealType;
+    Boolean editing;
 
     public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems) {
         this.foodItems = (ArrayList<FoodItem>) foodItems;
+        this.editing = false;
+    }
+
+    public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems, FoodItem editItem) {
+        this.foodItems = (ArrayList<FoodItem>) foodItems;
+        this.editMeal = editItem;
+
+        if (editItem instanceof IngredientInStorage) {
+
+        }
     }
 
     public Dialog onCreateDialog(Bundle savedInstance) {
@@ -62,7 +78,8 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Checking for the item type:
-                        spinnerSelection = foodItems.get(spinnerSelNum);
+                        double scale = Double.parseDouble(quantityInput.getText().toString());
+                        ((MealDayFragment)getParentFragment()).addMeal(spinnerSelectNum, scale);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -96,8 +113,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         //Fetching the current selected description:
-        String foodItemName = (String) adapterView.getItemAtPosition(i);
-        spinnerSelNum = i;
+        spinnerSelectNum = i;
     }
 
     @Override
