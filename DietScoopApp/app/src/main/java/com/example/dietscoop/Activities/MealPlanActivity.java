@@ -57,7 +57,7 @@ public class MealPlanActivity extends AppCompatActivity {
         recipes = new RecipeStorage();
         ingredients = new IngredientStorage();
 
-        //Fetching foodItems information: TODO: Uncomment these when the code works!!!
+        //TODO: Uncomment these when the code works!!!
 //        recipesList = recipes.getRecipeStorage();
 //        ingredientsList = ingredients.getIngredientStorage();
 

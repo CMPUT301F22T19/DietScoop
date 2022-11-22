@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -14,6 +16,7 @@ import android.widget.Spinner;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
@@ -22,13 +25,15 @@ import java.util.Iterator;
 /**
  * This dialog fragment will manage the selection of FoodItems to add to our meal day.
  */
-public class AddFoodItemFragment extends DialogFragment {
+public class AddFoodItemFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
     Spinner foodItemSpinner;
     ArrayList<String> spinnerNames;
     ArrayList<FoodItem> foodItems;
     EditText quantityInput;
     View dialogView;
+    FoodItem spinnerSelection;
+    int spinnerSelNum;
 
     public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems) {
         this.foodItems = (ArrayList<FoodItem>) foodItems;
@@ -49,13 +54,15 @@ public class AddFoodItemFragment extends DialogFragment {
         stringSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         foodItemSpinner.setAdapter(stringSpinnerAdapter);
+        foodItemSpinner.setOnItemSelectedListener(this);
 
         //Inflating the fragment: ***
         builder.setView(dialogView)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO: Implement the acceptance of a meal day.
+                        //Checking for the item type:
+                        spinnerSelection = foodItems.get(spinnerSelNum);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -85,4 +92,16 @@ public class AddFoodItemFragment extends DialogFragment {
         }
     }
 
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        //Fetching the current selected description:
+        String foodItemName = (String) adapterView.getItemAtPosition(i);
+        spinnerSelNum = i;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        //Do nothing.
+    }
 }

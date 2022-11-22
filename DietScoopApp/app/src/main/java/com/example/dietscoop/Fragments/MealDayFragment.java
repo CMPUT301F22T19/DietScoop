@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
@@ -127,6 +128,14 @@ public class MealDayFragment  extends Fragment{
         mealRecycler = (RecyclerView) container.findViewById(R.id.recycler_in_add_meal_day);
         addRecipeButton = (Button) container.findViewById(R.id.add_recipe_meal);
         addIngredientButton = (Button) container.findViewById(R.id.add_ingredient_meal);
+    }
+
+    /**
+     * Adds a FoodItem to our MealDay.
+     * @param ingredient -> FoodItem to add.
+     */
+    public void addMeal(FoodItem ingredient) {
+        currentMealDay.addFoodItem(ingredient);
     }
 
 }
