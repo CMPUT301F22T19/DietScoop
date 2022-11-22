@@ -1,5 +1,6 @@
 package com.example.dietscoop.Activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -35,10 +38,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
     TextView titleSort, prepTimeSort, servingSort, categorySort;
 
-    @Override
-    void onAddClicked() {
-        addNewRecipe();
-    }
+    ActionBar topBar;
 
     public enum sortSelection {
         TITLE,
@@ -53,6 +53,8 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
         initNavigationActivity();
         navBar.setSelectedItemId(R.id.recipes);
+
+        setupActionBar();
 
         recipeListView = findViewById(R.id.recipe_list);
         recipeListView.setHasFixedSize(false);
@@ -119,5 +121,44 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
     public void sortRecipesBy(RecipeListActivity.sortSelection sortBy) {
         recipeStorage.sortBy(sortBy);
         recipeListAdapter.notifyDataSetChanged();
+    }
+
+    private void setupActionBar() {
+
+        topBar = getSupportActionBar();
+        topBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        topBar.setDisplayShowCustomEnabled(true);
+        topBar.setCustomView(R.layout.top_bar_add_layout);
+
+        View topBarView = topBar.getCustomView();
+
+        ImageButton logout = topBarView.findViewById(R.id.logout_button);
+        ImageButton addItem = topBarView.findViewById(R.id.add_button);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddClicked();
+            }
+        });
+    }
+
+    void onAddClicked() {
+        addNewRecipe();
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
     }
 }

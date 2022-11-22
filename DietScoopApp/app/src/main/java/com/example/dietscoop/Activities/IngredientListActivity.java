@@ -1,6 +1,7 @@
 package com.example.dietscoop.Activities;
 
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dietscoop.Database.RecipeStorage;
@@ -20,6 +22,7 @@ import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Adapters.IngredientStorageAdapter;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -34,10 +37,7 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
 
     TextView nameSort, categorySort, bestBeforeSort, locationSort;
 
-    @Override
-    void onAddClicked() {
-        new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
-    }
+    ActionBar topBar;
 
     public enum sortSelection {
         NAME,
@@ -53,6 +53,8 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
 
         initNavigationActivity();
         navBar.setSelectedItemId(R.id.ingredients);
+
+        setupActionBar();
 
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientListView.setHasFixedSize(false);
@@ -128,6 +130,45 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
         IngredientInStorage ingredient = ingredients.get(position);
         new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
+    }
+
+    private void setupActionBar() {
+
+        topBar = getSupportActionBar();
+        topBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        topBar.setDisplayShowCustomEnabled(true);
+        topBar.setCustomView(R.layout.top_bar_add_layout);
+
+        View topBarView = topBar.getCustomView();
+
+        ImageButton logout = topBarView.findViewById(R.id.logout_button);
+        ImageButton addItem = topBarView.findViewById(R.id.add_button);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddClicked();
+            }
+        });
+
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    void onAddClicked() {
+        new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
     }
 
 }
