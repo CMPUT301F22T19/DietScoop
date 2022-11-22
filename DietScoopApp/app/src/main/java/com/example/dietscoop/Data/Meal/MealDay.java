@@ -2,7 +2,9 @@ package com.example.dietscoop.Data.Meal;
 
 
 import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
  *
  * 1. Class handles the fetching, adding and deletion of meals.
  * 2. Deletion of itself?
+ * TODO: Add the removers for each of the following arraylists (Recipes and Ingredients).
  */
 public class MealDay {
 
@@ -20,6 +23,8 @@ public class MealDay {
     ArrayList<Meal> mealsInDay;
     LocalDate date;
     ArrayList<FoodItem> foodItems;
+    ArrayList<IngredientInMealDay> ingredientInMealDays;
+    ArrayList<RecipeInMealDay> recipeInMealDays;
     private ArrayList<String> foodItemIDs;
     private String id;
 
@@ -28,6 +33,8 @@ public class MealDay {
         mealsInDay = new ArrayList<>();
         foodItems = new ArrayList<>();
         foodItemIDs = new ArrayList<>();
+        ingredientInMealDays = new ArrayList<>();
+        recipeInMealDays = new ArrayList<>();
         this.date = date;
     }
 
@@ -63,6 +70,7 @@ public class MealDay {
         this.mealsInDay.remove(i);
     }
 
+    //TODO: Can change this to easily distinguish between igredients and recipes.
     public void addFoodItem(FoodItem foodItem) {
         this.foodItemIDs.add(foodItem.getId());
         this.foodItems.add(foodItem);
@@ -71,6 +79,14 @@ public class MealDay {
     public void deleteFoodItem(FoodItem foodItem) {
         this.foodItemIDs.remove(foodItem.getId());
         this.foodItems.remove(foodItem);
+    }
+
+    public void addIngredientInMealDay(IngredientInMealDay ingredientInMealDay) {
+        this.ingredientInMealDays.add(ingredientInMealDay);
+    }
+
+    public void addRecipeInMealDay(RecipeInMealDay recipeInMealDay) {
+        this.recipeInMealDays.add(recipeInMealDay);
     }
 
     public ArrayList<FoodItem> getFoodItems() {

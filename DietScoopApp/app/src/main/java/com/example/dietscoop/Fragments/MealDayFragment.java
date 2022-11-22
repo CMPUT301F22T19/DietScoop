@@ -22,6 +22,7 @@ import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -44,7 +45,8 @@ public class MealDayFragment  extends Fragment{
     Button addIngredientButton;
     ArrayList<Recipe> recipesForAdding;
     ArrayList<IngredientInStorage> ingredientsForAdding;
-    String currentDescription; //Holds the desc
+    String currentDescription; //Holds the desc.
+    String currentFoodItemType;
 
     //Containers:
     MealDay currentMealDay;
@@ -96,7 +98,7 @@ public class MealDayFragment  extends Fragment{
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Need to prompt user for a new existing recipe:
+                currentFoodItemType = "Ingredient";
                 // Create an instance of the dialog fragment and show it
                 ArrayList<IngredientInStorage> test = ((MealPlanActivity)getActivity()).getIngredientsList();
                 AddFoodItemFragment dialog = new AddFoodItemFragment(ingredientsForAdding);
@@ -110,7 +112,7 @@ public class MealDayFragment  extends Fragment{
         addRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Need to prompt user for a new existing recipe:
+                currentFoodItemType = "Recipe";
                 // Create an instance of the dialog fragment and show it
                 AddFoodItemFragment dialog = new AddFoodItemFragment(((MealPlanActivity)getActivity()).getRecipesList());
                 dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
@@ -133,10 +135,17 @@ public class MealDayFragment  extends Fragment{
 
     /**
      * Adds a FoodItem to our MealDay.
-     * @param ingredient -> FoodItem to add.
      */
-    public void addMeal(FoodItem ingredient) {
-        currentMealDay.addFoodItem(ingredient);
+    public void addMeal(int selectedFoodItem, double scale) {
+        if (currentFoodItemType == "Ingredient") {
+            IngredientInStorage tempHolder = ingredientsForAdding.get(selectedFoodItem);
+            IngredientInMealDay tempMeal = new IngredientInMealDay(tempHolder);
+            currentMealDay.addIngredientInMealDay(tempMeal);
+        } else if (currentFoodItemType == "Recipe") {
+            Recipe tempHolder = recipesForAdding.get(selectedFoodItem);
+            RecipeInMealDay tempMeal = new RecipeInMealDay(tempHolder);
+            currentMealDay.addRecipeInMealDay(tempMeal);
+        }
     }
 
 }
