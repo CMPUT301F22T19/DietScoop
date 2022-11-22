@@ -48,6 +48,7 @@ public class MealDayFragment  extends Fragment{
     String currentDescription; //Holds the desc.
     String currentFoodItemType;
 
+
     //Containers:
     MealDay currentMealDay;
 
@@ -68,6 +69,8 @@ public class MealDayFragment  extends Fragment{
 
         recipesForAdding = ((MealPlanActivity)getActivity()).getRecipesList();
         ingredientsForAdding = ((MealPlanActivity)getActivity()).getIngredientsList();
+
+
 
         //Listeners:
         /**
