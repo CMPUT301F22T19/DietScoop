@@ -2,40 +2,26 @@ package com.example.dietscoop.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends NavigationActivity {
+public class ShoppingListActivity extends NavigationActivity {
 
     ActionBar topBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        authorize();
+        setContentView(R.layout.activity_shopping_list);
 
-        setContentView(R.layout.activity_main);
         initNavigationActivity();
         setUpActionBar();
-    }
-
-    private void authorize() {
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            Log.i("PROGRESS", "Starting Login");
-            startActivity(intent);
-        }
 
     }
 
@@ -64,6 +50,5 @@ public class MainActivity extends NavigationActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
     }
 }
