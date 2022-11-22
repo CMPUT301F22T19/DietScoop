@@ -7,11 +7,16 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ShoppingListActivity extends NavigationActivity {
+    RecyclerView shoppingListView;
+
 
     ActionBar topBar;
 
