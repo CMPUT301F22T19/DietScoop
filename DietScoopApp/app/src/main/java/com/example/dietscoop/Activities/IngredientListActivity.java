@@ -33,6 +33,12 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
     RecyclerView ingredientListView;
 
     TextView nameSort, categorySort, bestBeforeSort, locationSort;
+
+    @Override
+    void onAddClicked() {
+        new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
+    }
+
     public enum sortSelection {
         NAME,
         CATEGORY,
@@ -45,7 +51,7 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_list);
 
-        initNavBar();
+        initNavigationActivity();
         navBar.setSelectedItemId(R.id.ingredients);
 
         ingredientListView = findViewById(R.id.ingredient_list);
@@ -63,9 +69,6 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         categorySort = findViewById(R.id.category_sort);
         bestBeforeSort = findViewById(R.id.bestbefore_sort);
         locationSort = findViewById(R.id.location_sort);
-
-        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
-        addIngredientButton.setOnClickListener((v) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
 
         ingredientStorageAdapter.setItemClickListener(this);
 

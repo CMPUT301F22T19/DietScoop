@@ -13,7 +13,6 @@
         android:layout_height="0dp"
         android:clickable="true"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/add_new_ingredient_button"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
@@ -88,17 +87,6 @@
             android:layout_height="match_parent"
             android:clickable="false" />
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_new_ingredient_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:padding="8dp"
-        app:backgroundTint="@color/purple_200"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavBar"

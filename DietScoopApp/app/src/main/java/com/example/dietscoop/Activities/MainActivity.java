@@ -1,12 +1,9 @@
 package com.example.dietscoop.Activities;
 
-import androidx.appcompat.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 
@@ -21,32 +18,7 @@ public class MainActivity extends NavigationActivity {
         authorize();
 
         setContentView(R.layout.activity_main);
-        initNavBar();
-
-//        https://www.digitalocean.com/community/tutorials/android-custom-action-bar-example-tutorial
-        ActionBar topBar = getSupportActionBar();
-        topBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        topBar.setDisplayShowCustomEnabled(true);
-        topBar.setCustomView(R.layout.top_bar_layout);
-
-        View topBarView = topBar.getCustomView();
-
-        ImageButton logout = topBarView.findViewById(R.id.logout_button);
-        ImageButton addItem = topBarView.findViewById(R.id.add_button);
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("TOP BAR", "LOGOUT");
-            }
-        });
-
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("TOP BAR", "ADDING");
-            }
-        });
+        initNavigationActivity();
 
     }
 
@@ -73,5 +45,11 @@ public class MainActivity extends NavigationActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    void onAddClicked() {
+        // Does nothing on main screen
+        // main screen eventually removed?
     }
 }

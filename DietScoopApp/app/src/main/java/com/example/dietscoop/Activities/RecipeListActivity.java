@@ -33,10 +33,13 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
     RecipeStorage recipeStorage;
     RecipeListAdapter recipeListAdapter;
 
-    Button sortButton;
-    FloatingActionButton addRecipeButton;
-
     TextView titleSort, prepTimeSort, servingSort, categorySort;
+
+    @Override
+    void onAddClicked() {
+        addNewRecipe();
+    }
+
     public enum sortSelection {
         TITLE,
         PREPTIME,
@@ -48,7 +51,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        initNavBar();
+        initNavigationActivity();
         navBar.setSelectedItemId(R.id.recipes);
 
         recipeListView = findViewById(R.id.recipe_list);
@@ -59,47 +62,41 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         recipeListAdapter = new RecipeListAdapter(this, recipeStorage.getRecipeStorage());
         recipeListView.setAdapter(recipeListAdapter);
 
-
         recipeStorage.setupRecipeSnapshotListener(recipeListAdapter);
         recipeStorage.getRecipeStorageFromDatabase();
-
-        addRecipeButton = findViewById(R.id.add_new_recipe_button);
 
         titleSort = findViewById(R.id.title_sort);
         prepTimeSort = findViewById(R.id.preptime_sort);
         servingSort = findViewById(R.id.serving_sort);
         categorySort = findViewById(R.id.category_sort);
 
-        addRecipeButton.setOnClickListener(view -> addNewRecipe());
-
         recipeListAdapter.setItemClickListener(this);
-
 
         titleSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.TITLE);
+                sortRecipesBy(sortSelection.TITLE);
             }
         });
 
         prepTimeSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.PREPTIME);
+                sortRecipesBy(sortSelection.PREPTIME);
             }
         });
 
         servingSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.SERVING);
+                sortRecipesBy(sortSelection.SERVING);
             }
         });
 
         categorySort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.CATEGORY);
+                sortRecipesBy(sortSelection.CATEGORY);
             }
         });
 
@@ -119,7 +116,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         startActivity(intent);
     }
 
-    public void onSortSelection(RecipeListActivity.sortSelection sortBy) {
+    public void sortRecipesBy(RecipeListActivity.sortSelection sortBy) {
         recipeStorage.sortBy(sortBy);
         recipeListAdapter.notifyDataSetChanged();
     }
