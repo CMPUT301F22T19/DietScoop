@@ -54,7 +54,7 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
             Ingredient ingredient = ingredientsList.get(position);
             holder.recipe_ingredient_name_tv.setText(String.valueOf(ingredient.getDescription()));
             holder.recipe_ingredient_amount_tv.setText(Double.toString(ingredient.getAmount()));
-            holder.recipe_ingredient_unit_tv.setText(ingredient.getMeasurementUnit());
+            holder.recipe_ingredient_unit_tv.setText(ingredient.getMeasurementUnit().name());
             holder.recipe_ingredient_category_tv.setText(ingredient.getCategoryName());
 
             Log.i("EXPECTED INGREDIENT NAME", String.valueOf(ingredient.getDescription()));
