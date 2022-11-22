@@ -41,7 +41,8 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
     }
 
     private void goToShoppingList() {
-        // LAUNCH SHOPPING LIST
+        Intent intent = new Intent(this, ShoppingListActivity.class);
+        startActivity(intent);
     }
 
     private void goToMealPlans() {
@@ -54,10 +55,9 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
         item.setChecked(true);
         switch(item.getItemId()) {
             case R.id.shopping:
-//                if (!(this instanceof ShoppingListActivity)) {
-//                    goToShoppingList();
-//                }
-                break;
+                if (!(this instanceof ShoppingListActivity)) {
+                    goToShoppingList();
+                }
             case R.id.meals:
 //                if (!(this instanceof MealPlanActivity)) {
 //                    goToMealPlans();
