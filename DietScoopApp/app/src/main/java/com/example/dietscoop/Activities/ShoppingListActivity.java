@@ -51,4 +51,6 @@ public class ShoppingListActivity extends NavigationActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
 }
