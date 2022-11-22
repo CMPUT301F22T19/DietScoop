@@ -2,9 +2,12 @@ package com.example.dietscoop.Data.Meal;
 
 
 import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -25,14 +28,16 @@ public class MealDay {
     ArrayList<FoodItem> foodItems;
     ArrayList<IngredientInMealDay> ingredientInMealDays;
     ArrayList<RecipeInMealDay> recipeInMealDays;
-    private ArrayList<String> foodItemIDs;
+    private ArrayList<String> ingredientIDs;
+    private ArrayList<String> recipeIDs;
     private String id;
 
     //Constructors: TODO: Incorporate more constructors for this class:
     public MealDay(LocalDate date) {
         mealsInDay = new ArrayList<>();
         foodItems = new ArrayList<>();
-        foodItemIDs = new ArrayList<>();
+        ingredientIDs = new ArrayList<>();
+        recipeIDs = new ArrayList<>();
         ingredientInMealDays = new ArrayList<>();
         recipeInMealDays = new ArrayList<>();
         this.date = date;
@@ -70,18 +75,14 @@ public class MealDay {
         this.mealsInDay.remove(i);
     }
 
-    //TODO: Can change this to easily distinguish between igredients and recipes.
-    public void addFoodItem(FoodItem foodItem) {
-        this.foodItemIDs.add(foodItem.getId());
-        this.foodItems.add(foodItem);
-    }
 
-    public void deleteFoodItem(FoodItem foodItem) {
-        this.foodItemIDs.remove(foodItem.getId());
-        this.foodItems.remove(foodItem);
+    public void deleteIngredientFromMealDay(IngredientInMealDay ingredient) {
+        this.ingredientIDs.remove(ingredient.getId());
+        this.ingredientInMealDays.remove(ingredient);
     }
 
     public void addIngredientInMealDay(IngredientInMealDay ingredientInMealDay) {
+        this.ingredientIDs.add(ingredientInMealDay.getId());
         this.ingredientInMealDays.add(ingredientInMealDay);
     }
 
@@ -89,11 +90,11 @@ public class MealDay {
         this.recipeInMealDays.add(recipeInMealDay);
     }
 
-    public ArrayList<FoodItem> getFoodItems() {
-        return this.foodItems;
+    public ArrayList<String> getRecipeIDs() {
+        return this.recipeIDs;
     }
 
-    public ArrayList<String> getFoodItemIDs() {return this.foodItemIDs;}
+    public ArrayList<String> getIngredientIDs() {return this.ingredientIDs;}
 
     public LocalDate getDate() {
         return this.date;

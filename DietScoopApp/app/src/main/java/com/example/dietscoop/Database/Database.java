@@ -272,7 +272,6 @@ class Database implements Serializable {
         ingredientsInMealDays.document(ingredient.getId()).delete();
     }
 
-    public
 
 
 }
