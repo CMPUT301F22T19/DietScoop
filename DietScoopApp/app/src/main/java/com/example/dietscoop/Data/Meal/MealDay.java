@@ -22,7 +22,7 @@ public class MealDay {
 //    TODO: Uncomment this if going for the meal in mealday schema.
     ArrayList<Meal> mealsInDay;
     LocalDate date;
-    ArrayList<FoodItem> foodItems;
+    ArrayList<FoodItem> foodItems; //This array is adadpted to be used in the RecyclerView for MealDay Editing.
     ArrayList<IngredientInMealDay> ingredientInMealDays;
     ArrayList<RecipeInMealDay> recipeInMealDays;
     private ArrayList<String> foodItemIDs;
@@ -83,10 +83,12 @@ public class MealDay {
 
     public void addIngredientInMealDay(IngredientInMealDay ingredientInMealDay) {
         this.ingredientInMealDays.add(ingredientInMealDay);
+        this.foodItems.add(ingredientInMealDay.getParentIngredient());
     }
 
     public void addRecipeInMealDay(RecipeInMealDay recipeInMealDay) {
         this.recipeInMealDays.add(recipeInMealDay);
+        this.foodItems.add(recipeInMealDay);
     }
 
     public ArrayList<FoodItem> getFoodItems() {

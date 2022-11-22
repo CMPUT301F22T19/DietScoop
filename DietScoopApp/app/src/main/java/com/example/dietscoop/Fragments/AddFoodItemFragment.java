@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
@@ -29,6 +30,9 @@ import java.util.Iterator;
  */
 public class AddFoodItemFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
+    //Testing:
+    Fragment context;
+
     Spinner foodItemSpinner;
     ArrayList<String> spinnerNames;
     ArrayList<FoodItem> foodItems;
@@ -41,7 +45,8 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     String currentMealType;
     Boolean editing;
 
-    public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems) {
+    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems) {
+        this.context = context;
         this.foodItems = (ArrayList<FoodItem>) foodItems;
         this.editing = false;
     }
@@ -79,7 +84,8 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Checking for the item type:
                         double scale = Double.parseDouble(quantityInput.getText().toString());
-                        ((MealDayFragment)getParentFragment()).addMeal(spinnerSelectNum, scale);
+                        MealDayFragment testParent = (MealDayFragment)getParentFragment();
+                        ((MealDayFragment)context).addMeal(spinnerSelectNum, scale);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

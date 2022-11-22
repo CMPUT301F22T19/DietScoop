@@ -41,7 +41,6 @@ public class MealPlanFragment extends Fragment {
         //Handling RecyclerView: *
         message = savedInstanceState;
         mealDayRecycler = (RecyclerView) view.findViewById(R.id.recycler_for_meal_plans);
-        mealDayRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //TESTING!!!!:******************************************************************
 

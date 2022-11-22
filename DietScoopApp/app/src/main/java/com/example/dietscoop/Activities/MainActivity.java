@@ -24,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
             Log.i("PROGRESS", "Starting Login");
             startActivity(intent);
         }
+
+        Intent intent = new Intent(this, MealPlanActivity.class);
+        startActivity(intent);
+
     }
 
     /**
