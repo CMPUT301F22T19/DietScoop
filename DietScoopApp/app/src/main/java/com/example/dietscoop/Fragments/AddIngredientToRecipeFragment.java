@@ -21,9 +21,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.dietscoop.Activities.ViewRecipeActivity;
+import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.R;
 
@@ -53,7 +55,7 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
     Spinner categorySpinner;
     EditText description;
     EditText amount;
-    EditText unit;
+    Spinner unitSpinner;
 
     @Override
     public void onAttach(Context context) {
@@ -76,7 +78,10 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
 
         description = view.findViewById(R.id.editTextDescription);
         amount = view.findViewById(R.id.editTextAmount);
-        unit = view.findViewById(R.id.editTextUnit);
+        unitSpinner = view.findViewById(R.id.unitSpinner);
+        unitSpinner.setAdapter(new ArrayAdapter<IngredientUnit>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, IngredientUnit.values()));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         if (this.ingredientToBeChanged == null)
         {
@@ -89,7 +94,7 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
 
                             String descText = description.getText().toString();
                             IngredientCategory ingocat =  IngredientCategory.stringToCategory(categorySpinner.getSelectedItem().toString());
-                            String unitText = unit.getText().toString();
+                            IngredientUnit unitText = IngredientUnit.stringToUnit(unitSpinner.getSelectedItem().toString());
                             Double amountDouble = Double.parseDouble(amount.getText().toString());
                             IngredientInRecipe newIngredientInRecipe = new IngredientInRecipe(descText, unitText,
                                     amountDouble, ingocat);
@@ -115,8 +120,18 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
                 }
             }
 
+            IngredientUnit unitValues[] = IngredientUnit.values();
+
+            for(int i = 0; i < unitValues.length; ++i)
+            {
+                if(this.ingredientToBeChanged.getMeasurementUnit() == unitValues[i])
+                {
+                    unitSpinner.setSelection(i);
+                    break;
+                }
+            }
+
             amount.setText(Double.toString(this.ingredientToBeChanged.getAmount()));
-            unit.setText(this.ingredientToBeChanged.getMeasurementUnit());
 
             return builder
                     .setView(view)
@@ -126,13 +141,13 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                             String descText = description.getText().toString();
-                            String unitText = unit.getText().toString();
                             Double amountDouble = Double.parseDouble(amount.getText().toString());
 
+                            ingredientToBeChanged.setMeasurementUnit(IngredientUnit.stringToUnit
+                                    (unitSpinner.getSelectedItem().toString()));
                             ingredientToBeChanged.setDescription(descText);
                             ingredientToBeChanged.setCategory(IngredientCategory.stringToCategory
                                             (categorySpinner.getSelectedItem().toString()));
-                            ingredientToBeChanged.setMeasurementUnit(unitText);
                             ingredientToBeChanged.setAmount(amountDouble);
                             Log.i("ing. Test", ingredientToBeChanged.getId());
                             listener.onOkPressedUpdate(ingredientToBeChanged, indexOfIngToBeUpdated);

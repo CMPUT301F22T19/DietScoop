@@ -7,6 +7,7 @@ import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Adapters.IngredientStorageAdapter;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -98,7 +99,8 @@ public class IngredientStorage {
                 if (doc.getId() != null) {
                     Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
                     IngredientInStorage ingredient = new IngredientInStorage(doc.getString("description"),
-                            doc.getString("unit"), doc.getDouble("amount"),
+                            IngredientUnit.stringToUnit(doc.getData().get("unit").toString()),
+                            doc.getDouble("amount"),
                             (doc.getLong("year")).intValue(),
                             (doc.getLong("month")).intValue(), (doc.getLong("day")).intValue(),
                             Location.stringToLocation(doc.getData().get("location").toString()),

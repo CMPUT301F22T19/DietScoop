@@ -9,7 +9,7 @@ import java.io.Serializable;
      */
     public abstract class Ingredient extends FoodItem implements Serializable {
         private Double amount;
-        private String measurementUnit;
+        private IngredientUnit measurementUnit;
         private IngredientCategory category;
 
 
@@ -20,7 +20,7 @@ import java.io.Serializable;
          * @param amount          Amount of ingredient
          * @param category        Category of ingredient.
          */
-        public Ingredient(String description, String measurementUnit, Double amount, IngredientCategory category) {
+        public Ingredient(String description, IngredientUnit measurementUnit, Double amount, IngredientCategory category) {
             this.description = description;
             this.amount = amount;
             this.measurementUnit = measurementUnit;
@@ -55,16 +55,16 @@ import java.io.Serializable;
          *
          * @return measurement unit of ingredient
          */
-        public String getMeasurementUnit() {
+        public IngredientUnit getMeasurementUnit() {
             return this.measurementUnit;
         }
 
         /**
          * setter for ingredient measurement unit
          *
-         * @param measurementUnit value to set.
+         * @param unit value to set.
          */
-        public void setMeasurementUnit(String measurementUnit) {
+        public void setMeasurementUnit(IngredientUnit unit) {
             this.measurementUnit = measurementUnit;
         }
 
