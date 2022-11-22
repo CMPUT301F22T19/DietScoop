@@ -16,6 +16,7 @@ public class MainActivity extends NavigationActivity {
 
         setContentView(R.layout.activity_main);
         initNavBar();
+
     }
 
     private void authorize() {
