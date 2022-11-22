@@ -30,7 +30,8 @@
                     android:text="Title\n▼"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
                 <TextView
                     android:id="@+id/preptime_sort"
@@ -40,7 +41,8 @@
                     android:text="Prep Time\n▼"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
                 <TextView
                     android:id="@+id/category_sort"
@@ -50,7 +52,8 @@
                     android:text="Category\n▼"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
                 <TextView
                     android:id="@+id/serving_sort"
@@ -60,7 +63,8 @@
                     android:text="Servings\n▼"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
             </TableRow>
         </TableLayout>
@@ -71,16 +75,6 @@
             android:layout_height="wrap_content"
             android:clickable="false" />
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_new_recipe_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavBar"
