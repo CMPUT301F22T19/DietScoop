@@ -35,6 +35,8 @@ public class ShoppingListActivity extends NavigationActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        neededIngredients =  new ArrayList<Ingredient>();
+
         setContentView(R.layout.activity_shopping_list);
 
         initNavigationActivity();
@@ -47,6 +49,8 @@ public class ShoppingListActivity extends NavigationActivity {
 
         descriptionSort = findViewById(R.id.description_text);
         categorySort = findViewById(R.id.category_text);
+
+
 
     }
 
