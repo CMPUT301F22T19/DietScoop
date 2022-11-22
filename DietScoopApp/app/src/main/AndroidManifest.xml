@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DietScoop"
         tools:targetApi="31">
+
+        <activity
+            android:name=".Activities.ShoppingListActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.ViewRecipeActivity"
             android:exported="false" />
