@@ -14,6 +14,8 @@
     <string name="amount_label">Amount</string>
     <string name="unit_label">Unit</string>
     <string name="instructions_label">Instructions</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="categories">
         <item>Breakfast</item>
@@ -30,5 +32,31 @@
         <item>min</item>
         <item>hr</item>
     </string-array>
+
+    <string-array name="IngredientInStorageLocation">
+        <item>Pantry</item>
+        <item>Freezer</item>
+        <item>Fridge</item>
+    </string-array>
+
+    <string-array name="IngredientInStorageCategory">
+        <item>Vegetable</item>
+        <item>Meat</item>
+        <item>Dairy</item>
+        <item>Grains</item>
+        <item>Oils</item>
+        <item>Spices</item>
+        <item>Fruit</item>
+        <item>Other</item>
+    </string-array>
+    <string name="title_activity_login2">LoginActivity2</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 </resources>

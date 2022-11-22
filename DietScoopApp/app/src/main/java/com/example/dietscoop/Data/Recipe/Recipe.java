@@ -22,6 +22,15 @@ public class Recipe extends FoodItem implements Serializable {
     private String instructions;
     private ArrayList<String> ingredientRefs;
 
+    public int getInMinutes() {
+
+        if (this.getPrepUnitTime().equals(timeUnit.hr)) {
+            return prepTime * 60;
+        } else if (this.getPrepUnitTime().equals(timeUnit.min)) {
+            return prepTime;
+        } else {return 0;}
+    }
+
     /**
      * Constructor for Recipe object
      * @param description Description of recipe
@@ -33,8 +42,11 @@ public class Recipe extends FoodItem implements Serializable {
      * @param instructions Instructions for recipe preparation
      */
     public Recipe(String description, int prepTime, int servings, timeUnit prepUnitTime,
-                  recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList, String instructions) {
+                  recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList,
+                  String instructions) {
         this.description = description;
+
+        // prepTime is only for display. inMinutes is used to sort recipes with regards to prep time
         this.prepTime = prepTime;
         this.servings = servings;
         this.prepUnitTime = prepUnitTime;
@@ -98,6 +110,10 @@ public class Recipe extends FoodItem implements Serializable {
      */
     public void setIngredientsList(ArrayList<IngredientInRecipe> ingredientsList) {
         this.ingredientsList = ingredientsList;
+        this.ingredientRefs.clear();
+        for (IngredientInRecipe ing: ingredientsList) {
+            this.ingredientRefs.add(ing.getId());
+        }
     }
 
     /**
@@ -167,6 +183,9 @@ public class Recipe extends FoodItem implements Serializable {
      * @param ingredient ingredient to be removed from ingredients list
      */
     public void removeIngredient(IngredientInRecipe ingredient){
+        if (ingredient.getId()!=null) {
+            this.removeIngredientID(ingredient.getId());
+        }
         this.ingredientsList.remove(ingredient);
     }
 

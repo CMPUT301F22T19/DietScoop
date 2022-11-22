@@ -278,17 +278,6 @@
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/recipe_add_comment_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.75"
-                    android:text="@string/add_label"
-                    android:textColor="#000000"
-                    android:textSize="11sp"
-                    app:backgroundTint="#D9D9D9"
-                    tools:ignore="TouchTargetSizeCheck" />
-
             </LinearLayout>
 
             <View

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.R;
@@ -21,8 +22,9 @@ import java.util.ArrayList;
  */
 public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientRecipeAdapter.ViewHolder> {
 
-    Context context;
-    ArrayList<IngredientInRecipe> ingredientsList;
+    private Context context;
+    private ArrayList<IngredientInRecipe> ingredientsList;
+    private RecyclerItemClickListener listener;
 
     /**
      * Constructor for an IngredientRecipeAdapter.
@@ -34,15 +36,20 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
         this.ingredientsList = ingredientsList;
     }
 
+    public void setItemClickListener(RecyclerItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
     @NonNull
     @Override
-    public IngredientRecipeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_ingredients_recipe_list,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientRecipeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (ingredientsList != null && ingredientsList.size() > 0) {
             Ingredient ingredient = ingredientsList.get(position);
             holder.recipe_ingredient_name_tv.setText(String.valueOf(ingredient.getDescription()));
@@ -61,10 +68,11 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
         return ingredientsList.size();
     }
 
+
     /**
      * View holder for ingredient in recipe adapter.
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recipe_ingredient_name_tv,recipe_ingredient_amount_tv,recipe_ingredient_unit_tv,recipe_ingredient_category_tv;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +82,14 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
             recipe_ingredient_unit_tv = itemView.findViewById(R.id.recipe_ingredient_unit_tv);
             recipe_ingredient_category_tv = itemView.findViewById(R.id.recipe_ingredient_category_tv);
 
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (listener != null) {
+                listener.onItemClick(view, getAdapterPosition());
+            }
         }
     }
 }

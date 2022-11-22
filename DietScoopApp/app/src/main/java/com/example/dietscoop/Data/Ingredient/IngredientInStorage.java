@@ -18,7 +18,6 @@ public class IngredientInStorage extends Ingredient {
 
     LocalDate bestBeforeDate;
     Location location;
-    IngredientCategory category;
     //TODO: change year,month,day to Calendar pls pls
 
     /**
@@ -32,12 +31,15 @@ public class IngredientInStorage extends Ingredient {
      * @param location Location of ingredient in storage.
      * @param category Category of ingredient in storage.
      */
-    public IngredientInStorage(String description, String measurementUnit, double amount,
-                               int year, int month, int day, Location location, IngredientCategory category){
+    public IngredientInStorage(String description, String measurementUnit, Double amount,
+                               Integer year, Integer month, Integer day, Location location, IngredientCategory category){
         super(description,measurementUnit,amount, category);
         bestBeforeDate = LocalDate.of(year, month, day);
         this.location = location;
-        this.category = category;
+    }
+
+    public IngredientInStorage() {
+        super();
     }
 
     /**
@@ -92,9 +94,5 @@ public class IngredientInStorage extends Ingredient {
      * Setter for category of ingredient in storage.
      * @param category Category to set for this ingredient.
      */
-    public void setCategory(IngredientCategory category) {
-        this.category = category;
-    }
-
 
 }

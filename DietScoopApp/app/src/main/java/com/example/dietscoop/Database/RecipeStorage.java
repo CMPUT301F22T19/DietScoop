@@ -5,6 +5,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.IngredientListActivity;
+import com.example.dietscoop.Activities.RecipeListActivity;
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
+import com.example.dietscoop.Data.Comparators.RecipeComparator;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Recipe.Recipe;
@@ -34,8 +38,8 @@ public class RecipeStorage implements Serializable {
      * Constructor for a recipe in storage. Initializes Database class.
      */
     public RecipeStorage() {
-        db = new Database();
-        recipes = new ArrayList<>();
+        this.db = new Database();
+        this.recipes = new ArrayList<>();
     }
 
     /**
@@ -43,14 +47,14 @@ public class RecipeStorage implements Serializable {
      * @return ArrayList of Recipes
      */
     public ArrayList<Recipe> getRecipeStorage() {
-        return recipes;
+        return this.recipes;
     }
 
     /**
      * Getter for Database recipes storage
      */
     public void getRecipeStorageFromDatabase() {
-        db.getRecipeStorage();
+        this.db.getRecipeStorage();
     }
 
     /**
@@ -58,7 +62,7 @@ public class RecipeStorage implements Serializable {
      * @param recipe Object to be added to database
      */
     public void addRecipeToStorage(Recipe recipe) {
-        db.addRecipeToStorage(recipe);
+        this.db.addRecipeToStorage(recipe);
     }
 
     /**
@@ -66,7 +70,7 @@ public class RecipeStorage implements Serializable {
      * @param recipe Object to be removed from database
      */
     public void removeRecipeFromStorage(Recipe recipe) {
-        db.removeRecipeFromStorage(recipe);
+        this.db.removeRecipeFromStorage(recipe);
     }
 
     public com.google.firebase.firestore.ListenerRegistration setupRecipeSnapshotListener() {
@@ -114,9 +118,12 @@ public class RecipeStorage implements Serializable {
                                 }
                                 if (doc1.exists()) {
                                     Log.i(TAG1, doc1.getData().toString());
-                                    ingredients.add(new IngredientInRecipe(doc1.getString("description"),
+                                    IngredientInRecipe ing = new IngredientInRecipe(doc1.getString("description"),
                                             doc1.getString("measurementUnit"),doc1.getDouble("amount"),
-                                            IngredientCategory.stringToCategory(doc1.getString("category"))));
+                                            IngredientCategory.stringToCategory(doc1.getString("category")));
+                                    ing.setId(doc1.getId());
+                                    ing.setRecipeID(recipe.getId());
+                                    ingredients.add(ing);
                                 }
                                 if (adapter!=null) {
                                     adapter.notifyDataSetChanged();
@@ -174,9 +181,11 @@ public class RecipeStorage implements Serializable {
                             break;
                         case MODIFIED:
                             Log.i("modified new", doc.getDocument().getData().toString());
+                            adapter.notifyDataSetChanged();
                             break;
                         case REMOVED:
                             Log.i("removed new", doc.getDocument().getData().toString());
+                            adapter.notifyDataSetChanged();
                             break;
                     }
                 }
@@ -188,12 +197,33 @@ public class RecipeStorage implements Serializable {
 
     public void updateRecipeInStorage(Recipe recipe) {db.updateRecipeInStorage(recipe);}
 
-    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
-        db.removeIngredientFromIngredientsInRecipesCollection(docref);
+    public void removeIngredientFromIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        db.removeIngredientFromIngredientsInRecipesCollection(ingredient);
     }
 
     // TODO: to be tested
     public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
         db.updateIngredientInIngredientsInRecipesCollection(ingredient);
+    }
+
+    /**
+     * Method to sort Ingredients by given selection
+     * @param sortBy selection to be sorted by
+     */
+    public void sortBy(RecipeListActivity.sortSelection sortBy) {
+        switch (sortBy) {
+            case TITLE:
+                recipes.sort(new RecipeComparator.byRecipeTitle());
+                break;
+            case PREPTIME:
+                recipes.sort(new RecipeComparator.byRecipePrepTime());
+                break;
+            case SERVING:
+                recipes.sort(new RecipeComparator.byRecipeServingNumber());
+                break;
+            case CATEGORY:
+                recipes.sort(new RecipeComparator.byRecipeCategory());
+                break;
+        }
     }
 }

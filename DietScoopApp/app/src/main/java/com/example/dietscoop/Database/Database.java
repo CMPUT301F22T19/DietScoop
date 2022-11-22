@@ -1,5 +1,6 @@
 package com.example.dietscoop.Database;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
@@ -10,6 +11,8 @@ import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.DocumentChange;
@@ -40,13 +43,24 @@ class Database implements Serializable {
      * Constructor for the Database class.
      */
     public Database() {
+
+        String user = getUserEmail();
+
         db = FirebaseFirestore.getInstance();
-        ingredientStorage = db.collection("IngredientStorage");
-        recipeStorage = db.collection("Recipes");
-        ingredientsInRecipes = db.collection("IngredientsInRecipes");
-        mealPlan = db.collection("MealPlan");
+        ingredientStorage = db.collection("Users").document(user).collection("IngredientsStorage");
+        recipeStorage = db.collection("Users").document(user).collection("Recipes");
+        ingredientsInRecipes = db.collection("Users").document(user).collection("IngredientsInRecipes");
     }
 
+    private String getUserEmail() throws RuntimeException {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            throw new RuntimeException("NO USER SIGNED IN TO DATABASE");
+        }
+
+        return user.getEmail();
+    }
 
 
     /*************************** INGREDIENT METHODS ******************************/
@@ -200,11 +214,11 @@ class Database implements Serializable {
     public CollectionReference getIngredientsInRecipesCollectionRef() {return this.ingredientsInRecipes;}
 
     public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
-        ingredientsInRecipes.add(ingredientInRecipe);
+        ingredientsInRecipes.document(ingredientInRecipe.getId()).set(ingredientInRecipe);
     }
 
-    public void removeIngredientFromIngredientsInRecipesCollection(String docref) {
-        ingredientsInRecipes.document(docref).delete();
+    public void removeIngredientFromIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
+        ingredientsInRecipes.document(ingredient.getId()).delete();
     }
 
     //TODO: not tested yet; test when editing-ingredient-in-recipe thing is implemented

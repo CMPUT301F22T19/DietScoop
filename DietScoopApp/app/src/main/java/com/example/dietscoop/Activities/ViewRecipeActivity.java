@@ -17,14 +17,19 @@ import android.widget.TextView;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
+import com.example.dietscoop.Fragments.AddIngredientToRecipeFragment;
 import com.example.dietscoop.Fragments.EditInstructionsEntryFragment;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
+import com.example.dietscoop.Fragments.IngredientAddFragment;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.RecipeStorage;
 import com.google.firebase.firestore.DocumentReference;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -37,7 +42,7 @@ import java.util.UUID;
  * logic instantiation for the events that
  * go on in this activity.
  */
-public class ViewRecipeActivity extends AppCompatActivity{
+public class ViewRecipeActivity extends AppCompatActivity implements AddIngredientToRecipeFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
     EditText prepTime, numServings, instructions, name;
     RecyclerView ingredientsView;
@@ -49,9 +54,13 @@ public class ViewRecipeActivity extends AppCompatActivity{
     Button backButton;
     Button deleteButton;
     Button cancelButton;
+    Button addButton;
     Spinner prepTimeUnitSpinner, categorySpinner;
     boolean adding;
-
+    ArrayList<IngredientInRecipe> tempIngListForUI;
+    ArrayList<IngredientInRecipe> tempIngListUpdate;
+    ArrayList<IngredientInRecipe> tempIngListAdd;
+    ArrayList<IngredientInRecipe> tempIngListDelete;
     ArrayAdapter<CharSequence> prepUnitSpinnerAdapter;
     ArrayAdapter<CharSequence> categorySpinnerAdapter;
 
@@ -86,6 +95,9 @@ public class ViewRecipeActivity extends AppCompatActivity{
         instructions = findViewById(R.id.recipe_instructions);
         ingredientsView = findViewById(R.id.recipe_recycler_view);
         name = findViewById(R.id.recipe_title);
+
+        addButton = findViewById(R.id.recipe_add_ingredient_button);
+        addButton.setOnClickListener(view -> addIngredient());
 
         backButton = findViewById(R.id.recipe_back_button);
         backButton.setOnClickListener(view -> confirmRecipe());
@@ -141,9 +153,15 @@ public class ViewRecipeActivity extends AppCompatActivity{
         categorySpinner.setSelection(spinnerCategoryPosition);
 
         storage = new RecipeStorage();
+        tempIngListForUI = new ArrayList<>();
+        tempIngListForUI.addAll(currentRecipe.getIngredients());
+        tempIngListUpdate = new ArrayList<>();
+        tempIngListUpdate.addAll(currentRecipe.getIngredients());
+        tempIngListAdd = new ArrayList<>();
+        tempIngListDelete = new ArrayList<>();
 
         adapter = new IngredientRecipeAdapter(this,
-                currentRecipe.getIngredients());
+                tempIngListForUI);
 
         Log.i("DESCRIPTION IN INIT", currentRecipe.getDescription());
 
@@ -153,13 +171,7 @@ public class ViewRecipeActivity extends AppCompatActivity{
 
         storage.addIngredientsInRecipesSnapshotListener(currentRecipe, adapter);
 
-        //Adding the button here for instruction updating:
-        editInstructions = findViewById(R.id.recipe_add_comment_button);
-        editInstructions.setOnClickListener(v -> {
-            //Need to launch the new fragment activity for editing the instructions.
-            new EditInstructionsEntryFragment().show(getSupportFragmentManager(), "EDIT INSTRUCTIONS");
-        });
-
+        adapter.setItemClickListener(this);
     }
 
     private void updateTextViews() {
@@ -180,6 +192,12 @@ public class ViewRecipeActivity extends AppCompatActivity{
 
     }
 
+    private void addIngredient() {
+        Log.i("gaba", "gool");
+        new AddIngredientToRecipeFragment().show(getSupportFragmentManager(), "ADD_Ingredient");
+
+    }
+
     private void confirmRecipe() {
         // TODO: do the getTexts and use setters to modify currentRecipe
         String recipeNumOfServings = numServings.getText().toString();
@@ -190,6 +208,18 @@ public class ViewRecipeActivity extends AppCompatActivity{
         currentRecipe.setDescription(description);
         String instrucciones = instructions.getText().toString();
         currentRecipe.setInstructions(instrucciones);
+        for (IngredientInRecipe ingToAdd: tempIngListAdd) {
+            //currentRecipe.addIngredientRef(ingToAdd.getId());
+            storage.addIngredientToIngredientsInRecipesCollection(ingToAdd);
+        }
+        for (IngredientInRecipe ingToUpdate: tempIngListUpdate) {
+            storage.updateIngredientInIngredientsInRecipesCollection(ingToUpdate);
+        }
+        for (IngredientInRecipe ingToDelete: tempIngListDelete) {
+            storage.removeIngredientFromIngredientsInRecipesCollection(ingToDelete);
+        }
+        tempIngListUpdate.addAll(tempIngListAdd);
+        currentRecipe.setIngredientsList(tempIngListUpdate);
         if (adding) {
             for (String i: currentRecipe.getIngredientRefs()) {
                 Log.i("adding ingros in recip", i);
@@ -205,11 +235,6 @@ public class ViewRecipeActivity extends AppCompatActivity{
     }
 
     private void cancel() {
-        if (adding) {
-            for (String doc : currentRecipe.getIngredientRefs()) {
-                storage.removeIngredientFromIngredientsInRecipesCollection(doc);
-            }
-        }
         goBack();
     }
 
@@ -221,5 +246,41 @@ public class ViewRecipeActivity extends AppCompatActivity{
     private void deleteThisRecipe() {
         storage.removeRecipeFromStorage(currentRecipe);
         goBack();
+    }
+
+
+    @Override
+    public void onOkPressed(IngredientInRecipe newIngredientInRecipe) {
+        newIngredientInRecipe.setRecipeID(currentRecipe.getId());
+        newIngredientInRecipe.setId(UUID.randomUUID().toString());
+        tempIngListForUI.add(newIngredientInRecipe);
+        tempIngListAdd.add(newIngredientInRecipe);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe, int index) {
+        if (tempIngListUpdate.contains(updateIngredientInRecipe)) {
+            tempIngListUpdate.set(index, updateIngredientInRecipe);
+        } else {
+            tempIngListAdd.set(index, updateIngredientInRecipe);
+        }
+        tempIngListForUI.set(index,updateIngredientInRecipe);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDeletePressed(IngredientInRecipe deleteIngredientInRecipe) {
+        tempIngListUpdate.remove(deleteIngredientInRecipe);// index??
+        tempIngListAdd.remove(deleteIngredientInRecipe);
+        tempIngListForUI.remove(deleteIngredientInRecipe);
+        tempIngListDelete.add(deleteIngredientInRecipe);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        IngredientInRecipe ingredient = tempIngListForUI.get(position);;
+        new AddIngredientToRecipeFragment(ingredient, position).show(getSupportFragmentManager(), "MODIFY_Ingredient");
     }
 }

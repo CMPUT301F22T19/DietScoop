@@ -24,7 +24,12 @@
         <activity
             android:name=".Activities.MealPlanActivity"
             android:exported="false">
-        </activity>
+        <activity
+            android:name=".Activities.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
