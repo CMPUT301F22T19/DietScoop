@@ -9,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public abstract class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener, NavigationBarView.OnItemReselectedListener {
+public abstract class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
 
     BottomNavigationView navBar;
 
     protected void initNavBar() {
         navBar = findViewById(R.id.bottomNavBar);
         navBar.setOnItemSelectedListener(this);
-        navBar.setOnItemReselectedListener(this);
     }
 
     /**
@@ -54,22 +54,28 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
         item.setChecked(true);
         switch(item.getItemId()) {
             case R.id.shopping:
-                goToShoppingList();
-                return true;
+//                if (!(this instanceof ShoppingListActivity)) {
+//                    goToShoppingList();
+//                }
+                break;
             case R.id.meals:
-                goToMealPlans();
-                return true;
+//                if (!(this instanceof MealPlanActivity)) {
+//                    goToMealPlans();
+//                }
+                break;
             case R.id.recipes:
-                goToRecipeList();
-                return true;
+                if (!(this instanceof RecipeListActivity)) {
+                    goToRecipeList();
+                }
+                break;
             case R.id.ingredients:
-                goToIngredientList();
-                return true;
+                if (!(this instanceof IngredientListActivity)) {
+                    goToIngredientList();
+                }
+                break;
             default:
-                return false;
+                throw new RuntimeException("UNEXPECTED NAVIGATION ITEM");
         }
+        return true;
     }
-
-    @Override
-    public void onNavigationItemReselected(@NonNull MenuItem item) {}
 }

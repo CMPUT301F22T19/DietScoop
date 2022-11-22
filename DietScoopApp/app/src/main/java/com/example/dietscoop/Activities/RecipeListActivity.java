@@ -49,7 +49,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         setContentView(R.layout.activity_recipe_list);
 
         initNavBar();
-//        navBar.setSelectedItemId(R.id.recipes);
+        navBar.setSelectedItemId(R.id.recipes);
 
         recipeListView = findViewById(R.id.recipe_list);
         recipeListView.setHasFixedSize(false);
