@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +22,8 @@ import com.example.dietscoop.R;
 public class LoginActivity extends AppCompatActivity {
 
     EditText email_ET, password_ET;
-    Button confirm_BT, signup_BT;
+    Button confirm_BT;
+    TextView signup_BT;
 
     FirebaseAuth auth;
 
