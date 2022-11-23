@@ -123,9 +123,26 @@
 
     </TableRow>
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Upload ingredient picture"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/add_ingredient_camera_roll"
+        android:text="Camera Roll"/>
+    <Button
+        android:id="@+id/add_ingredient_camera"
+        android:text="Camera"/>
+
+
+
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
 
         <Button
             android:id="@+id/select_bestbefore_button"
