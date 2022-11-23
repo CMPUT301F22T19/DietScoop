@@ -9,6 +9,7 @@ import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * 2. Deletion of itself?
  * TODO: Add the removers for each of the following arraylists (Recipes and Ingredients).
  */
-public class MealDay {
+public class MealDay implements Serializable {
 
 //    TODO: Uncomment this if going for the meal in mealday schema.
     ArrayList<Meal> mealsInDay;
@@ -81,6 +82,10 @@ public class MealDay {
     public void addRecipeInMealDay(RecipeInMealDay recipeInMealDay) {
         this.recipeInMealDays.add(recipeInMealDay);
         this.foodItems.add(recipeInMealDay);
+    }
+
+    public ArrayList<FoodItem> getFoodItems() {
+        return this.foodItems;
     }
 
     public void setIngredientIDs(ArrayList<String> ingredientIDs) {

@@ -21,44 +21,32 @@ import java.util.ArrayList;
 
 public class MealPlanFragment extends Fragment {
 
+    Boolean existsMealPlan = false;
+
     FloatingActionButton addMealDayButton;
     RecyclerView mealDayRecycler;
     MealPlanRecyclerAdapter mealPlanAdapter;
+
     ArrayList<MealDay> mealDays;
+
     Bundle message; //Holder for information from other activies.
 
     public MealPlanFragment() {
         super(R.layout.meal_plan_fragment);
     }
 
-    /**
-     * To use
-     * @param mealDays
-     */
-    public MealPlanFragment(ArrayList<MealDay> mealDays) {
-        super(R.layout.meal_plan_fragment);
-        this.mealDays = mealDays;
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        //Handling RecyclerView: *
         message = savedInstanceState;
+
+        if (message != null) {
+            this.mealDays = (ArrayList<MealDay>) message.getSerializable("mealplan");
+            existsMealPlan = true;
+        } else {
+            this.mealDays = new ArrayList<>();
+        }
+
         mealDayRecycler = (RecyclerView) view.findViewById(R.id.recycler_for_meal_plans);
-
-        //TESTING!!!!:******************************************************************
-
-        //Instancing our sample day:
-        LocalDate now = LocalDate.now();
-        MealDay testDay = new MealDay(LocalDate.now());
-
-        mealDays = new ArrayList<>();
-
-        mealDays.add(testDay);
-
-        //TESTING!!!!:******************************************************************
-
-        //Testing our adapter: TODO: Keep most of the following lines as they work.
         mealPlanAdapter = new MealPlanRecyclerAdapter(getActivity(), mealDays);
         mealDayRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mealDayRecycler.setAdapter(mealPlanAdapter);
@@ -72,9 +60,10 @@ public class MealPlanFragment extends Fragment {
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MealPlanActivity) getActivity()).changeToAddDay();
+                ((MealPlanActivity) getActivity()).changeToMealDay();
             }
         });
+
 
         /**
          * This onclick method will handle the dialog fragment-chain for adding mealdays.
@@ -87,6 +76,13 @@ public class MealPlanFragment extends Fragment {
 //            }
 //        });
 
+    }
+
+//    @Override
+    public void onResume() {
+        super.onResume();
+        this.mealDays = ((MealPlanActivity)getActivity()).getMealDays();
+        this.mealPlanAdapter.changeDataSet(mealDays);
     }
 
 }

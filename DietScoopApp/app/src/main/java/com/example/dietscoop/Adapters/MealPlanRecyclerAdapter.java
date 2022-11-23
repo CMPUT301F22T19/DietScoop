@@ -84,4 +84,10 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     public int getItemCount() {
         return mealDays.size();
     }
+
+    public void changeDataSet(ArrayList<MealDay> mealDays) {
+        this.mealDays = mealDays;
+        notifyDataSetChanged();
+    }
+
 }

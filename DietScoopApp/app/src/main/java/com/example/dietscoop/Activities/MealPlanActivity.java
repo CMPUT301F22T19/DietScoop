@@ -61,6 +61,11 @@ public class MealPlanActivity extends AppCompatActivity {
         recipes = new RecipeStorage();
         ingredients = new IngredientStorage();
 
+        //TODO: Set up database pull:
+        if (mealDays == null) {
+            mealDays = new ArrayList<>();
+        }
+
         //TODO: Uncomment these when the code works!!!
 //        recipesList = recipes.getRecipeStorage();
 //        ingredientsList = ingredients.getIngredientStorage();
@@ -74,7 +79,8 @@ public class MealPlanActivity extends AppCompatActivity {
         //TESTING!!!!************************************************************************************
 
         //If database has no mealplan, send null and call MealPlanFrag:
-        changeToMealPlan(null);
+//        changeToMealPlanInitialize();
+        changeToMealPlan();
     }
 
     //Calls and Receipts from Fragments:
@@ -89,19 +95,63 @@ public class MealPlanActivity extends AppCompatActivity {
     //Fragment View Switches:
 
     /**
-     * TODO: Need to add a bundle that sends over the mealPlan for this user.
+     * Must be called the first time:
      */
-    public void changeToMealPlan(Bundle planToSend) {
+    public void changeToMealPlanInitialize() {
+        Bundle testing = null;
+        if (this.mealDays.size() > 0) {
+            testing = new Bundle();
+            testing.putSerializable("mealplan", this.mealDays);
+        }
         mealPlanManager.beginTransaction()
                 .setReorderingAllowed(true)
-                .add(R.id.full_fragment_container_view, MealPlanFragment.class, null) //TODO: Make it so it sends over the current mealPlan.
+                .add(R.id.full_fragment_container_view, MealPlanFragment.class, testing) //TODO: Make it so it sends over the current mealPlan.
                 .commit();
     }
 
-    public void changeToAddDay() {
+    /**
+     * TODO: Need to add a bundle that sends over the mealPlan for this user.
+     */
+    public void changeToMealPlan() {
         mealPlanManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.full_fragment_container_view, MealPlanFragment.class, null) //TODO: Make it so it sends over the current mealPlan.
+                .commit();
+    }
+
+//    public void changeToMealPlanWithExisting() {
+//        Bundle status = new Bundle();
+//        status.putSerializable("mealplan", this.mealDays);
+//        changeToMealPlan(status);
+//    }
+
+    public void changeToMealDay() {
+        mealPlanManager.beginTransaction()
+                .setReorderingAllowed(true)
                 .replace(R.id.full_fragment_container_view, MealDayFragment.class, null)
                 .commit();
+    }
+
+//    public void changeToMealDayWithExisting(int mealDayIndex) {
+//        Bundle status = new Bundle();
+//        status.putSerializable("mealday", this.mealDays.get(mealDayIndex));
+//        changeToMealPlan(status);
+//    }
+
+    //Making Changes to Days:
+
+    /**
+     * Method to call when confirming the changes to a specific day.
+     * @param indexOfDayToChange index of day to change.
+     * @param changeToDay day to replace the index with.
+     */
+    public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay) {
+        this.mealDays.set(indexOfDayToChange, changeToDay);
+    }
+
+    public void changeEntireDays(ArrayList<MealDay> mealDays) {
+        this.mealDays = mealDays;
+        //TODO: Call database to also update theirs with this.
     }
 
     //TODO: Add a means to retrieve ingredients and recipe change to our mealdays.
@@ -112,6 +162,10 @@ public class MealPlanActivity extends AppCompatActivity {
      */
     public void mealDayAdd(MealDay mealDay) {
         this.mealDays.add(mealDay);
+    }
+
+    public ArrayList<MealDay> getMealDays() {
+        return this.mealDays;
     }
 
     public void updateDatabaseOfChange() {
