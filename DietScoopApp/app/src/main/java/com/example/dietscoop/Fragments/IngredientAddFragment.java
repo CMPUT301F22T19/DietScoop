@@ -44,6 +44,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class IngredientAddFragment extends DialogFragment {
+    private static final int CAMERA_PERM_CODE = 101;
     private EditText description;
     private EditText amount;
     private Spinner category;
@@ -305,13 +306,18 @@ public class IngredientAddFragment extends DialogFragment {
         }
     }
 
+    private void openDeviceBuiltInCamera() {
+        Toast.makeText(this.getContext(), "Camera Access Request", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERM_CODE) {
-            if (grantResults.length < 0) {
-
+            if (grantResults.length > 0 && grantResults[0] > PackageManager.PERMISSION_GRANTED) {
+                openDeviceBuiltInCamera();
             }
-        }
+        } else {
 
+        }
     }
 }
