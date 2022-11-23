@@ -25,7 +25,7 @@ public class MealDay {
 //    TODO: Uncomment this if going for the meal in mealday schema.
     ArrayList<Meal> mealsInDay;
     LocalDate date;
-    ArrayList<FoodItem> foodItems;
+    ArrayList<FoodItem> foodItems; //This array is adadpted to be used in the RecyclerView for MealDay Editing.
     ArrayList<IngredientInMealDay> ingredientInMealDays;
     ArrayList<RecipeInMealDay> recipeInMealDays;
     private ArrayList<String> ingredientIDs;
@@ -59,15 +59,6 @@ public class MealDay {
 
     //Unique Methods:
     /**
-     * Adds a meal to the MealDay.
-     * @param meal Meal to add.
-     */
-    public void addMeal(Meal meal) {
-        this.mealsInDay.add(meal);
-    }
-
-
-    /**
      * Removes a meal from the MealDay.
      * @param i index of meal to remove.
      */
@@ -84,10 +75,12 @@ public class MealDay {
     public void addIngredientInMealDay(IngredientInMealDay ingredientInMealDay) {
         this.ingredientIDs.add(ingredientInMealDay.getId());
         this.ingredientInMealDays.add(ingredientInMealDay);
+        this.foodItems.add(ingredientInMealDay.getParentIngredient());
     }
 
     public void addRecipeInMealDay(RecipeInMealDay recipeInMealDay) {
         this.recipeInMealDays.add(recipeInMealDay);
+        this.foodItems.add(recipeInMealDay);
     }
 
     public void setIngredientIDs(ArrayList<String> ingredientIDs) {

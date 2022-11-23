@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Meal.MealDay;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
@@ -21,43 +23,47 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
 
     //Variables:
     Context context;
-    ArrayList<FoodItem> mealDays;
+    ArrayList<FoodItem> meals;
 
     //Static Class for the sake of inflating views and connecting to backend:
     public static class MealHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mealDayDate;
-        private final Button modifyMealDay;
-        private final Button deleteMealDay;
+        private final TextView mealDescription;
+        private final TextView mealQuantity;
+        private final Button mealDelete;
 
         public MealHolder(View view) {
             super(view);
 
             //View retrieval for each individual item in Recycler View:
-            mealDayDate = (TextView) view.findViewById(R.id.mealplan_for_date);
-            modifyMealDay = (Button) view.findViewById(R.id.view_mealplan_for_date_button);
-            deleteMealDay = (Button) view.findViewById(R.id.delete_mealplan_for_date_button);
+            mealDescription = (TextView) view.findViewById(R.id.meal_in_mealday_description);
+            mealQuantity = (TextView) view.findViewById(R.id.meal_in_mealday_quantity_or_servings);
+            mealDelete = (Button) view.findViewById(R.id.meal_in_mealday_delete_button);
 
-            //TODO: 1. Set Up OnClickListener for the modify button.
+            //TODO: 1. Set Up OnClickListener for the delete button.
         }
 
         //Fetchers for views:
-        public TextView getMealDayDateTextView() {
-            return mealDayDate;
+        public TextView getMealDescription() {
+            return mealDescription;
         }
 
-        public Button getMealDayModifyButton() {
-            return modifyMealDay;
+        public TextView getMealQuantity() {
+            return mealQuantity;
+        }
+
+        public Button getMealDelete() {
+            return mealDelete;
         }
     }
 
     /**
-     * WARNING: THIS IS A TEST CONSTRUCTOR, PLEASE CHANGE AFTER TESTING IS DONE.
-     * @param mealDays
+     * Gabagool
+     * @param meals
      */
-    public MealDayRecyclerAdapter(Context context, ArrayList<FoodItem> mealDays) {
+    public MealDayRecyclerAdapter(Context context, ArrayList<FoodItem> meals) {
         this.context = context;
-        this.mealDays = mealDays;
+        this.meals = meals;
     }
 
     // Create new views (invoked by the layout manager)
@@ -65,29 +71,32 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
     public MealDayRecyclerAdapter.MealHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.meal_day_display, viewGroup, false);
+                .inflate(R.layout.meal_display, viewGroup, false);
 
         return new MealDayRecyclerAdapter.MealHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MealHolder holder, int position) {
-        holder.getMealDayDateTextView().setText();
-    }
+        //Binds the specified information based on the arraylist container specified.
+        holder.getMealDescription().setText(meals.get(position).getDescription());
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(MealPlanRecyclerAdapter.MealHolder viewHolder, final int position) {
+        String sample = meals.get(position).getType();
+        String descTest = meals.get(position).getDescription();
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element:
-        viewHolder.getMealDayDateTextView().setText(mealDays.get(position).getDate().toString());
+        if (meals.get(position).getType().equals("Ingredient")) {
+            holder.getMealQuantity().setText(String.valueOf(((Ingredient)meals.get(position)).getAmount()));
+        } else if (meals.get(position).getType().equals("Recipe")) {
+            holder.getMealQuantity().setText(String.valueOf(((Recipe)meals.get(position)).getNumberOfIngredients()));
+
+        }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mealDays.size();
+        return meals.size();
     }
 
 }

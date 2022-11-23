@@ -26,28 +26,32 @@ import java.util.ArrayList;
  * This activity will handle the MealPlanner and will go through instantiating a new
  * MealPlan Object to contain the meals per day for each day.
  *
- * 1. Need a means to add mealdays.
- * 2. Needs a means to generate fragments.
- * 3. Need to store everything back in this activity and send any updates to the firestore database.
- * 4. Need to add the event for the floating button to query the user to add a new mealday.
+ * Directives:
  *
- * Workflow for checking existence:
- *
- *  1. Query Database to check if mealplan already exists.
- *  2. If exists -> fetch it and update the days that have passed. (Delete them)
- *  3. If not exists -> query the user to create a new mealplan.
+ *  Handles Backend Database connection.
+ *  Will extract the recipes and ingredients in storage from the database.
+ *  Will control the flow of the mealplan activity by switching fragments based on user end.
  *
  */
 public class MealPlanActivity extends AppCompatActivity {
 
-    //Variables:
     FragmentManager mealPlanManager;
+
+    //Database:
     IngredientStorage ingredients;
     RecipeStorage recipes;
-    MealPlan mealPlan;
+
+    //Root Containers:
     ArrayList<Recipe> recipesList;
     ArrayList<IngredientInStorage> ingredientsList;
 
+    //MealPlans:
+    ArrayList<MealDay> mealDays;
+
+    /*
+    Loads ingredients and recipes to pass onto fragments.
+    Works as a hub to connect different fragments of activities.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +73,7 @@ public class MealPlanActivity extends AppCompatActivity {
                 , 2001, 1, 15, Location.Freezer, IngredientCategory.Vegetable));
         //TESTING!!!!************************************************************************************
 
-        //Changing Fragment to MealPlan:
+        //If database has no mealplan, send null and call MealPlanFrag:
         changeToMealPlan(null);
     }
 
@@ -80,11 +84,6 @@ public class MealPlanActivity extends AppCompatActivity {
 
     public ArrayList<IngredientInStorage> getIngredientsList() {
         return this.ingredientsList;
-    }
-
-    //TODO: This function can be connected to the fragment view that handles the mealplan after the database works.
-    public MealPlan getMealPlan() {
-        return this.mealPlan;
     }
 
     //Fragment View Switches:
@@ -112,7 +111,11 @@ public class MealPlanActivity extends AppCompatActivity {
      * @param mealDay MealDay
      */
     public void mealDayAdd(MealDay mealDay) {
-        this.mealPlan.addMealDay(mealDay);
+        this.mealDays.add(mealDay);
+    }
+
+    public void updateDatabaseOfChange() {
+        //Fill with method.
     }
 
 }

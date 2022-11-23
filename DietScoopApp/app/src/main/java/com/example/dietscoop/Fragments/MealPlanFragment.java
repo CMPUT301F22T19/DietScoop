@@ -26,14 +26,18 @@ public class MealPlanFragment extends Fragment {
     MealPlanRecyclerAdapter mealPlanAdapter;
     ArrayList<MealDay> mealDays;
     Bundle message; //Holder for information from other activies.
-    MealPlan myMealPlan;
 
     public MealPlanFragment() {
         super(R.layout.meal_plan_fragment);
     }
 
-    public MealPlanFragment(Bundle message) {
-        this.message = message;
+    /**
+     * To use
+     * @param mealDays
+     */
+    public MealPlanFragment(ArrayList<MealDay> mealDays) {
+        super(R.layout.meal_plan_fragment);
+        this.mealDays = mealDays;
     }
 
     @Override
@@ -41,7 +45,6 @@ public class MealPlanFragment extends Fragment {
         //Handling RecyclerView: *
         message = savedInstanceState;
         mealDayRecycler = (RecyclerView) view.findViewById(R.id.recycler_for_meal_plans);
-        mealDayRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //TESTING!!!!:******************************************************************
 
