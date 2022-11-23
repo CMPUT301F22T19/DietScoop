@@ -65,7 +65,7 @@ import java.io.Serializable;
          * @param unit value to set.
          */
         public void setMeasurementUnit(IngredientUnit unit) {
-            this.measurementUnit = measurementUnit;
+            this.measurementUnit = unit;
         }
 
         public String getCountWithMeasurement(){
