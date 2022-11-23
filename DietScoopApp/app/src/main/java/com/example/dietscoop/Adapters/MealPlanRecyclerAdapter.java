@@ -65,7 +65,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     public MealPlanRecyclerAdapter.DayHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.meal_day_display, viewGroup, false);
+                .inflate(R.layout.meal_plan_display, viewGroup, false);
 
         return new DayHolder(view);
     }

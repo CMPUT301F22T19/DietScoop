@@ -62,10 +62,14 @@ public class MealDayFragment  extends Fragment{
 
 
     //Containers:
+    int indexOfOrigin; //Only if editing:
     MealDay currentMealDay;
 
-    //TODO: Make a separate constructor that handles when an already existing mealDay gets passed in.
     public MealDayFragment() {
+        super(R.layout.meal_day_fragment);
+    }
+
+    public MealDayFragment(Bundle mealDayToEdit) {
         super(R.layout.meal_day_fragment);
     }
 

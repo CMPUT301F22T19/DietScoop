@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class MealPlanFragment extends Fragment {
 
+    View fragmentView;
     Boolean existsMealPlan = false;
 
     FloatingActionButton addMealDayButton;
@@ -31,28 +32,19 @@ public class MealPlanFragment extends Fragment {
 
     Bundle message; //Holder for information from other activies.
 
-    public MealPlanFragment() {
+    /**
+     * Constructor handles the creation of a mealplan clone for the user
+     * to edit.
+     * @param mealPlanSent Bundle
+     */
+    public MealPlanFragment(Bundle mealPlanSent) {
         super(R.layout.meal_plan_fragment);
+        this.mealDays = (ArrayList<MealDay>) mealPlanSent.getSerializable("mealplan");
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        message = savedInstanceState;
-
-        if (message != null) {
-            this.mealDays = (ArrayList<MealDay>) message.getSerializable("mealplan");
-            existsMealPlan = true;
-        } else {
-            this.mealDays = new ArrayList<>();
-        }
-
-        mealDayRecycler = (RecyclerView) view.findViewById(R.id.recycler_for_meal_plans);
-        mealPlanAdapter = new MealPlanRecyclerAdapter(getActivity(), mealDays);
-        mealDayRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mealDayRecycler.setAdapter(mealPlanAdapter);
-
-        //Handling Button: *
-        addMealDayButton = (FloatingActionButton) view.findViewById(R.id.add_mealday_button);
+        fragmentView = view;
 
         /**
          * Method for adding a new MealDay.
@@ -63,6 +55,8 @@ public class MealPlanFragment extends Fragment {
                 ((MealPlanActivity) getActivity()).changeToMealDay();
             }
         });
+
+
 
 
         /**
@@ -76,6 +70,14 @@ public class MealPlanFragment extends Fragment {
 //            }
 //        });
 
+    }
+
+    public void initializeViews() {
+        mealDayRecycler = (RecyclerView) fragmentView.findViewById(R.id.recycler_for_meal_plans);
+        mealPlanAdapter = new MealPlanRecyclerAdapter(getActivity(), mealDays);
+        mealDayRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mealDayRecycler.setAdapter(mealPlanAdapter);
+        addMealDayButton = (FloatingActionButton) fragmentView.findViewById(R.id.add_mealday_button);
     }
 
 //    @Override
