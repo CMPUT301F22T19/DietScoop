@@ -50,8 +50,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         return new ViewHolder(view);
     }
 
-
-
     @Override
     public int getItemCount() {
         return dataList.size();
