@@ -34,12 +34,13 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     Fragment context;
 
     Spinner foodItemSpinner;
+
     ArrayList<String> spinnerNames;
     ArrayList<FoodItem> foodItems;
+
     EditText quantityInput;
     View dialogView;
 
-    //Results from Selection:
     int spinnerSelectNum;
     FoodItem editMeal;
     String currentMealType;
@@ -61,7 +62,6 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     }
 
     public Dialog onCreateDialog(Bundle savedInstance) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = requireActivity().getLayoutInflater();

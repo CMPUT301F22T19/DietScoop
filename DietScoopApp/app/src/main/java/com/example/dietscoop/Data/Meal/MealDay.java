@@ -54,15 +54,6 @@ public class MealDay {
 
     //Unique Methods:
     /**
-     * Adds a meal to the MealDay.
-     * @param meal Meal to add.
-     */
-    public void addMeal(Meal meal) {
-        this.mealsInDay.add(meal);
-    }
-
-
-    /**
      * Removes a meal from the MealDay.
      * @param i index of meal to remove.
      */
