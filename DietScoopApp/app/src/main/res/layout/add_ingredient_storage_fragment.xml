@@ -137,6 +137,10 @@
         android:id="@+id/add_ingredient_photo_camera"
         android:text="Camera"/>
 
+    <ImageView
+        android:id="@+id/ingredient_image"
+        android:layout_height="200dp"
+        android:layout_width="200dp"/>
 
 
     <TableRow

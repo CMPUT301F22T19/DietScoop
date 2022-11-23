@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +64,7 @@ public class IngredientAddFragment extends DialogFragment {
     private TextView bestBeforeDate;
     private Button addByCameraRoll;
     private Button addByCamera;
+    private ImageView thisImageIngredient;
 
     // For getting the string version of Calendar
     // Error handing
@@ -115,7 +118,7 @@ public class IngredientAddFragment extends DialogFragment {
         bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
         addByCameraRoll = view.findViewById(R.id.add_ingredient_photo_camera_roll);
         addByCamera = view.findViewById(R.id.add_ingredient_photo_camera);
-
+        thisImageIngredient = view.findViewById(R.id.ingredient_image);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -315,13 +318,20 @@ public class IngredientAddFragment extends DialogFragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+            thisImageIngredient.setImageBitmap(image);
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERM_CODE) {
             if (grantResults.length > 0 && grantResults[0] > PackageManager.PERMISSION_GRANTED) {
                 openDeviceBuiltInCamera();
             }
         } else {
-
         }
     }
 }
