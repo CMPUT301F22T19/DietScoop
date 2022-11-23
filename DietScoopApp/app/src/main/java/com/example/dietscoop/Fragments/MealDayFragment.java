@@ -37,6 +37,7 @@ import java.util.Calendar;
  * to do with: Viewing, Adding and editing a MealDay.
  */
 public class MealDayFragment  extends Fragment{
+    Boolean existingMealDay = false;
 
     View container;
     EditText enterDateText;
@@ -49,6 +50,9 @@ public class MealDayFragment  extends Fragment{
 
     Button addRecipeButton;
     Button addIngredientButton;
+    //Major action buttons:
+    Button mealDayConfirm;
+    Button mealDayCancel;
 
     ArrayList<Recipe> recipesForAdding;
     ArrayList<IngredientInStorage> ingredientsForAdding;
@@ -70,16 +74,19 @@ public class MealDayFragment  extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstance) {
         container = view;
 
-        //Initializing the main container for this activity:
-        currentMealDay = new MealDay(LocalDate.now()); //Temporary placeholder date.
+        if (savedInstance != null) {
+            this.currentMealDay = (MealDay) savedInstance.getSerializable("mealday");
+            existingMealDay = true;
+        } else {
+            this.currentMealDay = new MealDay(LocalDate.now());
+        }
 
         //Binding Views:
         initializeViews();
 
+        //Getting options:
         recipesForAdding = ((MealPlanActivity)getActivity()).getRecipesList();
         ingredientsForAdding = ((MealPlanActivity)getActivity()).getIngredientsList();
-
-        currentMealDay.addFoodItem(ingredientsForAdding.get(0));
 
         //Setting Adapters:
         mealRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -109,23 +116,16 @@ public class MealDayFragment  extends Fragment{
             }
         });
 
-        /**
-         * Queries user to select a new ingredient into the current mealday.
-         */
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 currentFoodItemType = "Ingredient";
                 // Create an instance of the dialog fragment and show it
-                ArrayList<IngredientInStorage> test = ((MealPlanActivity)getActivity()).getIngredientsList(); //Testing
                 AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), ingredientsForAdding);
                 dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
             }
         });
 
-        /**
-         * Queries the user to select a new recipe into the current mealday.
-         */
         addRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,6 +133,15 @@ public class MealDayFragment  extends Fragment{
                 // Create an instance of the dialog fragment and show it:
                 AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), recipesForAdding);
                 dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
+            }
+        });
+
+        mealDayConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MealPlanActivity access = ((MealPlanActivity)getActivity());
+                access.mealDayAdd(currentMealDay);
+                access.changeToMealPlan();
             }
         });
 
@@ -152,6 +161,8 @@ public class MealDayFragment  extends Fragment{
         mealRecycler = (RecyclerView) container.findViewById(R.id.recycler_in_add_meal_day);
         addRecipeButton = (Button) container.findViewById(R.id.add_recipe_meal);
         addIngredientButton = (Button) container.findViewById(R.id.add_ingredient_meal);
+        mealDayConfirm = (Button) container.findViewById(R.id.meal_day_confirm);
+        mealDayCancel = (Button) container.findViewById(R.id.meal_day_cancel);
     }
 
     public void updateAdapter() {
