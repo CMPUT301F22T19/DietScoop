@@ -9,9 +9,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,6 +47,7 @@ import java.util.Locale;
 
 public class IngredientAddFragment extends DialogFragment {
     private static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CODE = 102;
     private EditText description;
     private EditText amount;
     private Spinner category;
@@ -307,7 +310,8 @@ public class IngredientAddFragment extends DialogFragment {
     }
 
     private void openDeviceBuiltInCamera() {
-        Toast.makeText(this.getContext(), "Camera Access Request", Toast.LENGTH_SHORT).show();
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(camera, CAMERA_REQUEST_CODE);
     }
 
     @Override
