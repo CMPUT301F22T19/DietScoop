@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The Database class provides the methods and functionality for connecting with the Firestore database.
@@ -243,6 +244,7 @@ class Database implements Serializable {
         mealdayDetails.put("month", month);
         mealdayDetails.put("day", day);
         mealdayDetails.put("ingredients",mealday.getIngredientIDs());
+        mealdayDetails.put("recipes",mealday.getRecipeIDs());
         mealPlan.document(mealday.getId()).set(mealdayDetails);
     }
 
@@ -255,6 +257,7 @@ class Database implements Serializable {
     }
 
     public void addIngredientToIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
+        ingredient.setId(UUID.randomUUID().toString());
         Map<String, Object> ingredientDetails = new HashMap<>();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
@@ -271,6 +274,8 @@ class Database implements Serializable {
     public void removeIngredientFromIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         ingredientsInMealDays.document(ingredient.getId()).delete();
     }
+
+    public CollectionReference getMealPlan() {return this.mealPlan;}
 
 
 

@@ -90,15 +90,33 @@ public class MealDay {
         this.recipeInMealDays.add(recipeInMealDay);
     }
 
+    public void setIngredientIDs(ArrayList<String> ingredientIDs) {
+        this.ingredientIDs = ingredientIDs;
+    }
+
+    public void setRecipeIDs(ArrayList<String> recipeIDs) {
+        this.recipeIDs = recipeIDs;
+    }
+
     public ArrayList<String> getRecipeIDs() {
         return this.recipeIDs;
     }
 
     public ArrayList<String> getIngredientIDs() {return this.ingredientIDs;}
 
+    public ArrayList<IngredientInMealDay> getIngredientInMealDays() {
+        return ingredientInMealDays;
+    }
+
+    public ArrayList<RecipeInMealDay> getRecipeInMealDays() {
+        return recipeInMealDays;
+    }
+
     public LocalDate getDate() {
         return this.date;
     }
+
+    public void setDate(LocalDate date) {this.date = date;}
 
     public void setId(String id) {
         this.id = id;
