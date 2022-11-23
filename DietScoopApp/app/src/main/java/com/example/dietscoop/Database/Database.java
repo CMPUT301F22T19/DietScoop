@@ -107,7 +107,7 @@ class Database implements Serializable {
      * @param ingredientInStorage general ingredient in storage to remove
      */
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
-        Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
+        Log.d(TAG, "delete ingredient from storage: " + ingredientInStorage.getDescription());
         ingredientStorage.document(ingredientInStorage.getId()).delete()
                 .addOnSuccessListener(unused -> Log.d(TAG, "Data has been deleted successfully!"));
     }
