@@ -131,10 +131,10 @@
         android:textSize="20sp" />
 
     <Button
-        android:id="@+id/add_ingredient_camera_roll"
+        android:id="@+id/add_ingredient_photo_camera_roll"
         android:text="Camera Roll"/>
     <Button
-        android:id="@+id/add_ingredient_camera"
+        android:id="@+id/add_ingredient_photo_camera"
         android:text="Camera"/>
 
 

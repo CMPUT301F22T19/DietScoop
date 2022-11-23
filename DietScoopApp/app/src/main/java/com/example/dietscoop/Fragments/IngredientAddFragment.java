@@ -2,11 +2,14 @@ package com.example.dietscoop.Fragments;
 
 import static java.lang.String.valueOf;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,10 +21,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.dietscoop.Activities.MainActivity;
@@ -50,6 +56,9 @@ public class IngredientAddFragment extends DialogFragment {
     private LocalDate bestBeforeDateTemp;
     private Button selectDate;
     private TextView bestBeforeDate;
+    private Button addByCameraRoll;
+    private Button addByCamera;
+
     // For getting the string version of Calendar
     // Error handing
     public interface OnFragmentInteractionListener {
@@ -100,6 +109,9 @@ public class IngredientAddFragment extends DialogFragment {
         unit = view.findViewById(R.id.edit_unit_ingredient_storage);
         selectDate = view.findViewById(R.id.select_bestbefore_button);
         bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
+        addByCameraRoll = view.findViewById(R.id.add_ingredient_photo_camera_roll);
+        addByCamera = view.findViewById(R.id.add_ingredient_photo_camera);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -118,6 +130,20 @@ public class IngredientAddFragment extends DialogFragment {
         unit.setAdapter(unitSpinnerAdapter);
 
         IngredientInStorage newIngredient = new IngredientInStorage();
+
+        addByCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askCameraPermission();
+            }
+        });
+
+        addByCameraRoll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -267,5 +293,25 @@ public class IngredientAddFragment extends DialogFragment {
                 });
         }
         return builder.create();
+    }
+
+    private void askCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this.getContext(),
+                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        } else {
+            openDeviceBuiltInCamera();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_PERM_CODE) {
+            if (grantResults.length < 0) {
+
+            }
+        }
+
     }
 }
