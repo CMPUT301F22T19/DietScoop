@@ -24,6 +24,7 @@ public class MealPlanStorage {
 
     private Database db;
     private ArrayList<MealDay> mealPlan;
+
     public MealPlanStorage() {
         db = new Database();
         mealPlan = new ArrayList<>();
@@ -97,6 +98,10 @@ public class MealPlanStorage {
 
     public void updateIngredientInIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         db.updateIngredientInIngredientsInMealDaysCollection(ingredient);
+    }
+
+    public void removeIngredientFromIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
+        db.removeIngredientFromIngredientsInMealDaysCollection(ingredient);
     }
 
 
