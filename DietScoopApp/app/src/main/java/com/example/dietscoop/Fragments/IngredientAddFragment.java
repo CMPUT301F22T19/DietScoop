@@ -8,11 +8,9 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -25,16 +23,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.dietscoop.Activities.MainActivity;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.IngredientUnit;
@@ -42,14 +37,13 @@ import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class IngredientAddFragment extends DialogFragment {
-    private static final int CAMERA_PERM_CODE = 101;
-    public static final int CAMERA_REQUEST_CODE = 102;
+    private static final int CAMERA_PERMISSION = 211;
+    public static final int CAMERA_REQUEST = 212;
+    private static final int CHOSEN_INDIVIDUAL_IMAGE = 1;
     private EditText description;
     private EditText amount;
     private Spinner category;
@@ -306,7 +300,7 @@ public class IngredientAddFragment extends DialogFragment {
         if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) this.getContext(),
-                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
         } else {
             openDeviceBuiltInCamera();
         }
@@ -314,12 +308,12 @@ public class IngredientAddFragment extends DialogFragment {
 
     private void openDeviceBuiltInCamera() {
         Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camera, CAMERA_REQUEST_CODE);
+        startActivityForResult(camera, CAMERA_REQUEST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == CAMERA_REQUEST_CODE) {
+        if (requestCode == CAMERA_REQUEST) {
             Bitmap image = (Bitmap) data.getExtras().get("data");
             thisImageIngredient.setImageBitmap(image);
         }
@@ -327,11 +321,19 @@ public class IngredientAddFragment extends DialogFragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERM_CODE) {
+        if (requestCode == CAMERA_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] > PackageManager.PERMISSION_GRANTED) {
                 openDeviceBuiltInCamera();
             }
         } else {
         }
     }
+
+    private void cameraRollOpener() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, CHOSEN_INDIVIDUAL_IMAGE);
+    }
+
 }
