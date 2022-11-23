@@ -1,5 +1,6 @@
 package com.example.dietscoop.Activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -28,19 +31,15 @@ import java.util.ArrayList;
  * Class associated with the activity_recipe_list.xml file.
  * This class handles the relation of Recipe list to display
  */
-public class RecipeListActivity extends AppCompatActivity implements RecyclerItemClickListener {
+public class RecipeListActivity extends NavigationActivity implements RecyclerItemClickListener {
     RecyclerView recipeListView;
     RecipeStorage recipeStorage;
     RecipeListAdapter recipeListAdapter;
 
-    Button ingredientButton;
-    Button recipesButton;
-    Button mealsButton;
-    Button shoppingButton;
-    Button sortButton;
-    FloatingActionButton addRecipeButton;
-
     TextView titleSort, prepTimeSort, servingSort, categorySort;
+
+    ActionBar topBar;
+
     public enum sortSelection {
         TITLE,
         PREPTIME,
@@ -52,6 +51,11 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
+        initNavigationActivity();
+        navBar.setSelectedItemId(R.id.recipes);
+
+        setupActionBar();
+
         recipeListView = findViewById(R.id.recipe_list);
         recipeListView.setHasFixedSize(false);
         recipeListView.setLayoutManager(new LinearLayoutManager(this));
@@ -60,55 +64,41 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         recipeListAdapter = new RecipeListAdapter(this, recipeStorage.getRecipeStorage());
         recipeListView.setAdapter(recipeListAdapter);
 
-
         recipeStorage.setupRecipeSnapshotListener(recipeListAdapter);
         recipeStorage.getRecipeStorageFromDatabase();
-
-        ingredientButton = findViewById(R.id.ingr_nav);
-        recipesButton = findViewById(R.id.recipes_nav);
-        mealsButton = findViewById(R.id.meals_nav);
-        shoppingButton = findViewById(R.id.shopping_nav);
-        addRecipeButton = findViewById(R.id.add_new_recipe_button);
 
         titleSort = findViewById(R.id.title_sort);
         prepTimeSort = findViewById(R.id.preptime_sort);
         servingSort = findViewById(R.id.serving_sort);
         categorySort = findViewById(R.id.category_sort);
 
-        addRecipeButton.setOnClickListener(view -> addNewRecipe());
-
-        recipesButton.setBackgroundColor(Color.rgb(252, 186, 3));
-
-        ingredientButton.setOnClickListener(view -> switchToIngredients());
-
         recipeListAdapter.setItemClickListener(this);
-
 
         titleSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.TITLE);
+                sortRecipesBy(sortSelection.TITLE);
             }
         });
 
         prepTimeSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.PREPTIME);
+                sortRecipesBy(sortSelection.PREPTIME);
             }
         });
 
         servingSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.SERVING);
+                sortRecipesBy(sortSelection.SERVING);
             }
         });
 
         categorySort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSortSelection(sortSelection.CATEGORY);
+                sortRecipesBy(sortSelection.CATEGORY);
             }
         });
 
@@ -120,18 +110,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         startActivity(intent);
     }
 
-
-    // TODO: add bundled info
-
-    /**
-     * Method to handle navigation to Ingredients List Activity
-     */
-    private void switchToIngredients() {
-        // TODO: add bundled info
-        Intent switchActivityIntent = new Intent(this, IngredientListActivity.class);
-        startActivity(switchActivityIntent);
-    }
-
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, ViewRecipeActivity.class);
@@ -140,8 +118,47 @@ public class RecipeListActivity extends AppCompatActivity implements RecyclerIte
         startActivity(intent);
     }
 
-    public void onSortSelection(RecipeListActivity.sortSelection sortBy) {
+    public void sortRecipesBy(RecipeListActivity.sortSelection sortBy) {
         recipeStorage.sortBy(sortBy);
         recipeListAdapter.notifyDataSetChanged();
+    }
+
+    private void setupActionBar() {
+
+        topBar = getSupportActionBar();
+        topBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        topBar.setDisplayShowCustomEnabled(true);
+        topBar.setCustomView(R.layout.top_bar_add_layout);
+
+        View topBarView = topBar.getCustomView();
+
+        ImageButton logout = topBarView.findViewById(R.id.logout_button);
+        ImageButton addItem = topBarView.findViewById(R.id.add_button);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddClicked();
+            }
+        });
+    }
+
+    void onAddClicked() {
+        addNewRecipe();
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
     }
 }

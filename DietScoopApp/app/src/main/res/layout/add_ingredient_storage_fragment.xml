@@ -96,13 +96,11 @@
             android:textSize="20sp"
             android:text="Unit:" />
 
-        <EditText
+        <Spinner
             android:id="@+id/edit_unit_ingredient_storage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:hint="Enter unit"
-            android:inputType="textPersonName" />
+            android:layout_weight="2" />
     </TableRow>
 
     <TableRow

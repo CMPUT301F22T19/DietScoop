@@ -126,7 +126,7 @@ class Database implements Serializable {
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit().toLowerCase());
+        ingredientDetails.put("unit", ingredient.getMeasurementUnit().name().toLowerCase());
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);

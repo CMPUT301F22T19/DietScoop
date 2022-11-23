@@ -1,21 +1,33 @@
 package com.example.dietscoop.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends NavigationActivity {
+
+    ActionBar topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        authorize();
+
         setContentView(R.layout.activity_main);
+        initNavigationActivity();
+        setUpActionBar();
+    }
+
+    private void authorize() {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -24,25 +36,34 @@ public class MainActivity extends AppCompatActivity {
             Log.i("PROGRESS", "Starting Login");
             startActivity(intent);
         }
+
     }
 
+    private void setUpActionBar() {
 
-    /**
-     * Handler for navigating to ingredient list activity
-     * @param view current view
-     */
-    public void goToIngredientList(View view) {
+        topBar = getSupportActionBar();
+        topBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        topBar.setDisplayShowCustomEnabled(true);
+        topBar.setCustomView(R.layout.top_bar_no_add_layout);
 
-        Intent intent = new Intent(this, IngredientListActivity.class);
-        startActivity(intent);
+        View topBarView = topBar.getCustomView();
+
+        ImageButton logout = topBarView.findViewById(R.id.logout_button);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
     }
 
-    /**
-     * Handler for navigating to recipe list activity
-     * @param view current view
-     */
-    public void goToRecipeList(View view) {
-        Intent intent = new Intent(this, RecipeListActivity.class);
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+
     }
 }

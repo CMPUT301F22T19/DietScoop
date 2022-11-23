@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Activities.RecipeListActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
 
         <TableLayout
             android:layout_width="match_parent"
@@ -23,44 +24,44 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/title_sort"
+                    android:id="@+id/description_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="Title\n▼"
+                    android:text="Description▼"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/preptime_sort"
+                    android:id="@+id/amount_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="Prep Time\n▼"
+                    android:text="Amount"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/category_sort"
+                    android:id="@+id/unit_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="Category\n▼"
+                    android:text="Unit"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/serving_sort"
+                    android:id="@+id/category_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="Servings\n▼"
+                    android:text="Category▼"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -69,10 +70,11 @@
             </TableRow>
         </TableLayout>
 
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recipe_list"
+            android:id="@+id/shopping_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="650dp"
             android:clickable="false" />
     </LinearLayout>
 

@@ -27,10 +27,12 @@ import androidx.fragment.app.DialogFragment;
 import com.example.dietscoop.Activities.MainActivity;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Locale;
@@ -40,7 +42,7 @@ public class IngredientAddFragment extends DialogFragment {
     private EditText amount;
     private Spinner category;
     private Spinner location;
-    private EditText unit;
+    private Spinner unit;
     private OnFragmentInteractionListener listener;
     private IngredientInStorage ingredientToBeChanged;
     private String locationString;
@@ -110,6 +112,11 @@ public class IngredientAddFragment extends DialogFragment {
         locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         location.setAdapter(locationSpinnerAdapter);
 
+        ArrayAdapter<CharSequence> unitSpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.IngredientInStorageUnit, android.R.layout.simple_spinner_item);
+        unitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        unit.setAdapter(unitSpinnerAdapter);
+
         IngredientInStorage newIngredient = new IngredientInStorage();
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -143,6 +150,24 @@ public class IngredientAddFragment extends DialogFragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String unitString = adapterView.getItemAtPosition(position).toString();
+                IngredientUnit unit = IngredientUnit.stringToUnit(unitString);
+                if(ingredientToBeChanged == null) {
+                    newIngredient.setMeasurementUnit(unit);
+                } else {
+                    ingredientToBeChanged.setMeasurementUnit(unit);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -201,13 +226,7 @@ public class IngredientAddFragment extends DialogFragment {
                         doubleAmount = Double.parseDouble(strAmount);
                     }
 
-                    String strUnit = unit.getText().toString();
-                    if (strUnit.length() == 0) {
-                        strUnit = "units";
-                    }
-
                     newIngredient.setDescription(strDescription);
-                    newIngredient.setMeasurementUnit(strUnit);
                     newIngredient.setAmount(doubleAmount);
 
                     listener.onOkPressed(newIngredient);
@@ -215,7 +234,6 @@ public class IngredientAddFragment extends DialogFragment {
         } else {
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
-            unit.setText(ingredientToBeChanged.getMeasurementUnit());
 
             if (ingredientToBeChanged.getLocation().equals(Location.Pantry)) {
                 locationString = "pantry";
@@ -243,12 +261,6 @@ public class IngredientAddFragment extends DialogFragment {
                         ingredientToBeChanged.setAmount(0.0);
                     } else {
                         ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
-                    }
-
-                    if (unit.getText().toString().length() == 0) {
-                        ingredientToBeChanged.setMeasurementUnit("kg");
-                    } else {
-                        ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
                     }
 
                     listener.onOkPressedUpdate(ingredientToBeChanged);
