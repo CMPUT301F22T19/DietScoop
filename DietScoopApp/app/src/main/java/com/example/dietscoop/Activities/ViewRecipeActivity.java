@@ -1,17 +1,28 @@
 package com.example.dietscoop.Activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -28,10 +39,14 @@ import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.RecipeStorage;
 import com.google.firebase.firestore.DocumentReference;
+import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.UUID;
 
 /**
@@ -43,7 +58,8 @@ import java.util.UUID;
  * go on in this activity.
  */
 public class ViewRecipeActivity extends AppCompatActivity implements AddIngredientToRecipeFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
-
+    private static final int CAMERA_PERMISSION = 211;
+    public static final int CAMERA_REQUEST = 212;
     EditText prepTime, numServings, instructions, name;
     RecyclerView ingredientsView;
     RecipeStorage storage;
@@ -55,6 +71,8 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     Button deleteButton;
     Button cancelButton;
     Button addButton;
+    Button addByCameraRecipe;
+    Button addByCameraRoll;
     Spinner prepTimeUnitSpinner, categorySpinner;
     boolean adding;
     ArrayList<IngredientInRecipe> tempIngListForUI;
@@ -63,6 +81,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     ArrayList<IngredientInRecipe> tempIngListDelete;
     ArrayAdapter<CharSequence> prepUnitSpinnerAdapter;
     ArrayAdapter<CharSequence> categorySpinnerAdapter;
+    private Uri photoURI;
+    private ImageView thisImageRecipe;
+    private String thisRecipeBase64;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +132,24 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
         prepTimeUnitSpinner = findViewById(R.id.recipe_prep_time_unit_spinner);
         categorySpinner = findViewById(R.id.recipe_category_spinner);
+
+        addByCameraRecipe = findViewById(R.id.add_recipe_photo_by_camera);
+        addByCameraRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askCameraPermission();
+            }
+        });
+
+        addByCameraRoll = findViewById(R.id.add_recipe_photo_by_camera_roll);
+        addByCameraRoll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraRollOpener();
+            }
+        });
+
+        thisImageRecipe = findViewById(R.id.foodImage);
 
         ArrayAdapter<CharSequence> prepUnitSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.prepUnitTime, android.R.layout.simple_spinner_item);
@@ -206,8 +245,8 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         currentRecipe.setPrepTime(Integer.valueOf(recipePrepTime));
         String description = name.getText().toString();
         currentRecipe.setDescription(description);
-        String instrucciones = instructions.getText().toString();
-        currentRecipe.setInstructions(instrucciones);
+        String instructions = this.instructions.getText().toString();
+        currentRecipe.setInstructions(instructions);
         for (IngredientInRecipe ingToAdd: tempIngListAdd) {
             //currentRecipe.addIngredientRef(ingToAdd.getId());
             storage.addIngredientToIngredientsInRecipesCollection(ingToAdd);
@@ -282,5 +321,66 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     public void onItemClick(View view, int position) {
         IngredientInRecipe ingredient = tempIngListForUI.get(position);;
         new AddIngredientToRecipeFragment(ingredient, position).show(getSupportFragmentManager(), "MODIFY_Ingredient");
+    }
+
+    private void askCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this,
+                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+        } else {
+            openDeviceBuiltInCamera();
+        }
+    }
+
+    private void openDeviceBuiltInCamera() {
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(camera, CAMERA_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            photoURI = data.getData();
+            try {
+                Bitmap thisIngredientBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoURI);
+                ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
+                thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
+                byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
+                thisRecipeBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Picasso.get().load(photoURI).into(thisImageRecipe);
+            thisImageRecipe.setImageBitmap(null);
+        } else {
+            Bitmap thisIngredientPhotoCamera = (Bitmap) data.getExtras().get("data");
+            thisImageRecipe.setImageBitmap(thisIngredientPhotoCamera);
+            ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
+            thisIngredientPhotoCamera.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
+            byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
+            thisRecipeBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] > PackageManager.PERMISSION_GRANTED) {
+                openDeviceBuiltInCamera();
+            }
+        } else {
+        }
+    }
+
+    private void cameraRollOpener() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, CAMERA_REQUEST);
     }
 }
