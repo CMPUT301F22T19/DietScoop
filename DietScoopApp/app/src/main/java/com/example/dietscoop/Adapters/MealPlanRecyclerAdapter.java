@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
 
@@ -22,14 +23,16 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     //Variables:
     Context context;
     ArrayList<MealDay> mealDays;
+    private RecyclerItemClickListener entryListener;
+
 
     //Static Class for the sake of inflating views and connecting to backend:
-    public static class DayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class DayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mealDayDate;
         private final Button modifyMealDay;
         private final Button deleteMealDay;
-        public View.OnClickListener entryListener;
+
 
         public DayHolder(View view) {
             super(view);
@@ -52,7 +55,9 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
 
         @Override
         public void onClick(View view) {
-            //Placehodler.
+            if (entryListener != null) {
+                entryListener.onItemClick(view, getAdapterPosition());
+            }
         }
     }
 
@@ -95,4 +100,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
         notifyDataSetChanged();
     }
 
+    public void setEntryListener(RecyclerItemClickListener entryListener) {
+        this.entryListener = entryListener;
+    }
 }

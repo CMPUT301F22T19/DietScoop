@@ -51,13 +51,14 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_list);
 
-
+        // RECYCLER
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientListView.setHasFixedSize(false);
         ingredientListView.setLayoutManager(new LinearLayoutManager(this));
 
         //Main container declarations:
         foodStorage = new IngredientStorage();
+        // RECYCLER
         ingredientStorageAdapter = new IngredientStorageAdapter(this, foodStorage.getIngredientStorage());
         ingredientListView.setAdapter(ingredientStorageAdapter);
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
@@ -79,6 +80,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         addIngredientButton.setOnClickListener((v) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
 
         recipesButton.setOnClickListener(unused -> switchToRecipes());
+        // RECYCLER
         ingredientStorageAdapter.setItemClickListener(this);
 
         nameSort.setOnClickListener(new View.OnClickListener() {

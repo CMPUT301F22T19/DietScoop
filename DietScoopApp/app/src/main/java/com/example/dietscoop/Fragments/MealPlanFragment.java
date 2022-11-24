@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.MealPlanActivity;
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
@@ -16,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class MealPlanFragment extends Fragment {
+public class MealPlanFragment extends Fragment implements RecyclerItemClickListener {
 
     View fragmentView;
     Boolean existsMealPlan = false;
@@ -44,6 +45,9 @@ public class MealPlanFragment extends Fragment {
         fragmentView = view;
 
         initializeViews();
+
+        //Setting up the Listener:
+        mealPlanAdapter.setEntryListener(this);
 
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +79,11 @@ public class MealPlanFragment extends Fragment {
         super.onResume();
         this.mealDays = ((MealPlanActivity)getActivity()).getMealDays();
         this.mealPlanAdapter.changeDataSet(mealDays);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        // PUT YOUR ON CLICK SHIT HERE
     }
 
 }
