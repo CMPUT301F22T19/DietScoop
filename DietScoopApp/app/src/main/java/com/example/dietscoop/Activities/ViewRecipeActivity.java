@@ -351,6 +351,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
                 thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
                 byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
                 thisRecipeBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
+                Log.i("stringBitmap", thisRecipeBase64);
             } catch (IOException e) {
                 e.printStackTrace();
             }
