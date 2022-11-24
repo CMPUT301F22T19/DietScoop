@@ -4,20 +4,8 @@ import com.example.dietscoop.Data.FoodItem;
 
 import java.io.Serializable;
 
-/**
- * Ingredient abstract class to be inherited by ingredient and ingredient in storage
- */
-public abstract class Ingredient extends FoodItem implements Serializable {
-    private Double amount;
-    private String measurementUnit;
-    private IngredientCategory category;
-
     /**
-     * Constructor for Ingredient
-     *  @param description     Description of ingredient
-     * @param measurementUnit Measurement unit of ingredient
-     * @param amount          Amount of ingredient
-     * @param category        Category of ingredient.
+     * Ingredient abstract class to be inherited by ingredient and ingredient in storage
      */
     public abstract class Ingredient extends FoodItem implements Serializable {
         private Double amount;
@@ -105,7 +93,5 @@ public abstract class Ingredient extends FoodItem implements Serializable {
     public String getCategoryName() {
         return this.category.name();
     }
-
-
 
 }
