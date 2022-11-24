@@ -15,6 +15,7 @@ import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
     @Override
     public void onBindViewHolder(@NonNull MealHolder holder, int position) {
         //Binds the specified information based on the arraylist container specified.
+        String testingDescription = meals.get(position).getDescription();
         holder.getMealDescription().setText(meals.get(position).getDescription());
 
         String sample = meals.get(position).getType();
@@ -87,8 +89,9 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
         if (meals.get(position).getType().equals("Ingredient")) {
             holder.getMealQuantity().setText(String.valueOf(((Ingredient)meals.get(position)).getAmount()));
         } else if (meals.get(position).getType().equals("Recipe")) {
-            holder.getMealQuantity().setText(String.valueOf(((Recipe)meals.get(position)).getNumberOfIngredients()));
-
+            Double numOfServings = (double) ((RecipeInMealDay)meals.get(position)).getNumOfServings();
+            Double scalingFactor = (double) ((RecipeInMealDay)meals.get(position)).getScalingFactor();
+            holder.getMealQuantity().setText(String.valueOf(numOfServings * scalingFactor));
         }
 
     }
