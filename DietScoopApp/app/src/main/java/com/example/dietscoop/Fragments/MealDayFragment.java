@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,16 +16,12 @@ import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
 import com.example.dietscoop.Data.FoodItem;
-import com.example.dietscoop.Data.Ingredient.Ingredient;
-import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.R;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,7 +36,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     Boolean editMealDay = false;
 
     View container;
-    EditText enterDateText;
+    TextView DateText;
 
     RecyclerView mealRecycler;
     MealDayRecyclerAdapter mealRecyclerAdapter;
@@ -54,6 +50,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     //Major action buttons:
     Button mealDayConfirm;
     Button mealDayCancel;
+    Button editDate;
 
 //    ArrayList<Recipe> recipesForAdding;
 //    ArrayList<IngredientInStorage> ingredientsForAdding;
@@ -90,7 +87,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         initializeViews();
         //Showing a pre-existing date if applicable:
         if (editMealDay) {
-            enterDateText.setText(currentMealDay.getDate().toString());
+            DateText.setText(currentMealDay.getDate().toString());
         }
 
 
@@ -109,7 +106,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         /**
          * Queries user to specify date for current mealday.
          */
-        enterDateText.setOnClickListener(new View.OnClickListener() {
+        editDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Calendar cldr = Calendar.getInstance();
@@ -120,8 +117,8 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
                 datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                        setMealDayDate(day, month, year);
-                        enterDateText.setText(mealDayDate.toString());
+                        setMealDayDate(day, month + 1, year);
+                        DateText.setText(mealDayDate.toString());
                     }
                 }, year, month, day);
                 datePicker.show();
@@ -182,13 +179,14 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
     public void initializeViews() {
         //Initializing Views:
-        enterDateText = (EditText) container.findViewById(R.id.meal_day_date_enter);
+        DateText = (TextView) container.findViewById(R.id.meal_day_date);
         mealRecycler = (RecyclerView) container.findViewById(R.id.recycler_in_add_meal_day);
 //        addRecipeButton = (Button) container.findViewById(R.id.add_recipe_meal);
 //        addIngredientButton = (Button) container.findViewById(R.id.add_ingredient_meal);
         addFoodItemButton = (Button) container.findViewById(R.id.add_food_item_button);
         mealDayConfirm = (Button) container.findViewById(R.id.meal_day_confirm);
         mealDayCancel = (Button) container.findViewById(R.id.meal_day_cancel);
+        editDate = (Button) container.findViewById(R.id.meal_day_date_enter);
     }
 
     public void updateAdapter() {

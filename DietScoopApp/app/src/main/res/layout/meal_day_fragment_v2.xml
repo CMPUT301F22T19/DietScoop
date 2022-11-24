@@ -33,14 +33,19 @@
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Enter Date:"
+                    android:text="Date:"
                     android:textSize="20dp" />
 
 
-                <EditText
-                    android:id="@+id/meal_day_date_enter"
+                <TextView
+                    android:id="@+id/meal_day_date"
                     android:layout_width="143dp"
                     android:layout_height="match_parent" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/meal_day_date_enter"/>
 
             </LinearLayout>
 
