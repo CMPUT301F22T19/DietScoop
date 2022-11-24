@@ -27,10 +27,13 @@
             android:exported="false" />
         <activity
             android:name=".Activities.SignUpActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/NoTopBar"/>
         <activity
             android:name=".Activities.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/NoTopBar"/>
+
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
