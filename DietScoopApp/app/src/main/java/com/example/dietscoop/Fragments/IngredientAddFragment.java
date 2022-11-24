@@ -324,7 +324,6 @@ public class IngredientAddFragment extends DialogFragment {
             photoURI = data.getData();
 
             Picasso.get().load(photoURI).into(thisImageIngredient);
-            thisImageIngredient.setImageURI(photoURI);
         }
     }
 
