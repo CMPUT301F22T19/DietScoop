@@ -30,7 +30,7 @@ public class RecipeTest {
     //Here getSampleIngredients handles the retrieval of sample ingredient arraylist.
     public Recipe getSampleRecipe() {
         //Instantiating the test Recipe Object:
-        return new Recipe("Tasty Breakfast", 5, 12, timeUnit.hr, recipeCategory.Breakfast, generateSampleIngredients(), "Unique breakfast.");
+        return new Recipe("Frijoles Con Pollo", 5, 12, timeUnit.hr, recipeCategory.Breakfast, generateSampleIngredients(), "Unique breakfast.");
     }
 
     @Test
@@ -52,7 +52,7 @@ public class RecipeTest {
     @Test
     public void testGetComments() {
         Recipe sampleRecipe = getSampleRecipe();
-        assertEquals(sampleRecipe.getDescription(), "Tasty breakfast");
+        assertEquals(sampleRecipe.getDescription(), "Frijoles Con Pollo");
     }
 
     @Test

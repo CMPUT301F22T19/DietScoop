@@ -27,13 +27,4 @@ public class IngredientStorageTest {
                 5.0, 2022, 4, 24, Location.Freezer, IngredientCategory.Meat);
     }
 
-    @Test
-    public void testAddIngredientToStorage() {
-        sampleIngredientStorage = new IngredientStorage();
-        IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", IngredientUnit.kg,
-                5.0, 2022, 4, 24, Location.Freezer, IngredientCategory.Meat);
-        sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
-        sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
-    }
-
 }
