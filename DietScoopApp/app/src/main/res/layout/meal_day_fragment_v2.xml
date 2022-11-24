@@ -45,7 +45,8 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/meal_day_date_enter"/>
+                    android:id="@+id/meal_day_date_enter"
+                    android:text="Balls"/>
 
             </LinearLayout>
 

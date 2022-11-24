@@ -125,16 +125,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
             }
         });
 
-//        addIngredientButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                currentFoodItemType = "Ingredient";
-//                // Create an instance of the dialog fragment and show it
-//                AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), ingredientsForAdding);
-//                dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
-//            }
-//        });
-//
         addFoodItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -30,27 +30,18 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     public class DayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mealDayDate;
-        private final Button modifyMealDay;
-        private final Button deleteMealDay;
-
 
         public DayHolder(View view) {
             super(view);
 
             //View retrieval for each individual item in Recycler View:
             mealDayDate = (TextView) view.findViewById(R.id.mealplan_for_date);
-            modifyMealDay = (Button) view.findViewById(R.id.view_mealplan_for_date_button);
-            deleteMealDay = (Button) view.findViewById(R.id.delete_mealplan_for_date_button);
             view.setOnClickListener(this); //Setting up the onClick Listener:
         }
 
         //Fetchers for views:
         public TextView getMealDayDateTextView() {
             return mealDayDate;
-        }
-
-        public Button getMealDayModifyButton() {
-            return modifyMealDay;
         }
 
         @Override
