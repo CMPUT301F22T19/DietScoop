@@ -25,6 +25,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class tying to Ingredient list. Associated with the activity_ingredient_list.xml layout.
@@ -38,6 +40,8 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
     TextView nameSort, categorySort, bestBeforeSort, locationSort;
 
     ActionBar topBar;
+
+    sortSelection sortingBy;
 
     public enum sortSelection {
         NAME,
@@ -105,8 +109,47 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
     }
 
     public void onSortSelection(sortSelection sortBy) {
+
+        if (this.sortingBy == sortBy) {
+            return;
+        }
+
         foodStorage.sortBy(sortBy);
         ingredientStorageAdapter.notifyDataSetChanged();
+        setSortingItem(sortBy);
+    }
+
+    private void setSortingItem(sortSelection sortBy) {
+
+        this.sortingBy = sortBy;
+
+        switch (this.sortingBy) {
+            case DATE:
+                nameSort.setText("Name\n━");
+                categorySort.setText("Category\n━");
+                locationSort.setText("Location\n━");
+                bestBeforeSort.setText("Expiry\n▼");
+                break;
+            case NAME:
+                nameSort.setText("Name\n▼");
+                categorySort.setText("Category\n━");
+                locationSort.setText("Location\n━");
+                bestBeforeSort.setText("Expiry\n━");
+                break;
+            case CATEGORY:
+                nameSort.setText("Name\n━");
+                categorySort.setText("Category\n▼");
+                locationSort.setText("Location\n━");
+                bestBeforeSort.setText("Expiry\n━");
+                break;
+            case LOCATION:
+                nameSort.setText("Name\n━");
+                categorySort.setText("Category\n━");
+                locationSort.setText("Location\n▼");
+                bestBeforeSort.setText("Expiry\n━");
+                break;
+        }
+
     }
 
     @Override

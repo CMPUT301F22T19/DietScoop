@@ -27,9 +27,9 @@
                 <TextView
                     android:id="@+id/name_sort"
                     android:layout_width="0dp"
-                    android:layout_gravity="center"
+                    android:layout_gravity="bottom|center"
                     android:clickable="true"
-                    android:text="Name\n▼"
+                    android:text="Name\n━"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -38,8 +38,8 @@
                 <TextView
                     android:id="@+id/category_sort"
                     android:layout_width="0dp"
-                    android:layout_gravity="center"
-                    android:text="Category\n▼"
+                    android:layout_gravity="bottom|center"
+                    android:text="Category\n━"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -50,17 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:clickable="true"
-                    android:text="Best Before\n▼"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_gravity="center"
-                    android:clickable="true"
-                    android:text="Count"
+                    android:text="Expiry\n━"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -69,13 +59,25 @@
                 <TextView
                     android:id="@+id/location_sort"
                     android:layout_width="0dp"
-                    android:layout_gravity="center"
+                    android:layout_gravity="bottom|center"
                     android:clickable="true"
-                    android:text="Location\n▼"
+                    android:text="Location\n━"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_gravity="top|center"
+                    android:clickable="true"
+                    android:text="Amount"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
 
             </TableRow>
 
