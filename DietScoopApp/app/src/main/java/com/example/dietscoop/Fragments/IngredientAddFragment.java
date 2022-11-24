@@ -337,6 +337,14 @@ public class IngredientAddFragment extends DialogFragment {
                 e.printStackTrace();
             }
             Picasso.get().load(photoURI).into(thisImageIngredient);
+            thisImageIngredient.setImageBitmap(null);
+        } else {
+            Bitmap thisIngredientPhotoCamera = (Bitmap) data.getExtras().get("data");
+            thisImageIngredient.setImageBitmap(thisIngredientPhotoCamera);
+            ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
+            thisIngredientPhotoCamera.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
+            byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
+            thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
         }
     }
 
