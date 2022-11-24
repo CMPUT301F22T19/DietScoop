@@ -76,7 +76,7 @@ public class MealDay implements Serializable {
     public void addIngredientInMealDay(IngredientInMealDay ingredientInMealDay) {
         this.ingredientIDs.add(ingredientInMealDay.getId());
         this.ingredientInMealDays.add(ingredientInMealDay);
-        this.foodItems.add(ingredientInMealDay.getParentIngredient());
+        this.foodItems.add(ingredientInMealDay);
     }
 
     public void addRecipeInMealDay(RecipeInMealDay recipeInMealDay) {

@@ -52,14 +52,14 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         this.editing = false;
     }
 
-    public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems, FoodItem editItem) {
-        this.foodItems = (ArrayList<FoodItem>) foodItems;
-        this.editMeal = editItem;
-
-        if (editItem instanceof IngredientInStorage) {
-
-        }
-    }
+//    public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems, FoodItem editItem) {
+//        this.foodItems = (ArrayList<FoodItem>) foodItems;
+//        this.editMeal = editItem;
+//
+//        if (editItem instanceof IngredientInStorage) {
+//
+//        }
+//    }
 
     public Dialog onCreateDialog(Bundle savedInstance) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -77,7 +77,6 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         foodItemSpinner.setAdapter(stringSpinnerAdapter);
         foodItemSpinner.setOnItemSelectedListener(this);
 
-        //Inflating the fragment: ***
         builder.setView(dialogView)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override

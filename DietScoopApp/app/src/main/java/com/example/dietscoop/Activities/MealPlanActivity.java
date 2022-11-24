@@ -161,7 +161,7 @@ public class MealPlanActivity extends AppCompatActivity {
     }
 
     public void changeToMealDayAdd() {
-        Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_plan_fragment);
+        Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_day_fragment);
 
         if (prevFragment != null) {
             mealPlanManager.beginTransaction().remove(prevFragment).commit();
@@ -174,7 +174,7 @@ public class MealPlanActivity extends AppCompatActivity {
     }
 
     public void changeToMealDayEdit(int indexOfDay) {
-        Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_plan_fragment);
+        Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_day_fragment);
 
         if (prevFragment != null) {
             mealPlanManager.beginTransaction().remove(prevFragment).commit();
