@@ -2,18 +2,14 @@ package com.example.dietscoop.Activities;
 
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.dietscoop.Data.FoodItem;
-import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
-import com.example.dietscoop.Data.Ingredient.Location;
-import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
@@ -49,6 +45,9 @@ public class MealPlanActivity extends AppCompatActivity {
     ArrayList<Recipe> recipesList;
     ArrayList<IngredientInStorage> ingredientsList;
 
+    //Concat List:
+    ArrayList<FoodItem> allFoodItems;
+
     //MealPlans:
     ArrayList<MealDay> mealPlan;
 
@@ -64,6 +63,7 @@ public class MealPlanActivity extends AppCompatActivity {
         mealPlanManager = getSupportFragmentManager();
         recipes = new RecipeStorage();
         ingredients = new IngredientStorage();
+        allFoodItems = new ArrayList<>();
 
         //TODO: Set up database pull:
         /**
@@ -76,10 +76,6 @@ public class MealPlanActivity extends AppCompatActivity {
         mealPlan = mealPlanStorage.getMealPlan();
 //        mealPlanStorage.getMealPlanFromDB();
 //        mealPlanStorage.addMealPlanSnapshotListener();
-
-        //TODO: Uncomment these when the code works!!!
-//        recipesList = recipes.getRecipeStorage();
-//        ingredientsList = ingredients.getIngredientStorage();
 
         /**
          *
@@ -111,6 +107,13 @@ public class MealPlanActivity extends AppCompatActivity {
 
     public ArrayList<IngredientInStorage> getIngredientsList() {
         return this.ingredientsList;
+    }
+
+    public ArrayList<FoodItem> getAllFoodItems() {
+        allFoodItems.clear();
+        allFoodItems.addAll(recipesList);
+        allFoodItems.addAll(ingredientsList);
+        return this.allFoodItems;
     }
 
     //Fragment View Switches:
@@ -190,12 +193,6 @@ public class MealPlanActivity extends AppCompatActivity {
                 .replace(R.id.full_fragment_container_view, mealDayFragment)
                 .commit();
     }
-
-//    public void changeToMealDayWithExisting(int mealDayIndex) {
-//        Bundle status = new Bundle();
-//        status.putSerializable("mealday", this.mealDays.get(mealDayIndex));
-//        changeToMealPlan(status);
-//    }
 
     //Making Changes to Days:
 

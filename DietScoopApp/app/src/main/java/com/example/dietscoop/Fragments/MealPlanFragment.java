@@ -83,8 +83,7 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
     @Override
     public void onResume() {
         super.onResume();
-        this.mealDays = ((MealPlanActivity)getActivity()).getMealDays();
-        this.mealPlanAdapter.changeDataSet(mealDays);
+        this.mealPlanAdapter.notifyDataSetChanged();
     }
 
     @Override

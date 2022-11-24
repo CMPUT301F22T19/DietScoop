@@ -28,6 +28,7 @@
         android:layout_height="58dp"
         app:layout_constraintBottom_toTopOf="@+id/insert_quantity_food_item"
         app:layout_constraintStart_toEndOf="@+id/recycler_for_food_items"
-        android:text="Quantity:"/>
+        android:text="Quantity:"
+        android:id="@+id/quantity_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

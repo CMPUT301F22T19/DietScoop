@@ -12,13 +12,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.dietscoop.Data.FoodItem;
+import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.R;
 
@@ -38,6 +41,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     ArrayList<String> spinnerNames;
     ArrayList<FoodItem> foodItems;
 
+    TextView quantityView;
     EditText quantityInput;
     View dialogView;
 
@@ -77,6 +81,8 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         foodItemSpinner.setAdapter(stringSpinnerAdapter);
         foodItemSpinner.setOnItemSelectedListener(this);
 
+
+        //TODO: Add control logic to depict the kind of builder layout invoked:
         builder.setView(dialogView)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
@@ -99,6 +105,9 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     }
 
     public void initializeViews() {
+        quantityView = (TextView) dialogView.findViewById(R.id.quantity_view);
+        quantityView.setText(""); //Defaulting the measuring type to empty.
+
         quantityInput = (EditText) dialogView.findViewById(R.id.insert_quantity_food_item);
         foodItemSpinner = (Spinner) dialogView.findViewById(R.id.recycler_for_food_items);
     }
@@ -115,9 +124,17 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     }
 
 
+    //TODO: Here you can change the getText format to edit the view depending on the foodItem type.
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         //Fetching the current selected description:
+        if (foodItems.get(i).getType() == "Ingredient") {
+            Ingredient foodItem = (Ingredient) foodItems.get(i);
+            quantityView.setText(foodItem.getMeasurementUnit());
+        } else {
+            Recipe foodItem = (Recipe) foodItems.get(i);
+            quantityView.setText("Servings");
+        }
         spinnerSelectNum = i;
     }
 
