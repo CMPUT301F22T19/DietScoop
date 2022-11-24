@@ -83,7 +83,8 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
 
     @Override
     public void onItemClick(View view, int position) {
-        // PUT YOUR ON CLICK SHIT HERE
+        //Send over information to the MealDayFragment to edit an existing day:
+        ((MealPlanActivity)getActivity()).changeToMealDayEdit(position);
     }
 
 }
