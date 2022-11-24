@@ -7,13 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.Location;
-import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
-import com.example.dietscoop.Data.Meal.MealPlan;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Database.RecipeStorage;
@@ -83,13 +80,16 @@ public class MealPlanActivity extends AppCompatActivity {
          *
          */
 
-        //TESTING!!!!************************************************************************************
-        ingredientsList = new ArrayList<>();
-        ingredientsList.add(new IngredientInStorage("chicken", "kg", 4.0
-        , 2024, 11, 25, Location.Freezer, IngredientCategory.Fruit));
-        ingredientsList.add(new IngredientInStorage("billy", "kg", 4.0
-                , 2001, 1, 15, Location.Freezer, IngredientCategory.Vegetable));
-        //TESTING!!!!************************************************************************************
+        ingredients = new IngredientStorage();
+        ingredients.setupIngredientSnapshotListener();
+        ingredients.getIngredientStorageFromDatabase();
+
+        recipes = new RecipeStorage();
+        recipes.setupRecipeSnapshotListener();
+        recipes.getRecipeStorageFromDatabase();
+
+        ingredientsList = ingredients.getIngredientStorage();
+        recipesList = recipes.getRecipeStorage();
 
         //If database has no mealplan, send null and call MealPlanFrag:
 //        changeToMealPlanInitialize();
@@ -145,13 +145,13 @@ public class MealPlanActivity extends AppCompatActivity {
                 .commit();
     }
 
-//    public void changeToMealPlanWithExisting() {
-//        Bundle status = new Bundle();
-//        status.putSerializable("mealplan", this.mealDays);
-//        changeToMealPlan(status);
-//    }
+    public void changeToMealDayAdd() {
+        Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_plan_fragment);
 
-    public void changeToMealDay() {
+        if (prevFragment != null) {
+            mealPlanManager.beginTransaction().remove(prevFragment).commit();
+        }
+
         mealPlanManager.beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.full_fragment_container_view, MealDayFragment.class, null)
@@ -159,11 +159,20 @@ public class MealPlanActivity extends AppCompatActivity {
     }
 
     public void changeToMealDayEdit(int indexOfDay) {
+        Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_plan_fragment);
+
+        if (prevFragment != null) {
+            mealPlanManager.beginTransaction().remove(prevFragment).commit();
+        }
+
         Bundle mealDayToEdit = new Bundle();
         mealDayToEdit.putSerializable("mealdaytoedit", this.mealPlan.get(indexOfDay));
+        mealDayToEdit.putInt("dayindex", indexOfDay);
+        MealDayFragment mealDayFragment = new MealDayFragment(mealDayToEdit);
+
         mealPlanManager.beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.full_fragment_container_view, MealDayFragment.class, null)
+                .replace(R.id.full_fragment_container_view, mealDayFragment)
                 .commit();
     }
 
@@ -184,12 +193,6 @@ public class MealPlanActivity extends AppCompatActivity {
     public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay) {
         this.mealPlan.set(indexOfDayToChange, changeToDay);
     }
-
-//    public void changeEntireDays(ArrayList<MealDay> mealDays) {
-//        this.mealPlan = mealDays;
-//        //TODO: Call database to also update theirs with this.
-//    }
-
 
     /**
      * Will add the specified meal day to our mealPlan.

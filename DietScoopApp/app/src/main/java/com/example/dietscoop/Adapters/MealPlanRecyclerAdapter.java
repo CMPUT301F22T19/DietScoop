@@ -24,11 +24,12 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     ArrayList<MealDay> mealDays;
 
     //Static Class for the sake of inflating views and connecting to backend:
-    public static class DayHolder extends RecyclerView.ViewHolder {
+    public static class DayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mealDayDate;
         private final Button modifyMealDay;
         private final Button deleteMealDay;
+        public View.OnClickListener entryListener;
 
         public DayHolder(View view) {
             super(view);
@@ -37,8 +38,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
             mealDayDate = (TextView) view.findViewById(R.id.mealplan_for_date);
             modifyMealDay = (Button) view.findViewById(R.id.view_mealplan_for_date_button);
             deleteMealDay = (Button) view.findViewById(R.id.delete_mealplan_for_date_button);
-
-            //TODO: 1. Set Up OnClickListener for the modify button.
+            view.setOnClickListener(this); //Setting up the onClick Listener:
         }
 
         //Fetchers for views:
@@ -48,6 +48,11 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
 
         public Button getMealDayModifyButton() {
             return modifyMealDay;
+        }
+
+        @Override
+        public void onClick(View view) {
+            //Placehodler.
         }
     }
 

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,11 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
 import com.example.dietscoop.Data.Meal.MealDay;
-import com.example.dietscoop.Data.Meal.MealPlan;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MealPlanFragment extends Fragment {
@@ -46,29 +43,22 @@ public class MealPlanFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         fragmentView = view;
 
-        /**
-         * Method for adding a new MealDay.
-         */
+        initializeViews();
+
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MealPlanActivity) getActivity()).changeToMealDay();
+                ((MealPlanActivity) getActivity()).changeToMealDayAdd();
             }
         });
 
-
-
-
-        /**
-         * This onclick method will handle the dialog fragment-chain for adding mealdays.
-         */
-//        addMealDayButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                DialogFragment addMealDayFragment = new CreateMealDayFragment();
-//                addMealDayFragment.show(getActivity().getSupportFragmentManager(), "Add Meal Day");
-//            }
-//        });
+        //For the recycler: //TODO: Need to fix the setOnClickListener.
+        mealDayRecycler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MealPlanActivity) getActivity()).changeToMealDayEdit(mealDayRecycler.getChildLayoutPosition(view));
+            }
+        });
 
     }
 
