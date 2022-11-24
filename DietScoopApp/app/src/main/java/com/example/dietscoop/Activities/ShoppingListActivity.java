@@ -11,6 +11,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Database.IngredientStorage;
@@ -18,6 +19,7 @@ import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ShoppingListActivity extends NavigationActivity {
     RecyclerView shoppingListView;
@@ -51,6 +53,19 @@ public class ShoppingListActivity extends NavigationActivity {
         categorySort = findViewById(R.id.category_text);
 
 
+        descriptionSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortIngredientBy(sortSelection.DESCRIPTION);
+            }
+        });
+
+        categorySort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortIngredientBy(sortSelection.CATEGORY);
+            }
+        });
 
     }
 
@@ -80,6 +95,12 @@ public class ShoppingListActivity extends NavigationActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void sortIngredientBy(ShoppingListActivity.sortSelection sortBy) {
+//        TODO: implement sort
+    }
+
+
 
 
 }
