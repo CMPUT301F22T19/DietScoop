@@ -58,7 +58,7 @@ public class MealPlanStorage {
                 Log.w(TAG, "Listen failed.", e);
                 return;
             }
-//            meal
+            mealPlan.clear();
             for (DocumentChange doc : value.getDocumentChanges()) {
 
                     switch (doc.getType()) {
