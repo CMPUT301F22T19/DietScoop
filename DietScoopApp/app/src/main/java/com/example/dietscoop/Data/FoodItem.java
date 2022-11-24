@@ -8,6 +8,15 @@ public abstract class FoodItem implements Serializable {
  */
     protected String description;
     protected String id;
+    protected String imageString;
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
+    }
 
     /**
      * Getter method for FoodItem description

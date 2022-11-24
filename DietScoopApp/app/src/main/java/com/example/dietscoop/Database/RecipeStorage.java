@@ -11,6 +11,7 @@ import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.Comparators.RecipeComparator;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
@@ -119,7 +120,7 @@ public class RecipeStorage implements Serializable {
                                 if (doc1.exists()) {
                                     Log.i(TAG1, doc1.getData().toString());
                                     IngredientInRecipe ing = new IngredientInRecipe(doc1.getString("description"),
-                                            doc1.getString("unit"),doc1.getDouble("amount"),
+                                            IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
                                             IngredientCategory.stringToCategory(doc1.getString("category")));
                                     ing.setId(doc1.getId());
                                     ing.setRecipeID(recipe.getId());
@@ -171,7 +172,7 @@ public class RecipeStorage implements Serializable {
                             if (recipe != null && adapter != null) {
                                 recipe.addIngredientRef(doc.getDocument().getId());
                                 IngredientInRecipe ingredient = new IngredientInRecipe(doc.getDocument().getString("description"),
-                                        doc.getDocument().getString("measurementUnit"), doc.getDocument().getDouble("amount"),
+                                        IngredientUnit.stringToUnit(doc.getDocument().getString("measurementUnit")), doc.getDocument().getDouble("amount"),
                                         IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
                                 ingredient.setId(doc.getDocument().getId());
                                 recipe.addIngredient(ingredient);

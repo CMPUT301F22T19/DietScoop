@@ -23,7 +23,6 @@ public class Recipe extends FoodItem implements Serializable {
     private ArrayList<String> ingredientRefs;
 
     public int getInMinutes() {
-
         if (this.getPrepUnitTime().equals(timeUnit.hr)) {
             return prepTime * 60;
         } else if (this.getPrepUnitTime().equals(timeUnit.min)) {

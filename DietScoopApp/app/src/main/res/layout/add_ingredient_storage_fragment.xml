@@ -96,13 +96,11 @@
             android:textSize="20sp"
             android:text="Unit:" />
 
-        <EditText
+        <Spinner
             android:id="@+id/edit_unit_ingredient_storage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:hint="Enter unit"
-            android:inputType="textPersonName" />
+            android:layout_weight="2" />
     </TableRow>
 
     <TableRow
@@ -125,9 +123,30 @@
 
     </TableRow>
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Upload ingredient picture"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/add_ingredient_photo_camera_roll"
+        android:text="Camera Roll"/>
+    <Button
+        android:id="@+id/add_ingredient_photo_camera"
+        android:text="Camera"/>
+
+    <ImageView
+        android:id="@+id/ingredient_image"
+        android:layout_height="200dp"
+        android:layout_width="200dp"/>
+
+
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
 
         <Button
             android:id="@+id/select_bestbefore_button"

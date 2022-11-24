@@ -44,4 +44,6 @@
             android:textAlignment="center"/>
     </TableRow>
 
+    <View style="@style/Divider"/>
+
 </TableLayout>

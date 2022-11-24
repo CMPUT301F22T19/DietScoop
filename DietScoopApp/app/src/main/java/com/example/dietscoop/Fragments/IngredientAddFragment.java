@@ -1,14 +1,21 @@
 package com.example.dietscoop.Fragments;
 
+import static android.app.Activity.RESULT_OK;
 import static java.lang.String.valueOf;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Build;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,31 +23,38 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.dietscoop.Activities.MainActivity;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class IngredientAddFragment extends DialogFragment {
+    private static final int CAMERA_PERMISSION = 211;
+    public static final int CAMERA_REQUEST = 212;
     private EditText description;
     private EditText amount;
     private Spinner category;
     private Spinner location;
-    private EditText unit;
+    private Spinner unit;
     private OnFragmentInteractionListener listener;
     private IngredientInStorage ingredientToBeChanged;
     private String locationString;
@@ -48,6 +62,12 @@ public class IngredientAddFragment extends DialogFragment {
     private LocalDate bestBeforeDateTemp;
     private Button selectDate;
     private TextView bestBeforeDate;
+    private Button addByCameraRoll;
+    private Button addByCamera;
+    private ImageView thisImageIngredient;
+    private Uri photoURI;
+    private String thisIngredientPhotoBase64;
+
     // For getting the string version of Calendar
     // Error handing
     public interface OnFragmentInteractionListener {
@@ -98,6 +118,9 @@ public class IngredientAddFragment extends DialogFragment {
         unit = view.findViewById(R.id.edit_unit_ingredient_storage);
         selectDate = view.findViewById(R.id.select_bestbefore_button);
         bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
+        addByCameraRoll = view.findViewById(R.id.add_ingredient_photo_camera_roll);
+        addByCamera = view.findViewById(R.id.add_ingredient_photo_camera);
+        thisImageIngredient = view.findViewById(R.id.ingredient_image);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -110,7 +133,26 @@ public class IngredientAddFragment extends DialogFragment {
         locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         location.setAdapter(locationSpinnerAdapter);
 
+        ArrayAdapter<CharSequence> unitSpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.IngredientInStorageUnit, android.R.layout.simple_spinner_item);
+        unitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        unit.setAdapter(unitSpinnerAdapter);
+
         IngredientInStorage newIngredient = new IngredientInStorage();
+
+        addByCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askCameraPermission();
+            }
+        });
+
+        addByCameraRoll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraRollOpener();
+            }
+        });
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -143,6 +185,24 @@ public class IngredientAddFragment extends DialogFragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String unitString = adapterView.getItemAtPosition(position).toString();
+                IngredientUnit unit = IngredientUnit.stringToUnit(unitString);
+                if(ingredientToBeChanged == null) {
+                    newIngredient.setMeasurementUnit(unit);
+                } else {
+                    ingredientToBeChanged.setMeasurementUnit(unit);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -201,13 +261,7 @@ public class IngredientAddFragment extends DialogFragment {
                         doubleAmount = Double.parseDouble(strAmount);
                     }
 
-                    String strUnit = unit.getText().toString();
-                    if (strUnit.length() == 0) {
-                        strUnit = "units";
-                    }
-
                     newIngredient.setDescription(strDescription);
-                    newIngredient.setMeasurementUnit(strUnit);
                     newIngredient.setAmount(doubleAmount);
 
                     listener.onOkPressed(newIngredient);
@@ -215,7 +269,6 @@ public class IngredientAddFragment extends DialogFragment {
         } else {
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
-            unit.setText(ingredientToBeChanged.getMeasurementUnit());
 
             if (ingredientToBeChanged.getLocation().equals(Location.Pantry)) {
                 locationString = "pantry";
@@ -245,15 +298,69 @@ public class IngredientAddFragment extends DialogFragment {
                         ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
                     }
 
-                    if (unit.getText().toString().length() == 0) {
-                        ingredientToBeChanged.setMeasurementUnit("kg");
-                    } else {
-                        ingredientToBeChanged.setMeasurementUnit(unit.getText().toString());
-                    }
-
                     listener.onOkPressedUpdate(ingredientToBeChanged);
                 });
         }
         return builder.create();
+    }
+
+    private void askCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this.getContext(),
+                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+        } else {
+            openDeviceBuiltInCamera();
+        }
+    }
+
+    private void openDeviceBuiltInCamera() {
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(camera, CAMERA_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            photoURI = data.getData();
+            try {
+                Bitmap thisIngredientBitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), photoURI);
+                ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
+                thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
+                byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
+                thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Picasso.get().load(photoURI).into(thisImageIngredient);
+            thisImageIngredient.setImageBitmap(null);
+        } else {
+            Bitmap thisIngredientPhotoCamera = (Bitmap) data.getExtras().get("data");
+            thisImageIngredient.setImageBitmap(thisIngredientPhotoCamera);
+            ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
+            thisIngredientPhotoCamera.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
+            byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
+            thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] > PackageManager.PERMISSION_GRANTED) {
+                openDeviceBuiltInCamera();
+            }
+        } else {
+        }
+    }
+
+    private void cameraRollOpener() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, CAMERA_REQUEST);
     }
 }

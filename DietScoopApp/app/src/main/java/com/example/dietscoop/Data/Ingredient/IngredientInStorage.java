@@ -31,9 +31,9 @@ public class IngredientInStorage extends Ingredient {
      * @param location Location of ingredient in storage.
      * @param category Category of ingredient in storage.
      */
-    public IngredientInStorage(String description, String measurementUnit, Double amount,
+    public IngredientInStorage(String description, IngredientUnit measurementUnit, Double amount,
                                Integer year, Integer month, Integer day, Location location, IngredientCategory category){
-        super(description,measurementUnit,amount, category);
+        super(description, measurementUnit,amount, category);
         bestBeforeDate = LocalDate.of(year, month, day);
         this.location = location;
     }

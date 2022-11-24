@@ -118,7 +118,7 @@ class Database implements Serializable {
      * @param ingredientInStorage general ingredient in storage to remove
      */
     public void removeIngredientFromStorage(IngredientInStorage ingredientInStorage) {
-        Log.d(TAG, "delete ingredient from storage: "+ ingredientInStorage.getDescription());
+        Log.d(TAG, "delete ingredient from storage: " + ingredientInStorage.getDescription());
         ingredientStorage.document(ingredientInStorage.getId()).delete()
                 .addOnSuccessListener(unused -> Log.d(TAG, "Data has been deleted successfully!"));
     }
@@ -137,7 +137,7 @@ class Database implements Serializable {
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit().toLowerCase());
+        ingredientDetails.put("unit", ingredient.getMeasurementUnit().name().toLowerCase());
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);

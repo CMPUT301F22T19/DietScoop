@@ -1,6 +1,7 @@
 package com.example.dietscoop.Activities;
 
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dietscoop.Database.RecipeStorage;
@@ -20,25 +22,27 @@ import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Adapters.IngredientStorageAdapter;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class tying to Ingredient list. Associated with the activity_ingredient_list.xml layout.
  */
-public class IngredientListActivity extends AppCompatActivity implements IngredientAddFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
-
+public class IngredientListActivity extends NavigationActivity implements IngredientAddFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
 
     IngredientStorage foodStorage;
     IngredientStorageAdapter ingredientStorageAdapter;
     RecyclerView ingredientListView;
 
-    Button ingredientButton;
-    Button recipesButton;
-    Button mealsButton;
-    Button shoppingButton;
-
     TextView nameSort, categorySort, bestBeforeSort, locationSort;
+
+    ActionBar topBar;
+
+    sortSelection sortingBy;
+
     public enum sortSelection {
         NAME,
         CATEGORY,
@@ -51,7 +55,11 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_list);
 
-        // RECYCLER
+        initNavigationActivity();
+        navBar.setSelectedItemId(R.id.ingredients);
+
+        setupActionBar();
+
         ingredientListView = findViewById(R.id.ingredient_list);
         ingredientListView.setHasFixedSize(false);
         ingredientListView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,23 +72,11 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
         foodStorage.getIngredientStorageFromDatabase();
 
-        ingredientButton = findViewById(R.id.ingr_nav);
-        recipesButton = findViewById(R.id.recipes_nav);
-        mealsButton = findViewById(R.id.meals_nav);
-        shoppingButton = findViewById(R.id.shopping_nav);
-
         nameSort = findViewById(R.id.name_sort);
         categorySort = findViewById(R.id.category_sort);
         bestBeforeSort = findViewById(R.id.bestbefore_sort);
         locationSort = findViewById(R.id.location_sort);
 
-        ingredientButton.setBackgroundColor(Color.rgb(252, 186, 3));
-
-        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
-        addIngredientButton.setOnClickListener((v) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
-
-        recipesButton.setOnClickListener(unused -> switchToRecipes());
-        // RECYCLER
         ingredientStorageAdapter.setItemClickListener(this);
 
         nameSort.setOnClickListener(new View.OnClickListener() {
@@ -113,22 +109,48 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
 
     }
 
-    /**
-     * handler for switching to Recipe activity.
-     */
-    private void switchToRecipes() {
-        // TODO: add bundled info
-        Intent switchActivityIntent = new Intent(this, RecipeListActivity.class);
-        startActivity(switchActivityIntent);
-        final FloatingActionButton addIngredientButton = findViewById(R.id.add_new_ingredient_button);
-
-        addIngredientButton.setOnClickListener((e) -> new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT"));
-
-    }
-
     public void onSortSelection(sortSelection sortBy) {
+
+        if (this.sortingBy == sortBy) {
+            return;
+        }
+
         foodStorage.sortBy(sortBy);
         ingredientStorageAdapter.notifyDataSetChanged();
+        setSortingItem(sortBy);
+    }
+
+    private void setSortingItem(sortSelection sortBy) {
+
+        this.sortingBy = sortBy;
+
+        switch (this.sortingBy) {
+            case DATE:
+                nameSort.setText("Name\n━");
+                categorySort.setText("Category\n━");
+                locationSort.setText("Location\n━");
+                bestBeforeSort.setText("Expiry\n▼");
+                break;
+            case NAME:
+                nameSort.setText("Name\n▼");
+                categorySort.setText("Category\n━");
+                locationSort.setText("Location\n━");
+                bestBeforeSort.setText("Expiry\n━");
+                break;
+            case CATEGORY:
+                nameSort.setText("Name\n━");
+                categorySort.setText("Category\n▼");
+                locationSort.setText("Location\n━");
+                bestBeforeSort.setText("Expiry\n━");
+                break;
+            case LOCATION:
+                nameSort.setText("Name\n━");
+                categorySort.setText("Category\n━");
+                locationSort.setText("Location\n▼");
+                bestBeforeSort.setText("Expiry\n━");
+                break;
+        }
+
     }
 
     @Override
@@ -152,6 +174,45 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
         IngredientInStorage ingredient = ingredients.get(position);
         new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
+    }
+
+    private void setupActionBar() {
+
+        topBar = getSupportActionBar();
+        topBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        topBar.setDisplayShowCustomEnabled(true);
+        topBar.setCustomView(R.layout.top_bar_add_layout);
+
+        View topBarView = topBar.getCustomView();
+
+        ImageButton logout = topBarView.findViewById(R.id.logout_button);
+        ImageButton addItem = topBarView.findViewById(R.id.add_button);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddClicked();
+            }
+        });
+
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    void onAddClicked() {
+        new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
     }
 
 }
