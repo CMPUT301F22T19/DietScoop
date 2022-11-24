@@ -15,7 +15,9 @@ import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class MealPlanFragment extends Fragment implements RecyclerItemClickListener {
 
@@ -35,9 +37,9 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
      * to edit.
      * @param mealPlanSent Bundle
      */
-    public MealPlanFragment(Bundle mealPlanSent) {
+    public MealPlanFragment(ArrayList<MealDay> mealPlanSent) {
         super(R.layout.meal_plan_fragment);
-        this.mealDays = (ArrayList<MealDay>) mealPlanSent.getSerializable("mealplan");
+        this.mealDays = mealPlanSent;
     }
 
     @Override
@@ -48,10 +50,14 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
 
         //Setting up the Listener:
         mealPlanAdapter.setEntryListener(this);
+        ((MealPlanActivity)getActivity()).mealPlanStorage.addMealPlanSnapshotListener(mealPlanAdapter);
+        ((MealPlanActivity)getActivity()).mealPlanStorage.getMealPlanFromDB();
 
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 ((MealPlanActivity) getActivity()).changeToMealDayAdd();
             }
         });
@@ -74,7 +80,7 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
         addMealDayButton = (FloatingActionButton) fragmentView.findViewById(R.id.add_mealday_button);
     }
 
-//    @Override
+    @Override
     public void onResume() {
         super.onResume();
         this.mealDays = ((MealPlanActivity)getActivity()).getMealDays();

@@ -8,12 +8,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.Location;
+import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.Database.IngredientStorage;
+import com.example.dietscoop.Database.MealPlanStorage;
 import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.Fragments.MealDayFragment;
 import com.example.dietscoop.Fragments.MealPlanFragment;
@@ -35,6 +40,7 @@ public class MealPlanActivity extends AppCompatActivity {
 
     FragmentManager mealPlanManager;
 
+    public MealPlanStorage mealPlanStorage;
     //Database:
     IngredientStorage ingredients;
     RecipeStorage recipes;
@@ -66,9 +72,10 @@ public class MealPlanActivity extends AppCompatActivity {
          * -> Create a new mealplan that is empty.
          *
          */
-        if (mealPlan == null) {
-            mealPlan = new ArrayList<>();
-        }
+        mealPlanStorage = new MealPlanStorage();
+        mealPlan = mealPlanStorage.getMealPlan();
+//        mealPlanStorage.getMealPlanFromDB();
+//        mealPlanStorage.addMealPlanSnapshotListener();
 
         //TODO: Uncomment these when the code works!!!
 //        recipesList = recipes.getRecipeStorage();
@@ -133,12 +140,19 @@ public class MealPlanActivity extends AppCompatActivity {
         Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_plan_fragment);
 
         if (prevFragment != null) {
-            mealPlanManager.beginTransaction().remove(prevFragment).commit();
-        }
+//            mealPlanManager.beginTransaction()
+//                    .setReorderingAllowed(true)
+//                    .commit();
+            mealPlanManager.beginTransaction().show(prevFragment).commit();
 
-        Bundle mealPlanSend = new Bundle();
-        mealPlanSend.putSerializable("mealplan", this.mealPlan); //Will always send a copy of the original data.
-        MealPlanFragment mealPlanFragment = new MealPlanFragment(mealPlanSend);
+        }
+//        if (prevFragment != null) {
+//            mealPlanManager.beginTransaction().remove(prevFragment).commit();
+//        }
+
+//        Bundle mealPlanSend = new Bundle();
+//        mealPlanSend.putSerializable("mealplan", this.mealPlan); //Will always send a copy of the original data.
+        MealPlanFragment mealPlanFragment = new MealPlanFragment(this.mealPlan);
 
         mealPlanManager.beginTransaction()
                 .setReorderingAllowed(true)
@@ -192,6 +206,8 @@ public class MealPlanActivity extends AppCompatActivity {
      * @param changeToDay day to replace the index with.
      */
     public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay) {
+        addIndividualFoodItemsInMealDayToDB(changeToDay); // don't worry "add" is same as "update" here
+        mealPlanStorage.updateMealDayInMealPlan(changeToDay);
         this.mealPlan.set(indexOfDayToChange, changeToDay);
     }
 
@@ -200,7 +216,18 @@ public class MealPlanActivity extends AppCompatActivity {
      * @param mealDay MealDay
      */
     public void mealDayAdd(MealDay mealDay) {
+        addIndividualFoodItemsInMealDayToDB(mealDay);
+        mealPlanStorage.addMealDayToMealPlan(mealDay);
         this.mealPlan.add(mealDay);
+    }
+
+    private void addIndividualFoodItemsInMealDayToDB(MealDay mealDay) {
+        for (IngredientInMealDay i: mealDay.getIngredientInMealDays()) {
+            mealPlanStorage.addIngredientToIngredientsInMealDaysCollection(i);
+        }
+        for (RecipeInMealDay r: mealDay.getRecipeInMealDays()) {
+            mealPlanStorage.addRecipeToRecipesInMealDaysCollection(r);
+        }
     }
 
     /**

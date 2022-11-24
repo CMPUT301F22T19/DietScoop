@@ -119,7 +119,7 @@ public class RecipeStorage implements Serializable {
                                 if (doc1.exists()) {
                                     Log.i(TAG1, doc1.getData().toString());
                                     IngredientInRecipe ing = new IngredientInRecipe(doc1.getString("description"),
-                                            doc1.getString("measurementUnit"),doc1.getDouble("amount"),
+                                            doc1.getString("unit"),doc1.getDouble("amount"),
                                             IngredientCategory.stringToCategory(doc1.getString("category")));
                                     ing.setId(doc1.getId());
                                     ing.setRecipeID(recipe.getId());

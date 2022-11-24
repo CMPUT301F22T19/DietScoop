@@ -58,20 +58,22 @@ public class MealPlanStorage {
                 Log.w(TAG, "Listen failed.", e);
                 return;
             }
+//            meal
             for (DocumentChange doc : value.getDocumentChanges()) {
 
                     switch (doc.getType()) {
                         case ADDED:
-                            if (adapter != null) {
+
                                 ArrayList<String> ingredientIDs = (ArrayList<String>)doc.getDocument().get("ingredients");
                                 ArrayList<String> recipeIDs = (ArrayList<String>)doc.getDocument().get("recipes");
                                 MealDay mealDayToAdd = new MealDay(LocalDate.of(doc.getDocument().getLong("year").intValue(),
                                         doc.getDocument().getLong("month").intValue(),
                                         doc.getDocument().getLong("day").intValue()));
+                                mealDayToAdd.setId(doc.getDocument().getId());
 //                                mealDayToAdd.setIngredientIDs(ingredientIDs);
 //                                mealDayToAdd.setRecipeIDs(recipeIDs);
                                 mealPlan.add(mealDayToAdd);
-                                adapter.notifyDataSetChanged();
+
 
                                 // grab ingredients
                                 for (String ingredient: ingredientIDs) {
@@ -93,9 +95,7 @@ public class MealPlanStorage {
                                         }
 
                                         // TODO: idk if we need this?
-                                        if (adapter!=null) {
-                                            adapter.notifyDataSetChanged();
-                                        }
+
                                     });
                                     db.getIngredientsInMealDaysCollectionRef().document(ingredient).get();
                                 }
@@ -138,22 +138,16 @@ public class MealPlanStorage {
                                                         ing.setRecipeID(rec.getId());
                                                         ingredients.add(ing);
                                                     }
-                                                    if (adapter!=null) {
-                                                        adapter.notifyDataSetChanged();
-                                                    }
                                                 });
                                                 db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).get();
                                             }
                                         }
 
                                         // TODO: idk if we need this?
-                                        if (adapter!=null) {
-                                            adapter.notifyDataSetChanged();
-                                        }
                                     });
                                     db.getRecipesInMealDaysCollectionRef().document(recipe).get();
                                 }
-                            }
+
                             Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
                             break;
 
@@ -168,12 +162,12 @@ public class MealPlanStorage {
                                             doc.getDocument().getLong("day").intValue()));
                                     mealDay.setIngredientIDs((ArrayList<String>)doc.getDocument().get("ingredients"));
                                     mealDay.setRecipeIDs((ArrayList<String>)doc.getDocument().get("recipes"));
-                                    adapter.notifyDataSetChanged();
 
-                                    ArrayList<String> ingredientIDs = (ArrayList<String>)doc.getDocument().get("ingredients");
-                                    ArrayList<String> recipeIDs = (ArrayList<String>)doc.getDocument().get("recipes");
 
-                                    for (String ingredient: ingredientIDs) {
+                                    ArrayList<String> ingredientModIDs = (ArrayList<String>)doc.getDocument().get("ingredients");
+                                    ArrayList<String> recipeModIDs = (ArrayList<String>)doc.getDocument().get("recipes");
+
+                                    for (String ingredient: ingredientModIDs) {
                                         db.getIngredientsInMealDaysCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
                                             String TAG1 = "BALLSSS";
 
@@ -192,15 +186,12 @@ public class MealPlanStorage {
                                             }
 
                                             // TODO: idk if we need this?
-                                            if (adapter!=null) {
-                                                adapter.notifyDataSetChanged();
-                                            }
                                         });
                                         db.getIngredientsInMealDaysCollectionRef().document(ingredient).get();
                                     }
 
                                     // grab recipes
-                                    for (String recipe: recipeIDs) {
+                                    for (String recipe: recipeModIDs) {
                                         db.getRecipesInMealDaysCollectionRef().document(recipe).addSnapshotListener((doc1, e1) -> {
                                             String TAG1 = "BALLSSS";
 
@@ -237,37 +228,31 @@ public class MealPlanStorage {
                                                             ing.setRecipeID(rec.getId());
                                                             ingredients.add(ing);
                                                         }
-                                                        if (adapter!=null) {
-                                                            adapter.notifyDataSetChanged();
-                                                        }
                                                     });
                                                     db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).get();
                                                 }
                                             }
 
                                             // TODO: idk if we need this?
-                                            if (adapter!=null) {
-                                                adapter.notifyDataSetChanged();
-                                            }
+
                                         });
                                         db.getRecipesInMealDaysCollectionRef().document(recipe).get();
                                     }
-
-
                                     break;
                                 }
                             }
                             Log.i("modified new", doc.getDocument().getData().toString());
-                            adapter.notifyDataSetChanged();
+
                             break;
 
                         case REMOVED:
                             Log.i("removed new", doc.getDocument().getData().toString());
-                            adapter.notifyDataSetChanged();
+
                             break;
                     }
 
                 }
+            adapter.notifyDataSetChanged();
         });
     }
 
@@ -283,6 +268,13 @@ public class MealPlanStorage {
         db.removeIngredientFromIngredientsInMealDaysCollection(ingredient);
     }
 
+    public void addRecipeToRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+        db.addRecipeToRecipesInMealDaysCollection(recipeInMealDay);
+    }
+
+    public void updateRecipeInRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+        db.updateRecipeInRecipesInMealDaysCollection(recipeInMealDay);
+    }
 
 
 

@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
+import com.example.dietscoop.Data.Ingredient.Ingredient;
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Meal.MealDay;
@@ -21,9 +23,12 @@ import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.R;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * Generic Fragment that handles the events
@@ -61,6 +66,7 @@ public class MealDayFragment  extends Fragment{
     public MealDayFragment() {
         super(R.layout.meal_day_fragment);
         currentMealDay = new MealDay(LocalDate.now());
+        currentMealDay.setId(UUID.randomUUID().toString());
         editMealDay = false;
     }
 
@@ -177,10 +183,14 @@ public class MealDayFragment  extends Fragment{
         if (currentFoodItemType.equals("Ingredient")) {
             IngredientInStorage tempHolder = ingredientsForAdding.get(selectedFoodItem);
             IngredientInMealDay tempMeal = new IngredientInMealDay(tempHolder);
+            tempMeal.setAmount(scale);
+            tempMeal.setId(UUID.randomUUID().toString());
             currentMealDay.addIngredientInMealDay(tempMeal);
         } else if (currentFoodItemType.equals("Recipe")) {
             Recipe tempHolder = recipesForAdding.get(selectedFoodItem);
             RecipeInMealDay tempMeal = new RecipeInMealDay(tempHolder);
+            tempMeal.setScalingFactor(scale/(tempHolder.getNumOfServings()));
+            tempMeal.setId(UUID.randomUUID().toString());
             currentMealDay.addRecipeInMealDay(tempMeal);
         }
 
