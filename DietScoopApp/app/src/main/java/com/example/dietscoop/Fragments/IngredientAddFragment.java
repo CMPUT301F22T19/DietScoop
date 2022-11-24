@@ -337,9 +337,6 @@ public class IngredientAddFragment extends DialogFragment {
                 e.printStackTrace();
             }
             Picasso.get().load(photoURI).into(thisImageIngredient);
-
-            thisImageIngredient.setImageBitmap(null);
-
         }
     }
 
