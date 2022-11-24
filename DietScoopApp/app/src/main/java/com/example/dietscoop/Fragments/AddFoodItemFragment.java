@@ -63,7 +63,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
 
     public Dialog onCreateDialog(Bundle savedInstance) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
+
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
         dialogView = inflater.inflate(R.layout.add_food_item_fragment, null);
