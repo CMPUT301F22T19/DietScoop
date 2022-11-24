@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,10 +25,15 @@ public class SignUpActivity extends AppCompatActivity {
     Button confirm_BT;
     FirebaseAuth auth;
 
+    ImageButton back_BT;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        back_BT = findViewById(R.id.back_button);
 
         auth = FirebaseAuth.getInstance();
 
@@ -35,6 +41,13 @@ public class SignUpActivity extends AppCompatActivity {
         password_ET = findViewById(R.id.signup_password);
 
         confirm_BT = findViewById(R.id.signup_confirm);
+
+        back_BT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                returnToLogin();
+            }
+        });
 
         confirm_BT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,5 +84,9 @@ public class SignUpActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void returnToLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 
 }

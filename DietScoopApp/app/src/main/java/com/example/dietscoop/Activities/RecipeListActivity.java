@@ -37,7 +37,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
     RecipeListAdapter recipeListAdapter;
 
     TextView titleSort, prepTimeSort, servingSort, categorySort;
-
+    
     ActionBar topBar;
 
     public enum sortSelection {
