@@ -87,7 +87,7 @@ public class MealPlanStorage {
                                         if (doc1.exists()) {
                                             Log.i(TAG1, doc1.getData().toString());
                                             IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
-                                                    doc1.getString("measurementUnit"),doc1.getDouble("amount"),
+                                                    doc1.getString("unit"),doc1.getDouble("amount"),
                                                     IngredientCategory.stringToCategory(doc1.getString("category")));
                                             ing.setId(doc1.getId());
                                             ing.setMealdayID(mealDayToAdd.getId());
@@ -117,6 +117,7 @@ public class MealPlanStorage {
                                                     timeUnit.stringToTimeUnit(doc1.getString("prepUnitTime")),
                                                     recipeCategory.stringToRecipeCategory(doc1.getString("category")),
                                                             ingredients, doc1.getString("instructions"));
+                                            rec.setScalingFactor(doc1.getDouble("scalingFactor"));
                                             rec.setId(doc1.getId());
                                             rec.setMealdayID(mealDayToAdd.getId());
                                             mealDayToAdd.addRecipeInMealDay(rec);
