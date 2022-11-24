@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.Database.IngredientStorage;
 
@@ -22,15 +23,15 @@ public class IngredientStorageTest {
     }
 
     public IngredientInStorage getSampleIngredient() {
-        return new IngredientInStorage("Pop", "kg",
-                5, 2022, 4, 24, Location.Freezer, IngredientCategory.meat);
+        return new IngredientInStorage("Pop", IngredientUnit.kg,
+                5.0, 2022, 4, 24, Location.Freezer, IngredientCategory.Meat);
     }
 
     @Test
     public void testAddIngredientToStorage() {
         sampleIngredientStorage = new IngredientStorage();
-        IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", "kg",
-                5, 2022, 4, 24, Location.freezer, IngredientCategory.meat);
+        IngredientInStorage sampleIngredient = new IngredientInStorage("Pop", IngredientUnit.kg,
+                5.0, 2022, 4, 24, Location.Freezer, IngredientCategory.Meat);
         sampleIngredientStorage.setupIngredientSnapshotListener(); //TODO: need to add the pass value.
         sampleIngredientStorage.addIngredientToStorage(sampleIngredient);
     }
