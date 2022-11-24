@@ -40,6 +40,8 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
     
     ActionBar topBar;
 
+    sortSelection sortingBy;
+
     public enum sortSelection {
         TITLE,
         PREPTIME,
@@ -119,8 +121,48 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
     }
 
     public void sortRecipesBy(RecipeListActivity.sortSelection sortBy) {
+
+        if (sortBy == this.sortingBy) {
+            return;
+        }
+
         recipeStorage.sortBy(sortBy);
         recipeListAdapter.notifyDataSetChanged();
+
+        setSortSelection(sortBy);
+    }
+
+    private void setSortSelection(sortSelection sortBy) {
+
+        this.sortingBy = sortBy;
+
+        switch(this.sortingBy) {
+            case TITLE:
+                titleSort.setText("Title\n▼");
+                prepTimeSort.setText("Prep Time\n━");
+                servingSort.setText("Servings\n━");
+                categorySort.setText("Category\n━");
+                break;
+            case SERVING:
+                titleSort.setText("Title\n━");
+                prepTimeSort.setText("Prep Time\n━");
+                servingSort.setText("Servings\n▼");
+                categorySort.setText("Category\n━");
+                break;
+            case CATEGORY:
+                titleSort.setText("Title\n━");
+                prepTimeSort.setText("Prep Time\n━");
+                servingSort.setText("Servings\n━");
+                categorySort.setText("Category\n▼");
+                break;
+            case PREPTIME:
+                titleSort.setText("Title\n━");
+                prepTimeSort.setText("Prep Time\n▼");
+                servingSort.setText("Servings\n━");
+                categorySort.setText("Category\n━");
+                break;
+        }
+
     }
 
     private void setupActionBar() {

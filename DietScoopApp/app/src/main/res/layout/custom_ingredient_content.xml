@@ -32,18 +32,20 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/Location_Text"
+            android:layout_width="0dp"
+            android:text="Location"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
             android:id="@+id/count_text"
             android:layout_width="0dp"
             android:text="Count"
             android:textAlignment="center"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/Location_Text"
-            android:layout_width="0dp"
-            android:text="Location"
-            android:textAlignment="center"
-            android:textSize="12sp" />
+
     </TableRow>
 
     <View style="@style/Divider"/>
