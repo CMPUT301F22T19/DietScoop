@@ -11,6 +11,7 @@ import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,7 @@ class Database implements Serializable {
     private CollectionReference ingredientsInRecipes;
     private CollectionReference mealPlan;
     private CollectionReference ingredientsInMealDays;
+    private CollectionReference recipesInMealDays;
 
     /**
      * Constructor for the Database class.
@@ -56,6 +58,7 @@ class Database implements Serializable {
         ingredientsInRecipes = db.collection("Users").document(user).collection("IngredientsInRecipes");
         mealPlan = db.collection("Users").document(user).collection("MealPlan");
         ingredientsInMealDays = db.collection("Users").document(user).collection("IngredientsInMealDays");
+        recipesInMealDays = db.collection("Users").document(user).collection("RecipesInMealDays");
     }
 
     private String getUserEmail() throws RuntimeException {
@@ -234,6 +237,8 @@ class Database implements Serializable {
 
     /*************************** MEAL PLAN METHODS ******************************/
 
+    public void getMealPlanFromDB() {mealPlan.get();}
+
     public void addMealDayToMealPlan(MealDay mealday) {
         Map<String, Object> mealdayDetails = new HashMap<>();
         LocalDate date = mealday.getDate();
@@ -257,12 +262,12 @@ class Database implements Serializable {
     }
 
     public void addIngredientToIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
-        ingredient.setId(UUID.randomUUID().toString());
         Map<String, Object> ingredientDetails = new HashMap<>();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
         ingredientDetails.put("unit", ingredient.getMeasurementUnit());
         ingredientDetails.put("category", ingredient.getCategory());
+        ingredientDetails.put("mealdayID",ingredient.getMealdayID());
         ingredientsInMealDays.document(ingredient.getId()).set(ingredientDetails);
 
     }
@@ -273,6 +278,18 @@ class Database implements Serializable {
 
     public void removeIngredientFromIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         ingredientsInMealDays.document(ingredient.getId()).delete();
+    }
+
+    public void addRecipeToRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+
+    }
+
+    public CollectionReference getIngredientsInMealDaysCollectionRef() {
+        return ingredientsInMealDays;
+    }
+
+    public CollectionReference getRecipesInMealDaysCollectionRef() {
+        return recipesInMealDays;
     }
 
     public CollectionReference getMealPlan() {return this.mealPlan;}

@@ -10,6 +10,9 @@ import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Meal.MealPlan;
+import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
+import com.example.dietscoop.Data.Recipe.recipeCategory;
+import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -33,6 +36,8 @@ public class MealPlanStorage {
     public ArrayList<MealDay> getMealPlan() {
         return this.mealPlan;
     }
+
+    public void getMealPlanFromDB() {db.getMealPlanFromDB();}
 
     public void addMealDayToMealPlan(MealDay mealDay) {
         db.addMealDayToMealPlan(mealDay);
@@ -58,16 +63,103 @@ public class MealPlanStorage {
                     switch (doc.getType()) {
                         case ADDED:
                             if (adapter != null) {
+                                ArrayList<String> ingredientIDs = (ArrayList<String>)doc.getDocument().get("ingredients");
+                                ArrayList<String> recipeIDs = (ArrayList<String>)doc.getDocument().get("recipes");
                                 MealDay mealDayToAdd = new MealDay(LocalDate.of(doc.getDocument().getLong("year").intValue(),
                                         doc.getDocument().getLong("month").intValue(),
                                         doc.getDocument().getLong("day").intValue()));
-                                mealDayToAdd.setIngredientIDs((ArrayList<String>)doc.getDocument().get("ingredients"));
-                                mealDayToAdd.setRecipeIDs((ArrayList<String>)doc.getDocument().get("recipes"));
+//                                mealDayToAdd.setIngredientIDs(ingredientIDs);
+//                                mealDayToAdd.setRecipeIDs(recipeIDs);
                                 mealPlan.add(mealDayToAdd);
                                 adapter.notifyDataSetChanged();
+
+                                // grab ingredients
+                                for (String ingredient: ingredientIDs) {
+                                    db.getIngredientsInMealDaysCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
+                                        String TAG1 = "BALLSSS";
+
+                                        if (e != null) {
+                                            Log.w(TAG1, "Listen failed.", e);
+                                            return;
+                                        }
+                                        if (doc1.exists()) {
+                                            Log.i(TAG1, doc1.getData().toString());
+                                            IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
+                                                    doc1.getString("measurementUnit"),doc1.getDouble("amount"),
+                                                    IngredientCategory.stringToCategory(doc1.getString("category")));
+                                            ing.setId(doc1.getId());
+                                            ing.setMealdayID(mealDayToAdd.getId());
+                                            mealDayToAdd.addIngredientInMealDay(ing);
+                                        }
+
+                                        // TODO: idk if we need this?
+                                        if (adapter!=null) {
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                    db.getIngredientsInMealDaysCollectionRef().document(ingredient).get();
+                                }
+
+                                // grab recipes
+                                for (String recipe: recipeIDs) {
+                                    db.getRecipesInMealDaysCollectionRef().document(recipe).addSnapshotListener((doc1, e1) -> {
+                                        String TAG1 = "BALLSSS";
+
+                                        if (e1 != null) {
+                                            Log.w(TAG1, "Listen failed.", e1);
+                                            return;
+                                        }
+                                        if (doc1.exists()) {
+                                            Log.i(TAG1, doc1.getData().toString());
+                                            ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
+                                            RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"),
+                                                    doc1.getLong("prepTime").intValue(), doc1.getLong("servings").intValue(),
+                                                    timeUnit.stringToTimeUnit(doc1.getString("prepUnitTime")),
+                                                    recipeCategory.stringToRecipeCategory(doc1.getString("category")),
+                                                            ingredients, doc1.getString("instructions"));
+                                            rec.setId(doc1.getId());
+                                            rec.setMealdayID(mealDayToAdd.getId());
+                                            mealDayToAdd.addRecipeInMealDay(rec);
+
+                                            for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
+                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
+                                                    String TAG2 = "BALLSSS";
+
+                                                    if (e2 != null) {
+                                                        Log.w(TAG2, "Listen failed.", e2);
+                                                        return;
+                                                    }
+                                                    if (doc2.exists()) {
+                                                        Log.i(TAG2, doc2.getData().toString());
+                                                        IngredientInRecipe ing = new IngredientInRecipe(doc2.getString("description"),
+                                                                doc2.getString("measurementUnit"),doc2.getDouble("amount"),
+                                                                IngredientCategory.stringToCategory(doc2.getString("category")));
+                                                        ing.setId(doc2.getId());
+                                                        ing.setRecipeID(rec.getId());
+                                                        ingredients.add(ing);
+                                                    }
+                                                    if (adapter!=null) {
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                });
+                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).get();
+                                            }
+                                        }
+
+                                        // TODO: idk if we need this?
+                                        if (adapter!=null) {
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                    db.getRecipesInMealDaysCollectionRef().document(recipe).get();
+                                }
                             }
                             Log.i("added new", doc.getDocument().getId() + doc.getDocument().getData().toString());
                             break;
+
+
+
+
                         case MODIFIED:
                             for (MealDay mealDay: mealPlan) {
                                 if (mealDay.getId().equals(doc.getDocument().getId())) {
@@ -77,17 +169,104 @@ public class MealPlanStorage {
                                     mealDay.setIngredientIDs((ArrayList<String>)doc.getDocument().get("ingredients"));
                                     mealDay.setRecipeIDs((ArrayList<String>)doc.getDocument().get("recipes"));
                                     adapter.notifyDataSetChanged();
+
+                                    ArrayList<String> ingredientIDs = (ArrayList<String>)doc.getDocument().get("ingredients");
+                                    ArrayList<String> recipeIDs = (ArrayList<String>)doc.getDocument().get("recipes");
+
+                                    for (String ingredient: ingredientIDs) {
+                                        db.getIngredientsInMealDaysCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
+                                            String TAG1 = "BALLSSS";
+
+                                            if (e != null) {
+                                                Log.w(TAG1, "Listen failed.", e);
+                                                return;
+                                            }
+                                            if (doc1.exists()) {
+                                                Log.i(TAG1, doc1.getData().toString());
+                                                IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
+                                                        doc1.getString("measurementUnit"),doc1.getDouble("amount"),
+                                                        IngredientCategory.stringToCategory(doc1.getString("category")));
+                                                ing.setId(doc1.getId());
+                                                ing.setMealdayID(mealDay.getId());
+                                                mealDay.addIngredientInMealDay(ing);
+                                            }
+
+                                            // TODO: idk if we need this?
+                                            if (adapter!=null) {
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        });
+                                        db.getIngredientsInMealDaysCollectionRef().document(ingredient).get();
+                                    }
+
+                                    // grab recipes
+                                    for (String recipe: recipeIDs) {
+                                        db.getRecipesInMealDaysCollectionRef().document(recipe).addSnapshotListener((doc1, e1) -> {
+                                            String TAG1 = "BALLSSS";
+
+                                            if (e1 != null) {
+                                                Log.w(TAG1, "Listen failed.", e1);
+                                                return;
+                                            }
+                                            if (doc1.exists()) {
+                                                Log.i(TAG1, doc1.getData().toString());
+                                                ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
+                                                RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"),
+                                                        doc1.getLong("prepTime").intValue(), doc1.getLong("servings").intValue(),
+                                                        timeUnit.stringToTimeUnit(doc1.getString("prepUnitTime")),
+                                                        recipeCategory.stringToRecipeCategory(doc1.getString("category")),
+                                                        ingredients, doc1.getString("instructions"));
+                                                rec.setId(doc1.getId());
+                                                rec.setMealdayID(mealDay.getId());
+                                                mealDay.addRecipeInMealDay(rec);
+
+                                                for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
+                                                    db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
+                                                        String TAG2 = "BALLSSS";
+
+                                                        if (e2 != null) {
+                                                            Log.w(TAG2, "Listen failed.", e2);
+                                                            return;
+                                                        }
+                                                        if (doc2.exists()) {
+                                                            Log.i(TAG2, doc2.getData().toString());
+                                                            IngredientInRecipe ing = new IngredientInRecipe(doc2.getString("description"),
+                                                                    doc2.getString("measurementUnit"),doc2.getDouble("amount"),
+                                                                    IngredientCategory.stringToCategory(doc2.getString("category")));
+                                                            ing.setId(doc2.getId());
+                                                            ing.setRecipeID(rec.getId());
+                                                            ingredients.add(ing);
+                                                        }
+                                                        if (adapter!=null) {
+                                                            adapter.notifyDataSetChanged();
+                                                        }
+                                                    });
+                                                    db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).get();
+                                                }
+                                            }
+
+                                            // TODO: idk if we need this?
+                                            if (adapter!=null) {
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        });
+                                        db.getRecipesInMealDaysCollectionRef().document(recipe).get();
+                                    }
+
+
                                     break;
                                 }
                             }
                             Log.i("modified new", doc.getDocument().getData().toString());
                             adapter.notifyDataSetChanged();
                             break;
+
                         case REMOVED:
                             Log.i("removed new", doc.getDocument().getData().toString());
                             adapter.notifyDataSetChanged();
                             break;
                     }
+
                 }
         });
     }

@@ -80,6 +80,7 @@ public class MealDay implements Serializable {
     }
 
     public void addRecipeInMealDay(RecipeInMealDay recipeInMealDay) {
+        this.recipeIDs.add(recipeInMealDay.getId());
         this.recipeInMealDays.add(recipeInMealDay);
         this.foodItems.add(recipeInMealDay);
     }
@@ -94,6 +95,22 @@ public class MealDay implements Serializable {
 
     public void setRecipeIDs(ArrayList<String> recipeIDs) {
         this.recipeIDs = recipeIDs;
+    }
+
+    public void setIngredientInMealDays(ArrayList<IngredientInMealDay> ingredientInMealDays) {
+        this.ingredientInMealDays = ingredientInMealDays;
+        this.ingredientIDs.clear();
+        for (IngredientInMealDay ing: ingredientInMealDays) {
+            ingredientIDs.add(ing.getId());
+        }
+    }
+
+    public void setRecipeInMealDays(ArrayList<RecipeInMealDay> recipeInMealDays) {
+        this.recipeInMealDays = recipeInMealDays;
+        this.recipeIDs.clear();
+        for (RecipeInMealDay rec: recipeInMealDays) {
+            recipeIDs.add(rec.getId());
+        }
     }
 
     public ArrayList<String> getRecipeIDs() {
@@ -123,4 +140,6 @@ public class MealDay implements Serializable {
     public String getId() {
         return this.id;
     }
+
+
 }

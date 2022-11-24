@@ -9,6 +9,7 @@ import java.util.Date;
 public class RecipeInMealDay extends Recipe {
         private Double scalingFactor;
         private Recipe parentRecipe;
+        private String mealdayID;
     public RecipeInMealDay(String description, int prepTime, int servings, timeUnit prepUnitTime,
                            recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList, String instructions) {
         super(description, prepTime, servings, prepUnitTime, category, ingredientsList, instructions);
@@ -34,5 +35,13 @@ public class RecipeInMealDay extends Recipe {
 
     public void setParentRecipe(Recipe parentRecipe) {
         this.parentRecipe = parentRecipe;
+    }
+
+    public String getMealdayID() {
+        return mealdayID;
+    }
+
+    public void setMealdayID(String mealdayID) {
+        this.mealdayID = mealdayID;
     }
 }

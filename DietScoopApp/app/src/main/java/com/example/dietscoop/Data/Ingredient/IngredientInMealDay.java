@@ -3,6 +3,7 @@ package com.example.dietscoop.Data.Ingredient;
 public class IngredientInMealDay extends Ingredient {
     private Double scalingFactor;
     private IngredientInStorage parentIngredient;
+    private String mealdayID;
 
     public IngredientInMealDay(String description, String measurementUnit, double amount, IngredientCategory category) {
         super(description, measurementUnit, amount, category);
@@ -27,5 +28,13 @@ public class IngredientInMealDay extends Ingredient {
 
     public IngredientInStorage getParentIngredient() {
         return this.parentIngredient;
+    }
+
+    public String getMealdayID() {
+        return mealdayID;
+    }
+
+    public void setMealdayID(String mealdayID) {
+        this.mealdayID = mealdayID;
     }
 }
