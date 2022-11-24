@@ -1,32 +1,25 @@
 package com.example.dietscoop.Fragments;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
-import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,7 +30,7 @@ import java.util.Calendar;
  * to do with: Viewing, Adding and editing a MealDay.
  */
 public class MealDayFragment  extends Fragment{
-    Boolean existingMealDay = false;
+    Boolean editMealDay = false;
 
     View container;
     EditText enterDateText;
@@ -62,24 +55,26 @@ public class MealDayFragment  extends Fragment{
 
 
     //Containers:
-    MealDay currentMealDay;
+    int indexOfDay; //Only if editing:
+    MealDay currentMealDay = null;
 
-    //TODO: Make a separate constructor that handles when an already existing mealDay gets passed in.
     public MealDayFragment() {
         super(R.layout.meal_day_fragment);
+        currentMealDay = new MealDay(LocalDate.now());
+        editMealDay = false;
+    }
+
+    public MealDayFragment(Bundle mealDayToEdit) {
+        super(R.layout.meal_day_fragment);
+        this.editMealDay = true;
+        this.currentMealDay = (MealDay) mealDayToEdit.getSerializable("mealdaytoedit");
+        this.indexOfDay = mealDayToEdit.getInt("dayindex");
     }
 
     @NonNull
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstance) {
         container = view;
-
-        if (savedInstance != null) {
-            this.currentMealDay = (MealDay) savedInstance.getSerializable("mealday");
-            existingMealDay = true;
-        } else {
-            this.currentMealDay = new MealDay(LocalDate.now());
-        }
 
         //Binding Views:
         initializeViews();
@@ -139,9 +134,15 @@ public class MealDayFragment  extends Fragment{
         mealDayConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MealPlanActivity access = ((MealPlanActivity)getActivity());
-                access.mealDayAdd(currentMealDay);
-                access.changeToMealPlan();
+                if (editMealDay) {
+                    MealPlanActivity access = ((MealPlanActivity)getActivity());
+                    access.makeChangeToDay(indexOfDay, currentMealDay);
+                    access.changeToMealPlan();
+                } else {
+                    MealPlanActivity access = ((MealPlanActivity)getActivity());
+                    access.mealDayAdd(currentMealDay);
+                    access.changeToMealPlan();
+                }
             }
         });
 

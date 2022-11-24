@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
 
@@ -22,13 +23,16 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     //Variables:
     Context context;
     ArrayList<MealDay> mealDays;
+    private RecyclerItemClickListener entryListener;
+
 
     //Static Class for the sake of inflating views and connecting to backend:
-    public static class DayHolder extends RecyclerView.ViewHolder {
+    public class DayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mealDayDate;
         private final Button modifyMealDay;
         private final Button deleteMealDay;
+
 
         public DayHolder(View view) {
             super(view);
@@ -37,8 +41,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
             mealDayDate = (TextView) view.findViewById(R.id.mealplan_for_date);
             modifyMealDay = (Button) view.findViewById(R.id.view_mealplan_for_date_button);
             deleteMealDay = (Button) view.findViewById(R.id.delete_mealplan_for_date_button);
-
-            //TODO: 1. Set Up OnClickListener for the modify button.
+            view.setOnClickListener(this); //Setting up the onClick Listener:
         }
 
         //Fetchers for views:
@@ -48,6 +51,13 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
 
         public Button getMealDayModifyButton() {
             return modifyMealDay;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (entryListener != null) {
+                entryListener.onItemClick(view, getAdapterPosition());
+            }
         }
     }
 
@@ -65,7 +75,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     public MealPlanRecyclerAdapter.DayHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.meal_day_display, viewGroup, false);
+                .inflate(R.layout.meal_plan_display, viewGroup, false);
 
         return new DayHolder(view);
     }
@@ -90,4 +100,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
         notifyDataSetChanged();
     }
 
+    public void setEntryListener(RecyclerItemClickListener entryListener) {
+        this.entryListener = entryListener;
+    }
 }
