@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,7 +41,10 @@ import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Calendar;
 
 public class IngredientAddFragment extends DialogFragment {
@@ -63,6 +67,7 @@ public class IngredientAddFragment extends DialogFragment {
     private Button addByCamera;
     private ImageView thisImageIngredient;
     private Uri photoURI;
+    private String thisIngredientPhotoBase64;
 
     // For getting the string version of Calendar
     // Error handing
@@ -322,8 +327,19 @@ public class IngredientAddFragment extends DialogFragment {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             photoURI = data.getData();
-
+            try {
+                Bitmap thisIngredientBitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), photoURI);
+                ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
+                thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
+                byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
+                thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Picasso.get().load(photoURI).into(thisImageIngredient);
+
+            thisImageIngredient.setImageBitmap(null);
+
         }
     }
 
