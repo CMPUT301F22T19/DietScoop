@@ -1,5 +1,6 @@
 package com.example.dietscoop.Fragments;
 
+import static android.app.Activity.RESULT_OK;
 import static java.lang.String.valueOf;
 
 import android.Manifest;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -36,6 +38,7 @@ import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
+import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -59,6 +62,7 @@ public class IngredientAddFragment extends DialogFragment {
     private Button addByCameraRoll;
     private Button addByCamera;
     private ImageView thisImageIngredient;
+    private Uri photoURI;
 
     // For getting the string version of Calendar
     // Error handing
@@ -142,7 +146,7 @@ public class IngredientAddFragment extends DialogFragment {
         addByCameraRoll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                cameraRollOpener();
             }
         });
 
@@ -313,9 +317,14 @@ public class IngredientAddFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == CAMERA_REQUEST) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
-            thisImageIngredient.setImageBitmap(image);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            photoURI = data.getData();
+
+            Picasso.get().load(photoURI).into(thisImageIngredient);
+            thisImageIngredient.setImageURI(photoURI);
         }
     }
 
@@ -333,7 +342,7 @@ public class IngredientAddFragment extends DialogFragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, CHOSEN_INDIVIDUAL_IMAGE);
+        startActivityForResult(intent, CAMERA_REQUEST);
     }
 
 }
