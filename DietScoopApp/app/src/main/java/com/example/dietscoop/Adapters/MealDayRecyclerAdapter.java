@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Meal.MealDay;
@@ -19,15 +20,16 @@ import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
-
+//TODO: Make this view pretty please.
 public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecyclerAdapter.MealHolder>{
 
     //Variables:
     Context context;
     ArrayList<FoodItem> meals;
+    private RecyclerItemClickListener entryListener;
 
     //Static Class for the sake of inflating views and connecting to backend:
-    public static class MealHolder extends RecyclerView.ViewHolder {
+    public class MealHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mealDescription;
         private final TextView mealQuantity;
@@ -40,8 +42,7 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
             mealDescription = (TextView) view.findViewById(R.id.meal_in_mealday_description);
             mealQuantity = (TextView) view.findViewById(R.id.meal_in_mealday_quantity_or_servings);
             mealDelete = (Button) view.findViewById(R.id.meal_in_mealday_delete_button);
-
-            //TODO: 1. Set Up OnClickListener for the delete button.
+            view.setOnClickListener(this); //Setting up the onClick Listener:
         }
 
         //Fetchers for views:
@@ -55,6 +56,13 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
 
         public Button getMealDelete() {
             return mealDelete;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (entryListener != null) {
+                entryListener.onItemClick(view, getAdapterPosition());
+            }
         }
     }
 
@@ -102,4 +110,7 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
         return meals.size();
     }
 
+    public void setEntryListener(RecyclerItemClickListener entryListener) {
+        this.entryListener = entryListener;
+    }
 }

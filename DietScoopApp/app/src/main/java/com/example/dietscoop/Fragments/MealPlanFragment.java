@@ -56,8 +56,6 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
         addMealDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 ((MealPlanActivity) getActivity()).changeToMealDayAdd();
             }
         });

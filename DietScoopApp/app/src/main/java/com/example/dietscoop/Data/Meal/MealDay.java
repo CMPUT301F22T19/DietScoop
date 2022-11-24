@@ -4,6 +4,7 @@ package com.example.dietscoop.Data.Meal;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 
@@ -26,7 +27,7 @@ public class MealDay implements Serializable {
 //    TODO: Uncomment this if going for the meal in mealday schema.
     ArrayList<Meal> mealsInDay;
     LocalDate date;
-    ArrayList<FoodItem> foodItems; //This array is adadpted to be used in the RecyclerView for MealDay Editing.
+    ArrayList<FoodItem> foodItems; //This array is adapted to be used in the RecyclerView for MealDay Editing.
     ArrayList<IngredientInMealDay> ingredientInMealDays;
     ArrayList<RecipeInMealDay> recipeInMealDays;
     private ArrayList<String> ingredientIDs;
@@ -83,6 +84,22 @@ public class MealDay implements Serializable {
         this.recipeIDs.add(recipeInMealDay.getId());
         this.recipeInMealDays.add(recipeInMealDay);
         this.foodItems.add(recipeInMealDay);
+    }
+
+    public void removeIngredientInMealDay(int indexToDelete) {
+        IngredientInMealDay container = (IngredientInMealDay) this.foodItems.get(indexToDelete);
+        int actualIndex = this.ingredientInMealDays.indexOf(container);
+        this.ingredientInMealDays.remove(actualIndex);
+        this.ingredientIDs.remove(container.getId());
+        this.foodItems.remove(indexToDelete);
+    }
+
+    public void removeRecipeInMealDay(int indexToDelete) {
+        RecipeInMealDay container = (RecipeInMealDay) this.foodItems.get(indexToDelete);
+        int actualIndex = this.recipeInMealDays.indexOf(container);
+        this.recipeInMealDays.remove(actualIndex);
+        this.recipeIDs.remove(container.getId());
+        this.foodItems.remove(indexToDelete);
     }
 
     public ArrayList<FoodItem> getFoodItems() {

@@ -48,12 +48,21 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     int spinnerSelectNum;
     FoodItem editMeal;
     String currentMealType;
+
     Boolean editing;
+    int indexToEdit; //Will handle what day to overwrite;
 
     public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems) {
         this.context = context;
         this.foodItems = (ArrayList<FoodItem>) foodItems;
         this.editing = false;
+    }
+
+    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems, int indexToEdit) {
+        this.context = context;
+        this.foodItems = (ArrayList<FoodItem>) foodItems;
+        this.editing = true;
+        this.indexToEdit = indexToEdit;
     }
 
 //    public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems, FoodItem editItem) {
@@ -75,32 +84,69 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         initializeViews();
         populateSpinner();
 
+        if (editing) {
+            setEditViewTexts();
+        }
+
         ArrayAdapter<String> stringSpinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerNames);
         stringSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         foodItemSpinner.setAdapter(stringSpinnerAdapter);
         foodItemSpinner.setOnItemSelectedListener(this);
 
+        if (editing) {
 
-        //TODO: Add control logic to depict the kind of builder layout invoked:
-        builder.setView(dialogView)
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Checking for the item type:
-                        double scale = Double.parseDouble(quantityInput.getText().toString());
-                        MealDayFragment testParent = (MealDayFragment)getParentFragment();
-                        ((MealDayFragment)context).addMeal(spinnerSelectNum, scale);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO: Implement the cancellation of a meal day.
-                    }
-                });
+            //TODO: Add control logic to depict the kind of builder layout invoked:
+            builder.setView(dialogView)
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //Checking for the item type:
+                            double scale = Double.parseDouble(quantityInput.getText().toString());
+                            MealDayFragment testParent = (MealDayFragment)getParentFragment();
+                            ((MealDayFragment)context).editMeal(spinnerSelectNum, scale, indexToEdit);
+                        }
+                    })
+                    .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ((MealDayFragment)context).deleteMeal(indexToEdit);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //Do nothing.
+                        }
+                    });
+            return builder.create();
 
-        return builder.create();
+        } else { //Not editing:
+
+            //TODO: Add control logic to depict the kind of builder layout invoked:
+            builder.setView(dialogView)
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //Checking for the item type:
+                            double scale = Double.parseDouble(quantityInput.getText().toString());
+                            MealDayFragment testParent = (MealDayFragment)getParentFragment();
+                            ((MealDayFragment)context).addMeal(spinnerSelectNum, scale);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //TODO: Implement the cancellation of a meal day.
+                        }
+                    });
+
+            return builder.create();
+
+        }
+    }
+
+    private void setEditViewTexts() {
 
     }
 

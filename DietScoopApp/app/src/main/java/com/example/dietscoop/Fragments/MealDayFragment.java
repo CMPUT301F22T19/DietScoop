@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.MealPlanActivity;
+import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
@@ -35,7 +36,7 @@ import java.util.UUID;
  * Generic Fragment that handles the events
  * to do with: Viewing, Adding and editing a MealDay.
  */
-public class MealDayFragment  extends Fragment{
+public class MealDayFragment  extends Fragment implements RecyclerItemClickListener {
     Boolean editMealDay = false;
 
     View container;
@@ -87,7 +88,6 @@ public class MealDayFragment  extends Fragment{
 
         //Binding Views:
         initializeViews();
-
         //Showing a pre-existing date if applicable:
         if (editMealDay) {
             enterDateText.setText(currentMealDay.getDate().toString());
@@ -103,6 +103,7 @@ public class MealDayFragment  extends Fragment{
         mealRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mealRecyclerAdapter = new MealDayRecyclerAdapter(getActivity(), currentMealDay.getFoodItems());
         mealRecycler.setAdapter(mealRecyclerAdapter);
+        mealRecyclerAdapter.setEntryListener(this);
 
         //Listeners:
         /**
@@ -176,6 +177,7 @@ public class MealDayFragment  extends Fragment{
 
     public void setMealDayDate(int day, int month, int year) {
         this.mealDayDate = LocalDate.of(year, month, day);
+        this.currentMealDay.setDate(mealDayDate);
     }
 
     public void initializeViews() {
@@ -193,17 +195,17 @@ public class MealDayFragment  extends Fragment{
         mealRecyclerAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Adds a FoodItem to our MealDay.
-     */
+
+    //TODO: Change the following methods to manipualte how the meals get added and
+    //what properties get changed in the mealdays.
     public void addMeal(int selectedFoodItem, double scale) {
-        if (currentFoodItemType.equals("Ingredient")) {
+        if (this.allFoodItems.get(selectedFoodItem).getType().equals("Ingredient")) {
             IngredientInStorage tempHolder = (IngredientInStorage) (allFoodItems.get(selectedFoodItem));
             IngredientInMealDay tempMeal = new IngredientInMealDay(tempHolder);
             tempMeal.setAmount(scale);
             tempMeal.setId(UUID.randomUUID().toString());
             currentMealDay.addIngredientInMealDay(tempMeal);
-        } else if (currentFoodItemType.equals("Recipe")) {
+        } else if (this.allFoodItems.get(selectedFoodItem).getType().equals("Recipe")) {
             Recipe tempHolder = (Recipe) allFoodItems.get(selectedFoodItem);
             RecipeInMealDay tempMeal = new RecipeInMealDay(tempHolder);
             tempMeal.setScalingFactor(scale/(tempHolder.getNumOfServings()));
@@ -216,8 +218,28 @@ public class MealDayFragment  extends Fragment{
 
     }
 
+    public void editMeal(int selectedFoodItem, double scale, int mealToChange) {
+        deleteMeal(mealToChange);
+        addMeal(selectedFoodItem, scale);
+    }
+
+    public void deleteMeal(int mealToChange) {
+        if (this.currentMealDay.getFoodItems().get(mealToChange).getType() == "Ingredient") {
+            currentMealDay.removeIngredientInMealDay(mealToChange);
+        } else {
+            currentMealDay.removeRecipeInMealDay(mealToChange);
+        }
+
+        this.mealRecyclerAdapter.notifyDataSetChanged();
+    }
+
     public void setCurrentFoodItemType(String type) {
         this.currentFoodItemType = type; //TODO: finish this connection on the Dialog side.
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), allFoodItems, position);
+        dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
+    }
 }
