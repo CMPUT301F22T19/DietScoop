@@ -50,7 +50,6 @@ import java.util.Calendar;
 public class IngredientAddFragment extends DialogFragment {
     private static final int CAMERA_PERMISSION = 211;
     public static final int CAMERA_REQUEST = 212;
-    private static final int CHOSEN_INDIVIDUAL_IMAGE = 1;
     private EditText description;
     private EditText amount;
     private Spinner category;
@@ -364,5 +363,4 @@ public class IngredientAddFragment extends DialogFragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, CAMERA_REQUEST);
     }
-
 }
