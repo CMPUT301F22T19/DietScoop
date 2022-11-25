@@ -139,6 +139,7 @@ public class MealPlanStorage {
                                                                 IngredientCategory.stringToCategory(doc2.getString("category")));
                                                         ing.setId(doc2.getId());
                                                         ing.setRecipeID(rec.getId());
+                                                        rec.addIngredientRef(doc2.getId());
                                                         ingredients.add(ing);
                                                     }
                                                 });
