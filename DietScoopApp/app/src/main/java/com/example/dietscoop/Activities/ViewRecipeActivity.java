@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -219,6 +220,13 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         numServings.setText(String.valueOf(currentRecipe.getNumOfServings()));
         instructions.setText(currentRecipe.getInstructions());
         name.setText(String.valueOf(currentRecipe.getDescription()));
+        if(currentRecipe.getImageBitmap() != null)
+        {
+            byte[] test = Base64.getDecoder().decode(currentRecipe.getImageBitmap());
+            Bitmap bitmap = BitmapFactory.decodeByteArray(test, 0, test.length);
+            thisImageRecipe.setImageBitmap(bitmap);
+        }
+
 
 
     }
@@ -238,7 +246,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     }
 
     private void confirmRecipe() {
-        // TODO: do the getTexts and use setters to modify currentRecipe
+        // TODO: do the getTexts and use setters to modify currentRecipe\
+        currentRecipe.setImageBitmap(thisRecipeBase64);
+
         String recipeNumOfServings = numServings.getText().toString();
         currentRecipe.setNumOfServings(Integer.valueOf(recipeNumOfServings));
         String recipePrepTime = prepTime.getText().toString();
@@ -342,6 +352,10 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if(data.getData() == null) {
+            Log.i("end my suffering", "pain");
+        }
+
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             photoURI = data.getData();
@@ -351,7 +365,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
                 thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
                 byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
                 thisRecipeBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
-                Log.i("stringBitmap", thisRecipeBase64);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -364,6 +378,7 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
             thisIngredientPhotoCamera.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
             byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
             thisRecipeBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
+            Log.i("stringBitmap", thisRecipeBase64);
         }
     }
 
