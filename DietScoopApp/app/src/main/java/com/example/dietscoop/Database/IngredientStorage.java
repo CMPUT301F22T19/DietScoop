@@ -3,6 +3,8 @@ package com.example.dietscoop.Database;
 import android.util.Log;
 
 import com.example.dietscoop.Activities.IngredientListActivity;
+import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
+import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
@@ -79,7 +81,7 @@ public class IngredientStorage {
      * Method to initialize a listen for an Ingredient Snapshot
      */
     public void setupIngredientSnapshotListener() {
-        setupIngredientSnapshotListener(null);
+        setupIngredientSnapshotListener((IngredientStorageAdapter)null);
     }
 
     /**
@@ -158,6 +160,59 @@ public class IngredientStorage {
         });
     }
 
+    public void setupIngredientSnapshotListener(IngredientRecipeAdapter adapter) {
+
+        db.getIngredientCollectionRef().addSnapshotListener((value, e) -> {
+            String TAG = "test";
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
+
+            for (DocumentChange doc : value.getDocumentChanges()) {
+                switch(doc.getType()) {
+                    case ADDED:
+                        Log.i("ADDED", "INGREDIENT ADDED TO DB");
+                        IngredientInStorage ingredient = new IngredientInStorage(doc.getDocument().getString("description"),
+                                IngredientUnit.stringToUnit(doc.getDocument().getData().get("measurementUnit").toString()),
+                                doc.getDocument().getDouble("amount"),
+                                (doc.getDocument().getLong("year")).intValue(),
+                                (doc.getDocument().getLong("month")).intValue(), (doc.getDocument().getLong("day")).intValue(),
+                                Location.stringToLocation(doc.getDocument().getData().get("location").toString()),
+                                IngredientCategory.stringToCategory(doc.getDocument().getData().get("category").toString()));
+                        storage.add(ingredient);
+                        ingredient.setId(doc.getDocument().getId());
+                        break;
+                    case MODIFIED:
+                        for (IngredientInStorage ing : storage) {
+                            if (ing.getId().equals(doc.getDocument().getId())) {
+                                ing.setLocation(Location.stringToLocation(doc.getDocument().getString("location")));
+                                ing.setCategory(IngredientCategory.stringToCategory(doc.getDocument().getString("category")));
+                                ing.setAmount(doc.getDocument().getDouble("amount"));
+                                ing.setBestBeforeDate(doc.getDocument().getLong("year").intValue(),
+                                        doc.getDocument().getLong("month").intValue(),
+                                        doc.getDocument().getLong("day").intValue());
+                                ing.setDescription(doc.getDocument().getString("description"));
+                                ing.setMeasurementUnit(IngredientUnit.stringToUnit(doc.getDocument().getString("measurementUnit")));
+                                break;
+                            }
+                        }
+                        break;
+                    case REMOVED:
+                        for (IngredientInStorage ing : storage) {
+                            if (ing.getId().equals(doc.getDocument().getId())) {
+                                storage.remove(ing);
+                                break;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            adapter.notifyDataSetChanged();
+        });
+    }
+
     /**
      * Method to sort Ingredients by given selection
      * @param sortBy selection to be sorted by
@@ -177,5 +232,14 @@ public class IngredientStorage {
                 storage.sort(new IngredientComparator.byLocation());
                 break;
         }
+    }
+
+    public IngredientInStorage getIngredientWithID(String id) {
+        for (IngredientInStorage ing : storage) {
+            if (ing.getId().equals(id)) {
+                return ing;
+            }
+        }
+        return null;
     }
 }
