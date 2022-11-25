@@ -32,7 +32,7 @@ import java.util.ArrayList;
  *  Will extract the recipes and ingredients in storage from the database.
  *  Will control the flow of the mealplan activity by switching fragments based on user end.
  */
-public class MealPlanActivity extends AppCompatActivity {
+public class MealPlanActivity extends NavigationActivity {
 
     FragmentManager mealPlanManager;
 
@@ -59,6 +59,7 @@ public class MealPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_activity);
+        initNavigationActivity();
 
         mealPlanManager = getSupportFragmentManager();
         recipes = new RecipeStorage();
