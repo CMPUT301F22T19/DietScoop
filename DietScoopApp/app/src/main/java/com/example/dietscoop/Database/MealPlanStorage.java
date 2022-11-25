@@ -80,7 +80,7 @@ public class MealPlanStorage {
                                 // grab ingredients
                                 for (String ingredient: ingredientIDs) {
                                     db.getIngredientsInMealDaysCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
-                                        String TAG1 = "BALLSSS";
+                                        String TAG1 = "ALLSSS";
 
                                         if (e != null) {
                                             Log.w(TAG1, "Listen failed.", e);
@@ -106,7 +106,7 @@ public class MealPlanStorage {
                                 // grab recipes
                                 for (String recipe: recipeIDs) {
                                     db.getRecipesInMealDaysCollectionRef().document(recipe).addSnapshotListener((doc1, e1) -> {
-                                        String TAG1 = "BALLSSS";
+                                        String TAG1 = "ALLSSS";
 
                                         if (e1 != null) {
                                             Log.w(TAG1, "Listen failed.", e1);
@@ -128,7 +128,7 @@ public class MealPlanStorage {
 
                                             for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
                                                 db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
-                                                    String TAG2 = "BALLSSS";
+                                                    String TAG2 = "ALLSSS";
 
                                                     if (e2 != null) {
                                                         Log.w(TAG2, "Listen failed.", e2);
