@@ -190,7 +190,7 @@ public class MealPlanActivity extends NavigationActivity {
      */
     public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay, ArrayList<FoodItem> itemsToDelete) {
         addIndividualFoodItemsInMealDayToDB(changeToDay); // don't worry "add" is same as "update" here
-        deleteInvididualFoodItemsInMealDayFromDB(itemsToDelete);
+        deleteIndividualFoodItemsInMealDayFromDB(itemsToDelete);
         mealPlanStorage.updateMealDayInMealPlan(changeToDay);
         this.mealPlan.set(indexOfDayToChange, changeToDay);
     }
@@ -215,12 +215,12 @@ public class MealPlanActivity extends NavigationActivity {
         }
     }
 
-    private void deleteInvididualFoodItemsInMealDayFromDB(ArrayList<FoodItem> itemsToDelete) {
+    private void deleteIndividualFoodItemsInMealDayFromDB(ArrayList<FoodItem> itemsToDelete) {
         for (FoodItem i: itemsToDelete) {
             if (i.getType() == "Ingredient") {
                 mealPlanStorage.removeIngredientFromIngredientsInMealDaysCollection((IngredientInMealDay)i);
             } else if (i.getType() == "Recipe") {
-
+                mealPlanStorage.removeRecipeFromRecipesInMealDaysCollection((RecipeInMealDay)i);
             }
         }
     }
