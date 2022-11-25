@@ -1,6 +1,7 @@
 package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
@@ -39,15 +40,20 @@ public class RecipeTest {
         assertEquals(sampleRecipe.getDescription(), "Frijoles Con Pollo");
     }
 
-//    @Test
-//    public void testAddIngredient() {
-//        Recipe sampleRecipe = getSampleRecipe();
-//
-//        Ingredient sampleIngredient = new Ingredient("eggs", "kg", 4);
-//
-//        sampleRecipe.addIngredient(sampleIngredient);
-//        assertTrue(sampleRecipe.containsIngredient(sampleIngredient));
-//    }
+    @Test
+    public void testAddIngredient() {
+        Recipe sampleRecipe = getSampleRecipe();
+
+        IngredientInRecipe sampleIngredient = new IngredientInRecipe("Salami", IngredientUnit.kg,
+                5.0, IngredientCategory.Meat);
+
+        sampleRecipe.addIngredient(sampleIngredient);
+        assertEquals(4, sampleRecipe.getIngredients().size());
+        assertEquals("Salami", sampleRecipe.getIngredients().get(3).getDescription());
+        assertEquals(IngredientUnit.kg, sampleRecipe.getIngredients().get(3).getMeasurementUnit());
+        assertEquals(5.0, sampleRecipe.getIngredients().get(3).getAmount());
+        assertEquals(IngredientCategory.Meat, sampleRecipe.getIngredients().get(3).getCategory());
+    }
 
     @Test
     public void testGetComments() {
@@ -98,6 +104,12 @@ public class RecipeTest {
         sampleRecipe.removeIngredient(sampleIngredient);
 
         assertEquals(sampleRecipe.getNumberOfIngredients(), 3);
+
+        for(int i = 0; i < sampleRecipe.getNumberOfIngredients(); ++i)
+        {
+            assertNotEquals("eggs", sampleRecipe.getIngredients().get(i)
+                    .getDescription());
+        }
 
     }
 }
