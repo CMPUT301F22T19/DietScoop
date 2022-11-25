@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * Extends FoodItem to obtain a category property.
  */
 public class Recipe extends FoodItem implements Serializable {
+    private String imageBitmap;
     private int prepTime;
     private int servings;
     private timeUnit prepUnitTime;
@@ -53,6 +54,16 @@ public class Recipe extends FoodItem implements Serializable {
         this.ingredientsList = ingredientsList;
         this.instructions = instructions;
         this.ingredientRefs = new ArrayList<String>();
+    }
+
+
+    public String getImageBitmap()
+    {
+        return imageBitmap;
+    }
+
+    public void setImageBitmap(String imageBitmap) {
+        this.imageBitmap = imageBitmap;
     }
 
     /**
