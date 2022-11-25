@@ -263,6 +263,7 @@ class Database implements Serializable {
         mealPlan.document(mealDay.getId()).delete();
     }
 
+    //TODO: Marcos fiddled here:
     public void addIngredientToIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         Map<String, Object> ingredientDetails = new HashMap<>();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
@@ -270,6 +271,7 @@ class Database implements Serializable {
         ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit());
         ingredientDetails.put("category", ingredient.getCategory());
         ingredientDetails.put("mealdayID",ingredient.getMealdayID());
+        ingredientDetails.put("parentFoodItemID", ingredient.getParentIngredient().getId()); //Changed this to add a reference to the parent item.
         ingredientsInMealDays.document(ingredient.getId()).set(ingredientDetails);
 
     }
@@ -281,7 +283,7 @@ class Database implements Serializable {
     public void removeIngredientFromIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         ingredientsInMealDays.document(ingredient.getId()).delete();
     }
-
+    //TODO: Marcos fiddled here:
     public void addRecipeToRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("prepTime", recipeInMealDay.getPrepTime());
@@ -293,6 +295,7 @@ class Database implements Serializable {
         recipeDetails.put("ingredients", recipeInMealDay.getIngredientRefs());
         recipeDetails.put("scalingFactor",recipeInMealDay.getScalingFactor());
         recipeDetails.put("mealDayID",recipeInMealDay.getMealdayID());
+        recipeDetails.put("parentFoodItemID", recipeInMealDay.getParentRecipe().getId()); //Changed this to add a reference to the parent item.
         recipesInMealDays.document(recipeInMealDay.getId()).set(recipeDetails);
     }
 
