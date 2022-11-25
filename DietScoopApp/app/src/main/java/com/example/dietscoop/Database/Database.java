@@ -303,6 +303,10 @@ class Database implements Serializable {
         this.addRecipeToRecipesInMealDaysCollection(recipeInMealDay);
     }
 
+    public void removeRecipeFromRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+        recipesInMealDays.document(recipeInMealDay.getId()).delete();
+    }
+
     public CollectionReference getIngredientsInMealDaysCollectionRef() {
         return ingredientsInMealDays;
     }
