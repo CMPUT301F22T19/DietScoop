@@ -82,6 +82,4 @@ public class IngredientInStorageTest {
         assertEquals(sampleIngredientSTR.getBestBeforeDate(), newDate);
     }
 
-
-
 }
