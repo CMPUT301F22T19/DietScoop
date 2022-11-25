@@ -24,6 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ShoppingListInfo {
@@ -104,7 +105,8 @@ public class ShoppingListInfo {
                             break;
                     }
                 }
-
+                updateShoppingList();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -156,20 +158,60 @@ public class ShoppingListInfo {
                                 }
                             }
                     }
-                    adapter.notifyDataSetChanged();
                 }
+                updateShoppingList();
+                adapter.notifyDataSetChanged();
             }
         });
-
     }
 
     public ArrayList<IngredientInRecipe> getShoppingList() {
-        updateShoppingList();
         return shoppingList;
     }
 
     private void updateShoppingList() {
 
+        this.shoppingList.clear();
+        ArrayList<IngredientInRecipe> ingredientsWeHave = getIngredientsInStorage();
+        ArrayList<IngredientInRecipe> ingredientsWeNeed = getIngredientsInRecipes();
+
+
+    }
+
+    private ArrayList<IngredientInRecipe> getIngredientsInRecipes() {
+
+        ArrayList<IngredientInRecipe> allIngInMealPlans = new ArrayList<>();
+
+        allIngInMealPlans.addAll(this.ingInMealPlans);
+
+        for (Recipe rec : this.recipesInMealPlans) {
+            allIngInMealPlans.addAll(rec.getIngredients());
+        }
+
+        return AggregateIngredients(allIngInMealPlans);
+
+    }
+
+    private ArrayList<IngredientInRecipe> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsWeHave) {
+
+
+    }
+
+    private ArrayList<IngredientInRecipe> getIngredientsInStorage() {
+
+        ArrayList<IngredientInStorage> ingInStor = ingredientStorage.getIngredientStorage();
+        ArrayList<IngredientInRecipe> ingInStor_rec = new ArrayList<>();
+
+        for (IngredientInStorage ing : ingInStor) {
+            ingInStor_rec.add(new IngredientInRecipe(
+                    ing.getDescription(),
+                    ing.getMeasurementUnit(),
+                    ing.getAmount(),
+                    ing.getCategory()
+            ));
+        }
+
+        return AggregateIngredients(ingInStor_rec);
 
     }
 
