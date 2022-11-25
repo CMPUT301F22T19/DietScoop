@@ -91,7 +91,7 @@ public class MealPlanStorage {
                                             IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
                                                     IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
                                                     IngredientCategory.stringToCategory(doc1.getString("category")),
-                                                    doc1.getString("parentRecipeID"));
+                                                    doc1.getString("parentIngredientID"));
                                             ing.setId(doc1.getId());
                                             ing.setMealdayID(mealDayToAdd.getId());
                                             mealDayToAdd.addIngredientInMealDay(ing);
@@ -120,6 +120,7 @@ public class MealPlanStorage {
                                                     timeUnit.stringToTimeUnit(doc1.getString("prepUnitTime")),
                                                     recipeCategory.stringToRecipeCategory(doc1.getString("category")),
                                                             ingredients, doc1.getString("instructions"));
+                                            rec.setParentRecipeID(doc1.getString("parentRecipeID"));
                                             rec.setScalingFactor(doc1.getDouble("scalingFactor"));
                                             rec.setId(doc1.getId());
                                             rec.setMealdayID(mealDayToAdd.getId());

@@ -271,7 +271,7 @@ class Database implements Serializable {
         ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit());
         ingredientDetails.put("category", ingredient.getCategory());
         ingredientDetails.put("mealdayID",ingredient.getMealdayID());
-        ingredientDetails.put("parentIngredientID", ingredient.getParentIngredient().getId()); //Changed this to add a reference to the parent item.
+        ingredientDetails.put("parentIngredientID", ingredient.getParentIngredientID()); //Changed this to add a reference to the parent item.
         ingredientsInMealDays.document(ingredient.getId()).set(ingredientDetails);
 
     }
@@ -295,7 +295,7 @@ class Database implements Serializable {
         recipeDetails.put("ingredients", recipeInMealDay.getIngredientRefs());
         recipeDetails.put("scalingFactor",recipeInMealDay.getScalingFactor());
         recipeDetails.put("mealDayID",recipeInMealDay.getMealdayID());
-        recipeDetails.put("parentRecipeID", recipeInMealDay.getParentRecipe().getId()); //Changed this to add a reference to the parent item.
+        recipeDetails.put("parentRecipeID", recipeInMealDay.getParentRecipeID()); //Changed this to add a reference to the parent item.
         recipesInMealDays.document(recipeInMealDay.getId()).set(recipeDetails);
     }
 

@@ -34,6 +34,10 @@ public class IngredientInMealDay extends Ingredient {
         return this.parentIngredient;
     }
 
+    public String getParentIngredientID() {
+        return parentIngredientID;
+    }
+
     public String getMealdayID() {
         return mealdayID;
     }
