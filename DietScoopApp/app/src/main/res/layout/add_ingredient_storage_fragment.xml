@@ -137,16 +137,11 @@
         android:id="@+id/add_ingredient_photo_camera"
         android:text="Camera"/>
 
-    <ImageView
-        android:id="@+id/ingredient_image"
-        android:layout_height="200dp"
-        android:layout_width="200dp"/>
-
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="0dp">
 
         <Button
             android:id="@+id/select_bestbefore_button"
@@ -154,6 +149,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="Select a Date" />
+
     </TableRow>
+
+    <ImageView
+        android:id="@+id/ingredient_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </TableLayout>
