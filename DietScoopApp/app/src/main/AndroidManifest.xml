@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DietScoop"
         tools:targetApi="31">
-
         <activity
             android:name=".Activities.ShoppingListActivity"
             android:exported="false" />
@@ -28,24 +27,21 @@
         <activity
             android:name=".Activities.SignUpActivity"
             android:exported="false"
-            android:theme="@style/NoTopBar"/>
+            android:theme="@style/NoTopBar" />
         <activity
             android:name=".Activities.LoginActivity"
             android:exported="false"
-            android:theme="@style/NoTopBar"/>
-
+            android:theme="@style/NoTopBar" />
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -10,14 +10,14 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="349dp"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/img_2725" />
+        app:srcCompat="@drawable/loginbackground" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-80dp"
+        android:layout_marginTop="-500dp"
         android:background="@drawable/rounded_rectangle"
         android:orientation="vertical">
 
