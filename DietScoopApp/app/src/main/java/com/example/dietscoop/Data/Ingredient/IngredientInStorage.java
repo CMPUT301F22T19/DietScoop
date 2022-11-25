@@ -18,6 +18,17 @@ public class IngredientInStorage extends Ingredient {
 
     LocalDate bestBeforeDate;
     Location location;
+    private String ingredientImg64;
+
+    public String getIngredientImg64() {
+        return ingredientImg64;
+    }
+
+    public void setIngredientImg64(String ingredientImg64) {
+        this.ingredientImg64 = ingredientImg64;
+    }
+
+
     //TODO: change year,month,day to Calendar pls pls
 
     /**
