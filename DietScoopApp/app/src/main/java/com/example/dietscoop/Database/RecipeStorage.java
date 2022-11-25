@@ -227,4 +227,13 @@ public class RecipeStorage implements Serializable {
                 break;
         }
     }
+
+    public Recipe getRecipeWithID(String id) {
+        for (Recipe recipe : recipes) {
+            if (recipe.getId().equals(id)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
 }
