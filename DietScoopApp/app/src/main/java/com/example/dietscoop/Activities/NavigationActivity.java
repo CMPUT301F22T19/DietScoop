@@ -61,6 +61,7 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
                 if (!(this instanceof ShoppingListActivity)) {
                     goToShoppingList();
                 }
+                break;
             case R.id.meals:
                 if (!(this instanceof MealPlanActivity)) {
                     goToMealPlans();

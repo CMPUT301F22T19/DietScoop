@@ -60,6 +60,7 @@ public class MealPlanActivity extends NavigationActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.meal_plan_activity);
         initNavigationActivity();
+        navBar.setSelectedItemId(R.id.meals);
 
         mealPlanManager = getSupportFragmentManager();
         recipes = new RecipeStorage();
