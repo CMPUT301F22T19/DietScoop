@@ -8,44 +8,49 @@
     <Spinner
         android:id="@+id/categorySpinner"
         android:layout_width="138dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="36dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/unitSpinner"
-        android:layout_width="158dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="101dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
+        android:hint="Unit"
         android:inputType="textPersonName"
-        android:text="Unit"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categorySpinner" />
 
     <EditText
         android:id="@+id/editTextAmount"
-        android:layout_width="151dp"
-        android:layout_height="48dp"
+        android:layout_width="182dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="56dp"
         android:ems="10"
+        android:hint="number"
         android:inputType="number"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
 
     <EditText
         android:id="@+id/editTextDescription"
-        android:layout_width="145dp"
-        android:layout_height="51dp"
+        android:layout_width="182dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="72dp"
         android:ems="10"
+        android:hint="Description"
         android:inputType="textPersonName"
-        android:text="Description"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

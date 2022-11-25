@@ -8,6 +8,15 @@ public abstract class FoodItem implements Serializable {
  */
     protected String description;
     protected String id;
+    protected String imageString;
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
+    }
 
     /**
      * Getter method for FoodItem description
@@ -36,4 +45,11 @@ public abstract class FoodItem implements Serializable {
      * @param id Value to be set.
      */
     public void setId(String id){this.id=id;}
+
+    /**
+     * Queries for the type of FoodItem this is.
+     * @return String with the type of class this is <Recipe or Ingredient>.
+     */
+    public abstract String getType();
+
 }

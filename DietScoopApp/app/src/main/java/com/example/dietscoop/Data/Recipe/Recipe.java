@@ -10,9 +10,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Class representing a Recipe
+ * Class representing a Recipe.
+ * Extends FoodItem to obtain a category property.
  */
 public class Recipe extends FoodItem implements Serializable {
+    private String imageBitmap;
     private int prepTime;
     private int servings;
     private timeUnit prepUnitTime;
@@ -22,7 +24,6 @@ public class Recipe extends FoodItem implements Serializable {
     private ArrayList<String> ingredientRefs;
 
     public int getInMinutes() {
-
         if (this.getPrepUnitTime().equals(timeUnit.hr)) {
             return prepTime * 60;
         } else if (this.getPrepUnitTime().equals(timeUnit.min)) {
@@ -53,6 +54,16 @@ public class Recipe extends FoodItem implements Serializable {
         this.ingredientsList = ingredientsList;
         this.instructions = instructions;
         this.ingredientRefs = new ArrayList<String>();
+    }
+
+
+    public String getImageBitmap()
+    {
+        return imageBitmap;
+    }
+
+    public void setImageBitmap(String imageBitmap) {
+        this.imageBitmap = imageBitmap;
     }
 
     /**
@@ -204,5 +215,9 @@ public class Recipe extends FoodItem implements Serializable {
 
     public void setIngredientRefs(ArrayList<String> refs) {this.ingredientRefs = refs;}
 
+    @Override
+    public String getType() {
+        return "Recipe";
+    }
 
 }

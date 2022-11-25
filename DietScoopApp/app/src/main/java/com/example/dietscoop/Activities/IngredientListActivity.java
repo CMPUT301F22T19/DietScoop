@@ -66,6 +66,7 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
 
         //Main container declarations:
         foodStorage = new IngredientStorage();
+        // RECYCLER
         ingredientStorageAdapter = new IngredientStorageAdapter(this, foodStorage.getIngredientStorage());
         ingredientListView.setAdapter(ingredientStorageAdapter);
         foodStorage.setupIngredientSnapshotListener(ingredientStorageAdapter);
