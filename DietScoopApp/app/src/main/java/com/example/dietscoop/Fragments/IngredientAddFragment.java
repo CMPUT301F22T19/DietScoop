@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -239,15 +240,18 @@ public class IngredientAddFragment extends DialogFragment {
             category.setSelection(categorySpinnerPosition);
             int locationSpinnerPosition = locationSpinnerAdapter.getPosition(ingredientToBeChanged.getLocationName());
             location.setSelection(locationSpinnerPosition);
+            ingredientToBeChanged.setIngredientImg64(thisIngredientPhotoBase64);
         }
 
         if (ingredientToBeChanged == null) {
+            // Add a new ingredient
             builder
                 .setView(view)
                 .setTitle("Add ingredient")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK", (dialogInterface, i) -> {
 
+                    Bitmap bitmap;
                     String strDescription = description.getText().toString();
                     if (strDescription.length() == 0) {
                         strDescription = "No description available";
@@ -261,14 +265,31 @@ public class IngredientAddFragment extends DialogFragment {
                         doubleAmount = Double.parseDouble(strAmount);
                     }
 
+                    if (thisIngredientPhotoBase64 != null)
+                    {
+                        byte[] test = Base64.getDecoder().decode(thisIngredientPhotoBase64);
+                        bitmap = BitmapFactory.decodeByteArray(test, 0, test.length);
+                        thisImageIngredient.setImageBitmap(bitmap);
+                        Log.i("??", ">>");
+                    }
+
+                    newIngredient.setIngredientImg64(thisIngredientPhotoBase64);
                     newIngredient.setDescription(strDescription);
                     newIngredient.setAmount(doubleAmount);
 
                     listener.onOkPressed(newIngredient);
                 });
         } else {
+            // Modify an old ingredient in storage
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
+
+            if (ingredientToBeChanged.getIngredientImg64() != null)
+            {
+                byte[] test = Base64.getDecoder().decode(ingredientToBeChanged.getIngredientImg64());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(test, 0, test.length);
+                thisImageIngredient.setImageBitmap(bitmap);
+            }
 
             if (ingredientToBeChanged.getLocation().equals(Location.Pantry)) {
                 locationString = "pantry";
@@ -285,11 +306,18 @@ public class IngredientAddFragment extends DialogFragment {
                 .setTitle("Modify ingredient")
                 .setNegativeButton("Cancel", null)
                     .setNeutralButton("Delete", (dialog, which) -> listener.onDeletePressed(ingredientToBeChanged))
-                .setPositiveButton("OK", (dialogInterface, i) -> {
+                    .setPositiveButton("OK", (dialogInterface, i) -> {
                     if (description.getText().toString().length() == 0) {
                         ingredientToBeChanged.setDescription("No description available");
                     } else {
                         ingredientToBeChanged.setDescription(description.getText().toString());
+                    }
+
+                    if (ingredientToBeChanged.getIngredientImg64() != null)
+                    {
+                        byte[] test = Base64.getDecoder().decode(ingredientToBeChanged.getIngredientImg64());
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(test, 0, test.length);
+                        thisImageIngredient.setImageBitmap(bitmap);
                     }
 
                     if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
@@ -297,6 +325,15 @@ public class IngredientAddFragment extends DialogFragment {
                     } else {
                         ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
                     }
+
+                    if (thisIngredientPhotoBase64 != null)
+                    {
+                        byte[] test = Base64.getDecoder().decode(thisIngredientPhotoBase64);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(test, 0, test.length);
+                        thisImageIngredient.setImageBitmap(bitmap);
+                    }
+
+                    ingredientToBeChanged.setIngredientImg64(thisIngredientPhotoBase64);
 
                     listener.onOkPressedUpdate(ingredientToBeChanged);
                 });
@@ -336,7 +373,6 @@ public class IngredientAddFragment extends DialogFragment {
                 e.printStackTrace();
             }
             Picasso.get().load(photoURI).into(thisImageIngredient);
-            thisImageIngredient.setImageBitmap(null);
         } else {
             Bitmap thisIngredientPhotoCamera = (Bitmap) data.getExtras().get("data");
             thisImageIngredient.setImageBitmap(thisIngredientPhotoCamera);
