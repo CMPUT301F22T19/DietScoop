@@ -332,7 +332,6 @@ public class IngredientAddFragment extends DialogFragment {
                 thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
                 byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
                 thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
-                Log.i("Dick", thisIngredientPhotoBase64);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -345,7 +344,6 @@ public class IngredientAddFragment extends DialogFragment {
             thisIngredientPhotoCamera.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
             byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
             thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
-            Log.i("Pussy", thisIngredientPhotoBase64);
         }
     }
 
