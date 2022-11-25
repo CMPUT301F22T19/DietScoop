@@ -107,6 +107,8 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         initialize();
         updateTextViews();
 
+        this.thisRecipeBase64 = currentRecipe.getImageBitmap();
+
     }
 
     private void initialize() {
