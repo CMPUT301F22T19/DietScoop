@@ -29,6 +29,9 @@
             android:name=".Activities.IngredientListActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.MealPlanActivity"
+            android:exported="false"/>
+        <activity
             android:name=".Activities.SignUpActivity"
             android:exported="false"
             android:theme="@style/NoTopBar" />

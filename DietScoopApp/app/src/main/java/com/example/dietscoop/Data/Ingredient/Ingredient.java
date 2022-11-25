@@ -94,4 +94,9 @@ import java.io.Serializable;
         return this.category.name();
     }
 
-}
+        @Override
+        public String getType() {
+            return "Ingredient";
+        }
+
+    }

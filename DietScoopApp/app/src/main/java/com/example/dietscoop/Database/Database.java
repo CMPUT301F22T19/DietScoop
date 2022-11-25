@@ -5,9 +5,13 @@ import android.util.Log;
 
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Meal.Meal;
+import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
+import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The Database class provides the methods and functionality for connecting with the Firestore database.
@@ -36,6 +41,9 @@ class Database implements Serializable {
     private CollectionReference ingredientStorage;
     private CollectionReference recipeStorage;
     private CollectionReference ingredientsInRecipes;
+    private CollectionReference mealPlan;
+    private CollectionReference ingredientsInMealDays;
+    private CollectionReference recipesInMealDays;
 
     /**
      * Constructor for the Database class.
@@ -48,6 +56,9 @@ class Database implements Serializable {
         ingredientStorage = db.collection("Users").document(user).collection("IngredientsStorage");
         recipeStorage = db.collection("Users").document(user).collection("Recipes");
         ingredientsInRecipes = db.collection("Users").document(user).collection("IngredientsInRecipes");
+        mealPlan = db.collection("Users").document(user).collection("MealPlan");
+        ingredientsInMealDays = db.collection("Users").document(user).collection("IngredientsInMealDays");
+        recipesInMealDays = db.collection("Users").document(user).collection("RecipesInMealDays");
     }
 
     private String getUserEmail() throws RuntimeException {
@@ -83,7 +94,7 @@ class Database implements Serializable {
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit());
+        ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit());
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
@@ -126,7 +137,7 @@ class Database implements Serializable {
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit().name().toLowerCase());
+        ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit().name().toLowerCase());
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
@@ -225,6 +236,82 @@ class Database implements Serializable {
     public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
         ingredientsInRecipes.document(ingredient.getId()).set(ingredient);
     }
+
+    /*************************** MEAL PLAN METHODS ******************************/
+
+    public void getMealPlanFromDB() {mealPlan.get();}
+
+    public void addMealDayToMealPlan(MealDay mealday) {
+        Map<String, Object> mealdayDetails = new HashMap<>();
+        LocalDate date = mealday.getDate();
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+        mealdayDetails.put("year", year);
+        mealdayDetails.put("month", month);
+        mealdayDetails.put("day", day);
+        mealdayDetails.put("ingredients",mealday.getIngredientIDs());
+        mealdayDetails.put("recipes",mealday.getRecipeIDs());
+        mealPlan.document(mealday.getId()).set(mealdayDetails);
+    }
+
+    public void updateMealDayInMealPlan(MealDay mealday) {
+        this.addMealDayToMealPlan(mealday);
+    }
+
+    public void removeMealDayFromMealPlan(MealDay mealDay) {
+        mealPlan.document(mealDay.getId()).delete();
+    }
+
+    public void addIngredientToIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
+        Map<String, Object> ingredientDetails = new HashMap<>();
+        ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
+        ingredientDetails.put("amount", ingredient.getAmount());
+        ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit());
+        ingredientDetails.put("category", ingredient.getCategory());
+        ingredientDetails.put("mealdayID",ingredient.getMealdayID());
+        ingredientsInMealDays.document(ingredient.getId()).set(ingredientDetails);
+
+    }
+
+    public void updateIngredientInIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
+        this.addIngredientToIngredientsInMealDaysCollection(ingredient);
+    }
+
+    public void removeIngredientFromIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
+        ingredientsInMealDays.document(ingredient.getId()).delete();
+    }
+
+    public void addRecipeToRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+        Map<String, Object> recipeDetails = new HashMap<>();
+        recipeDetails.put("prepTime", recipeInMealDay.getPrepTime());
+        recipeDetails.put("servings", recipeInMealDay.getNumOfServings());
+        recipeDetails.put("description", recipeInMealDay.getDescription().toLowerCase());
+        recipeDetails.put("instructions", recipeInMealDay.getInstructions());
+        recipeDetails.put("category", recipeInMealDay.getCategory().toString());
+        recipeDetails.put("prepUnitTime", recipeInMealDay.getPrepUnitTime().toString());
+        recipeDetails.put("ingredients", recipeInMealDay.getIngredientRefs());
+        recipeDetails.put("scalingFactor",recipeInMealDay.getScalingFactor());
+        recipeDetails.put("mealDayID",recipeInMealDay.getMealdayID());
+        recipesInMealDays.document(recipeInMealDay.getId()).set(recipeDetails);
+    }
+
+    public void updateRecipeInRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+        this.addRecipeToRecipesInMealDaysCollection(recipeInMealDay);
+    }
+
+    public CollectionReference getIngredientsInMealDaysCollectionRef() {
+        return ingredientsInMealDays;
+    }
+
+    public CollectionReference getRecipesInMealDaysCollectionRef() {
+        return recipesInMealDays;
+    }
+
+    public CollectionReference getMealPlan() {return this.mealPlan;}
+
+
+
 }
 
 

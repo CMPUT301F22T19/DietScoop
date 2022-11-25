@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +48,8 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
 
     private void goToMealPlans() {
         // LAUNCH MEAL PLANS
+        Intent intent = new Intent(this, MealPlanActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -58,10 +61,11 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
                 if (!(this instanceof ShoppingListActivity)) {
                     goToShoppingList();
                 }
+                break;
             case R.id.meals:
-//                if (!(this instanceof MealPlanActivity)) {
-//                    goToMealPlans();
-//                }
+                if (!(this instanceof MealPlanActivity)) {
+                    goToMealPlans();
+                }
                 break;
             case R.id.recipes:
                 if (!(this instanceof RecipeListActivity)) {
