@@ -99,7 +99,7 @@ public class IngredientStorage {
                 if (doc.getId() != null) {
                     Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
                     IngredientInStorage ingredient = new IngredientInStorage(doc.getString("description"),
-                            IngredientUnit.stringToUnit(doc.getData().get("unit").toString()),
+                            IngredientUnit.stringToUnit(doc.getData().get("measurementUnit").toString()),
                             doc.getDouble("amount"),
                             (doc.getLong("year")).intValue(),
                             (doc.getLong("month")).intValue(), (doc.getLong("day")).intValue(),

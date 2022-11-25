@@ -176,7 +176,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         //Fetching the current selected description:
         if (foodItems.get(i).getType() == "Ingredient") {
             Ingredient foodItem = (Ingredient) foodItems.get(i);
-            quantityView.setText(foodItem.getMeasurementUnit());
+            quantityView.setText(foodItem.getMeasurementUnit().toString());
         } else {
             Recipe foodItem = (Recipe) foodItems.get(i);
             quantityView.setText("Servings");

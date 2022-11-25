@@ -5,7 +5,7 @@ public class IngredientInMealDay extends Ingredient {
     private IngredientInStorage parentIngredient;
     private String mealdayID;
 
-    public IngredientInMealDay(String description, String measurementUnit, double amount, IngredientCategory category) {
+    public IngredientInMealDay(String description, IngredientUnit measurementUnit, double amount, IngredientCategory category) {
         super(description, measurementUnit, amount, category);
     }
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Meal.MealPlan;
@@ -87,7 +88,7 @@ public class MealPlanStorage {
                                         if (doc1.exists()) {
                                             Log.i(TAG1, doc1.getData().toString());
                                             IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
-                                                    doc1.getString("unit"),doc1.getDouble("amount"),
+                                                    IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
                                                     IngredientCategory.stringToCategory(doc1.getString("category")));
                                             ing.setId(doc1.getId());
                                             ing.setMealdayID(mealDayToAdd.getId());
@@ -133,7 +134,7 @@ public class MealPlanStorage {
                                                     if (doc2.exists()) {
                                                         Log.i(TAG2, doc2.getData().toString());
                                                         IngredientInRecipe ing = new IngredientInRecipe(doc2.getString("description"),
-                                                                doc2.getString("measurementUnit"),doc2.getDouble("amount"),
+                                                                IngredientUnit.stringToUnit(doc2.getString("measurementUnit")),doc2.getDouble("amount"),
                                                                 IngredientCategory.stringToCategory(doc2.getString("category")));
                                                         ing.setId(doc2.getId());
                                                         ing.setRecipeID(rec.getId());
@@ -179,7 +180,7 @@ public class MealPlanStorage {
                                             if (doc1.exists()) {
                                                 Log.i(TAG1, doc1.getData().toString());
                                                 IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
-                                                        doc1.getString("measurementUnit"),doc1.getDouble("amount"),
+                                                        IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
                                                         IngredientCategory.stringToCategory(doc1.getString("category")));
                                                 ing.setId(doc1.getId());
                                                 ing.setMealdayID(mealDay.getId());
@@ -223,7 +224,7 @@ public class MealPlanStorage {
                                                         if (doc2.exists()) {
                                                             Log.i(TAG2, doc2.getData().toString());
                                                             IngredientInRecipe ing = new IngredientInRecipe(doc2.getString("description"),
-                                                                    doc2.getString("measurementUnit"),doc2.getDouble("amount"),
+                                                                    IngredientUnit.stringToUnit(doc2.getString("measurementUnit")),doc2.getDouble("amount"),
                                                                     IngredientCategory.stringToCategory(doc2.getString("category")));
                                                             ing.setId(doc2.getId());
                                                             ing.setRecipeID(rec.getId());
