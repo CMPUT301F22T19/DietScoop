@@ -90,7 +90,8 @@ public class MealPlanStorage {
                                             Log.i(TAG1, doc1.getData().toString());
                                             IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
                                                     IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
-                                                    IngredientCategory.stringToCategory(doc1.getString("category")));
+                                                    IngredientCategory.stringToCategory(doc1.getString("category")),
+                                                    doc1.getString("parentRecipeID"));
                                             ing.setId(doc1.getId());
                                             ing.setMealdayID(mealDayToAdd.getId());
                                             mealDayToAdd.addIngredientInMealDay(ing);
@@ -182,7 +183,8 @@ public class MealPlanStorage {
                                                 Log.i(TAG1, doc1.getData().toString());
                                                 IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
                                                         IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
-                                                        IngredientCategory.stringToCategory(doc1.getString("category")));
+                                                        IngredientCategory.stringToCategory(doc1.getString("category")),
+                                                        doc1.getString(""));
                                                 ing.setId(doc1.getId());
                                                 ing.setMealdayID(mealDay.getId());
                                                 mealDay.addIngredientInMealDay(ing);

@@ -55,6 +55,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 //    ArrayList<Recipe> recipesForAdding;
 //    ArrayList<IngredientInStorage> ingredientsForAdding;
     ArrayList<FoodItem> allFoodItems;
+    ArrayList<FoodItem> foodItemsToDelete = new ArrayList<>(); //Only valid if we are editing.
 
     String currentDescription; //Holds the desc.
     String currentFoodItemType;
@@ -139,7 +140,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
             public void onClick(View view) {
                 if (editMealDay) {
                     MealPlanActivity access = ((MealPlanActivity)getActivity());
-                    access.makeChangeToDay(indexOfDay, currentMealDay); //TODO: Test if has no id when editing:
+                    access.makeChangeToDay(indexOfDay, currentMealDay, foodItemsToDelete); //TODO: Test if has no id when editing:
                     access.changeToMealPlan();
                 } else {
                     MealPlanActivity access = ((MealPlanActivity)getActivity());
@@ -213,6 +214,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     }
 
     public void editMeal(int selectedFoodItem, double scale, int mealToChange) {
+        foodItemsToDelete.add(currentMealDay.getFoodItems().get(selectedFoodItem)); //For deletion staging.
         deleteMeal(mealToChange);
         addMeal(selectedFoodItem, scale);
     }

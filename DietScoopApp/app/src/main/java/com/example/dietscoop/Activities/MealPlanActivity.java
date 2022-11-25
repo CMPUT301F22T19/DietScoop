@@ -188,8 +188,9 @@ public class MealPlanActivity extends NavigationActivity {
      * @param indexOfDayToChange index of day to change.
      * @param changeToDay day to replace the index with.
      */
-    public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay) {
+    public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay, ArrayList<FoodItem> itemsToDelete) {
         addIndividualFoodItemsInMealDayToDB(changeToDay); // don't worry "add" is same as "update" here
+        deleteInvididualFoodItemsInMealDayFromDB(itemsToDelete);
         mealPlanStorage.updateMealDayInMealPlan(changeToDay);
         this.mealPlan.set(indexOfDayToChange, changeToDay);
     }
@@ -211,6 +212,16 @@ public class MealPlanActivity extends NavigationActivity {
         }
         for (RecipeInMealDay r: mealDay.getRecipeInMealDays()) {
             mealPlanStorage.addRecipeToRecipesInMealDaysCollection(r);
+        }
+    }
+
+    private void deleteInvididualFoodItemsInMealDayFromDB(ArrayList<FoodItem> itemsToDelete) {
+        for (FoodItem i: itemsToDelete) {
+            if (i.getType() == "Ingredient") {
+                mealPlanStorage.removeIngredientFromIngredientsInMealDaysCollection((IngredientInMealDay)i);
+            } else if (i.getType() == "Recipe") {
+
+            }
         }
     }
 
