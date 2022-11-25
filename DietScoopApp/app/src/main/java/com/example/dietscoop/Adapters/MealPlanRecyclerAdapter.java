@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.constraintlayout.motion.widget.OnSwipe;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
