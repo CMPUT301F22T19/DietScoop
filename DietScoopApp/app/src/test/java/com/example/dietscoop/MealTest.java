@@ -39,7 +39,7 @@ public class MealTest {
         return new Meal();
     }
 
-    @Test
-    public void testGettersStorage() {
-    }
+//    @Test
+//    public void testGettersStorage() {
+//    }
 }
