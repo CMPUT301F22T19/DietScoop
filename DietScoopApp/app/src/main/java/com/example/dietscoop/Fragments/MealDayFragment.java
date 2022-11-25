@@ -217,7 +217,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     }
 
     public void editMeal(int selectedFoodItem, double scale, int mealToChange) {
-        foodItemsToDelete.add(currentMealDay.getFoodItems().get(selectedFoodItem)); //For deletion staging.
         deleteMeal(mealToChange);
         addMeal(selectedFoodItem, scale);
     }
@@ -225,9 +224,9 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
     // TODO: STAGE CHANGES TO DELETE FROM DATABASE
     public void deleteMeal(int mealToChange) {
+        foodItemsToDelete.add(currentMealDay.getFoodItems().get(mealToChange)); //For deletion staging.
         if (this.currentMealDay.getFoodItems().get(mealToChange).getType().equals("Ingredient")) {
             currentMealDay.removeIngredientInMealDay(mealToChange);
-
         } else {
             currentMealDay.removeRecipeInMealDay(mealToChange);
         }
