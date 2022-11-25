@@ -94,7 +94,7 @@ class Database implements Serializable {
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit());
+        ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit());
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
@@ -137,7 +137,7 @@ class Database implements Serializable {
         int day = expiry.getDayOfMonth();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit().name().toLowerCase());
+        ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit().name().toLowerCase());
         ingredientDetails.put("year", year);
         ingredientDetails.put("month", month);
         ingredientDetails.put("day", day);
@@ -265,7 +265,7 @@ class Database implements Serializable {
         Map<String, Object> ingredientDetails = new HashMap<>();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
         ingredientDetails.put("amount", ingredient.getAmount());
-        ingredientDetails.put("unit", ingredient.getMeasurementUnit());
+        ingredientDetails.put("measurementUnit", ingredient.getMeasurementUnit());
         ingredientDetails.put("category", ingredient.getCategory());
         ingredientDetails.put("mealdayID",ingredient.getMealdayID());
         ingredientsInMealDays.document(ingredient.getId()).set(ingredientDetails);
