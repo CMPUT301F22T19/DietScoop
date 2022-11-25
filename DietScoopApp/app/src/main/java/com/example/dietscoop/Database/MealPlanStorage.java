@@ -279,8 +279,4 @@ public class MealPlanStorage {
         db.updateRecipeInRecipesInMealDaysCollection(recipeInMealDay);
     }
 
-
-
-
-
 }
