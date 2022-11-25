@@ -10,6 +10,8 @@ public class RecipeInMealDay extends Recipe {
         private Double scalingFactor;
         private Recipe parentRecipe;
         private String mealdayID;
+        //TODO: WARNING MARCOS FIDDLED HERE:
+        private String parentRecipeID; //This will be used to always hold a reference to the parent to fetch updates.
     public RecipeInMealDay(String description, int prepTime, int servings, timeUnit prepUnitTime,
                            recipeCategory category, ArrayList<IngredientInRecipe> ingredientsList, String instructions) {
         super(description, prepTime, servings, prepUnitTime, category, ingredientsList, instructions);
@@ -19,6 +21,7 @@ public class RecipeInMealDay extends Recipe {
         super(r.getDescription(),r.getPrepTime(), r.getNumOfServings(),r.getPrepUnitTime(),r.getCategory(),r.ingredientsList,
                 r.getInstructions());
         this.parentRecipe = r;
+        this.parentRecipeID = r.getId();
     }
 
     public void setScalingFactor(Double fac) {
