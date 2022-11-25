@@ -36,6 +36,14 @@ public class RecipeInMealDay extends Recipe {
         return parentRecipe;
     }
 
+    public String getParentRecipeID() {
+        return parentRecipeID;
+    }
+
+    public void setParentRecipeID(String parentRecipeID) {
+        this.parentRecipeID = parentRecipeID;
+    }
+
     public void setParentRecipe(Recipe parentRecipe) {
         this.parentRecipe = parentRecipe;
     }
