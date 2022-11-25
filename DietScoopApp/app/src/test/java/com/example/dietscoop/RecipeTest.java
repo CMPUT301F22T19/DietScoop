@@ -1,7 +1,6 @@
 package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;

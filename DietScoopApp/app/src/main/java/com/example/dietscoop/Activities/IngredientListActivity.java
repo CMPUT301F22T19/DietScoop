@@ -1,32 +1,20 @@
 package com.example.dietscoop.Activities;
 
-
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.Fragments.IngredientAddFragment;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Adapters.IngredientStorageAdapter;
 import com.example.dietscoop.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Class tying to Ingredient list. Associated with the activity_ingredient_list.xml layout.
@@ -214,5 +202,4 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
     void onAddClicked() {
         new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
     }
-
 }
