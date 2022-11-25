@@ -25,24 +25,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
-import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.example.dietscoop.Fragments.AddIngredientToRecipeFragment;
-import com.example.dietscoop.Fragments.EditInstructionsEntryFragment;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
-import com.example.dietscoop.Fragments.IngredientAddFragment;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Database.RecipeStorage;
-import com.google.firebase.firestore.DocumentReference;
 import com.squareup.picasso.Picasso;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

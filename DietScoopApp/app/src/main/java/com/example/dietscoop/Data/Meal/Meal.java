@@ -1,8 +1,6 @@
 package com.example.dietscoop.Data.Meal;
 
-import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
-import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.Data.Recipe.Recipe;
 
 import java.util.ArrayList;

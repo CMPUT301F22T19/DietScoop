@@ -1,31 +1,18 @@
 package com.example.dietscoop.Activities;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.R;
-import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Adapters.RecipeListAdapter;
 import com.example.dietscoop.Database.RecipeStorage;
-import com.example.dietscoop.Data.Recipe.recipeCategory;
-import com.example.dietscoop.Data.Recipe.timeUnit;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
 
 /**
  * Class associated with the activity_recipe_list.xml file.
