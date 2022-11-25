@@ -4,14 +4,18 @@ public class IngredientInMealDay extends Ingredient {
     private Double scalingFactor;
     private IngredientInStorage parentIngredient;
     private String mealdayID;
+    //TODO: WARNING MARCOS FIDDLED HERE:
+    private String parentIngredientID; //This will be used to always hold a reference to the parent to fetch updates.
 
-    public IngredientInMealDay(String description, IngredientUnit measurementUnit, double amount, IngredientCategory category) {
+    public IngredientInMealDay(String description, IngredientUnit measurementUnit, double amount, IngredientCategory category, String parentIngredientID) {
         super(description, measurementUnit, amount, category);
+        this.parentIngredientID = parentIngredientID;
     }
 
     public IngredientInMealDay(IngredientInStorage i) {
         super(i.getDescription(), i.getMeasurementUnit(), i.getAmount(), i.getCategory());
         this.parentIngredient = i;
+        this.parentIngredientID = i.getId();
     }
 
     public void setScalingFactor(Double scalingFactor) {
