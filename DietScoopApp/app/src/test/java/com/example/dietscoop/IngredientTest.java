@@ -2,6 +2,9 @@
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //
+//import com.example.dietscoop.Data.Ingredient.Ingredient;
+//import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+//
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.Test;
 //import org.junit.platform.commons.annotation.Testable;
@@ -12,7 +15,7 @@
 //    Ingredient sampleIngredient;
 //
 //    public Ingredient sampleIngredient() {
-//        sampleIngredient = new Ingredient("Chicken", "kg", 5, Category.meat);
+//        sampleIngredient = new Ingredient("Chicken", "kg", 5, IngredientCategory.Meat);
 //        return sampleIngredient;
 //    }
 //
@@ -21,9 +24,9 @@
 //        //Testing Getters:
 //        sampleIngredient = sampleIngredient();
 //        try {
-//            assertEquals(sampleIngredient.measurementUnit, "kg");
-//            assertEquals(sampleIngredient.description, "Chicken");
-//            assertEquals(sampleIngredient.amount, 5);
+//            assertEquals(sampleIngredient.getMeasurementUnit(), "kg");
+//            assertEquals(sampleIngredient.getDescription(), "Chicken");
+//            assertEquals(sampleIngredient.getAmount(), 5);
 //        } catch (Exception e) {
 //            System.err.println("Error loading ingredient");
 //        }
