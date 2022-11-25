@@ -139,7 +139,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
             public void onClick(View view) {
                 if (editMealDay) {
                     MealPlanActivity access = ((MealPlanActivity)getActivity());
-                    access.makeChangeToDay(indexOfDay, currentMealDay);
+                    access.makeChangeToDay(indexOfDay, currentMealDay); //TODO: Test if has no id when editing:
                     access.changeToMealPlan();
                 } else {
                     MealPlanActivity access = ((MealPlanActivity)getActivity());
@@ -184,8 +184,14 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     }
 
 
-    //TODO: Change the following methods to manipualte how the meals get added and
     //what properties get changed in the mealdays.
+
+    /**
+     * Method adds the stated meal to the current day in view and
+     * also sets it a unique UID for the database.
+     * @param selectedFoodItem
+     * @param scale
+     */
     public void addMeal(int selectedFoodItem, double scale) {
         if (this.allFoodItems.get(selectedFoodItem).getType().equals("Ingredient")) {
             IngredientInStorage tempHolder = (IngredientInStorage) (allFoodItems.get(selectedFoodItem));
@@ -231,6 +237,11 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         this.currentFoodItemType = type; //TODO: finish this connection on the Dialog side.
     }
 
+    /**
+     * For editing a meal:
+     * @param view the View fetched from the Recycler.
+     * @param position the position from the recycler view fetched.
+     */
     @Override
     public void onItemClick(View view, int position) {
         AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), allFoodItems, position);

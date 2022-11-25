@@ -67,24 +67,8 @@ public class MealPlanActivity extends NavigationActivity {
         ingredients = new IngredientStorage();
         allFoodItems = new ArrayList<>();
 
-        //TODO: Set up database pull:
-        /**
-         *
-         * if mealPlan from database is empty.
-         * -> Create a new mealplan that is empty.
-         *
-         */
         mealPlanStorage = new MealPlanStorage();
         mealPlan = mealPlanStorage.getMealPlan();
-//        mealPlanStorage.getMealPlanFromDB();
-//        mealPlanStorage.addMealPlanSnapshotListener();
-
-        /**
-         *
-         * if mealPlan from database is valid.
-         * -> Load in and use it to fill in the mealPlan list.
-         *
-         */
 
         ingredients = new IngredientStorage();
         ingredients.setupIngredientSnapshotListener();
@@ -149,7 +133,7 @@ public class MealPlanActivity extends NavigationActivity {
 //                    .setReorderingAllowed(true)
 //                    .commit();
             mealPlanManager.beginTransaction().show(prevFragment).commit();
-
+            return;
         }
 //        if (prevFragment != null) {
 //            mealPlanManager.beginTransaction().remove(prevFragment).commit();
@@ -220,6 +204,7 @@ public class MealPlanActivity extends NavigationActivity {
         this.mealPlan.add(mealDay);
     }
 
+    //TODO: Marcos fiddled in the depths of db code that stems from here:
     private void addIndividualFoodItemsInMealDayToDB(MealDay mealDay) {
         for (IngredientInMealDay i: mealDay.getIngredientInMealDays()) {
             mealPlanStorage.addIngredientToIngredientsInMealDaysCollection(i);
