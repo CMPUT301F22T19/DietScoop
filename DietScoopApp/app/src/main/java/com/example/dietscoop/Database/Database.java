@@ -155,6 +155,7 @@ class Database implements Serializable {
         recipeDetails.put("category", recipe.getCategory().toString());
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
         recipeDetails.put("ingredients", recipe.getIngredientRefs());
+        recipeDetails.put("imageBitmap", recipe.getImageBitmap());
         recipeStorage.document(recipe.getId()).set(recipeDetails);
     }
 
@@ -202,6 +203,7 @@ class Database implements Serializable {
         recipeDetails.put("category", recipe.getCategory().toString());
         recipeDetails.put("prepUnitTime", recipe.getPrepUnitTime().toString());
         recipeDetails.put("ingredients", recipe.getIngredientRefs());
+        recipeDetails.put("imageBitmap", recipe.getImageBitmap());
         recipeStorage.document(recipe.getId()).set(recipeDetails);
     }
 
