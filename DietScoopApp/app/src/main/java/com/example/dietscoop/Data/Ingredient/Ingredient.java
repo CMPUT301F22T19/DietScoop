@@ -3,8 +3,9 @@ package com.example.dietscoop.Data.Ingredient;
 import com.example.dietscoop.Data.FoodItem;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
-    /**
+/**
      * Ingredient abstract class to be inherited by ingredient and ingredient in storage
      */
     public abstract class Ingredient extends FoodItem implements Serializable {
@@ -94,9 +95,29 @@ import java.io.Serializable;
         return this.category.name();
     }
 
-        @Override
-        public String getType() {
-            return "Ingredient";
+    @Override
+    public String getType() {
+        return "Ingredient";
+    }
+
+    public boolean hasSameUnitType(Ingredient a) {
+
+        IngredientUnit[] massUnits = {IngredientUnit.g, IngredientUnit.mg, IngredientUnit.kg,
+                                      IngredientUnit.oz, IngredientUnit.lb};
+
+        IngredientUnit[] volUnits = {IngredientUnit.cup, IngredientUnit.L, IngredientUnit.mL,
+                                     IngredientUnit.tbsp, IngredientUnit.tsp};
+
+
+        if ((Arrays.asList(massUnits).contains(a.getMeasurementUnit()) && Arrays.asList(massUnits).contains(measurementUnit))
+          ||(Arrays.asList(volUnits).contains(a.getMeasurementUnit()) && Arrays.asList(volUnits).contains(measurementUnit))) {
+            return true;
+        } else {
+            return false;
         }
 
     }
+
+    }
+
+
