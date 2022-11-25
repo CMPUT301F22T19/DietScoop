@@ -280,6 +280,10 @@ public class MealPlanStorage {
         db.updateRecipeInRecipesInMealDaysCollection(recipeInMealDay);
     }
 
+    public void removeRecipeFromRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+        db.removeRecipeFromRecipesInMealDaysCollection(recipeInMealDay);
+    }
+
 
 
 
