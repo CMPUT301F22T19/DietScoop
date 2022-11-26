@@ -31,4 +31,11 @@
         android:text="Quantity:"
         android:id="@+id/quantity_view"/>
 
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/insert_quantity_food_item"
+        android:id="@+id/select_measurement_unit"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

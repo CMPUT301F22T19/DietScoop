@@ -213,7 +213,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
         //Updating Adapter:
         this.mealRecyclerAdapter.notifyDataSetChanged();
-
     }
 
     public void editMeal(int selectedFoodItem, Integer scale, int mealToChange) {
@@ -247,5 +246,17 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     public void onItemClick(View view, int position) {
         AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), allFoodItems, position);
         dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
+    }
+
+    public int getSelectedFoodItemIndex(int mealIndex) {
+        int counter = 0;
+        for (FoodItem i : allFoodItems) {
+            if (i.getDescription().equals(currentMealDay.getFoodItems().get(mealIndex).getDescription())) {
+                return counter;
+            }
+            counter++;
+        }
+
+        return -1;
     }
 }

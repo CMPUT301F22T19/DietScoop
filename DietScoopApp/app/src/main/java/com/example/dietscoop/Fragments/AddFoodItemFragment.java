@@ -3,6 +3,7 @@ package com.example.dietscoop.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
@@ -48,27 +50,18 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     Boolean editing;
     int indexToEdit; //Will handle what day to overwrite;
 
-    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems) {
+    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems) { //For adding a new foodItem.
         this.context = context;
         this.foodItems = (ArrayList<FoodItem>) foodItems;
         this.editing = false;
     }
 
-    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems, int indexToEdit) {
+    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems, int indexToEdit) { //For editing an existing foodItem.
         this.context = context;
         this.foodItems = (ArrayList<FoodItem>) foodItems;
         this.editing = true;
         this.indexToEdit = indexToEdit;
     }
-
-//    public <T extends FoodItem> AddFoodItemFragment(ArrayList<T> foodItems, FoodItem editItem) {
-//        this.foodItems = (ArrayList<FoodItem>) foodItems;
-//        this.editMeal = editItem;
-//
-//        if (editItem instanceof IngredientInStorage) {
-//
-//        }
-//    }
 
     public Dialog onCreateDialog(Bundle savedInstance) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -142,8 +135,10 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         }
     }
 
+    //TODO: Why does the spinner animate function not work?
     private void setEditViewTexts() {
-
+        int selection = ((MealDayFragment)context).getSelectedFoodItemIndex(this.indexToEdit);
+        foodItemSpinner.setSelection(selection, true);
     }
 
     public void initializeViews() {
