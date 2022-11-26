@@ -244,4 +244,12 @@ public class IngredientStorage {
         }
         return null;
     }
+
+    public void setupIngredientSnapshotListener(IngredientRecipeAdapter adapter, ShoppingListInfo shoppingListInfo) {
+
+        setupIngredientSnapshotListener();
+        shoppingListInfo.updateShoppingList();
+        adapter.notifyDataSetChanged();
+
+    }
 }
