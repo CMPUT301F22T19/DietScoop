@@ -229,8 +229,11 @@ public class MealPlanActivity extends NavigationActivity {
      * Method to call when user wants to delete a particular mealday.
      * @param indexToDel
      */
+    //TODO: GURBIR THIS IS WHERE I DELETE THE MEALDAY;
     public void mealDayDelete(int indexToDel) {
+
         this.mealPlan.remove(indexToDel);
+        changeToMealPlan();
     }
 
     public ArrayList<MealDay> getMealDays() {

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Data.Meal.MealDay;
+import com.example.dietscoop.Fragments.deleteMealDay;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     Context context;
     ArrayList<MealDay> mealDays;
     private RecyclerItemClickListener entryListener;
+    deleteMealDay deletionSignature;
 
 
     //Static Class for the sake of inflating views and connecting to backend:
@@ -95,4 +97,13 @@ public class MealPlanRecyclerAdapter extends RecyclerView.Adapter<MealPlanRecycl
     public void setEntryListener(RecyclerItemClickListener entryListener) {
         this.entryListener = entryListener;
     }
+
+    public void setDeletionSignature(deleteMealDay deletionSignature) {
+        this.deletionSignature = deletionSignature;
+    }
+
+    public void swipeToDelete(int position) {
+        this.deletionSignature.deleteMealDayInstance(position);
+    }
+
 }
