@@ -98,7 +98,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //Checking for the item type:
-                            double scale = Double.parseDouble(quantityInput.getText().toString());
+                            Integer scale = Integer.parseInt(quantityInput.getText().toString());
                             MealDayFragment testParent = (MealDayFragment)getParentFragment();
                             ((MealDayFragment)context).editMeal(spinnerSelectNum, scale, indexToEdit);
                         }
@@ -125,7 +125,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //Checking for the item type:
-                            double scale = Double.parseDouble(quantityInput.getText().toString());
+                            Integer scale = Integer.parseInt(quantityInput.getText().toString());
                             MealDayFragment testParent = (MealDayFragment)getParentFragment();
                             ((MealDayFragment)context).addMeal(spinnerSelectNum, scale);
                         }

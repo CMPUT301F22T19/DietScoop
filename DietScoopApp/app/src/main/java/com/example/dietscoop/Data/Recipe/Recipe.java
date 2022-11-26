@@ -56,6 +56,10 @@ public class Recipe extends FoodItem implements Serializable {
         this.ingredientRefs = new ArrayList<String>();
     }
 
+    public Recipe(String description) {
+        this.description = description;
+    }
+
 
     public String getImageBitmap()
     {
