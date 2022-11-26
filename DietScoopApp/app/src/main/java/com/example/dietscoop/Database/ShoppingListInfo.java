@@ -11,6 +11,7 @@ import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.IngredientUnit;
+import com.example.dietscoop.Data.Ingredient.UnitConverter;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
@@ -27,6 +28,7 @@ import org.w3c.dom.Document;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ShoppingListInfo {
 
@@ -186,8 +188,33 @@ public class ShoppingListInfo {
         HashMap<String, Double> ingredientsWeHave = getIngredientsInStorage();
         HashMap<String, Double> ingredientsWeNeed = getIngredientsInRecipes();
 
+        // Iterate through what we need
+        for (Map.Entry<String, Double> entry: ingredientsWeNeed.entrySet()){
+            String key = entry.getKey();
+            Double amount = entry.getValue();
 
+            String ingredientAttribute[] = key.split("_");
 
+            String description = ingredientAttribute[0];
+            String unit = ingredientAttribute[1];
+            String category = ingredientAttribute[2];
+
+            // Check if we already have that existing ingredient in storage
+            if (!ingredientsWeHave.containsKey(key)) {
+                // If we don't, add that ingredient, along with the amount and other attributes, to shopping list
+                IngredientInRecipe newIngredient = new IngredientInRecipe(description, IngredientUnit.stringToUnit(unit), amount, IngredientCategory.stringToCategory(category));
+                shoppingList.add(newIngredient);
+            } else {
+                // If we have an that ingredient, compare how much we need vs. how much we have
+                Double newAmount = ingredientsWeNeed.get(key) - ingredientsWeHave.get(key);
+                // Check if we need more than we have
+                if (newAmount > 0) {
+                    IngredientInRecipe newIngredient = new IngredientInRecipe(description, IngredientUnit.stringToUnit(unit), newAmount, IngredientCategory.stringToCategory(category));
+                    shoppingList.add(newIngredient);
+                }
+            }
+
+        }
 
     }
 
@@ -205,11 +232,14 @@ public class ShoppingListInfo {
 
     }
 
+    // WARNING: DESTROYS THE ARRAYLIST PASSED IN! MODIFIES EVERY INGREDIENT UNIT TO BE LOWEST SIZE
     private HashMap<String, Double> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsList) {
 
         HashMap<String, Double> aggregated = new HashMap<>();
 
-        for (IngredientInRecipe ing)
+        for (IngredientInRecipe ing : ingredientsList) {
+            ing.setAmount(UnitConverter.convertIngredientUnit(ing.getAmount(), ing.getMeasurementUnit(), ));
+        }
 
     }
 
