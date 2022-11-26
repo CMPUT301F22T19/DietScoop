@@ -26,6 +26,7 @@ import org.w3c.dom.Document;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ShoppingListInfo {
 
@@ -171,14 +172,26 @@ public class ShoppingListInfo {
 
     private void updateShoppingList() {
 
+        // The has maps below map description_unit -> amount
+        // we want this method to update the shoppingList arraylist so that it stores the items we
+        // need to buy and the amount of each we need to buy
+
+        // General idea: Iterate over the Hashmap of what we Need, check if it exists in what we have
+        // if it does not, add the whole thing to the shopping list
+        // if it does, add the difference to the shopping list
+
+        // assume that the units are all in mg and mL in the hash maps
+
         this.shoppingList.clear();
-        ArrayList<IngredientInRecipe> ingredientsWeHave = getIngredientsInStorage();
-        ArrayList<IngredientInRecipe> ingredientsWeNeed = getIngredientsInRecipes();
+        HashMap<String, Double> ingredientsWeHave = getIngredientsInStorage();
+        HashMap<String, Double> ingredientsWeNeed = getIngredientsInRecipes();
+
+
 
 
     }
 
-    private ArrayList<IngredientInRecipe> getIngredientsInRecipes() {
+    private HashMap<String, Double> getIngredientsInRecipes() {
 
         ArrayList<IngredientInRecipe> allIngInMealPlans = new ArrayList<>();
 
@@ -192,12 +205,16 @@ public class ShoppingListInfo {
 
     }
 
-    private ArrayList<IngredientInRecipe> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsWeHave) {
+    private ArrayList<IngredientInRecipe> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsList) {
 
+        // Apple - 5 - kg
+        // Apple - 600 - g
+
+        // Apple 5.6 kg
 
     }
 
-    private ArrayList<IngredientInRecipe> getIngredientsInStorage() {
+    private HashMap<String, Double> getIngredientsInStorage() {
 
         ArrayList<IngredientInStorage> ingInStor = ingredientStorage.getIngredientStorage();
         ArrayList<IngredientInRecipe> ingInStor_rec = new ArrayList<>();
