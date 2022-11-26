@@ -214,7 +214,6 @@ public class ShoppingListInfo {
      * Returns a HashMap representing the ingredients currently in recipes with their amounts aggregated.
      * @return A hash map mapping description_unit_category -> amount
      */
-    // TODO: Change key to an ingredient object
     private HashMap<String, Double> getIngredientsInRecipes() {
 
         ArrayList<IngredientInRecipe> allIngInMealPlans = new ArrayList<>();

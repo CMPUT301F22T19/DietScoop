@@ -107,20 +107,6 @@ import java.util.Objects;
         return UnitConverter.getUnitType(a.getMeasurementUnit()) == UnitConverter.getUnitType(this.measurementUnit);
 
     }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (!(o instanceof Ingredient)) return false;
-//
-//        Ingredient other = (Ingredient) o;
-//
-//        if (IngredientComparator.byName.compare(this, other) != 0) return false;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash();
-//    }
 }
 
 
