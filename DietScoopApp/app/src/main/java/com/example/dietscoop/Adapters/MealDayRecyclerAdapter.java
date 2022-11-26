@@ -91,9 +91,8 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
         if (meals.get(position).getType().equals("Ingredient")) {
             holder.getMealQuantity().setText(String.valueOf(((Ingredient)meals.get(position)).getAmount()));
         } else if (meals.get(position).getType().equals("Recipe")) {
-            Double numOfServings = (double) ((RecipeInMealDay)meals.get(position)).getNumOfServings();
-            Double scalingFactor = (double) ((RecipeInMealDay)meals.get(position)).getScalingFactor();
-            holder.getMealQuantity().setText(String.valueOf(numOfServings * scalingFactor));
+            Integer numOfServings = ((RecipeInMealDay)meals.get(position)).getDesiredNumOfServings();
+            holder.getMealQuantity().setText(String.valueOf(numOfServings));
         }
 
     }
