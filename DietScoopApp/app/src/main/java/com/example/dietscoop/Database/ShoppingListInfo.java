@@ -172,7 +172,7 @@ public class ShoppingListInfo {
 
     private void updateShoppingList() {
 
-        // The has maps below map description_unit -> amount
+        // The has maps below map description_unit_category -> amount
         // we want this method to update the shoppingList arraylist so that it stores the items we
         // need to buy and the amount of each we need to buy
 
@@ -205,12 +205,11 @@ public class ShoppingListInfo {
 
     }
 
-    private ArrayList<IngredientInRecipe> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsList) {
+    private HashMap<String, Double> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsList) {
 
-        // Apple - 5 - kg
-        // Apple - 600 - g
+        HashMap<String, Double> aggregated = new HashMap<>();
 
-        // Apple 5.6 kg
+        for (IngredientInRecipe ing)
 
     }
 
