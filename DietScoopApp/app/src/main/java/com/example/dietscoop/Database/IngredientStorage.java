@@ -156,7 +156,9 @@ public class IngredientStorage {
                 }
             }
 
-            adapter.notifyDataSetChanged();
+            if (adapter!=null) {
+                adapter.notifyDataSetChanged();
+            }
         });
     }
 
