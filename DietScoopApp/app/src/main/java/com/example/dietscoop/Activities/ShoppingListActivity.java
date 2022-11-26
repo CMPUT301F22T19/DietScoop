@@ -12,11 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Data.Ingredient.Ingredient;
-import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
-import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 
 public class ShoppingListActivity extends NavigationActivity {

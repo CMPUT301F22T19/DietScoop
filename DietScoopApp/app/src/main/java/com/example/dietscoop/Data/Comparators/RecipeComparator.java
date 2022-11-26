@@ -1,10 +1,6 @@
 package com.example.dietscoop.Data.Comparators;
 
-import android.util.Log;
-
 import com.example.dietscoop.Data.Recipe.Recipe;
-import com.example.dietscoop.Data.Recipe.timeUnit;
-
 import java.lang.Integer;
 import java.util.Comparator;
 

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,10 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
-import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
-import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Recipe.Recipe;
-import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
