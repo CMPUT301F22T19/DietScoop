@@ -1,9 +1,11 @@
 package com.example.dietscoop.Data.Ingredient;
 
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.FoodItem;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
      * Ingredient abstract class to be inherited by ingredient and ingredient in storage
@@ -106,6 +108,19 @@ import java.util.Arrays;
 
     }
 
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (!(o instanceof Ingredient)) return false;
+//
+//        Ingredient other = (Ingredient) o;
+//
+//        if (IngredientComparator.byName.compare(this, other) != 0) return false;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash();
+//    }
+}
 
 

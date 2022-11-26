@@ -65,8 +65,11 @@ public class UnitConverter {
             input.setMeasurementUnit(IngredientUnit.mg);
         } else {
             assert (getUnitType(input.getMeasurementUnit()) == unitType.volume);
-            input.setAmount();
+            input.setAmount(convertIngredientUnit(input.getAmount(), input.getMeasurementUnit(), IngredientUnit.mL));
+            input.setMeasurementUnit(IngredientUnit.mL);
         }
+
+        return input;
 
     }
 
