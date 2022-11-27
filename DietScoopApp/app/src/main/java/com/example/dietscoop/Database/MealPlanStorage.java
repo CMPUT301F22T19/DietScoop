@@ -42,6 +42,12 @@ public class MealPlanStorage {
     }
 
     public void removeMealDayFromMealPlan(MealDay mealDay) {
+        for (IngredientInMealDay i: mealDay.getIngredientInMealDays()) {
+            db.removeIngredientFromIngredientsInMealDaysCollection(i);
+        }
+        for (RecipeInMealDay r: mealDay.getRecipeInMealDays()) {
+            db.removeRecipeFromRecipesInMealDaysCollection(r);
+        }
         db.removeMealDayFromMealPlan(mealDay);
     }
 

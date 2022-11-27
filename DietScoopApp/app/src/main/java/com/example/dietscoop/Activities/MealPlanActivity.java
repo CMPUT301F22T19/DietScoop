@@ -229,7 +229,7 @@ public class MealPlanActivity extends NavigationActivity {
      */
     //TODO: GURBIR THIS IS WHERE I DELETE THE MEALDAY;
     public void mealDayDelete(int indexToDel) {
-
+        mealPlanStorage.removeMealDayFromMealPlan(this.mealPlan.get(indexToDel));
         this.mealPlan.remove(indexToDel);
         changeToMealPlan();
     }
