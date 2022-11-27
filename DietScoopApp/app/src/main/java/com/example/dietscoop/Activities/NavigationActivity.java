@@ -3,17 +3,11 @@ package com.example.dietscoop.Activities;
 import android.content.Intent;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
 public abstract class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
 

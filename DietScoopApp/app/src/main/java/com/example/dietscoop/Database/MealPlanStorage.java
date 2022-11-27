@@ -8,21 +8,13 @@ import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientUnit;
-import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
-import com.example.dietscoop.Data.Meal.MealPlan;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import org.checkerframework.checker.units.qual.A;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import kotlin.time.MeasureTimeKt;
 
 // TODO: CASCADE CHANGES TO ANY RECIPE MEAL PLANS
 public class MealPlanStorage {
@@ -80,7 +72,7 @@ public class MealPlanStorage {
                                 // grab ingredients
                                 for (String ingredient: ingredientIDs) {
                                     db.getIngredientsInMealDaysCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
-                                        String TAG1 = "BALLSSS";
+                                        String TAG1 = "ALLSSS";
 
                                         if (e != null) {
                                             Log.w(TAG1, "Listen failed.", e);
@@ -90,7 +82,8 @@ public class MealPlanStorage {
                                             Log.i(TAG1, doc1.getData().toString());
                                             IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
                                                     IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
-                                                    IngredientCategory.stringToCategory(doc1.getString("category")));
+                                                    IngredientCategory.stringToCategory(doc1.getString("category")),
+                                                    doc1.getString("parentIngredientID"));
                                             ing.setId(doc1.getId());
                                             ing.setMealdayID(mealDayToAdd.getId());
                                             mealDayToAdd.addIngredientInMealDay(ing);
@@ -105,7 +98,7 @@ public class MealPlanStorage {
                                 // grab recipes
                                 for (String recipe: recipeIDs) {
                                     db.getRecipesInMealDaysCollectionRef().document(recipe).addSnapshotListener((doc1, e1) -> {
-                                        String TAG1 = "BALLSSS";
+                                        String TAG1 = "ALLSSS";
 
                                         if (e1 != null) {
                                             Log.w(TAG1, "Listen failed.", e1);
@@ -119,6 +112,7 @@ public class MealPlanStorage {
                                                     timeUnit.stringToTimeUnit(doc1.getString("prepUnitTime")),
                                                     recipeCategory.stringToRecipeCategory(doc1.getString("category")),
                                                             ingredients, doc1.getString("instructions"));
+                                            rec.setParentRecipeID(doc1.getString("parentRecipeID"));
                                             rec.setScalingFactor(doc1.getDouble("scalingFactor"));
                                             rec.setId(doc1.getId());
                                             rec.setMealdayID(mealDayToAdd.getId());
@@ -126,7 +120,7 @@ public class MealPlanStorage {
 
                                             for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
                                                 db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
-                                                    String TAG2 = "BALLSSS";
+                                                    String TAG2 = "ALLSSS";
 
                                                     if (e2 != null) {
                                                         Log.w(TAG2, "Listen failed.", e2);
@@ -139,6 +133,7 @@ public class MealPlanStorage {
                                                                 IngredientCategory.stringToCategory(doc2.getString("category")));
                                                         ing.setId(doc2.getId());
                                                         ing.setRecipeID(rec.getId());
+                                                        rec.addIngredientRef(doc2.getId());
                                                         ingredients.add(ing);
                                                     }
                                                 });
@@ -182,7 +177,8 @@ public class MealPlanStorage {
                                                 Log.i(TAG1, doc1.getData().toString());
                                                 IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
                                                         IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
-                                                        IngredientCategory.stringToCategory(doc1.getString("category")));
+                                                        IngredientCategory.stringToCategory(doc1.getString("category")),
+                                                        doc1.getString(""));
                                                 ing.setId(doc1.getId());
                                                 ing.setMealdayID(mealDay.getId());
                                                 mealDay.addIngredientInMealDay(ing);
@@ -277,6 +273,10 @@ public class MealPlanStorage {
 
     public void updateRecipeInRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
         db.updateRecipeInRecipesInMealDaysCollection(recipeInMealDay);
+    }
+
+    public void removeRecipeFromRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
+        db.removeRecipeFromRecipesInMealDaysCollection(recipeInMealDay);
     }
 
 

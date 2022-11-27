@@ -55,6 +55,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 //    ArrayList<Recipe> recipesForAdding;
 //    ArrayList<IngredientInStorage> ingredientsForAdding;
     ArrayList<FoodItem> allFoodItems;
+    ArrayList<FoodItem> foodItemsToDelete = new ArrayList<>(); //Only valid if we are editing.
 
     String currentDescription; //Holds the desc.
     String currentFoodItemType;
@@ -139,7 +140,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
             public void onClick(View view) {
                 if (editMealDay) {
                     MealPlanActivity access = ((MealPlanActivity)getActivity());
-                    access.makeChangeToDay(indexOfDay, currentMealDay);
+                    access.makeChangeToDay(indexOfDay, currentMealDay, foodItemsToDelete); //TODO: Test if has no id when editing:
                     access.changeToMealPlan();
                 } else {
                     MealPlanActivity access = ((MealPlanActivity)getActivity());
@@ -184,20 +185,29 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     }
 
 
-    //TODO: Change the following methods to manipualte how the meals get added and
     //what properties get changed in the mealdays.
+
+    /**
+     * Method adds the stated meal to the current day in view and
+     * also sets it a unique UID for the database.
+     * @param selectedFoodItem
+     * @param scale
+     */
     public void addMeal(int selectedFoodItem, double scale) {
         if (this.allFoodItems.get(selectedFoodItem).getType().equals("Ingredient")) {
             IngredientInStorage tempHolder = (IngredientInStorage) (allFoodItems.get(selectedFoodItem));
             IngredientInMealDay tempMeal = new IngredientInMealDay(tempHolder);
             tempMeal.setAmount(scale);
             tempMeal.setId(UUID.randomUUID().toString());
+            tempMeal.setMealdayID(currentMealDay.getId());
             currentMealDay.addIngredientInMealDay(tempMeal);
         } else if (this.allFoodItems.get(selectedFoodItem).getType().equals("Recipe")) {
             Recipe tempHolder = (Recipe) allFoodItems.get(selectedFoodItem);
             RecipeInMealDay tempMeal = new RecipeInMealDay(tempHolder);
+            tempMeal.setIngredientRefs(tempHolder.getIngredientRefs());
             tempMeal.setScalingFactor(scale/(tempHolder.getNumOfServings()));
             tempMeal.setId(UUID.randomUUID().toString());
+            tempMeal.setMealdayID(currentMealDay.getId());
             currentMealDay.addRecipeInMealDay(tempMeal);
         }
 
@@ -214,6 +224,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
     // TODO: STAGE CHANGES TO DELETE FROM DATABASE
     public void deleteMeal(int mealToChange) {
+        foodItemsToDelete.add(currentMealDay.getFoodItems().get(mealToChange)); //For deletion staging.
         if (this.currentMealDay.getFoodItems().get(mealToChange).getType().equals("Ingredient")) {
             currentMealDay.removeIngredientInMealDay(mealToChange);
         } else {
@@ -227,6 +238,11 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         this.currentFoodItemType = type; //TODO: finish this connection on the Dialog side.
     }
 
+    /**
+     * For editing a meal:
+     * @param view the View fetched from the Recycler.
+     * @param position the position from the recycler view fetched.
+     */
     @Override
     public void onItemClick(View view, int position) {
         AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), allFoodItems, position);

@@ -2,8 +2,6 @@ package com.example.dietscoop.Activities;
 
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -67,24 +65,8 @@ public class MealPlanActivity extends NavigationActivity {
         ingredients = new IngredientStorage();
         allFoodItems = new ArrayList<>();
 
-        //TODO: Set up database pull:
-        /**
-         *
-         * if mealPlan from database is empty.
-         * -> Create a new mealplan that is empty.
-         *
-         */
         mealPlanStorage = new MealPlanStorage();
         mealPlan = mealPlanStorage.getMealPlan();
-//        mealPlanStorage.getMealPlanFromDB();
-//        mealPlanStorage.addMealPlanSnapshotListener();
-
-        /**
-         *
-         * if mealPlan from database is valid.
-         * -> Load in and use it to fill in the mealPlan list.
-         *
-         */
 
         ingredients = new IngredientStorage();
         ingredients.setupIngredientSnapshotListener();
@@ -149,7 +131,7 @@ public class MealPlanActivity extends NavigationActivity {
 //                    .setReorderingAllowed(true)
 //                    .commit();
             mealPlanManager.beginTransaction().show(prevFragment).commit();
-
+            return;
         }
 //        if (prevFragment != null) {
 //            mealPlanManager.beginTransaction().remove(prevFragment).commit();
@@ -204,8 +186,9 @@ public class MealPlanActivity extends NavigationActivity {
      * @param indexOfDayToChange index of day to change.
      * @param changeToDay day to replace the index with.
      */
-    public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay) {
+    public void makeChangeToDay(int indexOfDayToChange, MealDay changeToDay, ArrayList<FoodItem> itemsToDelete) {
         addIndividualFoodItemsInMealDayToDB(changeToDay); // don't worry "add" is same as "update" here
+        deleteIndividualFoodItemsInMealDayFromDB(itemsToDelete);
         mealPlanStorage.updateMealDayInMealPlan(changeToDay);
         this.mealPlan.set(indexOfDayToChange, changeToDay);
     }
@@ -220,12 +203,23 @@ public class MealPlanActivity extends NavigationActivity {
         this.mealPlan.add(mealDay);
     }
 
+    //TODO: Marcos fiddled in the depths of db code that stems from here:
     private void addIndividualFoodItemsInMealDayToDB(MealDay mealDay) {
         for (IngredientInMealDay i: mealDay.getIngredientInMealDays()) {
             mealPlanStorage.addIngredientToIngredientsInMealDaysCollection(i);
         }
         for (RecipeInMealDay r: mealDay.getRecipeInMealDays()) {
             mealPlanStorage.addRecipeToRecipesInMealDaysCollection(r);
+        }
+    }
+
+    private void deleteIndividualFoodItemsInMealDayFromDB(ArrayList<FoodItem> itemsToDelete) {
+        for (FoodItem i: itemsToDelete) {
+            if (i.getType() == "Ingredient") {
+                mealPlanStorage.removeIngredientFromIngredientsInMealDaysCollection((IngredientInMealDay)i);
+            } else if (i.getType() == "Recipe") {
+                mealPlanStorage.removeRecipeFromRecipesInMealDaysCollection((RecipeInMealDay)i);
+            }
         }
     }
 

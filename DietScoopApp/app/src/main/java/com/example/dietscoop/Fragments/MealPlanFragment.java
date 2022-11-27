@@ -15,9 +15,7 @@ import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class MealPlanFragment extends Fragment implements RecyclerItemClickListener {
 
