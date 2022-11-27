@@ -87,7 +87,7 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
         {
             return builder
                     .setView(view)
-                    .setTitle("Add")
+                    .setTitle("Add to Recipe")
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -135,7 +135,7 @@ public class AddIngredientToRecipeFragment extends DialogFragment {
 
             return builder
                     .setView(view)
-                    .setTitle("Modify")
+                    .setTitle("Modify Ingredient")
                     .setPositiveButton("Modify", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

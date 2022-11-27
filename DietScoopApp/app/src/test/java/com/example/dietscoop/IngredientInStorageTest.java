@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,8 @@ public class IngredientInStorageTest {
     IngredientInStorage sampleIngredientSTR;
 
     public IngredientInStorage startSampleIngredientSTR() {
-        return new IngredientInStorage("Chicken", "kg",
-                5, 2022, 4, 24, Location.freezer, IngredientCategory.meat);
+        return new IngredientInStorage("Chicken", IngredientUnit.kg,
+                5.0, 2022, 4, 24, Location.Freezer, IngredientCategory.Meat);
     }
 
     @Test
@@ -25,7 +26,7 @@ public class IngredientInStorageTest {
         sampleIngredientSTR = startSampleIngredientSTR();
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.getLocation(), Location.freezer);
+        assertEquals(sampleIngredientSTR.getLocation(), Location.Freezer);
     }
 
     @Test
@@ -44,7 +45,7 @@ public class IngredientInStorageTest {
         sampleIngredientSTR = startSampleIngredientSTR();
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.meat);
+        assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.Meat);
     }
 
     @Test
@@ -52,10 +53,10 @@ public class IngredientInStorageTest {
         //Initializing object:
         sampleIngredientSTR = startSampleIngredientSTR();
 
-        sampleIngredientSTR.setLocation(Location.fridge);
+        sampleIngredientSTR.setLocation(Location.Fridge);
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.getLocation(), Location.fridge);
+        assertEquals(sampleIngredientSTR.getLocation(), Location.Fridge);
     }
 
     @Test
@@ -66,7 +67,7 @@ public class IngredientInStorageTest {
         sampleIngredientSTR.setCategory(IngredientCategory.Fruit);
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.fruit);
+        assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.Fruit);
     }
 
     @Test

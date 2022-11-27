@@ -50,7 +50,7 @@
         <item>Other</item>
     </string-array>
 
-    <string-array name="IngredientInStorageUnit" >
+    <string-array name="IngredientInStorageUnit">
         <item>Lb</item>
         <item>Oz</item>
         <item>Kg</item>

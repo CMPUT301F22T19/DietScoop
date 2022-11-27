@@ -103,6 +103,10 @@ public class RecipeStorage implements Serializable {
                             timeUnit.stringToTimeUnit(doc.getData().get("prepUnitTime").toString()),
                             recipeCategory.stringToRecipeCategory(doc.getData().get("category").toString()),
                             ingredients, doc.getString("instructions"));
+                    if(doc.getString("imageBitmap") != null)
+                    {
+                        recipe.setImageBitmap(doc.getString("imageBitmap"));
+                    }
                     recipe.setId(doc.getId());
                     recipes.add(recipe);
 

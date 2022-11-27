@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
@@ -20,16 +21,16 @@ public class RecipeTest {
     public ArrayList<IngredientInRecipe> generateSampleIngredients() {
         //Generating a sampleIngredients array list to contain the sample ingredients.
         ArrayList<IngredientInRecipe> sampleIngredients = new ArrayList<>();
-        sampleIngredients.add(new IngredientInRecipe("Chicken", "kg", 5, IngredientCategory.meat));
-        sampleIngredients.add(new IngredientInRecipe("Beans", "kg", 10, IngredientCategory.vegetable));
-        sampleIngredients.add(new IngredientInRecipe("Rice", "mg", 1, IngredientCategory.vegetable));
+        sampleIngredients.add(new IngredientInRecipe("Chicken", IngredientUnit.kg, 5, IngredientCategory.Meat));
+        sampleIngredients.add(new IngredientInRecipe("Beans", IngredientUnit.kg, 10, IngredientCategory.Vegetable));
+        sampleIngredients.add(new IngredientInRecipe("Rice", IngredientUnit.mg, 1, IngredientCategory.Vegetable));
         return sampleIngredients;
     }
 
     //Here getSampleIngredients handles the retrieval of sample ingredient arraylist.
     public Recipe getSampleRecipe() {
         //Instantiating the test Recipe Object:
-        return new Recipe("Tasty Breakfast", 5, 12, timeUnit.hr, recipeCategory.Breakfast, generateSampleIngredients(), "Unique breakfast.");
+        return new Recipe("Frijoles Con Pollo", 5, 12, timeUnit.hr, recipeCategory.Breakfast, generateSampleIngredients(), "Unique breakfast.");
     }
 
     @Test
@@ -51,7 +52,7 @@ public class RecipeTest {
     @Test
     public void testGetComments() {
         Recipe sampleRecipe = getSampleRecipe();
-        assertEquals(sampleRecipe.getDescription(), "Tasty breakfast");
+        assertEquals(sampleRecipe.getDescription(), "Frijoles Con Pollo");
     }
 
     @Test
@@ -88,7 +89,7 @@ public class RecipeTest {
     public void testRemoveIngredient() {
         Recipe sampleRecipe = getSampleRecipe();
 
-        IngredientInRecipe sampleIngredient = new IngredientInRecipe("eggs", "kg", 4, IngredientCategory.vegetable);
+        IngredientInRecipe sampleIngredient = new IngredientInRecipe("eggs", IngredientUnit.kg, 4, IngredientCategory.Vegetable);
 
         sampleRecipe.addIngredient(sampleIngredient);
 

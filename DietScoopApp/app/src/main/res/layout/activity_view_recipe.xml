@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.ViewRecipeActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -127,6 +128,14 @@
                         android:textAlignment="center"
                         android:textSize="16sp"
                         android:text="@string/category_label"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+
                 </TableRow>
 
             </TableLayout>
@@ -183,6 +192,52 @@
 
                 </TableRow>
             </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp">
+
+                <TextView
+                    android:id="@+id/add_photo_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:hint="Add a photo for ingredient"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/add_recipe_photo_by_camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/button"
+                        android:paddingVertical="0dp"
+                        android:text="Camera"
+                        android:textColor="#3E2723"
+                        android:textSize="11sp"
+                        app:backgroundTint="#FF6565"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+                    <Button
+                        android:id="@+id/add_recipe_photo_by_camera_roll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="Roll"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
