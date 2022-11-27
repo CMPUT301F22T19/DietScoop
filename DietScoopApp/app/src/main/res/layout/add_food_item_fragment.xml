@@ -24,12 +24,21 @@
         android:inputType="number"/>
 
     <TextView
-        android:layout_width="185dp"
-        android:layout_height="58dp"
-        app:layout_constraintBottom_toTopOf="@+id/insert_quantity_food_item"
-        app:layout_constraintStart_toEndOf="@+id/recycler_for_food_items"
+        android:id="@+id/quantity_view"
+        android:layout_width="77dp"
+        android:layout_height="56dp"
         android:text="Quantity:"
-        android:id="@+id/quantity_view"/>
+        app:layout_constraintBottom_toTopOf="@+id/insert_quantity_food_item"
+        app:layout_constraintStart_toEndOf="@+id/recycler_for_food_items" />
+
+    <TextView
+        android:id="@+id/quantity_view2"
+        android:layout_width="106dp"
+        android:layout_height="59dp"
+        android:text="Unit:"
+        app:layout_constraintBottom_toTopOf="@+id/insert_quantity_food_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/quantity_view" />
 
     <Spinner
         android:layout_width="100dp"

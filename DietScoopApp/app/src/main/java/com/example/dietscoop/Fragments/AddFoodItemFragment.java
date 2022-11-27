@@ -35,6 +35,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     Fragment context;
 
     Spinner foodItemSpinner;
+    Spinner unitSelectSpinner;
 
     ArrayList<String> spinnerNames;
     ArrayList<FoodItem> foodItems;
@@ -73,10 +74,6 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         initializeViews();
         populateSpinner();
 
-        if (editing) {
-            setEditViewTexts();
-        }
-
         ArrayAdapter<String> stringSpinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerNames);
         stringSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -85,7 +82,6 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
 
         if (editing) {
 
-            //TODO: Add control logic to depict the kind of builder layout invoked:
             builder.setView(dialogView)
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
@@ -108,11 +104,12 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                             //Do nothing.
                         }
                     });
+
+            setEditViewTexts();
             return builder.create();
 
         } else { //Not editing:
 
-            //TODO: Add control logic to depict the kind of builder layout invoked:
             builder.setView(dialogView)
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
@@ -135,7 +132,6 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         }
     }
 
-    //TODO: Why does the spinner animate function not work?
     private void setEditViewTexts() {
         int selection = ((MealDayFragment)context).getSelectedFoodItemIndex(this.indexToEdit);
         foodItemSpinner.setSelection(selection, true);
@@ -144,9 +140,9 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     public void initializeViews() {
         quantityView = (TextView) dialogView.findViewById(R.id.quantity_view);
         quantityView.setText(""); //Defaulting the measuring type to empty.
-
         quantityInput = (EditText) dialogView.findViewById(R.id.insert_quantity_food_item);
         foodItemSpinner = (Spinner) dialogView.findViewById(R.id.recycler_for_food_items);
+        unitSelectSpinner = (Spinner) dialogView.findViewById(R.id.select_measurement_unit);
     }
 
     /**

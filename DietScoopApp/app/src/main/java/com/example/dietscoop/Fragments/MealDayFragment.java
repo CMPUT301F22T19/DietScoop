@@ -44,16 +44,13 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     DatePickerDialog datePicker;
     LocalDate mealDayDate;
 
-//    Button addRecipeButton;
-//    Button addIngredientButton;
     Button addFoodItemButton;
+
     //Major action buttons:
     Button mealDayConfirm;
     Button mealDayCancel;
     Button editDate;
 
-//    ArrayList<Recipe> recipesForAdding;
-//    ArrayList<IngredientInStorage> ingredientsForAdding;
     ArrayList<FoodItem> allFoodItems;
     ArrayList<FoodItem> foodItemsToDelete = new ArrayList<>(); //Only valid if we are editing.
 
@@ -86,6 +83,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
         //Binding Views:
         initializeViews();
+
         //Showing a pre-existing date if applicable:
         if (editMealDay) {
             DateText.setText(currentMealDay.getDate().toString());
@@ -93,8 +91,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
 
         //Getting options:
-//        recipesForAdding = ((MealPlanActivity)getActivity()).getRecipesList();
-//        ingredientsForAdding = ((MealPlanActivity)getActivity()).getIngredientsList();
         allFoodItems = ((MealPlanActivity)getActivity()).getAllFoodItems();
 
         //Setting Adapters:
@@ -172,8 +168,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         //Initializing Views:
         DateText = (TextView) container.findViewById(R.id.meal_day_date);
         mealRecycler = (RecyclerView) container.findViewById(R.id.recycler_in_add_meal_day);
-//        addRecipeButton = (Button) container.findViewById(R.id.add_recipe_meal);
-//        addIngredientButton = (Button) container.findViewById(R.id.add_ingredient_meal);
         addFoodItemButton = (Button) container.findViewById(R.id.add_food_item_button);
         mealDayConfirm = (Button) container.findViewById(R.id.meal_day_confirm);
         mealDayCancel = (Button) container.findViewById(R.id.meal_day_cancel);
@@ -183,9 +177,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     public void updateAdapter() {
         mealRecyclerAdapter.notifyDataSetChanged();
     }
-
-
-    //what properties get changed in the mealdays.
 
     /**
      * Method adds the stated meal to the current day in view and
