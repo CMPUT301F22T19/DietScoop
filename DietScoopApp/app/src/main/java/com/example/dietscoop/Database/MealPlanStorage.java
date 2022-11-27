@@ -80,7 +80,7 @@ public class MealPlanStorage {
                                 // grab ingredients
                                 for (String ingredient: ingredientIDs) {
                                     db.getIngredientsInMealDaysCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
-                                        String TAG1 = "ALLSSS";
+                                        String TAG1 = "BALLSSS";
 
                                         if (e != null) {
                                             Log.w(TAG1, "Listen failed.", e);
@@ -114,39 +114,56 @@ public class MealPlanStorage {
                                         }
                                         if (doc1.exists()) {
                                             Log.i(TAG1, doc1.getData().toString());
-                                            ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
-                                            RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"),
-                                                    doc1.getLong("prepTime").intValue(), doc1.getLong("servings").intValue(),
-                                                    timeUnit.stringToTimeUnit(doc1.getString("prepUnitTime")),
-                                                    recipeCategory.stringToRecipeCategory(doc1.getString("category")),
-                                                            ingredients, doc1.getString("instructions"));
+//                                            ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
+                                            RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"));
                                             rec.setParentRecipeID(doc1.getString("parentRecipeID"));
-                                            rec.setScalingFactor(doc1.getDouble("scalingFactor"));
+                                            rec.setDesiredNumOfServings(doc1.getLong("desiredNumOfServings").intValue());
                                             rec.setId(doc1.getId());
                                             rec.setMealdayID(mealDayToAdd.getId());
-                                            mealDayToAdd.addRecipeInMealDay(rec);
 
-                                            for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
-                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
-                                                    String TAG2 = "ALLSSS";
 
-                                                    if (e2 != null) {
-                                                        Log.w(TAG2, "Listen failed.", e2);
-                                                        return;
-                                                    }
-                                                    if (doc2.exists()) {
-                                                        Log.i(TAG2, doc2.getData().toString());
-                                                        IngredientInRecipe ing = new IngredientInRecipe(doc2.getString("description"),
-                                                                IngredientUnit.stringToUnit(doc2.getString("measurementUnit")),doc2.getDouble("amount"),
-                                                                IngredientCategory.stringToCategory(doc2.getString("category")));
-                                                        ing.setId(doc2.getId());
-                                                        ing.setRecipeID(rec.getId());
-                                                        rec.addIngredientRef(doc2.getId());
-                                                        ingredients.add(ing);
-                                                    }
-                                                });
-                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).get();
-                                            }
+                                            db.getRecipeCollectionRef().document(doc1.getString("parentRecipeID"))
+                                                    .addSnapshotListener((doc4, e4) -> {
+                                                        String TAG4 = "ALLSSS";
+
+                                                        if (e4 != null) {
+                                                            Log.w(TAG4, "Listen failed.", e4);
+                                                            return;
+                                                        }
+                                                        if (doc4.exists()) {
+                                                            rec.setDescription(doc4.getString("description"));
+                                                            mealDayToAdd.addRecipeInMealDay(rec);
+                                                        } else {
+                                                            db.getRecipesInMealDaysCollectionRef().document(doc1.getId()).delete();
+                                                        }
+
+                                                    });
+                                            db.getRecipeCollectionRef().document(doc1.getString("parentRecipeID")).get();
+
+
+
+
+//                                            for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
+//                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
+//                                                    String TAG2 = "ALLSSS";
+//
+//                                                    if (e2 != null) {
+//                                                        Log.w(TAG2, "Listen failed.", e2);
+//                                                        return;
+//                                                    }
+//                                                    if (doc2.exists()) {
+//                                                        Log.i(TAG2, doc2.getData().toString());
+//                                                        IngredientInRecipe ing = new IngredientInRecipe(doc2.getString("description"),
+//                                                                IngredientUnit.stringToUnit(doc2.getString("measurementUnit")),doc2.getDouble("amount"),
+//                                                                IngredientCategory.stringToCategory(doc2.getString("category")));
+//                                                        ing.setId(doc2.getId());
+//                                                        ing.setRecipeID(rec.getId());
+//                                                        rec.addIngredientRef(doc2.getId());
+//                                                        ingredients.add(ing);
+//                                                    }
+//                                                });
+//                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).get();
+//                                            }
                                         }
 
                                         // TODO: idk if we need this?
@@ -186,7 +203,7 @@ public class MealPlanStorage {
                                                 IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
                                                         IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
                                                         IngredientCategory.stringToCategory(doc1.getString("category")),
-                                                        doc1.getString(""));
+                                                        doc1.getString("parentIngredientID"));
                                                 ing.setId(doc1.getId());
                                                 ing.setMealdayID(mealDay.getId());
                                                 mealDay.addIngredientInMealDay(ing);
@@ -209,11 +226,9 @@ public class MealPlanStorage {
                                             if (doc1.exists()) {
                                                 Log.i(TAG1, doc1.getData().toString());
                                                 ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
-                                                RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"),
-                                                        doc1.getLong("prepTime").intValue(), doc1.getLong("servings").intValue(),
-                                                        timeUnit.stringToTimeUnit(doc1.getString("prepUnitTime")),
-                                                        recipeCategory.stringToRecipeCategory(doc1.getString("category")),
-                                                        ingredients, doc1.getString("instructions"));
+                                                RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"));
+                                                rec.setParentRecipeID(doc1.getString("parentRecipeID"));
+                                                rec.setDesiredNumOfServings(doc1.getLong("desiredNumOfServings").intValue());
                                                 rec.setId(doc1.getId());
                                                 rec.setMealdayID(mealDay.getId());
                                                 mealDay.addRecipeInMealDay(rec);

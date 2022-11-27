@@ -193,7 +193,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
      * @param selectedFoodItem
      * @param scale
      */
-    public void addMeal(int selectedFoodItem, double scale) {
+    public void addMeal(int selectedFoodItem, Integer scale) {
         if (this.allFoodItems.get(selectedFoodItem).getType().equals("Ingredient")) {
             IngredientInStorage tempHolder = (IngredientInStorage) (allFoodItems.get(selectedFoodItem));
             IngredientInMealDay tempMeal = new IngredientInMealDay(tempHolder);
@@ -205,7 +205,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
             Recipe tempHolder = (Recipe) allFoodItems.get(selectedFoodItem);
             RecipeInMealDay tempMeal = new RecipeInMealDay(tempHolder);
             tempMeal.setIngredientRefs(tempHolder.getIngredientRefs());
-            tempMeal.setScalingFactor(scale/(tempHolder.getNumOfServings()));
+            tempMeal.setDesiredNumOfServings(scale);
             tempMeal.setId(UUID.randomUUID().toString());
             tempMeal.setMealdayID(currentMealDay.getId());
             currentMealDay.addRecipeInMealDay(tempMeal);
@@ -216,7 +216,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
     }
 
-    public void editMeal(int selectedFoodItem, double scale, int mealToChange) {
+    public void editMeal(int selectedFoodItem, Integer scale, int mealToChange) {
         deleteMeal(mealToChange);
         addMeal(selectedFoodItem, scale);
     }

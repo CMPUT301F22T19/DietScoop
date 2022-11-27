@@ -156,7 +156,9 @@ public class IngredientStorage {
                 }
             }
 
-            adapter.notifyDataSetChanged();
+            if (adapter!=null) {
+                adapter.notifyDataSetChanged();
+            }
         });
     }
 
@@ -241,5 +243,13 @@ public class IngredientStorage {
             }
         }
         return null;
+    }
+
+    public void setupIngredientSnapshotListener(IngredientRecipeAdapter adapter, ShoppingListInfo shoppingListInfo) {
+
+        setupIngredientSnapshotListener();
+        shoppingListInfo.updateShoppingList();
+        adapter.notifyDataSetChanged();
+
     }
 }

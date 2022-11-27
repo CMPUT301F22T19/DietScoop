@@ -11,6 +11,7 @@ import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.IngredientUnit;
+import com.example.dietscoop.Data.Ingredient.UnitConverter;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
@@ -33,38 +34,39 @@ public class ShoppingListInfo {
 
     // Keep track of recipes and ingredients in any meal day
     // will be used to calculate shopping list
-    private ArrayList<RecipeInMealDay> recipesInMealPlans;
     private ArrayList<IngredientInRecipe> ingInMealPlans;
 
     private ArrayList<IngredientInRecipe> shoppingList;
 
-    private RecipeStorage recipeStorage;
     private IngredientStorage ingredientStorage;
 
     private Database db;
 
     public ShoppingListInfo() {
         this.db = new Database();
-        this.recipesInMealPlans = new ArrayList<>();
         this.ingInMealPlans = new ArrayList<>();
 
-        this.recipeStorage = new RecipeStorage();
         this.ingredientStorage = new IngredientStorage();
+
+        this.shoppingList = new ArrayList<>();
     }
 
     public void setUpSnapshotListeners(IngredientRecipeAdapter adapter) {
 
         setupIngredientsInMealDaysSnapshotListener(adapter);
-        setupRecipesInMealDaysSnapshotListener(adapter);
+        db.getIngredientsInMealDaysCollectionRef().get();
 
-        recipeStorage.setupRecipeSnapshotListener(adapter);
-        ingredientStorage.setupIngredientSnapshotListener(adapter);
+        setupRecipesInMealDaysSnapshotListener(adapter);
+        db.getRecipesInMealDaysCollectionRef().get();
+
+        ingredientStorage.setupIngredientSnapshotListener(adapter, this);
+        ingredientStorage.getIngredientStorageFromDatabase();
 
     }
 
     private void setupRecipesInMealDaysSnapshotListener(IngredientRecipeAdapter adapter) {
 
-        db.getIngredientsInMealDaysCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.getRecipesInMealDaysCollectionRef().addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
@@ -77,34 +79,46 @@ public class ShoppingListInfo {
                     switch(doc.getType()) {
                         case ADDED:
                             String parentRecipeID = doc.getDocument().getString("parentRecipeID");
-                            String mealDayID = doc.getDocument().getString("mealDayID");
-                            int desiredServings = doc.getDocument().getLong("desiredNumOfServings").intValue();
-                            String description = doc.getDocument().getString("description");
 
-                            Recipe parentRecipe = recipeStorage.getRecipeWithID(parentRecipeID);
+                            db.getRecipeCollectionRef().document(parentRecipeID).addSnapshotListener((document, err) -> {
 
-                            RecipeInMealDay recipe = new RecipeInMealDay(parentRecipe);
-                            recipe.setMealdayID(mealDayID);
-                            recipe.setScalingFactor((double)desiredServings / (double)parentRecipe.getNumOfServings());
-                            recipe.setDescription(description);
-
-                            recipesInMealPlans.add(recipe);
-                            break;
-                        case MODIFIED:
-                            QueryDocumentSnapshot document = doc.getDocument();
-                            for (RecipeInMealDay rec : recipesInMealPlans) {
-                                if (rec.getId().equals(doc.getDocument().getId())) {
-                                    rec.setParentRecipe(recipeStorage.getRecipeWithID(document.getString("parentRecipeID")));
-                                    rec.setMealdayID(document.getString("mealDayID"));
-                                    rec.setDescription(document.getString("description"));
-                                    rec.setScalingFactor(document.getLong("desiredNumOfServings").doubleValue() / rec.getParentRecipe().getNumOfServings());
-                                    break;
+                                if (err != null) {
+                                    Log.w("SNAPSHOT FAILED", "RECIPES IN MEAL DAYS SNAPSHOT LISTENER FAILED", err);
+                                    return;
                                 }
-                            }
+
+                                if (document.exists()) {
+                                    ArrayList<String> ingredientRefs = (ArrayList<String>)document.get("ingredients");
+
+                                    for (String ingRef : ingredientRefs) {
+                                        db.getIngredientsInRecipesCollectionRef().document(ingRef).addSnapshotListener((ingDoc, e) -> {
+
+                                            if (ingDoc.exists()) {
+                                                IngredientInRecipe ing = new IngredientInRecipe(
+                                                        ingDoc.getString("description"),
+                                                        IngredientUnit.stringToUnit(ingDoc.getString("measurementUnit")),
+                                                        ingDoc.getDouble("amount"),
+                                                        IngredientCategory.stringToCategory(ingDoc.getString("category"))
+                                                );
+
+                                                ingInMealPlans.add(ing);
+                                            }
+                                        });
+                                        db.getIngredientsInRecipesCollectionRef().document(ingRef).get();
+                                    }
+
+                                } else {
+                                    db.getRecipesInMealDaysCollectionRef().document(doc.getDocument().getId()).delete();
+                                }
+
+                            });
+                            db.getRecipeCollectionRef().document(parentRecipeID).get();
                             break;
                         case REMOVED:
-                            recipesInMealPlans.removeIf(rec -> rec.getId().equals(doc.getDocument().getId()));
-                            break;
+                            Log.i("SNAPSHOT", "RECIPE REMOVED SUCCESSFULLY");
+                        default:
+                            throw new RuntimeException("OK WTF HOW IS IT ANYTHING OTHER THAN ADDED");
+
                     }
                 }
                 updateShoppingList();
@@ -139,26 +153,9 @@ public class ShoppingListInfo {
                             ingInMealPlans.add(ing);
                             break;
                         case REMOVED:
-                            ingInMealPlans.removeIf(ingInRec -> ingInRec.getId().equals(document.getId()));
                             break;
-                        case MODIFIED:
-                            for (IngredientInRecipe rec : ingInMealPlans) {
-                                if (rec.getId().equals(document.getId())) {
-                                    double newAmount = document.getDouble("amount");
-                                    String newCatString = document.getString("category");
-                                    IngredientCategory newCat = IngredientCategory.stringToCategory(newCatString);
-                                    String newDescription = document.getString("description");
-                                    String newUnitString = document.getString("measurementUnit");
-                                    IngredientUnit newUnit = IngredientUnit.stringToUnit(newUnitString);
-
-                                    rec.setAmount(newAmount);
-                                    rec.setCategory(newCat);
-                                    rec.setDescription(newDescription);
-                                    rec.setMeasurementUnit(newUnit);
-
-                                    break;
-                                }
-                            }
+                        default:
+                            throw new RuntimeException("OK WTF HOW IS IT ANYTHING OTHER THAN ADDED");
                     }
                 }
                 updateShoppingList();
@@ -171,17 +168,7 @@ public class ShoppingListInfo {
         return shoppingList;
     }
 
-    private void updateShoppingList() {
-
-        // The has maps below map description_unit -> amount
-        // we want this method to update the shoppingList arraylist so that it stores the items we
-        // need to buy and the amount of each we need to buy
-
-        // General idea: Iterate over the Hashmap of what we Need, check if it exists in what we have
-        // if it does not, add the whole thing to the shopping list
-        // if it does, add the difference to the shopping list
-
-        // assume that the units are all in mg and mL in the hash maps
+    public void updateShoppingList() {
 
         this.shoppingList.clear();
         HashMap<String, Double> ingredientsWeHave = getIngredientsInStorage();
@@ -217,26 +204,35 @@ public class ShoppingListInfo {
 
     }
 
+    /**
+     * Returns a HashMap representing the ingredients currently in recipes with their amounts aggregated.
+     * @return A hash map mapping description_unit_category -> amount
+     */
     private HashMap<String, Double> getIngredientsInRecipes() {
 
-        ArrayList<IngredientInRecipe> allIngInMealPlans = new ArrayList<>();
-
-        allIngInMealPlans.addAll(this.ingInMealPlans);
-
-        for (Recipe rec : this.recipesInMealPlans) {
-            allIngInMealPlans.addAll(rec.getIngredients());
-        }
-
-        return AggregateIngredients(allIngInMealPlans);
+        return AggregateIngredients(ingInMealPlans);
 
     }
 
-    private ArrayList<IngredientInRecipe> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsList) {
+    private HashMap<String, Double> AggregateIngredients(ArrayList<IngredientInRecipe> ingredientsList) {
 
-        // Apple - 5 - kg
-        // Apple - 600 - g
+        HashMap<String, Double> aggregated = new HashMap<>();
 
-        // Apple 5.6 kg
+        for (IngredientInRecipe ing : ingredientsList) {
+            Ingredient newIngredient = UnitConverter.normalizeAmountUnits(ing);
+            String key = newIngredient.getDescription() + "_"
+                    + newIngredient.getMeasurementUnit().name() +"_"
+                    + newIngredient.getCategoryName();
+
+            if (aggregated.containsKey(key)) {
+                aggregated.put(key, aggregated.get(key) + newIngredient.getAmount());
+            } else {
+                aggregated.put(key, newIngredient.getAmount());
+            }
+
+        }
+
+        return aggregated;
 
     }
 
@@ -257,6 +253,5 @@ public class ShoppingListInfo {
         return AggregateIngredients(ingInStor_rec);
 
     }
-
 
 }
