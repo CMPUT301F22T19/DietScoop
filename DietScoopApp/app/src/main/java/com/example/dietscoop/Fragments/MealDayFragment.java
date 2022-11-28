@@ -240,7 +240,14 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
      */
     @Override
     public void onItemClick(View view, int position) {
-        AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), allFoodItems, position);
+        Double defaultQuant;
+        if (this.currentMealDay.getFoodItems().get(position).getType() == "Ingredient") {
+            defaultQuant = ((IngredientInMealDay)(this.currentMealDay.getFoodItems().get(position))).getAmount();
+        } else {
+            defaultQuant = ((RecipeInMealDay)(this.currentMealDay.getFoodItems().get(position))).getDesiredNumOfServings();
+        }
+
+        AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), allFoodItems, position, defaultQuant);
         dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
     }
 

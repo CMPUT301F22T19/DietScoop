@@ -50,6 +50,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
 
     int defaultUnitIndex;
     int spinnerSelectNum;
+    Double defaultQuantity;
     String currentMealType;
     IngredientUnit mealUnit; //This will be sent back to the mealday.
 
@@ -62,11 +63,12 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         this.editing = false;
     }
 
-    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems, int indexToEdit) { //For editing an existing foodItem.
+    public <T extends FoodItem> AddFoodItemFragment(Fragment context,ArrayList<T> foodItems, int indexToEdit, Double defaultQuantity) { //For editing an existing foodItem.
         this.context = context;
         this.foodItems = (ArrayList<FoodItem>) foodItems;
         this.editing = true;
         this.indexToEdit = indexToEdit;
+        this.defaultQuantity =defaultQuantity;
     }
 
     public Dialog onCreateDialog(Bundle savedInstance) {
@@ -93,29 +95,6 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         AlertDialog alertDialogTemp;
         if (editing) {
             alertDialogTemp = buildEditDialog(builder,dialogView);
-
-//            builder.setView(dialogView)
-//                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            //Checking for the item type:
-//                            Double scale = Double.parseDouble(quantityInput.getText().toString());
-//                            MealDayFragment testParent = (MealDayFragment)getParentFragment();
-//                            ((MealDayFragment)context).editMeal(spinnerSelectNum, scale, indexToEdit, mealUnit);
-//                        }
-//                    })
-//                    .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            ((MealDayFragment)context).deleteMeal(indexToEdit);
-//                        }
-//                    })
-//                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            //Do nothing.
-//                        }
-//                    });
 
             //OnClick Spinner for the selection of unit types:
             unitSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -220,6 +199,9 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         } else {
             unitSelectSpinner.setSelection(10); //Will set the servings selection.
         }
+
+        //Set the default size:
+        quantityInput.setText(String.valueOf(defaultQuantity));
     }
 
     public void initializeViews() {
