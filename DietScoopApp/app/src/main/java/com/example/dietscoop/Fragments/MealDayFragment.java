@@ -63,7 +63,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
     public MealDayFragment() {
         super(R.layout.meal_day_fragment_v2);
-        currentMealDay = new MealDay(LocalDate.now());
+        currentMealDay = new MealDay(LocalDate.of(1800,1,1));
         currentMealDay.setId(UUID.randomUUID().toString());
         editMealDay = false;
     }
@@ -115,6 +115,8 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         setMealDayDate(day, month + 1, year);
+                        DateText.setTextSize(24);
+                        DateText.setError(null);
                         DateText.setText(mealDayDate.toString());
                     }
                 }, year, month, day);
@@ -134,14 +136,16 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         mealDayConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editMealDay) {
-                    MealPlanActivity access = ((MealPlanActivity)getActivity());
-                    access.makeChangeToDay(indexOfDay, currentMealDay, foodItemsToDelete); //TODO: Test if has no id when editing:
-                    access.changeToMealPlan();
-                } else {
-                    MealPlanActivity access = ((MealPlanActivity)getActivity());
-                    access.mealDayAdd(currentMealDay);
-                    access.changeToMealPlan();
+                if (errorCheck()) {
+                    if (editMealDay) {
+                        MealPlanActivity access = ((MealPlanActivity) getActivity());
+                        access.makeChangeToDay(indexOfDay, currentMealDay, foodItemsToDelete); //TODO: Test if has no id when editing:
+                        access.changeToMealPlan();
+                    } else {
+                        MealPlanActivity access = ((MealPlanActivity) getActivity());
+                        access.mealDayAdd(currentMealDay);
+                        access.changeToMealPlan();
+                    }
                 }
             }
         });
@@ -250,5 +254,18 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         }
 
         return -1;
+    }
+
+    private boolean errorCheck() {
+        boolean isAllValid = true;
+        if(currentMealDay.getDate().getYear()==1800){
+            isAllValid = false;
+            DateText.setError("Please select a date!");
+            DateText.setTextSize(16);
+            DateText.setText("Please select!");
+        } else {
+            DateText.setError(null);
+        }
+        return isAllValid;
     }
 }

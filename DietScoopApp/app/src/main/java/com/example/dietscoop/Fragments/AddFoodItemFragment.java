@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -87,31 +88,34 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         foodItemSpinner.setAdapter(stringSpinnerAdapter);
         foodItemSpinner.setOnItemSelectedListener(this);
         unitSelectSpinner.setAdapter(stringUnitAdapter);
+        unitSelectSpinner.setPrompt("Select");
 
+        AlertDialog alertDialogTemp;
         if (editing) {
+            alertDialogTemp = buildEditDialog(builder,dialogView);
 
-            builder.setView(dialogView)
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //Checking for the item type:
-                            Double scale = Double.parseDouble(quantityInput.getText().toString());
-                            MealDayFragment testParent = (MealDayFragment)getParentFragment();
-                            ((MealDayFragment)context).editMeal(spinnerSelectNum, scale, indexToEdit, mealUnit);
-                        }
-                    })
-                    .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            ((MealDayFragment)context).deleteMeal(indexToEdit);
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //Do nothing.
-                        }
-                    });
+//            builder.setView(dialogView)
+//                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            //Checking for the item type:
+//                            Double scale = Double.parseDouble(quantityInput.getText().toString());
+//                            MealDayFragment testParent = (MealDayFragment)getParentFragment();
+//                            ((MealDayFragment)context).editMeal(spinnerSelectNum, scale, indexToEdit, mealUnit);
+//                        }
+//                    })
+//                    .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            ((MealDayFragment)context).deleteMeal(indexToEdit);
+//                        }
+//                    })
+//                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            //Do nothing.
+//                        }
+//                    });
 
             //OnClick Spinner for the selection of unit types:
             unitSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -142,26 +146,27 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
             });
 
             setEditViewTexts();
-            return builder.create();
+
 
         } else { //Not editing:
+            alertDialogTemp = buildAddDialog(builder,dialogView);
 
-            builder.setView(dialogView)
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //Checking for the item type:
-                            Double scale = Double.parseDouble(quantityInput.getText().toString());
-                            MealDayFragment testParent = (MealDayFragment)getParentFragment();
-                            ((MealDayFragment)context).addMeal(spinnerSelectNum, scale, mealUnit);
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //TODO: Implement the cancellation of a meal day.
-                        }
-                    });
+//            builder.setView(dialogView)
+//                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            //Checking for the item type:
+//                            Double scale = Double.parseDouble(quantityInput.getText().toString());
+//                            MealDayFragment testParent = (MealDayFragment)getParentFragment();
+//                            ((MealDayFragment)context).addMeal(spinnerSelectNum, scale, mealUnit);
+//                        }
+//                    })
+//                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            //TODO: Implement the cancellation of a meal day.
+//                        }
+//                    });
 
             unitSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -191,9 +196,12 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                 }
             });
 
-            return builder.create();
+
 
         }
+        final AlertDialog alertDialog = alertDialogTemp;
+        errorCheck(alertDialog,editing);
+        return alertDialog;
     }
 
     private void setEditViewTexts() {
@@ -263,5 +271,83 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         //Do nothing.
+    }
+
+    private AlertDialog buildEditDialog(AlertDialog.Builder builder, View view) {
+        return builder.setView(dialogView)
+                .setPositiveButton("Confirm", null)
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //Checking for the item type:
+//                        Double scale = Double.parseDouble(quantityInput.getText().toString());
+//                        MealDayFragment testParent = (MealDayFragment)getParentFragment();
+//                        ((MealDayFragment)context).editMeal(spinnerSelectNum, scale, indexToEdit, mealUnit);
+//                    }
+//                })
+                .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ((MealDayFragment)context).deleteMeal(indexToEdit);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Do nothing.
+                    }
+                })
+                .create();
+    }
+
+    private AlertDialog buildAddDialog(AlertDialog.Builder builder, View view) {
+        return builder.setView(dialogView)
+                .setPositiveButton("Confirm", null)
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //Checking for the item type:
+//                        Double scale = Double.parseDouble(quantityInput.getText().toString());
+//                        MealDayFragment testParent = (MealDayFragment)getParentFragment();
+//                        ((MealDayFragment)context).addMeal(spinnerSelectNum, scale, mealUnit);
+//                    }
+//                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //TODO: Implement the cancellation of a meal day.
+                    }
+                })
+                .create();
+    }
+
+    private void errorCheck(AlertDialog alertDialog, boolean isEditing) {
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean isAllValid = true;
+
+                        if(quantityInput.getText().toString().equals("")) {
+                            isAllValid = false;
+                            quantityInput.setError("Please enter an amount!");
+                        } else {
+                            Double scale = Double.parseDouble(quantityInput.getText().toString());
+                            if(!isEditing) {
+                                ((MealDayFragment) context).addMeal(spinnerSelectNum, scale, mealUnit);
+                            } else {
+                                ((MealDayFragment)context).editMeal(spinnerSelectNum, scale, indexToEdit, mealUnit);
+                            }
+                            alertDialog.dismiss();
+                        }
+
+                        if(isAllValid) {
+
+                        }
+                    }
+                });
+            }
+        });
     }
 }

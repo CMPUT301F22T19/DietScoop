@@ -183,16 +183,19 @@ public class IngredientAddFragment extends DialogFragment {
                 R.array.IngredientInStorageCategory, android.R.layout.simple_spinner_item);
         categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(categorySpinnerAdapter);
+        category.setPrompt("Select");
 
         ArrayAdapter<CharSequence> locationSpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.IngredientInStorageLocation, android.R.layout.simple_spinner_item);
         locationSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         location.setAdapter(locationSpinnerAdapter);
+        location.setPrompt("Select");
 
         ArrayAdapter<CharSequence> unitSpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.IngredientInStorageUnit, android.R.layout.simple_spinner_item);
         unitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         unit.setAdapter(unitSpinnerAdapter);
+        unit.setPrompt("Select");
 
         IngredientInStorage newIngredient = new IngredientInStorage();
 
