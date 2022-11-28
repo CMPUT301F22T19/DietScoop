@@ -58,23 +58,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
-<<<<<<< HEAD
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.0-rc01'
-=======
     // testImplementation 'org.junit.jupiter:junit-jupiter'
->>>>>>> d34d1c0d7718495075edeb72d0381c333ca9a71c
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4-rc01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0-rc01'
     androidTestImplementation 'androidx.test:runner:1.4.0'
-<<<<<<< HEAD
-    androidTestImplementation 'androidx.test:rules:1.5.0-rc01'
-
-=======
     androidTestImplementation 'androidx.test:rules:1.4.0'
     implementation 'com.squareup.picasso:picasso:2.8'
->>>>>>> d34d1c0d7718495075edeb72d0381c333ca9a71c
 
     def nav_version = "2.5.3"
 
@@ -94,10 +84,5 @@ dependencies {
 
     // Jetpack Compose Integration
     androidTestImplementation 'androidx.test:runner:1.4.0'
-<<<<<<< HEAD
-    androidTestImplementation 'androidx.test:rules:1.5.0-rc01'
-}
-=======
     androidTestImplementation 'androidx.test:rules:1.4.0'
 }
->>>>>>> d34d1c0d7718495075edeb72d0381c333ca9a71c
