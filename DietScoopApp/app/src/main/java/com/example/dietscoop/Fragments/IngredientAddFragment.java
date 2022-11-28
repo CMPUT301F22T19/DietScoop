@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -106,6 +107,82 @@ public class IngredientAddFragment extends DialogFragment {
         }
     }
 
+    private AlertDialog buildAddDialog(AlertDialog.Builder builder, View view) {
+        return builder
+                .setView(view)
+                .setTitle("Add ingredient")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("OK", null)
+                .create();
+
+    }
+
+    private AlertDialog buildEditDialog(AlertDialog.Builder builder, View view) {
+        return builder
+                .setView(view)
+                .setTitle("Modify ingredient")
+                .setNegativeButton("Cancel", null)
+                .setNeutralButton("Delete", (dialog1, which) -> listener.onDeletePressed(ingredientToBeChanged))
+                .setPositiveButton("OK", null)
+                .create();
+    }
+
+    private void errorCheck(EditText description, TextView bestBeforeDate, AlertDialog alertDialog, IngredientInStorage i) {
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean isAllValid = true;
+
+                        if (description.getText().toString().length() == 0) {
+                            description.setError("Please enter a description");
+                            isAllValid = false;
+                        } else {
+                            if (i == null) {
+                                ingredientToBeChanged.setDescription(description.getText().toString());
+                            } else {
+                                i.setDescription(description.getText().toString());
+                            }
+                        }
+
+                        if (amount.getText().toString().length() == 0) {
+                            amount.setError("Please specify an amount!");
+                        } else {
+                            if (i == null) {
+                                ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
+                            } else {
+                                i.setAmount(Double.parseDouble(amount.getText().toString()));
+                            }
+                        }
+                        if (i == null) {
+                            if (ingredientToBeChanged.getBestBeforeDate() == null) {
+                                isAllValid = false;
+                                bestBeforeDate.setError("Please set an expiry date!");
+                            }
+                        } else {
+                            if (i.getBestBeforeDate() == null) {
+                                isAllValid = false;
+                                bestBeforeDate.setError("Please set an expiry date!");
+                            }
+                        }
+                        if (isAllValid) {
+                            dialog.dismiss();
+                            if (i == null) {
+                                listener.onOkPressedUpdate(ingredientToBeChanged);
+                            } else {
+                                listener.onOkPressed(i);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -117,9 +194,9 @@ public class IngredientAddFragment extends DialogFragment {
         unit = view.findViewById(R.id.edit_unit_ingredient_storage);
         selectDate = view.findViewById(R.id.select_bestbefore_button);
         bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
-        addByCameraRoll = view.findViewById(R.id.add_ingredient_photo_camera_roll);
-        addByCamera = view.findViewById(R.id.add_ingredient_photo_camera);
-        thisImageIngredient = view.findViewById(R.id.ingredient_image);
+//        addByCameraRoll = view.findViewById(R.id.add_ingredient_photo_camera_roll);
+//        addByCamera = view.findViewById(R.id.add_ingredient_photo_camera);
+//        thisImageIngredient = view.findViewById(R.id.ingredient_image);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -139,19 +216,19 @@ public class IngredientAddFragment extends DialogFragment {
 
         IngredientInStorage newIngredient = new IngredientInStorage();
 
-        addByCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                askCameraPermission();
-            }
-        });
-
-        addByCameraRoll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cameraRollOpener();
-            }
-        });
+//        addByCamera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                askCameraPermission();
+//            }
+//        });
+//
+//        addByCameraRoll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                cameraRollOpener();
+//            }
+//        });
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -239,19 +316,16 @@ public class IngredientAddFragment extends DialogFragment {
             int locationSpinnerPosition = locationSpinnerAdapter.getPosition(ingredientToBeChanged.getLocationName());
             location.setSelection(locationSpinnerPosition);
         }
-
+        AlertDialog alertDialogTemp;
+        boolean isEditing;
         if (ingredientToBeChanged == null) {
-            builder
-                .setView(view)
-                .setTitle("Add ingredient")
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("OK", (dialogInterface, i) -> {
-
-                    String strDescription = description.getText().toString();
-                    if (strDescription.length() == 0) {
-                        strDescription = "No description available";
-                    }
-
+            alertDialogTemp = buildAddDialog(builder, view);
+            isEditing = false;
+//                    String strDescription = description.getText().toString();
+//                    if (strDescription.length() == 0) {
+//                        strDescription = "No description available";
+//                    }
+//
                     String strAmount = amount.getText().toString();
                     double doubleAmount;
                     if (!isNumeric(strAmount, NumericTypes.decimal)) {
@@ -259,12 +333,40 @@ public class IngredientAddFragment extends DialogFragment {
                     } else {
                         doubleAmount = Double.parseDouble(strAmount);
                     }
-
-                    newIngredient.setDescription(strDescription);
+//
+//                    newIngredient.setDescription(strDescription);
                     newIngredient.setAmount(doubleAmount);
+//
+//                    listener.onOkPressed(newIngredient);
 
-                    listener.onOkPressed(newIngredient);
-                });
+//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    boolean isAllValid = true;
+//                    if (description.getText().toString().length() == 0) {
+//                        description.setError("Please enter a description");
+//                        isAllValid = false;
+//                    } else {
+//                        newIngredient.setDescription(description.getText().toString());
+//                    }
+//
+//                    if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
+//                        newIngredient.setAmount(0.0);
+//                    } else {
+//                        newIngredient.setAmount(Double.parseDouble(amount.getText().toString()));
+//                    }
+//
+//                    if (newIngredient.getBestBeforeDate() == null) {
+//                        isAllValid = false;
+//                        bestBeforeDate.setError("Please set an expiry date!");
+//                    }
+//                    if (isAllValid) {
+//                        dialog.dismiss();
+//                        listener.onOkPressed(newIngredient);
+//                    }
+//                    //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+//                }
+
         } else {
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
@@ -279,28 +381,36 @@ public class IngredientAddFragment extends DialogFragment {
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
 
-            builder
-                .setView(view)
-                .setTitle("Modify ingredient")
-                .setNegativeButton("Cancel", null)
-                    .setNeutralButton("Delete", (dialog, which) -> listener.onDeletePressed(ingredientToBeChanged))
-                .setPositiveButton("OK", (dialogInterface, i) -> {
-                    if (description.getText().toString().length() == 0) {
-                        ingredientToBeChanged.setDescription("No description available");
-                    } else {
-                        ingredientToBeChanged.setDescription(description.getText().toString());
-                    }
+            alertDialogTemp = buildEditDialog(builder, view);
+            isEditing = true;
 
-                    if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
-                        ingredientToBeChanged.setAmount(0.0);
-                    } else {
-                        ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
-                    }
+//                    if (description.getText().toString().length() == 0) {
+//                        ingredientToBeChanged.setDescription("No description available");
+//                    } else {
+//                        ingredientToBeChanged.setDescription(description.getText().toString());
+//                    }
+//
+//                    if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
+//                        ingredientToBeChanged.setAmount(0.0);
+//                    } else {
+//                        ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
+//                    }
+//
+//                    listener.onOkPressedUpdate(ingredientToBeChanged);
 
-                    listener.onOkPressedUpdate(ingredientToBeChanged);
-                });
+
+
         }
-        return builder.create();
+        final AlertDialog dialog = alertDialogTemp;
+        if(!isEditing) {
+            errorCheck(description,bestBeforeDate,dialog, newIngredient);
+        } else {
+            errorCheck(description,bestBeforeDate,dialog, null);
+        }
+
+        return alertDialogTemp;
+
+
     }
 
     private void askCameraPermission() {
