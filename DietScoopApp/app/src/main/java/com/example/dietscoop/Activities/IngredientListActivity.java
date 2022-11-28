@@ -67,6 +67,7 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
 
         ingredientStorageAdapter.setItemClickListener(this);
 
+        // clickable TextViews for sorting by each element
         nameSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +98,10 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
 
     }
 
+    /** This method is called when the user clicks on a column heading to sort the list
+     *
+     * @param sortBy enum selection that specifies which element to sort the list by
+     */
     public void onSortSelection(sortSelection sortBy) {
 
         if (this.sortingBy == sortBy) {
@@ -108,6 +113,11 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         setSortingItem(sortBy);
     }
 
+    /** This method sets the element that the user chose to sort the list by, as well as update the UI
+     * to indicate which element is the chosen one for sorting
+     *
+     * @param sortBy user-selected element to sort by
+     */
     private void setSortingItem(sortSelection sortBy) {
 
         this.sortingBy = sortBy;
@@ -156,9 +166,13 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         foodStorage.removeIngredientFromStorage(deleteIngredientInStorage);
     }
 
+    /** This item
+     *
+     * @param view current view
+     * @param position index of clicked item in list
+     */
     @Override
     public void onItemClick(View view, int position) {
-
         ArrayList<IngredientInStorage> ingredients = foodStorage.getIngredientStorage();
         IngredientInStorage ingredient = ingredients.get(position);
         new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
