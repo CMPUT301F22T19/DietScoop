@@ -76,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
      * Launches app on successful login
      */
     private void openApp() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);
     }
 
