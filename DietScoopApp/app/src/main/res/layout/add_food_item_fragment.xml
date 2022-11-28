@@ -18,12 +18,10 @@
         android:layout_width="0dp"
         android:layout_weight="0.33"
         android:layout_height="match_parent"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_for_food_items"
         app:layout_constraintStart_toEndOf="@+id/recycler_for_food_items"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        android:id="@+id/insert_quantity_food_item"
         tools:ignore="MissingConstraints"
         android:inputType="numberDecimal"/>
 

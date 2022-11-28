@@ -24,14 +24,6 @@
             android:textAlignment="center"
             android:textSize="20sp"/>
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:id="@+id/meal_in_day_unit"/>
-
-    </LinearLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
     </TableRow>
+
 </TableLayout>

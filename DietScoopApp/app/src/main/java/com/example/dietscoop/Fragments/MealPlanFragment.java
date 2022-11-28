@@ -80,8 +80,6 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
         mealDayRecycler.setAdapter(mealPlanAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new swipeToDeleteCallBack(mealPlanAdapter));
         itemTouchHelper.attachToRecyclerView(mealDayRecycler);
-
-        addMealDayButton = (FloatingActionButton) fragmentView.findViewById(R.id.add_mealday_button);
     }
 
     @Override

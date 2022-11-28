@@ -30,7 +30,7 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
 
         private final TextView mealDescription;
         private final TextView mealQuantity;
-        private final TextView mealUnit;
+//        private final TextView mealUnit;
 
         public MealHolder(View view) {
             super(view);
@@ -38,7 +38,7 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
             //View retrieval for each individual item in Recycler View:
             mealDescription = (TextView) view.findViewById(R.id.meal_in_mealday_description);
             mealQuantity = (TextView) view.findViewById(R.id.meal_in_mealday_quantity_or_servings);
-            mealUnit = (TextView) view.findViewById(R.id.meal_in_day_unit);
+//            mealUnit = (TextView) view.findViewById(R.id.meal_in_day_unit);
             view.setOnClickListener(this); //Setting up the onClick Listener:
         }
 
@@ -51,7 +51,7 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
             return mealQuantity;
         }
 
-        public TextView getMealUnit() { return mealUnit; }
+//        public TextView getMealUnit() { return mealUnit; }
 
         @Override
         public void onClick(View view) {
@@ -93,7 +93,7 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
             String quantityUnit = ((Ingredient)meals.get(position)).getMeasurementUnit().toString();
             holder.getMealQuantity().setText(String.valueOf(((Ingredient)meals.get(position)).getAmount()) + " " + quantityUnit);
         } else if (meals.get(position).getType().equals("Recipe")) {
-            Integer numOfServings = ((RecipeInMealDay)meals.get(position)).getDesiredNumOfServings();
+            Double numOfServings = ((RecipeInMealDay)meals.get(position)).getDesiredNumOfServings();
             holder.getMealQuantity().setText(String.valueOf(numOfServings) + " Servings");
         }
 
