@@ -18,6 +18,7 @@ import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
@@ -44,20 +45,16 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     DatePickerDialog datePicker;
     LocalDate mealDayDate;
 
-//    Button addRecipeButton;
-//    Button addIngredientButton;
     Button addFoodItemButton;
+
     //Major action buttons:
     Button mealDayConfirm;
     Button mealDayCancel;
     Button editDate;
 
-//    ArrayList<Recipe> recipesForAdding;
-//    ArrayList<IngredientInStorage> ingredientsForAdding;
     ArrayList<FoodItem> allFoodItems;
     ArrayList<FoodItem> foodItemsToDelete = new ArrayList<>(); //Only valid if we are editing.
 
-    String currentDescription; //Holds the desc.
     String currentFoodItemType;
 
     //Containers:
@@ -87,14 +84,13 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
         //Binding Views:
         initializeViews();
+
         //Showing a pre-existing date if applicable:
         if (editMealDay) {
             DateText.setText(currentMealDay.getDate().toString());
         }
 
         //Getting options:
-//        recipesForAdding = ((MealPlanActivity)getActivity()).getRecipesList();
-//        ingredientsForAdding = ((MealPlanActivity)getActivity()).getIngredientsList();
         allFoodItems = ((MealPlanActivity)getActivity()).getAllFoodItems();
 
         //Setting Adapters:
@@ -173,8 +169,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         //Initializing Views:
         DateText = (TextView) container.findViewById(R.id.meal_day_date);
         mealRecycler = (RecyclerView) container.findViewById(R.id.recycler_in_add_meal_day);
-//        addRecipeButton = (Button) container.findViewById(R.id.add_recipe_meal);
-//        addIngredientButton = (Button) container.findViewById(R.id.add_ingredient_meal);
         addFoodItemButton = (Button) container.findViewById(R.id.add_food_item_button);
         mealDayConfirm = (Button) container.findViewById(R.id.meal_day_confirm);
         mealDayCancel = (Button) container.findViewById(R.id.meal_day_cancel);
@@ -185,22 +179,20 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         mealRecyclerAdapter.notifyDataSetChanged();
     }
 
-
-    //what properties get changed in the mealdays.
-
     /**
      * Method adds the stated meal to the current day in view and
      * also sets it a unique UID for the database.
      * @param selectedFoodItem
      * @param scale
      */
-    public void addMeal(int selectedFoodItem, Integer scale) {
+    public void addMeal(int selectedFoodItem, Double scale, IngredientUnit ingredientUnit) {
         if (this.allFoodItems.get(selectedFoodItem).getType().equals("Ingredient")) {
             IngredientInStorage tempHolder = (IngredientInStorage) (allFoodItems.get(selectedFoodItem));
             IngredientInMealDay tempMeal = new IngredientInMealDay(tempHolder);
             tempMeal.setAmount(scale);
             tempMeal.setId(UUID.randomUUID().toString());
             tempMeal.setMealdayID(currentMealDay.getId());
+            tempMeal.setMeasurementUnit(ingredientUnit);
             currentMealDay.addIngredientInMealDay(tempMeal);
         } else if (this.allFoodItems.get(selectedFoodItem).getType().equals("Recipe")) {
             Recipe tempHolder = (Recipe) allFoodItems.get(selectedFoodItem);
@@ -214,14 +206,12 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
 
         //Updating Adapter:
         this.mealRecyclerAdapter.notifyDataSetChanged();
-
     }
 
-    public void editMeal(int selectedFoodItem, Integer scale, int mealToChange) {
+    public void editMeal(int selectedFoodItem, Double scale, int mealToChange, IngredientUnit ingredientUnit) {
         deleteMeal(mealToChange);
-        addMeal(selectedFoodItem, scale);
+        addMeal(selectedFoodItem, scale, ingredientUnit);
     }
-
 
     // TODO: STAGE CHANGES TO DELETE FROM DATABASE
     public void deleteMeal(int mealToChange) {
@@ -248,5 +238,17 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     public void onItemClick(View view, int position) {
         AddFoodItemFragment dialog = new AddFoodItemFragment(getThisFragment(), allFoodItems, position);
         dialog.show(getParentFragmentManager(), "NoticeDialogFragment");
+    }
+
+    public int getSelectedFoodItemIndex(int mealIndex) {
+        int counter = 0;
+        for (FoodItem i : allFoodItems) {
+            if (i.getDescription().equals(currentMealDay.getFoodItems().get(mealIndex).getDescription())) {
+                return counter;
+            }
+            counter++;
+        }
+
+        return -1;
     }
 }

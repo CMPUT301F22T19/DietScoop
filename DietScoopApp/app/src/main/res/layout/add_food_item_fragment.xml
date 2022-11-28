@@ -18,12 +18,12 @@
         android:layout_width="0dp"
         android:layout_weight="0.33"
         android:layout_height="match_parent"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_for_food_items"
         app:layout_constraintStart_toEndOf="@+id/recycler_for_food_items"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:inputType="numberDecimal"/>
 
     <TextView
         android:id="@+id/quantity_view"
@@ -37,5 +37,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/insert_quantity_food_item"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/quantity_view2"
+        android:layout_width="106dp"
+        android:layout_height="59dp"
+        android:text="Unit:"
+        app:layout_constraintBottom_toTopOf="@+id/insert_quantity_food_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/quantity_view" />
+
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/insert_quantity_food_item"
+        android:id="@+id/select_measurement_unit"/>
 
 </LinearLayout>

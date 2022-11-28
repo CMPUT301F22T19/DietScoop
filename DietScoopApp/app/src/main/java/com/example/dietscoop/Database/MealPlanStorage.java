@@ -44,6 +44,12 @@ public class MealPlanStorage {
     }
 
     public void removeMealDayFromMealPlan(MealDay mealDay) {
+        for (IngredientInMealDay i: mealDay.getIngredientInMealDays()) {
+            db.removeIngredientFromIngredientsInMealDaysCollection(i);
+        }
+        for (RecipeInMealDay r: mealDay.getRecipeInMealDays()) {
+            db.removeRecipeFromRecipesInMealDaysCollection(r);
+        }
         db.removeMealDayFromMealPlan(mealDay);
     }
 
@@ -111,7 +117,7 @@ public class MealPlanStorage {
 //                                            ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
                                             RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"));
                                             rec.setParentRecipeID(doc1.getString("parentRecipeID"));
-                                            rec.setDesiredNumOfServings(doc1.getLong("desiredNumOfServings").intValue());
+                                            rec.setDesiredNumOfServings(doc1.getDouble("desiredNumOfServings").doubleValue());
                                             rec.setId(doc1.getId());
                                             rec.setMealdayID(mealDayToAdd.getId());
 
@@ -219,7 +225,7 @@ public class MealPlanStorage {
                                                 ArrayList<IngredientInRecipe> ingredients = new ArrayList<>();
                                                 RecipeInMealDay rec = new RecipeInMealDay(doc1.getString("description"));
                                                 rec.setParentRecipeID(doc1.getString("parentRecipeID"));
-                                                rec.setDesiredNumOfServings(doc1.getLong("desiredNumOfServings").intValue());
+                                                rec.setDesiredNumOfServings(doc1.getDouble("desiredNumOfServings").doubleValue());
                                                 rec.setId(doc1.getId());
                                                 rec.setMealdayID(mealDay.getId());
                                                 mealDay.addRecipeInMealDay(rec);

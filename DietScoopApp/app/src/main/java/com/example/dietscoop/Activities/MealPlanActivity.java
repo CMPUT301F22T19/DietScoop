@@ -94,8 +94,6 @@ public class MealPlanActivity extends NavigationActivity {
         ingredientsList = ingredients.getIngredientStorage();
         recipesList = recipes.getRecipeStorage();
 
-        //If database has no mealplan, send null and call MealPlanFrag:
-//        changeToMealPlanInitialize();
         changeToMealPlan();
     }
 
@@ -142,25 +140,16 @@ public class MealPlanActivity extends NavigationActivity {
     //TODO: If time allows for it, add some garbage collecting to the fragment manager.
 
     /**
-     * TODO: Need to add a bundle that sends over the mealPlan for this user.
      * Can change this to send over a variables needed in bundle.
      */
     public void changeToMealPlan() {
         Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_plan_fragment);
 
         if (prevFragment != null) {
-//            mealPlanManager.beginTransaction()
-//                    .setReorderingAllowed(true)
-//                    .commit();
             mealPlanManager.beginTransaction().show(prevFragment).commit();
             return;
         }
-//        if (prevFragment != null) {
-//            mealPlanManager.beginTransaction().remove(prevFragment).commit();
-//        }
 
-//        Bundle mealPlanSend = new Bundle();
-//        mealPlanSend.putSerializable("mealplan", this.mealPlan); //Will always send a copy of the original data.
         MealPlanFragment mealPlanFragment = new MealPlanFragment(this.mealPlan);
 
         mealPlanManager.beginTransaction()
@@ -249,8 +238,11 @@ public class MealPlanActivity extends NavigationActivity {
      * Method to call when user wants to delete a particular mealday.
      * @param indexToDel
      */
+    //TODO: GURBIR THIS IS WHERE I DELETE THE MEALDAY;
     public void mealDayDelete(int indexToDel) {
+        mealPlanStorage.removeMealDayFromMealPlan(this.mealPlan.get(indexToDel));
         this.mealPlan.remove(indexToDel);
+        changeToMealPlan();
     }
 
     public ArrayList<MealDay> getMealDays() {

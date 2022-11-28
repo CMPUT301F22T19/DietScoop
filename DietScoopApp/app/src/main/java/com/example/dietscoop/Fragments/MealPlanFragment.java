@@ -9,12 +9,14 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Activities.MainActivity;
 import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
+import com.example.dietscoop.Activities.swipeToDeleteCallBack;
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
@@ -30,6 +32,7 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
 
     RecyclerView mealDayRecycler;
     MealPlanRecyclerAdapter mealPlanAdapter;
+    swipeToDeleteCallBack testingSwipeDelete;
 
     ArrayList<MealDay> mealDays;
 
@@ -54,6 +57,8 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
         initializeViews();
         ((MealPlanActivity)getActivity()).listDates();
 
+        setBinderForSwipeDelete();
+
         //Setting up the Listener:
         mealPlanAdapter.setEntryListener(this);
         ((MealPlanActivity)getActivity()).mealPlanStorage.addMealPlanSnapshotListener(mealPlanAdapter);
@@ -73,6 +78,8 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
         mealPlanAdapter = new MealPlanRecyclerAdapter(getActivity(), mealDays);
         mealDayRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mealDayRecycler.setAdapter(mealPlanAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new swipeToDeleteCallBack(mealPlanAdapter));
+        itemTouchHelper.attachToRecyclerView(mealDayRecycler);
     }
 
     @Override
@@ -86,4 +93,10 @@ public class MealPlanFragment extends Fragment implements RecyclerItemClickListe
         //Send over information to the MealDayFragment to edit an existing day:
         ((MealPlanActivity)getActivity()).changeToMealDayEdit(position);
     }
+
+    public void setBinderForSwipeDelete() {
+        deleteMealDay deleteBinder = mealDayIndexToDel -> ((MealPlanActivity)getActivity()).mealDayDelete(mealDayIndexToDel);
+        this.mealPlanAdapter.setDeletionSignature(deleteBinder);
+    }
+
 }
