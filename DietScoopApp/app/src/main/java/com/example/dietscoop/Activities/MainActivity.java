@@ -19,6 +19,7 @@ public class MainActivity extends NavigationActivity {
         authorize();
 
         setContentView(R.layout.activity_main);
+        goToIngredientList();
         initNavigationActivity();
         setUpActionBar();
     }
@@ -32,7 +33,6 @@ public class MainActivity extends NavigationActivity {
             Log.i("PROGRESS", "Starting Login");
             startActivity(intent);
         }
-
     }
 
     private void setUpActionBar() {
