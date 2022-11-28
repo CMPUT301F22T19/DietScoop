@@ -96,7 +96,6 @@ public class DialogFragmentReuse extends DialogFragment {
     public void initializeViews(View view) {
         //Initializing Views:
         enterDateText = (EditText) view.findViewById(R.id.meal_day_date_enter);
-        addMeal = (FloatingActionButton) view.findViewById(R.id.add_mealday_button);
         mealRecycler = (RecyclerView) view.findViewById(R.id.recycler_in_add_meal_day);
     }
 

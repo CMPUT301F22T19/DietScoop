@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 /**
  * Class handles the MealPlan interface for interacting with mealdays and meals.
- *
  * 1. Class fetches specified days of the meal plan which can be used for editing meals.
  * 2. Class will control the creation and deletion of mealdays along with their meals.
  */
