@@ -29,6 +29,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
     sortSelection sortingBy;
 
+    // This is enum
     public enum sortSelection {
         TITLE,
         PREPTIME,
@@ -55,6 +56,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
         recipeStorage.setupRecipeSnapshotListener(recipeListAdapter);
         recipeStorage.getRecipeStorageFromDatabase();
+
 
         titleSort = findViewById(R.id.title_sort);
         prepTimeSort = findViewById(R.id.preptime_sort);
