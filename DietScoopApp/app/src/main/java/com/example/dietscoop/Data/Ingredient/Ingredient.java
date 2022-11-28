@@ -5,6 +5,7 @@ import com.example.dietscoop.Data.FoodItem;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -72,7 +73,10 @@ import java.util.Objects;
         }
 
     public String getCountWithMeasurement(){
-        return String.valueOf(this.getAmount()) + " " + this.getMeasurementUnit();
+
+        String formattedAmount = String.format(Locale.ROOT, "%.2f", this.getAmount());
+
+        return formattedAmount + " " + this.getMeasurementUnit();
     }
 
     /**
