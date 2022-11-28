@@ -13,7 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import android.widget.SimpleExpandableListAdapter;
+
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,10 +29,15 @@ import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
+
 import com.example.dietscoop.Data.Ingredient.UnitConverter;
 import com.example.dietscoop.R;
 
 import org.w3c.dom.Text;
+
+
+import com.example.dietscoop.R;
+
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -89,6 +96,7 @@ public class pickUpIngredientFragment extends DialogFragment {
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
+
         unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -103,6 +111,7 @@ public class pickUpIngredientFragment extends DialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+
 
         selectDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
