@@ -238,6 +238,7 @@ public class IngredientAddFragment extends DialogFragment {
             category.setSelection(categorySpinnerPosition);
             int locationSpinnerPosition = locationSpinnerAdapter.getPosition(ingredientToBeChanged.getLocationName());
             location.setSelection(locationSpinnerPosition);
+            unit.setSelection(unitSpinnerAdapter.getPosition(ingredientToBeChanged.getMeasurementUnit().name()));
         }
 
         if (ingredientToBeChanged == null) {
