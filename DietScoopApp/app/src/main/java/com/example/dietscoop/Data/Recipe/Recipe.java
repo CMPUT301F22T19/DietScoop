@@ -58,6 +58,7 @@ public class Recipe extends FoodItem implements Serializable {
 
     public Recipe(String description) {
         this.description = description;
+        this.ingredientRefs = new ArrayList<String>();
     }
 
 

@@ -1,15 +1,17 @@
 package com.example.dietscoop;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientUnit;
-import com.example.dietscoop.Data.Meal.Meal;
+import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MealTest {
@@ -33,13 +35,23 @@ public class MealTest {
         return sampleRecipe;
     }
 
-    public Meal sampleMeal()
+    public MealDay sampleMealDay()
     {
-        new Meal();
-        return new Meal();
+        MealDay sample = new MealDay(LocalDate.of(2022, 10, 31));
+        return sample;
     }
 
-//    @Test
-//    public void testGettersStorage() {
-//    }
+    @Test
+    public void testAddIngredientFromMealDay() {
+        MealDay sample = sampleMealDay();
+//        sample.addIngredientInMealDay(new IngredientInMealDay());
+    }
+
+    @Test
+    public void testDeleteIngredientFromMealDay() {
+
+    }
+
+
+
 }

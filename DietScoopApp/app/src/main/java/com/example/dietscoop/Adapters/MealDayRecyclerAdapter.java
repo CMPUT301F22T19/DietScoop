@@ -90,13 +90,11 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
         String descTest = meals.get(position).getDescription();
 
         if (meals.get(position).getType().equals("Ingredient")) {
-            String unit = ((IngredientInMealDay)meals.get(position)).getMeasurementUnit().toString();
-            holder.getMealQuantity().setText(String.valueOf(((Ingredient)meals.get(position)).getAmount()));
-            holder.getMealUnit().setText(unit);
+            String quantityUnit = ((Ingredient)meals.get(position)).getMeasurementUnit().toString();
+            holder.getMealQuantity().setText(String.valueOf(((Ingredient)meals.get(position)).getAmount()) + " " + quantityUnit);
         } else if (meals.get(position).getType().equals("Recipe")) {
-            Double numOfServings = ((RecipeInMealDay)meals.get(position)).getDesiredNumOfServings();
-            holder.getMealQuantity().setText(String.valueOf(numOfServings));
-            holder.getMealUnit().setText("Servings");
+            Integer numOfServings = ((RecipeInMealDay)meals.get(position)).getDesiredNumOfServings();
+            holder.getMealQuantity().setText(String.valueOf(numOfServings) + " Servings");
         }
 
     }

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class MealDay implements Serializable {
 
 //    TODO: Uncomment this if going for the meal in mealday schema.
-    ArrayList<Meal> mealsInDay;
     LocalDate date;
     ArrayList<FoodItem> foodItems; //This array is adapted to be used in the RecyclerView for MealDay Editing.
     ArrayList<IngredientInMealDay> ingredientInMealDays;
@@ -29,7 +28,6 @@ public class MealDay implements Serializable {
 
     //Constructors: TODO: Incorporate more constructors for this class:
     public MealDay(LocalDate date) {
-        mealsInDay = new ArrayList<>();
         foodItems = new ArrayList<>();
         ingredientIDs = new ArrayList<>();
         recipeIDs = new ArrayList<>();
@@ -39,29 +37,6 @@ public class MealDay implements Serializable {
     }
 
     //Getters and Setters:
-    /**
-     * Returns the specified meal from the index specified.
-     * @param i index of meal to retrieve.
-     * @return Meal with index i.
-     */
-    public Meal getMeal(int i) {
-        return this.mealsInDay.get(i);
-    }
-
-    public ArrayList<Meal> getMealsInDay() {
-        return this.mealsInDay;
-    }
-
-    //Unique Methods:
-    /**
-     * Removes a meal from the MealDay.
-     * @param i index of meal to remove.
-     */
-    public void deleteMeal(int i) {
-        this.mealsInDay.remove(i);
-    }
-
-
     public void deleteIngredientFromMealDay(IngredientInMealDay ingredient) {
         this.ingredientIDs.remove(ingredient.getId());
         this.ingredientInMealDays.remove(ingredient);
@@ -150,6 +125,5 @@ public class MealDay implements Serializable {
     public String getId() {
         return this.id;
     }
-
 
 }

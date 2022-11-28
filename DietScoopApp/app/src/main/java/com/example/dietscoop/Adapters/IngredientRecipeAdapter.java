@@ -15,6 +15,7 @@ import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Class for adapting IngredientRecipe for view in recycler view.
@@ -52,7 +53,10 @@ public class IngredientRecipeAdapter extends RecyclerView.Adapter<IngredientReci
         if (ingredientsList != null && ingredientsList.size() > 0) {
             Ingredient ingredient = ingredientsList.get(position);
             holder.recipe_ingredient_name_tv.setText(String.valueOf(ingredient.getDescription()));
-            holder.recipe_ingredient_amount_tv.setText(Double.toString(ingredient.getAmount()));
+
+            String amountText = String.format(Locale.ROOT, "%.2f", ingredient.getAmount());
+            holder.recipe_ingredient_amount_tv.setText(amountText);
+
             holder.recipe_ingredient_unit_tv.setText(ingredient.getMeasurementUnit().name());
             holder.recipe_ingredient_category_tv.setText(ingredient.getCategoryName());
 

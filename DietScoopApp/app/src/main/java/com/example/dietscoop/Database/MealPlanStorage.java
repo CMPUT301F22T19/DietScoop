@@ -16,6 +16,8 @@ import com.google.firebase.firestore.DocumentChange;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import kotlin.time.MeasureTimeKt;
+
 // TODO: CASCADE CHANGES TO ANY RECIPE MEAL PLANS
 public class MealPlanStorage {
 
@@ -78,7 +80,7 @@ public class MealPlanStorage {
                                 // grab ingredients
                                 for (String ingredient: ingredientIDs) {
                                     db.getIngredientsInMealDaysCollectionRef().document(ingredient).addSnapshotListener((doc1, e1) -> {
-                                        String TAG1 = "ALLSSS";
+                                        String TAG1 = "BALLSSS";
 
                                         if (e != null) {
                                             Log.w(TAG1, "Listen failed.", e);
@@ -137,9 +139,6 @@ public class MealPlanStorage {
 
                                                     });
                                             db.getRecipeCollectionRef().document(doc1.getString("parentRecipeID")).get();
-
-
-
 
 //                                            for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
 //                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
@@ -201,7 +200,7 @@ public class MealPlanStorage {
                                                 IngredientInMealDay ing = new IngredientInMealDay(doc1.getString("description"),
                                                         IngredientUnit.stringToUnit(doc1.getString("measurementUnit")),doc1.getDouble("amount"),
                                                         IngredientCategory.stringToCategory(doc1.getString("category")),
-                                                        doc1.getString(""));
+                                                        doc1.getString("parentIngredientID"));
                                                 ing.setId(doc1.getId());
                                                 ing.setMealdayID(mealDay.getId());
                                                 mealDay.addIngredientInMealDay(ing);

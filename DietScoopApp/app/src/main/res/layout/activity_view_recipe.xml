@@ -104,6 +104,7 @@
                         android:id="@+id/recipe_label_prep_time"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="50dp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textAlignment="center"
@@ -117,6 +118,7 @@
                         android:textColor="@color/black"
                         android:textAlignment="center"
                         android:textSize="16sp"
+                        android:layout_marginRight="50dp"
                         android:text="@string/recipe_label_no_of_servings"/>
 
                     <TextView
@@ -125,6 +127,7 @@
                         android:layout_height="match_parent"
                         android:textStyle="bold"
                         android:textColor="@color/black"
+
                         android:textAlignment="center"
                         android:textSize="16sp"
                         android:text="@string/category_label"/>
@@ -167,6 +170,7 @@
                         <Spinner
                             android:id="@+id/recipe_prep_time_unit_spinner"
                             android:layout_width="wrap_content"
+
                             android:layout_height="match_parent"
                             android:layout_weight="0.33"/>
                     </LinearLayout>
@@ -187,6 +191,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.33"
 
+                        android:spinnerMode="dialog"
+
                         android:textAlignment="center"
                         android:textColor="@color/black" />
 
@@ -195,7 +201,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="10dp">
@@ -205,22 +211,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
-                    android:textSize="35sp"
+                    android:textSize="22sp"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:hint="Add a photo for ingredient"/>
+                    android:hint="Add photo"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.75"
-                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/add_recipe_photo_by_camera"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:layout_marginTop="10dp"
                         android:background="@drawable/button"
                         android:paddingVertical="0dp"
                         android:text="Camera"
@@ -232,11 +234,12 @@
                     <Button
                         android:id="@+id/add_recipe_photo_by_camera_roll"
                         android:layout_width="wrap_content"
-                        android:layout_height="50dp"
+                        android:layout_height="30dp"
+                        android:paddingVertical="0dp"
                         android:text="Roll"
+                        android:background="@drawable/button"
                         android:textSize="11sp" />
 
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

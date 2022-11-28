@@ -1,7 +1,14 @@
 package com.example.dietscoop.Activities;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.CalendarView;
+import android.widget.ImageButton;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -17,6 +24,7 @@ import com.example.dietscoop.Database.RecipeStorage;
 import com.example.dietscoop.Fragments.MealDayFragment;
 import com.example.dietscoop.Fragments.MealPlanFragment;
 import com.example.dietscoop.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -49,6 +57,12 @@ public class MealPlanActivity extends NavigationActivity {
     //MealPlans:
     ArrayList<MealDay> mealPlan;
 
+    ActionBar topBar;
+
+    CalendarView mealDayCalendar;
+
+    Boolean inMealDayFragment;
+
     /*
     Loads ingredients and recipes to pass onto fragments.
     Works as a hub to connect different fragments of activities.
@@ -59,6 +73,7 @@ public class MealPlanActivity extends NavigationActivity {
         setContentView(R.layout.meal_plan_activity);
         initNavigationActivity();
         navBar.setSelectedItemId(R.id.meals);
+        setupActionBar();
 
         mealPlanManager = getSupportFragmentManager();
         recipes = new RecipeStorage();
@@ -80,6 +95,13 @@ public class MealPlanActivity extends NavigationActivity {
         recipesList = recipes.getRecipeStorage();
 
         changeToMealPlan();
+    }
+
+    public void listDates(){
+        for(MealDay x : this.mealPlan){
+            String date = x.getDate().toString();
+            Log.w("DATE", date);
+        }
     }
 
     //Calls and Receipts from Fragments:
@@ -229,6 +251,54 @@ public class MealPlanActivity extends NavigationActivity {
 
     public void updateDatabaseOfChange() {
         //Fill with method.
+    }
+
+    public void setupActionBar() {
+
+        topBar = getSupportActionBar();
+        topBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        topBar.setDisplayShowCustomEnabled(true);
+        topBar.setCustomView(R.layout.top_bar_add_layout);
+        inMealDayFragment = false;
+
+        View topBarView = topBar.getCustomView();
+
+        ImageButton logout = topBarView.findViewById(R.id.logout_button);
+        ImageButton addItem = topBarView.findViewById(R.id.add_button);
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddClicked();
+            }
+        });
+    }
+
+    public void actionBarNoLogout(){
+        topBar.setCustomView(R.layout.top_bar_no_logout_no_add);
+    }
+
+    void onAddClicked() {
+        changeToMealDayAdd();
+    }
+
+    void onMinusClicked() {
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
     }
 
 }
