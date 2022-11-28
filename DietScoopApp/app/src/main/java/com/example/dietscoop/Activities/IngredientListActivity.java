@@ -31,6 +31,9 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
 
     sortSelection sortingBy;
 
+    /**
+     * This enum contains fields by which the user can select to sort the list of ingredients
+     */
     public enum sortSelection {
         NAME,
         CATEGORY,
@@ -178,6 +181,9 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         new IngredientAddFragment(ingredient).show(getSupportFragmentManager(), "EDIT_INGREDIENT");
     }
 
+    /**
+     * This method sets up the top bar that contains a log out button and an add button
+     */
     private void setupActionBar() {
 
         topBar = getSupportActionBar();
@@ -206,6 +212,9 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
 
     }
 
+    /**
+     * This method logs out the currently logged in user
+     */
     private void logout() {
         FirebaseAuth.getInstance().signOut();
 
@@ -213,6 +222,9 @@ public class IngredientListActivity extends NavigationActivity implements Ingred
         startActivity(intent);
     }
 
+    /**
+     * This method opens a dialog fragment where the user can fill out details of a new ingredient
+     */
     void onAddClicked() {
         new IngredientAddFragment().show(getSupportFragmentManager(), "ADD_INGREDIENT");
     }
