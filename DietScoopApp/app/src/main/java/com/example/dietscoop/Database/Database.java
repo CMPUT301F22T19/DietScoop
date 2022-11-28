@@ -47,6 +47,11 @@ class Database implements Serializable {
         recipesInMealDays = db.collection("Users").document(user).collection("RecipesInMealDays");
     }
 
+    /**
+     * Gets email of logged in user
+     * @return email of logged in user
+     * @throws RuntimeException
+     */
     private String getUserEmail() throws RuntimeException {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -204,30 +209,55 @@ class Database implements Serializable {
         recipeStorage.document(recipe.getId()).set(recipeDetails);
     }
 
+    /**
+     * Queries the database for all ingredients in all recipes
+     */
     public void getAllIngredientsInRecipes() {
         ingredientsInRecipes.get();
     }
 
+    /**
+     * Getter for collection reference for ingredients in recipes
+     * @return
+     */
     public CollectionReference getIngredientsInRecipesCollectionRef() {return this.ingredientsInRecipes;}
 
+    /**
+     * Adds ingredient into database collection containing all ingredients in recipes
+     * @param ingredientInRecipe ingredient to be added to database
+     */
     public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
         ingredientInRecipe.setDescription(ingredientInRecipe.getDescription().toLowerCase());
         ingredientsInRecipes.document(ingredientInRecipe.getId()).set(ingredientInRecipe);
     }
 
+    /**
+     * Deletes ingredient from collection containing all ingredients in recipes
+     * @param ingredient ingredient to be deleted from database
+     */
     public void removeIngredientFromIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
         ingredientsInRecipes.document(ingredient.getId()).delete();
     }
 
-    //TODO: not tested yet; test when editing-ingredient-in-recipe thing is implemented
+    /**
+     * Updates an ingredient in database collection containing all ingredients in recipes
+     * @param ingredient ingredient to be updated
+     */
     public void updateIngredientInIngredientsInRecipesCollection(IngredientInRecipe ingredient) {
         ingredientsInRecipes.document(ingredient.getId()).set(ingredient);
     }
 
     /*************************** MEAL PLAN METHODS ******************************/
 
+    /**
+     * Queries MealPlan collection in database
+     */
     public void getMealPlanFromDB() {mealPlan.get();}
 
+    /**
+     * Adds a meal day to the collection containing the user's meal plan
+     * @param mealday meal day to add
+     */
     public void addMealDayToMealPlan(MealDay mealday) {
         Map<String, Object> mealdayDetails = new HashMap<>();
         LocalDate date = mealday.getDate();
@@ -242,15 +272,26 @@ class Database implements Serializable {
         mealPlan.document(mealday.getId()).set(mealdayDetails);
     }
 
+    /**
+     * Update a meal day in the collection containing the user's meal plan
+     * @param mealday meal day to update
+     */
     public void updateMealDayInMealPlan(MealDay mealday) {
         this.addMealDayToMealPlan(mealday);
     }
 
+    /**
+     * Deletes meal day from the collection containing the user's meal plan
+     * @param mealDay meal day to delete
+     */
     public void removeMealDayFromMealPlan(MealDay mealDay) {
         mealPlan.document(mealDay.getId()).delete();
     }
 
-    //TODO: Marcos fiddled here:
+    /**
+     * Adds ingredient to collection containing all ingredients in meal days
+     * @param ingredient ingredient to be added
+     */
     public void addIngredientToIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         Map<String, Object> ingredientDetails = new HashMap<>();
         ingredientDetails.put("description", ingredient.getDescription().toLowerCase());
@@ -263,14 +304,26 @@ class Database implements Serializable {
 
     }
 
+    /**
+     * Updates ingredient in collection containing all ingredients in meal days
+     * @param ingredient ingredient to be updated
+     */
     public void updateIngredientInIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         this.addIngredientToIngredientsInMealDaysCollection(ingredient);
     }
 
+    /**
+     * Deletes ingredient from collection containing all ingredients in meal days
+     * @param ingredient ingredient to be deleted
+     */
     public void removeIngredientFromIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         ingredientsInMealDays.document(ingredient.getId()).delete();
     }
-    //TODO: Marcos fiddled here:
+
+    /**
+     * Adds recipes to collection containing all recipes in meal days
+     * @param recipeInMealDay recipe to be added
+     */
     public void addRecipeToRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
         Map<String, Object> recipeDetails = new HashMap<>();
         recipeDetails.put("description", recipeInMealDay.getDescription().toLowerCase());
@@ -280,22 +333,42 @@ class Database implements Serializable {
         recipesInMealDays.document(recipeInMealDay.getId()).set(recipeDetails);
     }
 
+    /**
+     * Updates recipes in collection containing all recipes in meal days
+     * @param recipeInMealDay recipe to be updated
+     */
     public void updateRecipeInRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
         this.addRecipeToRecipesInMealDaysCollection(recipeInMealDay);
     }
 
+    /**
+     * Deletes recipe from collection containing all recipes in meal days
+     * @param recipeInMealDay recipe to be deleted
+     */
     public void removeRecipeFromRecipesInMealDaysCollection(RecipeInMealDay recipeInMealDay) {
         recipesInMealDays.document(recipeInMealDay.getId()).delete();
     }
 
+    /**
+     * Getter for collection reference for ingredients in meal plan
+     * @return reference for collection containing all ingredients in meal plan
+     */
     public CollectionReference getIngredientsInMealDaysCollectionRef() {
         return ingredientsInMealDays;
     }
 
+    /**
+     * Getter for collection reference for recipes in meal plan
+     * @return reference for collection containing all recipes in meal plan
+     */
     public CollectionReference getRecipesInMealDaysCollectionRef() {
         return recipesInMealDays;
     }
 
+    /**
+     * Getter for collection reference for meal plan
+     * @return reference for meal plan collection
+     */
     public CollectionReference getMealPlan() {return this.mealPlan;}
 
 

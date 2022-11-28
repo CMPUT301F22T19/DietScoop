@@ -85,10 +85,9 @@ public class IngredientStorage {
     }
 
     /**
-     * Method to initialize a listener for an ingredient snapshot
+     * Method to initialize a listener for an ingredient snapshot. Populates ingredient storage
      * @param adapter Adapter that will notify Database if changed
      */
-    // TODO: improve documentation for snapshot methods
     public void setupIngredientSnapshotListener(IngredientStorageAdapter adapter) {
 
         db.getIngredientCollectionRef().addSnapshotListener((value, e) -> {
@@ -101,7 +100,6 @@ public class IngredientStorage {
             for (DocumentChange doc : value.getDocumentChanges()) {
                 switch(doc.getType()) {
                     case ADDED:
-                        Log.i("ADDED", "INGREDIENT ADDED TO DB");
                         IngredientInStorage ingredient = new IngredientInStorage(doc.getDocument().getString("description"),
                             IngredientUnit.stringToUnit(doc.getDocument().getData().get("measurementUnit").toString()),
                             doc.getDocument().getDouble("amount"),
@@ -144,6 +142,11 @@ public class IngredientStorage {
         });
     }
 
+    /**
+     * Set up snapshot listener on ingredients collection for shopping list activity
+     * @param adapter adapter to be notified as data is parsed
+     * @param info Shopping list object to be called when all data is populated
+     */
     public void setupIngredientSnapshotListener(IngredientRecipeAdapter adapter, ShoppingListInfo info) {
 
         db.getIngredientCollectionRef().addSnapshotListener((value, e) -> {
@@ -218,12 +221,4 @@ public class IngredientStorage {
         }
     }
 
-    public IngredientInStorage getIngredientWithID(String id) {
-        for (IngredientInStorage ing : storage) {
-            if (ing.getId().equals(id)) {
-                return ing;
-            }
-        }
-        return null;
-    }
 }
