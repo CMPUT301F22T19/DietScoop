@@ -211,6 +211,7 @@ class Database implements Serializable {
     public CollectionReference getIngredientsInRecipesCollectionRef() {return this.ingredientsInRecipes;}
 
     public void addIngredientToIngredientsInRecipesCollection(IngredientInRecipe ingredientInRecipe) {
+        ingredientInRecipe.setDescription(ingredientInRecipe.getDescription().toLowerCase());
         ingredientsInRecipes.document(ingredientInRecipe.getId()).set(ingredientInRecipe);
     }
 

@@ -4,8 +4,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.dietscoop.Activities.ShoppingListActivity;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
@@ -28,6 +30,7 @@ import org.w3c.dom.Document;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ShoppingListInfo {
@@ -80,12 +83,16 @@ public class ShoppingListInfo {
                         case ADDED:
                             String parentRecipeID = doc.getDocument().getString("parentRecipeID");
 
+                            double desiredServings = doc.getDocument().getDouble("desiredNumOfServings");
+
                             db.getRecipeCollectionRef().document(parentRecipeID).addSnapshotListener((document, err) -> {
 
                                 if (err != null) {
                                     Log.w("SNAPSHOT FAILED", "RECIPES IN MEAL DAYS SNAPSHOT LISTENER FAILED", err);
                                     return;
                                 }
+
+                                double scalingFactor = desiredServings / document.getDouble("servings");
 
                                 if (document.exists()) {
                                     ArrayList<String> ingredientRefs = (ArrayList<String>)document.get("ingredients");
@@ -97,11 +104,13 @@ public class ShoppingListInfo {
                                                 IngredientInRecipe ing = new IngredientInRecipe(
                                                         ingDoc.getString("description"),
                                                         IngredientUnit.stringToUnit(ingDoc.getString("measurementUnit")),
-                                                        ingDoc.getDouble("amount"),
+                                                        ingDoc.getDouble("amount") * scalingFactor,
                                                         IngredientCategory.stringToCategory(ingDoc.getString("category"))
                                                 );
 
                                                 ingInMealPlans.add(ing);
+                                                updateShoppingList();
+                                                adapter.notifyDataSetChanged();
                                             }
                                         });
                                         db.getIngredientsInRecipesCollectionRef().document(ingRef).get();
@@ -116,13 +125,13 @@ public class ShoppingListInfo {
                             break;
                         case REMOVED:
                             Log.i("SNAPSHOT", "RECIPE REMOVED SUCCESSFULLY");
+                            break;
                         default:
                             throw new RuntimeException("OK WTF HOW IS IT ANYTHING OTHER THAN ADDED");
 
                     }
                 }
-                updateShoppingList();
-                adapter.notifyDataSetChanged();
+
             }
         });
 
@@ -220,7 +229,7 @@ public class ShoppingListInfo {
 
         for (IngredientInRecipe ing : ingredientsList) {
             Ingredient newIngredient = UnitConverter.normalizeAmountUnits(ing);
-            String key = newIngredient.getDescription() + "_"
+            String key = newIngredient.getDescription().toLowerCase(Locale.ROOT) + "_"
                     + newIngredient.getMeasurementUnit().name() +"_"
                     + newIngredient.getCategoryName();
 
@@ -254,4 +263,22 @@ public class ShoppingListInfo {
 
     }
 
+    public void addItemToStorage(IngredientInStorage ingredient) {
+
+        ingredientStorage.addIngredientToStorage(ingredient);
+
+    }
+
+    public void sortBy(ShoppingListActivity.sortSelection selection) {
+
+        switch(selection) {
+            case CATEGORY:
+                shoppingList.sort(new IngredientComparator.byCategory());
+                break;
+            case DESCRIPTION:
+                shoppingList.sort(new IngredientComparator.byName());
+                break;
+        }
+
+    }
 }

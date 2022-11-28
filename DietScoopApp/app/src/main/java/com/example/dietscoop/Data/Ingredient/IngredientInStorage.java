@@ -86,9 +86,4 @@ public class IngredientInStorage extends Ingredient {
         bestBeforeDate = LocalDate.of(year, month, day);
     }
 
-    /**
-     * Setter for category of ingredient in storage.
-     * @param category Category to set for this ingredient.
-     */
-
 }
