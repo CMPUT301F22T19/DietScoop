@@ -290,7 +290,7 @@ class Database implements Serializable {
 
     /**
      * Adds ingredient to collection containing all ingredients in meal days
-     * @param ingredient ingredient to be added
+     * @param ingredient ingredient to be added to database
      */
     public void addIngredientToIngredientsInMealDaysCollection(IngredientInMealDay ingredient) {
         Map<String, Object> ingredientDetails = new HashMap<>();
