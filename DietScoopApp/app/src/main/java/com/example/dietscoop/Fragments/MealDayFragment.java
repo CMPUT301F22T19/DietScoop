@@ -18,6 +18,7 @@ import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
@@ -60,7 +61,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     String currentDescription; //Holds the desc.
     String currentFoodItemType;
 
-
     //Containers:
     int indexOfDay; //Only if editing:
     MealDay currentMealDay = null;
@@ -84,13 +84,14 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     public void onViewCreated(@NonNull View view, Bundle savedInstance) {
         container = view;
 
+        ((MealPlanActivity) getActivity()).actionBarNoLogout();
+
         //Binding Views:
         initializeViews();
         //Showing a pre-existing date if applicable:
         if (editMealDay) {
             DateText.setText(currentMealDay.getDate().toString());
         }
-
 
         //Getting options:
 //        recipesForAdding = ((MealPlanActivity)getActivity()).getRecipesList();
@@ -154,6 +155,7 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
             @Override
             public void onClick(View view) {
                 ((MealPlanActivity)getActivity()).changeToMealPlan();
+                ((MealPlanActivity)getActivity()).setupActionBar();
             }
         });
 

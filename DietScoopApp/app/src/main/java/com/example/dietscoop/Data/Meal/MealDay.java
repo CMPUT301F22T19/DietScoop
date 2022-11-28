@@ -151,5 +151,4 @@ public class MealDay implements Serializable {
         return this.id;
     }
 
-
 }
