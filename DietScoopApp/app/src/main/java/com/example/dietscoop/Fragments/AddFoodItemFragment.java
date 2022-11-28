@@ -33,8 +33,6 @@ import java.util.Iterator;
  * This dialog fragment will manage the selection of FoodItems to add to our meal day.
  */
 public class AddFoodItemFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
-
-    //Testing:
     Fragment context;
 
     Spinner foodItemSpinner;
@@ -48,6 +46,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
     EditText quantityInput;
     View dialogView;
 
+    int defaultUnitIndex;
     int spinnerSelectNum;
     String currentMealType;
     IngredientUnit mealUnit; //This will be sent back to the mealday.
@@ -113,14 +112,25 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                         }
                     });
 
+            //OnClick Spinner for the selection of unit types:
             unitSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    //TODO: Finish the implementation of the spinner for the selection of unit. -> needs to passback to the program and database.
                     if (currentMealType.equals("Recipe")) {
+
                         unitSelectSpinner.setSelection(10); //Always defaulting to servings when the user uses a recipe.
-                    } else {
+
+                    } else if (currentMealType.equals("Ingredient")) {
+
+                        //If user selects servings for an ingredient, prevent it:
+                        if (i == 10) {
+                            mealUnit = IngredientUnit.stringToUnit(unitNames.get(defaultUnitIndex));
+                            unitSelectSpinner.setSelection(defaultUnitIndex);
+                            return;
+                        }
+
                         mealUnit = IngredientUnit.stringToUnit(unitNames.get(i));
+                        unitSelectSpinner.setSelection(i);
                     }
                 }
 
@@ -157,9 +167,20 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     //TODO: Finish the implementation of the spinner for the selection of unit. -> needs to passback to the program and database.
                     if (currentMealType.equals("Recipe")) {
+
                         unitSelectSpinner.setSelection(10); //Always defaulting to servings when the user uses a recipe.
-                    } else {
+
+                    } else if (currentMealType.equals("Ingredient")) {
+
+                        //If user selects servings for an ingredient, prevent it:
+                        if (i == 10) {
+                            mealUnit = IngredientUnit.stringToUnit(unitNames.get(defaultUnitIndex));
+                            unitSelectSpinner.setSelection(defaultUnitIndex);
+                            return;
+                        }
+
                         mealUnit = IngredientUnit.stringToUnit(unitNames.get(i));
+                        unitSelectSpinner.setSelection(i);
                     }
                 }
 
@@ -174,9 +195,6 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
         }
     }
 
-    /**
-     * Will
-     */
     private void setEditViewTexts() {
         int selection = ((MealDayFragment)context).getSelectedFoodItemIndex(this.indexToEdit); //Fetches the current foodItem(meal) selected in the editable mealday.
         foodItemSpinner.setSelection(selection, true);
@@ -185,7 +203,8 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
             int counter = 0;
             for (String i : unitNames) {
                 if (currentIngredient.getMeasurementUnit().toString() == i) {
-                    unitSelectSpinner.setSelection(counter);
+                    defaultUnitIndex = counter;
+                    unitSelectSpinner.setSelection(defaultUnitIndex);
                 }
                 counter++;
             }
@@ -229,11 +248,13 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
             quantityView.setText("");
             int index = unitNames.indexOf(foodItem.getMeasurementUnit().toString());
             unitSelectSpinner.setSelection(index);
+            unitSelectSpinner.setVisibility(View.VISIBLE);
         } else {
             currentMealType = "Recipe";
             Recipe foodItem = (Recipe) foodItems.get(i);
             quantityView.setText("Servings");
             unitSelectSpinner.setSelection(10);
+            unitSelectSpinner.setVisibility(View.GONE);
         }
         spinnerSelectNum = i;
     }

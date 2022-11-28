@@ -55,7 +55,6 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
     ArrayList<FoodItem> allFoodItems;
     ArrayList<FoodItem> foodItemsToDelete = new ArrayList<>(); //Only valid if we are editing.
 
-    String currentDescription; //Holds the desc.
     String currentFoodItemType;
 
 
