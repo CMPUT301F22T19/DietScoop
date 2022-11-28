@@ -197,14 +197,49 @@ public class ShoppingListInfo {
             // Check if we already have that existing ingredient in storage
             if (!ingredientsWeHave.containsKey(key)) {
                 // If we don't, add that ingredient, along with the amount and other attributes, to shopping list
-                IngredientInRecipe newIngredient = new IngredientInRecipe(description, IngredientUnit.stringToUnit(unit), amount, IngredientCategory.stringToCategory(category));
+                IngredientUnit enumUnit = IngredientUnit.stringToUnit(unit);
+
+                if (enumUnit == IngredientUnit.mg) {
+                    if (amount / 1000000.0 > 1) {
+                        amount /= 1000000.0;
+                        enumUnit = IngredientUnit.kg;
+                    } else if (amount / 1000.0 > 1) {
+                        amount /= 1000.0;
+                        enumUnit = IngredientUnit.g;
+                    }
+                } else {
+                    if (amount / 1000.0 > 1) {
+                        amount /= 1000.0;
+                        enumUnit = IngredientUnit.L;
+                    }
+                }
+
+                IngredientInRecipe newIngredient = new IngredientInRecipe(description, enumUnit, amount, IngredientCategory.stringToCategory(category));
                 shoppingList.add(newIngredient);
             } else {
                 // If we have an that ingredient, compare how much we need vs. how much we have
                 Double newAmount = ingredientsWeNeed.get(key) - ingredientsWeHave.get(key);
                 // Check if we need more than we have
                 if (newAmount > 0) {
-                    IngredientInRecipe newIngredient = new IngredientInRecipe(description, IngredientUnit.stringToUnit(unit), newAmount, IngredientCategory.stringToCategory(category));
+
+                    IngredientUnit enumUnit = IngredientUnit.stringToUnit(unit);
+
+                    if (enumUnit == IngredientUnit.mg) {
+                        if (newAmount / 1000000.0 > 1) {
+                            newAmount /= 1000000.0;
+                            enumUnit = IngredientUnit.kg;
+                        } else if (newAmount / 1000.0 > 1) {
+                            newAmount /= 1000.0;
+                            enumUnit = IngredientUnit.g;
+                        }
+                    } else {
+                        if (newAmount / 1000.0 > 1) {
+                            newAmount /= 1000.0;
+                            enumUnit = IngredientUnit.L;
+                        }
+                    }
+
+                    IngredientInRecipe newIngredient = new IngredientInRecipe(description, enumUnit, newAmount, IngredientCategory.stringToCategory(category));
                     shoppingList.add(newIngredient);
                 }
             }

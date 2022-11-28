@@ -27,6 +27,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Recipe.recipeCategory;
 import com.example.dietscoop.Data.Recipe.timeUnit;
@@ -55,6 +57,9 @@ import java.util.UUID;
 public class ViewRecipeActivity extends AppCompatActivity implements AddIngredientToRecipeFragment.OnFragmentInteractionListener, RecyclerItemClickListener {
     private static final int CAMERA_PERMISSION = 211;
     public static final int CAMERA_REQUEST = 212;
+    TextView categoryLabel;
+    TextView numServLabel;
+    TextView prepTimeLabel;
     EditText prepTime, numServings, instructions, name;
     RecyclerView ingredientsView;
     RecipeStorage storage;
@@ -94,8 +99,8 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         //Fetching the serialized recipe:
         adding = intent.getBooleanExtra("ADDING", false);
         if (adding) {
-            currentRecipe = new Recipe("",0,0, timeUnit.min, recipeCategory.Breakfast,
-                    new ArrayList<>(),"");
+            currentRecipe = new Recipe("");
+            currentRecipe.setIngredientsList(new ArrayList<>());
             currentRecipe.setId(UUID.randomUUID().toString());
 
         } else {
@@ -111,6 +116,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     private void initialize() {
 
+        categoryLabel = findViewById(R.id.recipe_label_category);
+        numServLabel = findViewById(R.id.recipe_label_no_of_servings);
+        prepTimeLabel = findViewById(R.id.recipe_label_prep_time);
 
         prepTime = findViewById(R.id.recipe_prep_time);
         numServings = findViewById(R.id.recipe_no_of_servings);
@@ -186,11 +194,21 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
             }
         });
 
-        int spinnerUnitTimePosition = prepUnitSpinnerAdapter.getPosition(currentRecipe.getPrepUnitTime().toString());
-        prepTimeUnitSpinner.setSelection(spinnerUnitTimePosition);
+        if (adding) {
+            prepTimeUnitSpinner.setSelection(0);
+        } else {
+            int spinnerUnitTimePosition = prepUnitSpinnerAdapter.getPosition(currentRecipe.getPrepUnitTime().toString());
+            prepTimeUnitSpinner.setSelection(spinnerUnitTimePosition);
+        }
 
-        int spinnerCategoryPosition = categorySpinnerAdapter.getPosition(currentRecipe.getCategoryName());
-        categorySpinner.setSelection(spinnerCategoryPosition);
+
+
+        if(adding) {
+            categorySpinner.setPrompt("Select");
+        } else {
+            int spinnerCategoryPosition = categorySpinnerAdapter.getPosition(currentRecipe.getCategoryName());
+            categorySpinner.setSelection(spinnerCategoryPosition);
+        }
 
         storage = new RecipeStorage();
         tempIngListForUI = new ArrayList<>();
@@ -215,11 +233,12 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
     }
 
     private void updateTextViews() {
-
-        prepTime.setText(String.valueOf(currentRecipe.getPrepTime()));
-        numServings.setText(String.valueOf(currentRecipe.getNumOfServings()));
-        instructions.setText(currentRecipe.getInstructions());
-        name.setText(String.valueOf(currentRecipe.getDescription()));
+        if (!adding) {
+            prepTime.setText(String.valueOf(currentRecipe.getPrepTime()));
+            numServings.setText(String.valueOf(currentRecipe.getNumOfServings()));
+            instructions.setText(currentRecipe.getInstructions());
+            name.setText(String.valueOf(currentRecipe.getDescription()));
+        }
         if(currentRecipe.getImageBitmap() != null)
         {
             byte[] test = Base64.getDecoder().decode(currentRecipe.getImageBitmap());
@@ -245,16 +264,49 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     }
 
+    private boolean errorCheck() {
+        boolean isAllValid = true;
+        String recipeNumOfServings = numServings.getText().toString();
+        if (recipeNumOfServings.equals("")){
+            numServLabel.setError("Please enter the number of servings!");
+            isAllValid = false;
+        } else {
+            currentRecipe.setNumOfServings(Integer.valueOf(recipeNumOfServings));
+        }
+
+        String recipePrepTime = prepTime.getText().toString();
+        if (recipePrepTime.equals("")) {
+            prepTimeLabel.setError("Please enter a prep time!");
+            isAllValid = false;
+        } else {
+            currentRecipe.setPrepTime(Integer.valueOf(recipePrepTime));
+        }
+
+        String description = name.getText().toString();
+        if (description.equals("")) {
+            name.setError("Please enter a name!");
+            isAllValid = false;
+        } else {
+            currentRecipe.setDescription(description);
+        }
+
+        if(currentRecipe.getCategory()==null) {
+            isAllValid = false;
+            categoryLabel.setError("Please choose category!");
+        }
+
+        return isAllValid;
+
+
+    }
+
     private void confirmRecipe() {
+        if(!errorCheck()){
+            return;
+        }
+
         // TODO: do the getTexts and use setters to modify currentRecipe\
         currentRecipe.setImageBitmap(thisRecipeBase64);
-
-        String recipeNumOfServings = numServings.getText().toString();
-        currentRecipe.setNumOfServings(Integer.valueOf(recipeNumOfServings));
-        String recipePrepTime = prepTime.getText().toString();
-        currentRecipe.setPrepTime(Integer.valueOf(recipePrepTime));
-        String description = name.getText().toString();
-        currentRecipe.setDescription(description);
         String instructions = this.instructions.getText().toString();
         currentRecipe.setInstructions(instructions);
         for (IngredientInRecipe ingToAdd: tempIngListAdd) {
