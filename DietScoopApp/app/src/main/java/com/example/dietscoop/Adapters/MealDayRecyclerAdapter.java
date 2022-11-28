@@ -91,7 +91,6 @@ public class MealDayRecyclerAdapter extends RecyclerView.Adapter<MealDayRecycler
             Integer numOfServings = ((RecipeInMealDay)meals.get(position)).getDesiredNumOfServings();
             holder.getMealQuantity().setText(String.valueOf(numOfServings) + " Servings");
         }
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
