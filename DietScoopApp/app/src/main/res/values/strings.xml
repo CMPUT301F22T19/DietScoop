@@ -5,7 +5,7 @@
     <string name="cancel_button">Cancel</string>
     <string name="delete_button">Delete</string>
     <string name="recipe_label_prep_time">Prep Time</string>
-    <string name="recipe_label_no_of_servings">No. of Servings</string>
+    <string name="recipe_label_no_of_servings">Servings</string>
     <string name="category_label">Category</string>
     <string name="filler">default</string>
     <string name="add_label">Add</string>
@@ -26,6 +26,7 @@
         <item>Holiday</item>
         <item>Beverages</item>
         <item>Baked</item>
+
     </string-array>
 
     <string-array name="prepUnitTime">
@@ -34,12 +35,14 @@
     </string-array>
 
     <string-array name="IngredientInStorageLocation">
+        <item>Select</item>
         <item>Pantry</item>
         <item>Freezer</item>
         <item>Fridge</item>
     </string-array>
 
     <string-array name="IngredientInStorageCategory">
+        <item>Select</item>
         <item>Vegetable</item>
         <item>Meat</item>
         <item>Dairy</item>
@@ -48,6 +51,7 @@
         <item>Spices</item>
         <item>Fruit</item>
         <item>Other</item>
+
     </string-array>
 
     <string-array name="IngredientInStorageUnit">

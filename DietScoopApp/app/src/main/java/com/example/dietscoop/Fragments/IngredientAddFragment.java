@@ -1,21 +1,17 @@
 package com.example.dietscoop.Fragments;
 
-import static android.app.Activity.RESULT_OK;
+
 import static java.lang.String.valueOf;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,8 +25,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
@@ -39,17 +33,11 @@ import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
-import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.Calendar;
 
 public class IngredientAddFragment extends DialogFragment {
-    private static final int CAMERA_PERMISSION = 211;
-    public static final int CAMERA_REQUEST = 212;
     private EditText description;
     private EditText amount;
     private Spinner category;
@@ -62,11 +50,6 @@ public class IngredientAddFragment extends DialogFragment {
     private LocalDate bestBeforeDateTemp;
     private Button selectDate;
     private TextView bestBeforeDate;
-    private Button addByCameraRoll;
-    private Button addByCamera;
-    private ImageView thisImageIngredient;
-    private Uri photoURI;
-    private String thisIngredientPhotoBase64;
 
     // For getting the string version of Calendar
     // Error handing
@@ -194,9 +177,6 @@ public class IngredientAddFragment extends DialogFragment {
         unit = view.findViewById(R.id.edit_unit_ingredient_storage);
         selectDate = view.findViewById(R.id.select_bestbefore_button);
         bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
-//        addByCameraRoll = view.findViewById(R.id.add_ingredient_photo_camera_roll);
-//        addByCamera = view.findViewById(R.id.add_ingredient_photo_camera);
-//        thisImageIngredient = view.findViewById(R.id.ingredient_image);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -215,20 +195,6 @@ public class IngredientAddFragment extends DialogFragment {
         unit.setAdapter(unitSpinnerAdapter);
 
         IngredientInStorage newIngredient = new IngredientInStorage();
-
-//        addByCamera.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                askCameraPermission();
-//            }
-//        });
-//
-//        addByCameraRoll.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                cameraRollOpener();
-//            }
-//        });
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -321,51 +287,14 @@ public class IngredientAddFragment extends DialogFragment {
         if (ingredientToBeChanged == null) {
             alertDialogTemp = buildAddDialog(builder, view);
             isEditing = false;
-//                    String strDescription = description.getText().toString();
-//                    if (strDescription.length() == 0) {
-//                        strDescription = "No description available";
-//                    }
-//
-                    String strAmount = amount.getText().toString();
-                    double doubleAmount;
-                    if (!isNumeric(strAmount, NumericTypes.decimal)) {
-                        doubleAmount = -1.0;
-                    } else {
-                        doubleAmount = Double.parseDouble(strAmount);
-                    }
-//
-//                    newIngredient.setDescription(strDescription);
-                    newIngredient.setAmount(doubleAmount);
-//
-//                    listener.onOkPressed(newIngredient);
-
-//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    boolean isAllValid = true;
-//                    if (description.getText().toString().length() == 0) {
-//                        description.setError("Please enter a description");
-//                        isAllValid = false;
-//                    } else {
-//                        newIngredient.setDescription(description.getText().toString());
-//                    }
-//
-//                    if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
-//                        newIngredient.setAmount(0.0);
-//                    } else {
-//                        newIngredient.setAmount(Double.parseDouble(amount.getText().toString()));
-//                    }
-//
-//                    if (newIngredient.getBestBeforeDate() == null) {
-//                        isAllValid = false;
-//                        bestBeforeDate.setError("Please set an expiry date!");
-//                    }
-//                    if (isAllValid) {
-//                        dialog.dismiss();
-//                        listener.onOkPressed(newIngredient);
-//                    }
-//                    //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
-//                }
+            String strAmount = amount.getText().toString();
+            double doubleAmount;
+            if (!isNumeric(strAmount, NumericTypes.decimal)) {
+                doubleAmount = -1.0;
+            } else {
+                doubleAmount = Double.parseDouble(strAmount);
+            }
+            newIngredient.setAmount(doubleAmount);
 
         } else {
             description.setText(ingredientToBeChanged.getDescription());
@@ -384,22 +313,6 @@ public class IngredientAddFragment extends DialogFragment {
             alertDialogTemp = buildEditDialog(builder, view);
             isEditing = true;
 
-//                    if (description.getText().toString().length() == 0) {
-//                        ingredientToBeChanged.setDescription("No description available");
-//                    } else {
-//                        ingredientToBeChanged.setDescription(description.getText().toString());
-//                    }
-//
-//                    if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
-//                        ingredientToBeChanged.setAmount(0.0);
-//                    } else {
-//                        ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
-//                    }
-//
-//                    listener.onOkPressedUpdate(ingredientToBeChanged);
-
-
-
         }
         final AlertDialog dialog = alertDialogTemp;
         if(!isEditing) {
@@ -409,67 +322,6 @@ public class IngredientAddFragment extends DialogFragment {
         }
 
         return alertDialogTemp;
-
-
     }
 
-    private void askCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this.getContext(),
-                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
-        } else {
-            openDeviceBuiltInCamera();
-        }
-    }
-
-    private void openDeviceBuiltInCamera() {
-        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camera, CAMERA_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            photoURI = data.getData();
-            try {
-                Bitmap thisIngredientBitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), photoURI);
-                ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
-                thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
-                byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
-                thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Picasso.get().load(photoURI).into(thisImageIngredient);
-            thisImageIngredient.setImageBitmap(null);
-        } else {
-            Bitmap thisIngredientPhotoCamera = (Bitmap) data.getExtras().get("data");
-            thisImageIngredient.setImageBitmap(thisIngredientPhotoCamera);
-            ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
-            thisIngredientPhotoCamera.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
-            byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
-            thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] > PackageManager.PERMISSION_GRANTED) {
-                openDeviceBuiltInCamera();
-            }
-        } else {
-        }
-    }
-
-    private void cameraRollOpener() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, CAMERA_REQUEST);
-    }
 }
