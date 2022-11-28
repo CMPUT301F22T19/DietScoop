@@ -1,11 +1,22 @@
 package com.example.dietscoop.Data.Ingredient;
 
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.List;
 
 public class UnitConverter {
 
+    public enum unitType {
+        mass,
+        volume
+    }
+
     private static final EnumMap<IngredientUnit, Double> weightConversions;
     private static final EnumMap<IngredientUnit, Double> volumeConversions;
+    private static final List<IngredientUnit> massUnits = Arrays.asList(IngredientUnit.g, IngredientUnit.mg,
+            IngredientUnit.kg, IngredientUnit.oz, IngredientUnit.lb);
+    private static final List<IngredientUnit> volUnits = Arrays.asList(IngredientUnit.cup, IngredientUnit.L,
+            IngredientUnit.mL, IngredientUnit.tbsp, IngredientUnit.tsp);
 
     static {
 
@@ -34,6 +45,31 @@ public class UnitConverter {
         } else {
             throw new RuntimeException("INVALID UNIT CONVERSION!");
         }
+
+    }
+
+    public static unitType getUnitType(IngredientUnit unit) {
+        if (massUnits.contains(unit)) {
+            return unitType.mass;
+        } else if (volUnits.contains(unit)) {
+            return unitType.volume;
+        } else {
+            throw new RuntimeException("UNEXPECTED UNIT! DOES NOT EXIST IN UNIT TYPE LISTS");
+        }
+    }
+
+    public static Ingredient normalizeAmountUnits(Ingredient input) {
+
+        if (getUnitType(input.getMeasurementUnit()) == unitType.mass) {
+            input.setAmount(convertIngredientUnit(input.getAmount(), input.getMeasurementUnit(), IngredientUnit.mg));
+            input.setMeasurementUnit(IngredientUnit.mg);
+        } else {
+            assert (getUnitType(input.getMeasurementUnit()) == unitType.volume);
+            input.setAmount(convertIngredientUnit(input.getAmount(), input.getMeasurementUnit(), IngredientUnit.mL));
+            input.setMeasurementUnit(IngredientUnit.mL);
+        }
+
+        return input;
 
     }
 

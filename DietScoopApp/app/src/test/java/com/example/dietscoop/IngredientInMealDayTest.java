@@ -28,7 +28,7 @@ public class IngredientInMealDayTest {
     @Test
     public void testSetScalingFactor() {
         IngredientInMealDay sample = getSampleIngredient();
-
+        assertNull(sample.getScalingFactor());
         sample.setScalingFactor(0.25);
         assertNotNull(sample.getScalingFactor());
         assertEquals(Optional.ofNullable(sample.getScalingFactor()), Optional.of(0.25));
@@ -41,6 +41,16 @@ public class IngredientInMealDayTest {
         sample.setScalingFactor(-0.25);
         assertNotNull(sample.getScalingFactor());
         assertEquals(Optional.ofNullable(sample.getScalingFactor()), Optional.of(-0.25));
+    }
+
+    @Test
+    public void testSetParentIngredient() {
+        IngredientInMealDay sample = getSampleIngredient();
+
+        sample.setParentIngredient(new IngredientInStorage("gabagool", com.example.dietscoop.Data.Ingredient.IngredientUnit.g,
+                5.0, 2020, 11, 11, Location.Fridge, IngredientCategory.Meat));
+
+        assertNotNull(sample.getParentIngredient());
     }
 
 }

@@ -24,18 +24,18 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/description_text"
+                    android:id="@+id/shopping_description_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="Description▼"
+                    android:text="Name\n━"
+                    android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"/>
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/amount_text"
+                    android:id="@+id/shopping_amount_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -46,7 +46,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/unit_text"
+                    android:id="@+id/shopping_unit_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -57,15 +57,15 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/category_text"
+                    android:id="@+id/shopping_category_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:text="Category▼"
+                    android:text="Category\n━"
+                    android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"/>
+                    android:textStyle="bold" />
 
             </TableRow>
         </TableLayout>

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.constraintlayout.motion.widget.OnSwipe;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Data.Meal.MealDay;

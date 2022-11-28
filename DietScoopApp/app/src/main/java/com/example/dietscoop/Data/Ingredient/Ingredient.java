@@ -1,9 +1,11 @@
 package com.example.dietscoop.Data.Ingredient;
 
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.FoodItem;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
      * Ingredient abstract class to be inherited by ingredient and ingredient in storage
@@ -102,22 +104,9 @@ import java.util.Arrays;
 
     public boolean hasSameUnitType(Ingredient a) {
 
-        IngredientUnit[] massUnits = {IngredientUnit.g, IngredientUnit.mg, IngredientUnit.kg,
-                                      IngredientUnit.oz, IngredientUnit.lb};
-
-        IngredientUnit[] volUnits = {IngredientUnit.cup, IngredientUnit.L, IngredientUnit.mL,
-                                     IngredientUnit.tbsp, IngredientUnit.tsp};
-
-
-        if ((Arrays.asList(massUnits).contains(a.getMeasurementUnit()) && Arrays.asList(massUnits).contains(measurementUnit))
-          ||(Arrays.asList(volUnits).contains(a.getMeasurementUnit()) && Arrays.asList(volUnits).contains(measurementUnit))) {
-            return true;
-        } else {
-            return false;
-        }
+        return UnitConverter.getUnitType(a.getMeasurementUnit()) == UnitConverter.getUnitType(this.measurementUnit);
 
     }
-
-    }
+}
 
 
