@@ -11,7 +11,7 @@
         android:paddingVertical="10dp">
 
         <TextView
-            android:id="@+id/description_text"
+            android:id="@+id/shopping_description_text"
             android:layout_width="0dp"
             android:text="Food"
             android:textAlignment="center"
