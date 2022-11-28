@@ -134,9 +134,6 @@ public class MealPlanStorage {
                                                     });
                                             db.getRecipeCollectionRef().document(doc1.getString("parentRecipeID")).get();
 
-
-
-
 //                                            for (String ingredientInRec: (ArrayList<String>)doc1.get("ingredients")) {
 //                                                db.getIngredientsInRecipesCollectionRef().document(ingredientInRec).addSnapshotListener((doc2, e2) -> {
 //                                                    String TAG2 = "ALLSSS";
