@@ -16,7 +16,6 @@ import com.example.dietscoop.Activities.MainActivity;
 import com.example.dietscoop.Activities.MealPlanActivity;
 import com.example.dietscoop.Activities.RecyclerItemClickListener;
 import com.example.dietscoop.Adapters.MealPlanRecyclerAdapter;
-import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

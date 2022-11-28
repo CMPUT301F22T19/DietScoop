@@ -18,7 +18,6 @@ import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
-import com.example.dietscoop.Data.Meal.Meal;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
