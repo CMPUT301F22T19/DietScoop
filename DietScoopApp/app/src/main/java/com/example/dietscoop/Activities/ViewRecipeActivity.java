@@ -114,6 +114,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     }
 
+    /**
+     * Initializes the activity, with UI element references, as well as some listener functions
+     */
     private void initialize() {
 
         categoryLabel = findViewById(R.id.recipe_label_category);
@@ -232,6 +235,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         adapter.setItemClickListener(this);
     }
 
+    /**
+     * Populates the UI elements with relevant data
+     */
     private void updateTextViews() {
         if (!adding) {
             prepTime.setText(String.valueOf(currentRecipe.getPrepTime()));
@@ -250,7 +256,10 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     }
 
-    // TODO: abandon the dialogbox
+    /**
+     * Updates the instructions for the recipe
+     * @param text user-entered instructions
+     */
     public void updateInstructions(String text) {
         //Changing the text for instructions and the recipe.
         instructions.setText(text);
@@ -258,12 +267,19 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     }
 
+    /**
+     * Opens fragment that allows user to add an ingredient to the current recipe being viewed
+     */
     private void addIngredient() {
-        Log.i("gaba", "gool");
         new AddIngredientToRecipeFragment().show(getSupportFragmentManager(), "ADD_Ingredient");
 
     }
 
+    /**
+     * Validates user input to avoid crashing the app if the user enters invalid input. Prompts user
+     * regarding invalid input.
+     * @return true if user entered valid input, false otherwise
+     */
     private boolean errorCheck() {
         boolean isAllValid = true;
         String recipeNumOfServings = numServings.getText().toString();
@@ -300,12 +316,14 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
 
     }
 
+    /**
+     * Updates the recipe and commits the data to the database
+     */
     private void confirmRecipe() {
         if(!errorCheck()){
             return;
         }
 
-        // TODO: do the getTexts and use setters to modify currentRecipe\
         currentRecipe.setImageBitmap(thisRecipeBase64);
         String instructions = this.instructions.getText().toString();
         currentRecipe.setInstructions(instructions);
@@ -322,34 +340,41 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         tempIngListUpdate.addAll(tempIngListAdd);
         currentRecipe.setIngredientsList(tempIngListUpdate);
         if (adding) {
-            for (String i: currentRecipe.getIngredientRefs()) {
-                Log.i("adding ingros in recip", i);
-            }
             storage.addRecipeToStorage(currentRecipe);
         } else {
-            for (String i: currentRecipe.getIngredientRefs()) {
-                Log.i("editing ingros in recip", i);
-            }
             storage.updateRecipeInStorage(currentRecipe);
         }
         goBack();
     }
 
+    /**
+     *  Nothing is changed in the current recipe.
+     */
     private void cancel() {
         goBack();
     }
 
+    /**
+     * Navigates back to page listing all recipes.
+     */
     private void goBack() {
         Intent intent = new Intent(this, RecipeListActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Recipe currently being viewed is deleted from the database, and the user is returned to their recipe list page
+     */
     private void deleteThisRecipe() {
         storage.removeRecipeFromStorage(currentRecipe);
         goBack();
     }
 
 
+    /**
+     * Called when user adds an ingredient to a recipe
+     * @param newIngredientInRecipe new ingredient to be added to recipe
+     */
     @Override
     public void onOkPressed(IngredientInRecipe newIngredientInRecipe) {
         newIngredientInRecipe.setRecipeID(currentRecipe.getId());
@@ -359,6 +384,11 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Called when user updates details of an existing ingredient in a recipe. Stages the ingredient to be updated
+     * @param updateIngredientInRecipe ingredient to be updated
+     * @param index index of ingredient to be updated
+     */
     @Override
     public void onOkPressedUpdate(IngredientInRecipe updateIngredientInRecipe, int index) {
         if (tempIngListUpdate.contains(updateIngredientInRecipe)) {
@@ -370,15 +400,24 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * This method stages an ingredient to be deleted from the recipe.
+     * @param deleteIngredientInRecipe
+     */
     @Override
     public void onDeletePressed(IngredientInRecipe deleteIngredientInRecipe) {
-        tempIngListUpdate.remove(deleteIngredientInRecipe);// index??
+        tempIngListUpdate.remove(deleteIngredientInRecipe);
         tempIngListAdd.remove(deleteIngredientInRecipe);
         tempIngListForUI.remove(deleteIngredientInRecipe);
         tempIngListDelete.add(deleteIngredientInRecipe);
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Called when the user clicks an ingredient in a recipe. Opens a fragment to allow user to update the ingredient
+     * @param view current view
+     * @param position index of ingredient clicked on
+     */
     @Override
     public void onItemClick(View view, int position) {
         IngredientInRecipe ingredient = tempIngListForUI.get(position);;
@@ -452,6 +491,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
         startActivityForResult(intent, CAMERA_REQUEST);
     }
 
+    /**
+     * Sets up top bar without logout and add button
+     */
     private void setupActionBar() {
 
         topBar = getSupportActionBar();
