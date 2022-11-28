@@ -72,7 +72,7 @@ public class IngredientStorageAdapter extends RecyclerView.Adapter<IngredientSto
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameTV = itemView.findViewById(R.id.description_text);
+            nameTV = itemView.findViewById(R.id.shopping_description_text);
             countTV = itemView.findViewById(R.id.count_text);
             dateTV = itemView.findViewById(R.id.Best_Before_Text);
 

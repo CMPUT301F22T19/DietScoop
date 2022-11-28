@@ -4,8 +4,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.dietscoop.Activities.ShoppingListActivity;
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
+import com.example.dietscoop.Data.Comparators.IngredientComparator;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
@@ -264,6 +266,19 @@ public class ShoppingListInfo {
     public void addItemToStorage(IngredientInStorage ingredient) {
 
         ingredientStorage.addIngredientToStorage(ingredient);
+
+    }
+
+    public void sortBy(ShoppingListActivity.sortSelection selection) {
+
+        switch(selection) {
+            case CATEGORY:
+                shoppingList.sort(new IngredientComparator.byCategory());
+                break;
+            case DESCRIPTION:
+                shoppingList.sort(new IngredientComparator.byName());
+                break;
+        }
 
     }
 }

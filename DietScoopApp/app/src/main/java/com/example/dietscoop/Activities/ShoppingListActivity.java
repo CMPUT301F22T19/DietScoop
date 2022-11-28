@@ -12,18 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
-import com.example.dietscoop.Data.Ingredient.Ingredient;
-import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
-import com.example.dietscoop.Data.Ingredient.IngredientUnit;
-import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Database.ShoppingListInfo;
 import com.example.dietscoop.Fragments.pickUpIngredientFragment;
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
 
 public class ShoppingListActivity extends NavigationActivity implements RecyclerItemClickListener, pickUpIngredientFragment.OnFragmentInteractionListener {
     RecyclerView shoppingListView;
@@ -34,6 +28,8 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
     ActionBar topBar;
 
     ShoppingListInfo shoppingListInfo;
+    sortSelection sortingBy;
+
 
     @Override
     public void onItemClick(View view, int position) {
@@ -72,9 +68,51 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
         shoppingListInfo.setUpSnapshotListeners(ingListAdapter);
         shoppingListView.setAdapter(ingListAdapter);
 
-        descriptionSort = findViewById(R.id.description_text);
-        categorySort = findViewById(R.id.category_text);
+        descriptionSort = findViewById(R.id.shopping_description_text);
+        categorySort = findViewById(R.id.shopping_category_text);
 
+        descriptionSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSortSelection(sortSelection.DESCRIPTION);
+            }
+        });
+
+        categorySort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSortSelection(sortSelection.CATEGORY);
+            }
+        });
+
+    }
+
+    private void onSortSelection(sortSelection selection) {
+
+        if (this.sortingBy == selection) {
+            return;
+        }
+
+        shoppingListInfo.sortBy(selection);
+        ingListAdapter.notifyDataSetChanged();
+        setSortingItem(selection);
+
+    }
+
+    private void setSortingItem(sortSelection selection) {
+
+        this.sortingBy = selection;
+
+        switch(this.sortingBy) {
+            case CATEGORY:
+                descriptionSort.setText("Name\n━");
+                categorySort.setText("Category\n▼");
+                break;
+            case DESCRIPTION:
+                descriptionSort.setText("Name\n▼");
+                categorySort.setText("Category\n━");
+                break;
+        }
     }
 
     private void setUpActionBar() {
