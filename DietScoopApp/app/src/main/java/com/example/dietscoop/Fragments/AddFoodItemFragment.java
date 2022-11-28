@@ -142,7 +142,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
                             //Checking for the item type:
                             Double scale = Double.parseDouble(quantityInput.getText().toString());
                             MealDayFragment testParent = (MealDayFragment)getParentFragment();
-                            ((MealDayFragment)context).addMeal(spinnerSelectNum, scale, null);
+                            ((MealDayFragment)context).addMeal(spinnerSelectNum, scale, mealUnit);
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
