@@ -120,27 +120,8 @@ public class MealPlanActivity extends NavigationActivity {
         return this.allFoodItems;
     }
 
-    //Fragment View Switches:
-
     /**
-     * Must be called the first time:
-     */
-    public void changeToMealPlanInitialize() {
-        Bundle testing = null;
-        if (this.mealPlan.size() > 0) {
-            testing = new Bundle();
-            testing.putSerializable("mealplan", this.mealPlan);
-        }
-        mealPlanManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.full_fragment_container_view, MealPlanFragment.class, testing) //TODO: Make it so it sends over the current mealPlan.
-                .commit();
-    }
-
-    //TODO: If time allows for it, add some garbage collecting to the fragment manager.
-
-    /**
-     * Can change this to send over a variables needed in bundle.
+     * This method navigates the user to the page where they can see their meal plan
      */
     public void changeToMealPlan() {
         Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_plan_fragment);
@@ -158,6 +139,9 @@ public class MealPlanActivity extends NavigationActivity {
                 .commit();
     }
 
+    /**
+     * This method navigates the user to the page where they can add a new meal day to their mealplan
+     */
     public void changeToMealDayAdd() {
         Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_day_fragment);
 
@@ -171,6 +155,11 @@ public class MealPlanActivity extends NavigationActivity {
                 .commit();
     }
 
+    /**
+     * This method navigates the user to the page where they can change an existing meal day in their mealplan.
+     * It is called when the user clicks on a meal day in their meal plan
+     * @param indexOfDay index of the meal day the user has clicked on
+     */
     public void changeToMealDayEdit(int indexOfDay) {
         Fragment prevFragment = mealPlanManager.findFragmentById(R.id.meal_day_fragment);
 
@@ -214,7 +203,10 @@ public class MealPlanActivity extends NavigationActivity {
         this.mealPlan.add(mealDay);
     }
 
-    //TODO: Marcos fiddled in the depths of db code that stems from here:
+    /**
+     * This method adds to the database all ingredients and recipes that the user has added to their meal day
+     * @param mealDay the current meal day being edited
+     */
     private void addIndividualFoodItemsInMealDayToDB(MealDay mealDay) {
         for (IngredientInMealDay i: mealDay.getIngredientInMealDays()) {
             mealPlanStorage.addIngredientToIngredientsInMealDaysCollection(i);
@@ -224,6 +216,10 @@ public class MealPlanActivity extends NavigationActivity {
         }
     }
 
+    /**
+     * This method deletes all the ingredients and recipes that the user has selected to be deleted from a meal day
+     * @param itemsToDelete the list of staged deletions
+     */
     private void deleteIndividualFoodItemsInMealDayFromDB(ArrayList<FoodItem> itemsToDelete) {
         for (FoodItem i: itemsToDelete) {
             if (i.getType() == "Ingredient") {
@@ -235,24 +231,18 @@ public class MealPlanActivity extends NavigationActivity {
     }
 
     /**
-     * Method to call when user wants to delete a particular mealday.
-     * @param indexToDel
+     * Method called when user wants to delete a particular mealday.
+     * @param indexToDel index of meal day to delete
      */
-    //TODO: GURBIR THIS IS WHERE I DELETE THE MEALDAY;
     public void mealDayDelete(int indexToDel) {
         mealPlanStorage.removeMealDayFromMealPlan(this.mealPlan.get(indexToDel));
         this.mealPlan.remove(indexToDel);
         changeToMealPlan();
     }
 
-    public ArrayList<MealDay> getMealDays() {
-        return this.mealPlan;
-    }
-
-    public void updateDatabaseOfChange() {
-        //Fill with method.
-    }
-
+    /**
+     * This method sets up the top bar with a logout button and an add button
+     */
     public void setupActionBar() {
 
         topBar = getSupportActionBar();
@@ -282,17 +272,23 @@ public class MealPlanActivity extends NavigationActivity {
         });
     }
 
+    /**
+     * This method is called by MealDayFragment to set up a top bar without an add button and without a logout button
+     */
     public void actionBarNoLogout(){
         topBar.setCustomView(R.layout.top_bar_no_logout_no_add);
     }
 
+    /**
+     * This method is called to navigate to the adding meal day page
+     */
     void onAddClicked() {
         changeToMealDayAdd();
     }
 
-    void onMinusClicked() {
-    }
-
+    /**
+     * This method logs out a currently logged in user
+     */
     private void logout() {
         FirebaseAuth.getInstance().signOut();
 

@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dietscoop.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * This class handles navigation between the main activities of the application
+ */
 public abstract class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
 
     BottomNavigationView navBar;
@@ -28,18 +31,24 @@ public abstract class NavigationActivity extends AppCompatActivity implements Bo
     }
 
     /**
-     * Handler for navigating to recipe list activity
+     * Method for navigating to recipe list activity
      */
     public void goToRecipeList() {
         Intent intent = new Intent(this, RecipeListActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Method for navigating to shopping list activity
+     */
     private void goToShoppingList() {
         Intent intent = new Intent(this, ShoppingListActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Method for navigating to meal plan activity
+     */
     private void goToMealPlans() {
         // LAUNCH MEAL PLANS
         Intent intent = new Intent(this, MealPlanActivity.class);

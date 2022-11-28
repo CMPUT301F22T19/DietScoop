@@ -29,12 +29,16 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
     sortSelection sortingBy;
 
+    /**
+     * This enum contains elements that the user can specify to sort the list by
+     */
     public enum sortSelection {
         TITLE,
         PREPTIME,
         SERVING,
         CATEGORY
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,12 +97,20 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
     }
 
+    /**
+     * This method navigates to the activity where the user can add a new recipe.
+     */
     private void addNewRecipe() {
         Intent intent = new Intent(this, ViewRecipeActivity.class);
         intent.putExtra("ADDING", true);
         startActivity(intent);
     }
 
+    /**
+     * This method navigates to the activity where the user can edit an existing recipe
+     * @param view
+     * @param position
+     */
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, ViewRecipeActivity.class);
