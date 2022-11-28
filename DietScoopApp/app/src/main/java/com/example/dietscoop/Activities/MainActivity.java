@@ -23,6 +23,9 @@ public class MainActivity extends NavigationActivity {
         setUpActionBar();
     }
 
+    /**
+     * This method proceeds to the 
+     */
     private void authorize() {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
