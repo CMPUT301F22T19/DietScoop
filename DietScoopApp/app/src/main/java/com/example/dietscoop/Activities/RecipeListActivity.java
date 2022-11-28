@@ -36,6 +36,7 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         SERVING,
         CATEGORY
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
