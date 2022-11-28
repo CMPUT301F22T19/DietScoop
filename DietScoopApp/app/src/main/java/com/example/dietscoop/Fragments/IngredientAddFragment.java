@@ -1,20 +1,17 @@
 package com.example.dietscoop.Fragments;
 
-import static android.app.Activity.RESULT_OK;
+
 import static java.lang.String.valueOf;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.content.DialogInterface;
+
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,8 +25,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
@@ -38,17 +33,11 @@ import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Ingredient.Location;
 import com.example.dietscoop.R;
 import com.example.dietscoop.Data.Recipe.NumericTypes;
-import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.Calendar;
 
 public class IngredientAddFragment extends DialogFragment {
-    private static final int CAMERA_PERMISSION = 211;
-    public static final int CAMERA_REQUEST = 212;
     private EditText description;
     private EditText amount;
     private Spinner category;
@@ -61,11 +50,6 @@ public class IngredientAddFragment extends DialogFragment {
     private LocalDate bestBeforeDateTemp;
     private Button selectDate;
     private TextView bestBeforeDate;
-    private Button addByCameraRoll;
-    private Button addByCamera;
-    private ImageView thisImageIngredient;
-    private Uri photoURI;
-    private String thisIngredientPhotoBase64;
 
     // For getting the string version of Calendar
     // Error handing
@@ -106,6 +90,82 @@ public class IngredientAddFragment extends DialogFragment {
         }
     }
 
+    private AlertDialog buildAddDialog(AlertDialog.Builder builder, View view) {
+        return builder
+                .setView(view)
+                .setTitle("Add ingredient")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("OK", null)
+                .create();
+
+    }
+
+    private AlertDialog buildEditDialog(AlertDialog.Builder builder, View view) {
+        return builder
+                .setView(view)
+                .setTitle("Modify ingredient")
+                .setNegativeButton("Cancel", null)
+                .setNeutralButton("Delete", (dialog1, which) -> listener.onDeletePressed(ingredientToBeChanged))
+                .setPositiveButton("OK", null)
+                .create();
+    }
+
+    private void errorCheck(EditText description, TextView bestBeforeDate, AlertDialog alertDialog, IngredientInStorage i) {
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean isAllValid = true;
+
+                        if (description.getText().toString().length() == 0) {
+                            description.setError("Please enter a description");
+                            isAllValid = false;
+                        } else {
+                            if (i == null) {
+                                ingredientToBeChanged.setDescription(description.getText().toString());
+                            } else {
+                                i.setDescription(description.getText().toString());
+                            }
+                        }
+
+                        if (amount.getText().toString().length() == 0) {
+                            amount.setError("Please specify an amount!");
+                        } else {
+                            if (i == null) {
+                                ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
+                            } else {
+                                i.setAmount(Double.parseDouble(amount.getText().toString()));
+                            }
+                        }
+                        if (i == null) {
+                            if (ingredientToBeChanged.getBestBeforeDate() == null) {
+                                isAllValid = false;
+                                bestBeforeDate.setError("Please set an expiry date!");
+                            }
+                        } else {
+                            if (i.getBestBeforeDate() == null) {
+                                isAllValid = false;
+                                bestBeforeDate.setError("Please set an expiry date!");
+                            }
+                        }
+                        if (isAllValid) {
+                            dialog.dismiss();
+                            if (i == null) {
+                                listener.onOkPressedUpdate(ingredientToBeChanged);
+                            } else {
+                                listener.onOkPressed(i);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -117,9 +177,6 @@ public class IngredientAddFragment extends DialogFragment {
         unit = view.findViewById(R.id.edit_unit_ingredient_storage);
         selectDate = view.findViewById(R.id.select_bestbefore_button);
         bestBeforeDate = view.findViewById(R.id.bestBeforeDateAddIngredientToStorage);
-        addByCameraRoll = view.findViewById(R.id.add_ingredient_photo_camera_roll);
-        addByCamera = view.findViewById(R.id.add_ingredient_photo_camera);
-        thisImageIngredient = view.findViewById(R.id.ingredient_image);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -138,20 +195,6 @@ public class IngredientAddFragment extends DialogFragment {
         unit.setAdapter(unitSpinnerAdapter);
 
         IngredientInStorage newIngredient = new IngredientInStorage();
-
-        addByCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                askCameraPermission();
-            }
-        });
-
-        addByCameraRoll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cameraRollOpener();
-            }
-        });
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -240,32 +283,20 @@ public class IngredientAddFragment extends DialogFragment {
             location.setSelection(locationSpinnerPosition);
             unit.setSelection(unitSpinnerAdapter.getPosition(ingredientToBeChanged.getMeasurementUnit().name()));
         }
-
+        AlertDialog alertDialogTemp;
+        boolean isEditing;
         if (ingredientToBeChanged == null) {
-            builder
-                .setView(view)
-                .setTitle("Add ingredient")
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("OK", (dialogInterface, i) -> {
+            alertDialogTemp = buildAddDialog(builder, view);
+            isEditing = false;
+            String strAmount = amount.getText().toString();
+            double doubleAmount;
+            if (!isNumeric(strAmount, NumericTypes.decimal)) {
+                doubleAmount = -1.0;
+            } else {
+                doubleAmount = Double.parseDouble(strAmount);
+            }
+            newIngredient.setAmount(doubleAmount);
 
-                    String strDescription = description.getText().toString();
-                    if (strDescription.length() == 0) {
-                        strDescription = "No description available";
-                    }
-
-                    String strAmount = amount.getText().toString();
-                    double doubleAmount;
-                    if (!isNumeric(strAmount, NumericTypes.decimal)) {
-                        doubleAmount = -1.0;
-                    } else {
-                        doubleAmount = Double.parseDouble(strAmount);
-                    }
-
-                    newIngredient.setDescription(strDescription);
-                    newIngredient.setAmount(doubleAmount);
-
-                    listener.onOkPressed(newIngredient);
-                });
         } else {
             description.setText(ingredientToBeChanged.getDescription());
             amount.setText(valueOf(ingredientToBeChanged.getAmount()));
@@ -280,87 +311,18 @@ public class IngredientAddFragment extends DialogFragment {
 
             bestBeforeDateTemp = ingredientToBeChanged.getBestBeforeDate();
 
-            builder
-                .setView(view)
-                .setTitle("Modify ingredient")
-                .setNegativeButton("Cancel", null)
-                    .setNeutralButton("Delete", (dialog, which) -> listener.onDeletePressed(ingredientToBeChanged))
-                .setPositiveButton("OK", (dialogInterface, i) -> {
-                    if (description.getText().toString().length() == 0) {
-                        ingredientToBeChanged.setDescription("No description available");
-                    } else {
-                        ingredientToBeChanged.setDescription(description.getText().toString());
-                    }
+            alertDialogTemp = buildEditDialog(builder, view);
+            isEditing = true;
 
-                    if (!isNumeric(amount.getText().toString(), NumericTypes.decimal)) {
-                        ingredientToBeChanged.setAmount(0.0);
-                    } else {
-                        ingredientToBeChanged.setAmount(Double.parseDouble(amount.getText().toString()));
-                    }
-
-                    listener.onOkPressedUpdate(ingredientToBeChanged);
-                });
         }
-        return builder.create();
-    }
-
-    private void askCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this.getContext(),
-                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+        final AlertDialog dialog = alertDialogTemp;
+        if(!isEditing) {
+            errorCheck(description,bestBeforeDate,dialog, newIngredient);
         } else {
-            openDeviceBuiltInCamera();
+            errorCheck(description,bestBeforeDate,dialog, null);
         }
+
+        return alertDialogTemp;
     }
 
-    private void openDeviceBuiltInCamera() {
-        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camera, CAMERA_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            photoURI = data.getData();
-            try {
-                Bitmap thisIngredientBitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), photoURI);
-                ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
-                thisIngredientBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
-                byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
-                thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Picasso.get().load(photoURI).into(thisImageIngredient);
-            thisImageIngredient.setImageBitmap(null);
-        } else {
-            Bitmap thisIngredientPhotoCamera = (Bitmap) data.getExtras().get("data");
-            thisImageIngredient.setImageBitmap(thisIngredientPhotoCamera);
-            ByteArrayOutputStream outputStreamBitmap = new ByteArrayOutputStream();
-            thisIngredientPhotoCamera.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamBitmap);
-            byte[] byteArrayBitmap = outputStreamBitmap.toByteArray();
-            thisIngredientPhotoBase64 = Base64.getEncoder().encodeToString(byteArrayBitmap);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] > PackageManager.PERMISSION_GRANTED) {
-                openDeviceBuiltInCamera();
-            }
-        } else {
-        }
-    }
-
-    private void cameraRollOpener() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, CAMERA_REQUEST);
-    }
 }
