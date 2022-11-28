@@ -24,7 +24,7 @@ public class MainActivity extends NavigationActivity {
     }
 
     /**
-     * This method proceeds to the 
+     * This method checks if the current user is already logged in, and if not, prompts the user to log in
      */
     private void authorize() {
 
@@ -37,6 +37,9 @@ public class MainActivity extends NavigationActivity {
         }
     }
 
+    /**
+     * This method sets up the top bar that contains a log out button
+     */
     private void setUpActionBar() {
 
         topBar = getSupportActionBar();
@@ -57,6 +60,9 @@ public class MainActivity extends NavigationActivity {
 
     }
 
+    /**
+     * This method logs out a currently logged in user
+     */
     private void logout() {
         FirebaseAuth.getInstance().signOut();
 
