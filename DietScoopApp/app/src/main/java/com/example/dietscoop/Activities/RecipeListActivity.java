@@ -29,12 +29,16 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
     sortSelection sortingBy;
 
+    /**
+     * This enum contains elements that the user can specify to sort the list by
+     */
     public enum sortSelection {
         TITLE,
         PREPTIME,
         SERVING,
         CATEGORY
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,12 +97,20 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
     }
 
+    /**
+     * This method navigates to the activity where the user can add a new recipe.
+     */
     private void addNewRecipe() {
         Intent intent = new Intent(this, ViewRecipeActivity.class);
         intent.putExtra("ADDING", true);
         startActivity(intent);
     }
 
+    /**
+     * This method navigates to the activity where the user can edit an existing recipe
+     * @param view current view
+     * @param position index of recipe that the user has selected to modify
+     */
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, ViewRecipeActivity.class);
@@ -107,6 +119,10 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         startActivity(intent);
     }
 
+    /**
+     * This method sorts the list by the element specified by the user
+     * @param sortBy enum element corresponding to column that the user has chosen to sort by
+     */
     public void sortRecipesBy(RecipeListActivity.sortSelection sortBy) {
 
         if (sortBy == this.sortingBy) {
@@ -119,6 +135,10 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         setSortSelection(sortBy);
     }
 
+    /**
+     * This method sets the element that the user has chosen to sort by and updates the UI accordingly
+     * @param sortBy
+     */
     private void setSortSelection(sortSelection sortBy) {
 
         this.sortingBy = sortBy;
@@ -152,6 +172,9 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
 
     }
 
+    /**
+     * This method sets up the top bar with an add button and logout button
+     */
     private void setupActionBar() {
 
         topBar = getSupportActionBar();
@@ -179,10 +202,16 @@ public class RecipeListActivity extends NavigationActivity implements RecyclerIt
         });
     }
 
+    /**
+     * This method is calles when the add button in the top bar is pushed, and navigates the user to the add recipe activity
+     */
     void onAddClicked() {
         addNewRecipe();
     }
 
+    /**
+     * This method logs out the currently logged in user
+     */
     private void logout() {
         FirebaseAuth.getInstance().signOut();
 

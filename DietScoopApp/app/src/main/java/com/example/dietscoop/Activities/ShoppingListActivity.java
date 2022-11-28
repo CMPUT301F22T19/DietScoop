@@ -19,6 +19,9 @@ import com.example.dietscoop.Fragments.pickUpIngredientFragment;
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * This class handles the activity where the user views their shopping list
+ */
 public class ShoppingListActivity extends NavigationActivity implements RecyclerItemClickListener, pickUpIngredientFragment.OnFragmentInteractionListener {
     RecyclerView shoppingListView;
 
@@ -31,6 +34,12 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
     sortSelection sortingBy;
 
 
+    /**
+     * This method is called when a user clicks on an item in their shopping list. This method opens
+     * a dialog fragment that allows the user to add the selected ingredient to their ingredient storage.
+     * @param view current view
+     * @param position index of item clicked
+     */
     @Override
     public void onItemClick(View view, int position) {
 
@@ -39,11 +48,19 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
 
     }
 
+    /**
+     * This method is called from within the dialog fragment allowing the user to confirm that they want to add
+     * the selected item to their ingredient storage
+     * @param ingredient ingredient to be added to storage
+     */
     @Override
     public void onAddPressed(IngredientInStorage ingredient) {
         shoppingListInfo.addItemToStorage(ingredient);
     }
 
+    /**
+     * qualities to sort shopping list by
+     */
     public enum sortSelection {
         DESCRIPTION,
         CATEGORY
@@ -87,6 +104,10 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
 
     }
 
+    /**
+     * Sorts the shopping list by the selected element
+     * @param selection element to sort by
+     */
     private void onSortSelection(sortSelection selection) {
 
         if (this.sortingBy == selection) {
@@ -99,6 +120,10 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
 
     }
 
+    /**
+     * This method sets the element that the user selected to sort the list by, and updates the UI
+     * @param selection element that the user selected to sort by
+     */
     private void setSortingItem(sortSelection selection) {
 
         this.sortingBy = selection;
@@ -115,6 +140,9 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
         }
     }
 
+    /**
+     * Sets up the top bar with a logout button but no add button
+     */
     private void setUpActionBar() {
 
         topBar = getSupportActionBar();
@@ -135,6 +163,9 @@ public class ShoppingListActivity extends NavigationActivity implements Recycler
 
     }
 
+    /**
+     * Logs out the currently logged in user
+     */
     private void logout() {
         FirebaseAuth.getInstance().signOut();
 

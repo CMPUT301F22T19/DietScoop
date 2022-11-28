@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * This method signs in a user. If successfully signed in, the app opens
+     * This method signs in a user. If successfully signed in, the app opens. Otherwise, the user is notified to re-attempt login
      * @param email email address specified by user
      * @param password password entered by user
      */
@@ -100,13 +100,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Launches app on successful login
+     * Launches app
      */
     private void openApp() {
         Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * takes user to page where they can sign up to the application
+     */
     private void startSignUp() {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
