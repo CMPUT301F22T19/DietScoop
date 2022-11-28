@@ -97,24 +97,6 @@ public class IngredientStorage {
                 Log.w(TAG, "Listen failed.", e);
                 return;
             }
-//            storage.clear();
-//            for (QueryDocumentSnapshot doc : value) {
-//                if (doc.getId() != null) {
-//                    Log.d(TAG, doc.getId() + " => " + doc.getData() + " " + doc.getId());
-//                    IngredientInStorage ingredient = new IngredientInStorage(doc.getString("description"),
-//                            IngredientUnit.stringToUnit(doc.getData().get("measurementUnit").toString()),
-//                            doc.getDouble("amount"),
-//                            (doc.getLong("year")).intValue(),
-//                            (doc.getLong("month")).intValue(), (doc.getLong("day")).intValue(),
-//                            Location.stringToLocation(doc.getData().get("location").toString()),
-//                            IngredientCategory.stringToCategory(doc.getData().get("category").toString()));
-//                    storage.add(ingredient);
-//                    ingredient.setId(doc.getId());
-//                }
-//            }
-//            if (adapter!=null) {
-//                adapter.notifyDataSetChanged();
-//            }
 
             for (DocumentChange doc : value.getDocumentChanges()) {
                 switch(doc.getType()) {
@@ -162,7 +144,7 @@ public class IngredientStorage {
         });
     }
 
-    public void setupIngredientSnapshotListener(IngredientRecipeAdapter adapter) {
+    public void setupIngredientSnapshotListener(IngredientRecipeAdapter adapter, ShoppingListInfo info) {
 
         db.getIngredientCollectionRef().addSnapshotListener((value, e) -> {
             String TAG = "test";
@@ -210,7 +192,7 @@ public class IngredientStorage {
                         break;
                 }
             }
-
+            info.updateShoppingList();
             adapter.notifyDataSetChanged();
         });
     }
@@ -243,13 +225,5 @@ public class IngredientStorage {
             }
         }
         return null;
-    }
-
-    public void setupIngredientSnapshotListener(IngredientRecipeAdapter adapter, ShoppingListInfo shoppingListInfo) {
-
-        setupIngredientSnapshotListener();
-        shoppingListInfo.updateShoppingList();
-        adapter.notifyDataSetChanged();
-
     }
 }

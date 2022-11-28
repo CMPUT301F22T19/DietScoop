@@ -15,15 +15,17 @@ import com.example.dietscoop.Adapters.IngredientRecipeAdapter;
 import com.example.dietscoop.Data.Ingredient.Ingredient;
 import com.example.dietscoop.Data.Ingredient.IngredientCategory;
 import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
 import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Database.IngredientStorage;
 import com.example.dietscoop.Database.ShoppingListInfo;
+import com.example.dietscoop.Fragments.pickUpIngredientFragment;
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-public class ShoppingListActivity extends NavigationActivity {
+public class ShoppingListActivity extends NavigationActivity implements RecyclerItemClickListener, pickUpIngredientFragment.OnFragmentInteractionListener {
     RecyclerView shoppingListView;
 
     IngredientRecipeAdapter ingListAdapter;
@@ -32,6 +34,19 @@ public class ShoppingListActivity extends NavigationActivity {
     ActionBar topBar;
 
     ShoppingListInfo shoppingListInfo;
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        IngredientInRecipe current = shoppingListInfo.getShoppingList().get(position);
+        new pickUpIngredientFragment(current).show(getSupportFragmentManager(), "PICKUP SHOPPING ITEM");
+
+    }
+
+    @Override
+    public void onAddPressed(IngredientInStorage ingredient) {
+        shoppingListInfo.addItemToStorage(ingredient);
+    }
 
     public enum sortSelection {
         DESCRIPTION,
@@ -52,6 +67,8 @@ public class ShoppingListActivity extends NavigationActivity {
 
         shoppingListInfo = new ShoppingListInfo();
         ingListAdapter = new IngredientRecipeAdapter(this, shoppingListInfo.getShoppingList());
+        ingListAdapter.setItemClickListener(this);
+
         shoppingListInfo.setUpSnapshotListeners(ingListAdapter);
         shoppingListView.setAdapter(ingListAdapter);
 
