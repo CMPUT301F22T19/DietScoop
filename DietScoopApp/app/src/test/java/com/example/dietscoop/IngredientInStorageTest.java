@@ -2,17 +2,22 @@ package com.example.dietscoop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.example.dietscoop.Data.Ingredient.IngredientCategory;
+import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
+import com.example.dietscoop.Data.Ingredient.Location;
+
 import org.junit.jupiter.api.Test;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 
 public class IngredientInStorageTest {
 
     IngredientInStorage sampleIngredientSTR;
 
     public IngredientInStorage startSampleIngredientSTR() {
-        return new IngredientInStorage("Chicken", "kg",
-                5, 2022, 4, 24, Location.freezer, Category.meat);
+        return new IngredientInStorage("Chicken", IngredientUnit.kg,
+                5.0, 2022, 4, 24, Location.Freezer, IngredientCategory.Meat);
     }
 
     @Test
@@ -21,14 +26,14 @@ public class IngredientInStorageTest {
         sampleIngredientSTR = startSampleIngredientSTR();
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.location, Location.freezer);
+        assertEquals(sampleIngredientSTR.getLocation(), Location.Freezer);
     }
 
     @Test
     public void getBestBeforeDate() {
         //Initializing objects:
         sampleIngredientSTR = startSampleIngredientSTR();
-        Calendar calendarCheck = new Calendar.Builder().setDate(2022, 4, 24).build();
+        LocalDate calendarCheck = LocalDate.of(2022, 4, 24);
 
         //Asserting the validity of Object:
         assertEquals(sampleIngredientSTR.getBestBeforeDate(), calendarCheck);
@@ -40,7 +45,7 @@ public class IngredientInStorageTest {
         sampleIngredientSTR = startSampleIngredientSTR();
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.category, Category.meat);
+        assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.Meat);
     }
 
     @Test
@@ -48,10 +53,10 @@ public class IngredientInStorageTest {
         //Initializing object:
         sampleIngredientSTR = startSampleIngredientSTR();
 
-        sampleIngredientSTR.setLocation(Location.fridge);
+        sampleIngredientSTR.setLocation(Location.Fridge);
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.getLocation(), Location.fridge);
+        assertEquals(sampleIngredientSTR.getLocation(), Location.Fridge);
     }
 
     @Test
@@ -59,10 +64,10 @@ public class IngredientInStorageTest {
         //Initializing object:
         sampleIngredientSTR = startSampleIngredientSTR();
 
-        sampleIngredientSTR.setCategory(Category.fruit);
+        sampleIngredientSTR.setCategory(IngredientCategory.Fruit);
 
         //Asserting the validity of Object:
-        assertEquals(sampleIngredientSTR.getCategory(), Category.fruit);
+        assertEquals(sampleIngredientSTR.getCategory(), IngredientCategory.Fruit);
     }
 
     @Test
@@ -70,13 +75,11 @@ public class IngredientInStorageTest {
         //Initializing object:
         sampleIngredientSTR = startSampleIngredientSTR();
 
-        Calendar newDate = new Calendar.Builder().setDate(2023, 10, 1).build();
+        LocalDate newDate = LocalDate.of(2023, 10, 1);
         sampleIngredientSTR.setBestBeforeDate(2023, 10, 1);
 
         //Asserting the validity of Object:
         assertEquals(sampleIngredientSTR.getBestBeforeDate(), newDate);
     }
-
-
 
 }
