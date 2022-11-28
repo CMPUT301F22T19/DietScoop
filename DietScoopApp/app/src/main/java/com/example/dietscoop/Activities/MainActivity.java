@@ -19,7 +19,6 @@ public class MainActivity extends NavigationActivity {
         authorize();
 
         setContentView(R.layout.activity_main);
-        goToIngredientList();
         initNavigationActivity();
         setUpActionBar();
     }

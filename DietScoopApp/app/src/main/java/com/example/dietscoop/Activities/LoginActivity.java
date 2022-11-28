@@ -32,6 +32,11 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        if(auth.getCurrentUser() != null){
+            Intent intent = new Intent(this, IngredientListActivity.class);
+            startActivity(intent);
+        }
+
         email_ET = findViewById(R.id.login_email_address);
         password_ET = findViewById(R.id.login_password);
 
@@ -76,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
      * Launches app on successful login
      */
     private void openApp() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, IngredientListActivity.class);
         startActivity(intent);
     }
 
