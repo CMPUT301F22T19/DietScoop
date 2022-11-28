@@ -19,6 +19,9 @@ import com.example.dietscoop.Fragments.pickUpIngredientFragment;
 import com.example.dietscoop.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * This class 
+ */
 public class ShoppingListActivity extends NavigationActivity implements RecyclerItemClickListener, pickUpIngredientFragment.OnFragmentInteractionListener {
     RecyclerView shoppingListView;
 
