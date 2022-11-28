@@ -39,7 +39,7 @@ public enum IngredientUnit {
             case "KG":
                 return kg;
             default:
-                throw new RuntimeException("NO VALID UNIT GIVEN");
+                 throw new RuntimeException("NO VALID UNIT GIVEN");
         }
 
     }

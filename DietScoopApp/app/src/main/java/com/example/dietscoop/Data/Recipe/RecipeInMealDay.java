@@ -1,13 +1,7 @@
 package com.example.dietscoop.Data.Recipe;
 
-import com.example.dietscoop.Data.Ingredient.IngredientInRecipe;
-import com.example.dietscoop.Data.Recipe.Recipe;
-
-import java.util.ArrayList;
-import java.util.Date;
-
 public class RecipeInMealDay extends Recipe {
-        private Integer desiredNumOfServings;
+        private Double desiredNumOfServings;
         private Recipe parentRecipe;
         private String mealdayID;
         //TODO: WARNING MARCOS FIDDLED HERE:
@@ -21,11 +15,11 @@ public class RecipeInMealDay extends Recipe {
         this.parentRecipeID = r.getId();
     }
 
-    public void setDesiredNumOfServings(Integer desiredNumOfServings) {
+    public void setDesiredNumOfServings(Double desiredNumOfServings) {
         this.desiredNumOfServings = desiredNumOfServings;
     }
 
-    public Integer getDesiredNumOfServings() {
+    public Double getDesiredNumOfServings() {
         return desiredNumOfServings;
     }
 

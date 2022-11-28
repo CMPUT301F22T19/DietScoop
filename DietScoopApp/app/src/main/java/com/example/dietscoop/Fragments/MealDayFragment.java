@@ -18,6 +18,7 @@ import com.example.dietscoop.Adapters.MealDayRecyclerAdapter;
 import com.example.dietscoop.Data.FoodItem;
 import com.example.dietscoop.Data.Ingredient.IngredientInMealDay;
 import com.example.dietscoop.Data.Ingredient.IngredientInStorage;
+import com.example.dietscoop.Data.Ingredient.IngredientUnit;
 import com.example.dietscoop.Data.Meal.MealDay;
 import com.example.dietscoop.Data.Recipe.Recipe;
 import com.example.dietscoop.Data.Recipe.RecipeInMealDay;
@@ -184,13 +185,14 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
      * @param selectedFoodItem
      * @param scale
      */
-    public void addMeal(int selectedFoodItem, Integer scale) {
+    public void addMeal(int selectedFoodItem, Double scale, IngredientUnit ingredientUnit) {
         if (this.allFoodItems.get(selectedFoodItem).getType().equals("Ingredient")) {
             IngredientInStorage tempHolder = (IngredientInStorage) (allFoodItems.get(selectedFoodItem));
             IngredientInMealDay tempMeal = new IngredientInMealDay(tempHolder);
             tempMeal.setAmount(scale);
             tempMeal.setId(UUID.randomUUID().toString());
             tempMeal.setMealdayID(currentMealDay.getId());
+            tempMeal.setMeasurementUnit(ingredientUnit);
             currentMealDay.addIngredientInMealDay(tempMeal);
         } else if (this.allFoodItems.get(selectedFoodItem).getType().equals("Recipe")) {
             Recipe tempHolder = (Recipe) allFoodItems.get(selectedFoodItem);
@@ -206,11 +208,10 @@ public class MealDayFragment  extends Fragment implements RecyclerItemClickListe
         this.mealRecyclerAdapter.notifyDataSetChanged();
     }
 
-    public void editMeal(int selectedFoodItem, Integer scale, int mealToChange) {
+    public void editMeal(int selectedFoodItem, Double scale, int mealToChange, IngredientUnit ingredientUnit) {
         deleteMeal(mealToChange);
-        addMeal(selectedFoodItem, scale);
+        addMeal(selectedFoodItem, scale, ingredientUnit);
     }
-
 
     // TODO: STAGE CHANGES TO DELETE FROM DATABASE
     public void deleteMeal(int mealToChange) {
