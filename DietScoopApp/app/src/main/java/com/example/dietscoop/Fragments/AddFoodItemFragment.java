@@ -28,6 +28,7 @@ import com.example.dietscoop.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * This dialog fragment will manage the selection of FoodItems to add to our meal day.
@@ -246,7 +247,7 @@ public class AddFoodItemFragment extends DialogFragment implements AdapterView.O
             currentMealType = "Ingredient";
             Ingredient foodItem = (Ingredient) foodItems.get(i);
             quantityView.setText("");
-            int index = unitNames.indexOf(foodItem.getMeasurementUnit().toString());
+            int index = unitNames.indexOf(foodItem.getMeasurementUnit().toString().toLowerCase(Locale.ROOT));
             unitSelectSpinner.setSelection(index);
             unitSelectSpinner.setVisibility(View.VISIBLE);
         } else {
