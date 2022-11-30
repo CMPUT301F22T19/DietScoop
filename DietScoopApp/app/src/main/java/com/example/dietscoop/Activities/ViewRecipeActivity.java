@@ -250,6 +250,9 @@ public class ViewRecipeActivity extends AppCompatActivity implements AddIngredie
             byte[] test = Base64.getDecoder().decode(currentRecipe.getImageBitmap());
             Bitmap bitmap = BitmapFactory.decodeByteArray(test, 0, test.length);
             thisImageRecipe.setImageBitmap(bitmap);
+
+            thisImageRecipe.getLayoutParams().height = 1000;
+            thisImageRecipe.getLayoutParams().width = 1000;
         }
 
 
